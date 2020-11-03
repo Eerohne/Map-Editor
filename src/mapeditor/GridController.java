@@ -92,12 +92,12 @@ public class GridController {
         
         //ColorPicker Events
         this.picker.setOnAction(e -> {
-            if (picker.getValue() == floorColor){
+            //if (picker.getValue() == floorColor){
                 this.wallColor = picker.getValue();
-                System.out.println("NOOOOO");
-            }
-            else
-                picker.setValue(wallColor);
+                //System.out.println("NOOOOO");
+            //}
+            //else
+                //picker.setValue(wallColor);
         });
     }
     

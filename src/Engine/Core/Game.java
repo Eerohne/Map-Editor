@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 //Merouane Issad
-
+//discard any code written here, it's only test nonsense
 public class Game extends Application{
     private static Level currentLevel;
     

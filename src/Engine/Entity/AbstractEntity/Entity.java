@@ -10,8 +10,7 @@ public abstract class Entity implements IEntity{
     protected Point2D position; //all entities have a position in the world
 
     @Override
-    public void destroy() {
-        //remove from Entity list
+    public void destroy() { //remove from Entity list
         Game.getCurrentLevel().removeEntity(this.name); //temporary code
     }
     

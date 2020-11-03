@@ -7,6 +7,7 @@ package Engine.Level;
 
 import Engine.Entity.AbstractEntity.Entity;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -14,9 +15,12 @@ import java.util.Map;
  * @author child
  */
 public class Level {
-    private int[][] levelData;
-    private Palette palette;
-    private Map<String, Entity> entities;
+    private int[][] levelData; //
+    private Palette palette; //Look-up table
+    private Map<String, Entity> entities; //Entities stored by their name
+    
+    //flags
+    boolean isRunning = false;
     
     Level()
     {
@@ -26,6 +30,11 @@ public class Level {
     public int getCellValue(int x, int y)
     {
         return levelData[x][y];
+    }
+    
+    public Palette acessPalette()
+    {
+        return palette;
     }
     
     public void addEntity(Entity entity)
@@ -41,5 +50,26 @@ public class Level {
     public void removeEntity(String entityName)
     {
         entities.remove(entityName);
+    }
+    
+    public void update() //update all entities. If this is the first update, call the entities start method instead to initialize them
+    {
+        if(!isRunning) //first time
+        {
+            Iterator<Entity> it = entities.values().iterator();
+            while(it.hasNext())
+            {
+                it.next().start();
+            }
+            isRunning = true;
+        }
+        else //not first time
+        {
+            Iterator<Entity> it = entities.values().iterator();
+            while(it.hasNext())
+            {
+                it.next().update();
+            }
+        }
     }
 }
