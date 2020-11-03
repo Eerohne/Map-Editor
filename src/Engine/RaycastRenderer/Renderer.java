@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Engine.Renderer;
+package Engine.RaycastRenderer;
 
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
