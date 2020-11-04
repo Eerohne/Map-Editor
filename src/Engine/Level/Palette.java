@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Engine.Level;
 
 import java.util.HashMap;
@@ -10,9 +5,8 @@ import java.util.Map;
 import javafx.scene.paint.Color;
 
 //Merouane Issad
-
 public class Palette<T> {
-    Map<Integer, T> entries;
+    private Map<Integer, T> entries;
     
     Palette()
     {

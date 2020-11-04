@@ -10,20 +10,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-/**
- *
- * @author child
- */
+//Merouane Issad
 public class Level {
-    private int[][] levelData; //
+    private int[][] levelData; //2d array with wall data
     private Palette palette; //Look-up table
     private Map<String, Entity> entities; //Entities stored by their name
     
     //flags
-    boolean isRunning = false;
+    private boolean isRunning = false;
     
-    Level()
-    {
+    Level(){
         entities = new HashMap<String, Entity>();
     }
     
