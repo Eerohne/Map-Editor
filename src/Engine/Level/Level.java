@@ -19,7 +19,7 @@ public class Level {
     //flags
     private boolean isRunning = false;
     
-    Level(){
+    public Level(){
         entities = new HashMap<String, Entity>();
     }
     

@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 public class Palette<T> {
     private Map<Integer, T> entries;
     
-    Palette()
+    public Palette()
     {
         entries = new HashMap<Integer, T>();
     }
