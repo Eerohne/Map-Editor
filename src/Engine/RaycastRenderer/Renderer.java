@@ -5,8 +5,9 @@
  */
 package Engine.RaycastRenderer;
 
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
+import javafx.geometry.Point2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /**
@@ -14,9 +15,9 @@ import javafx.scene.paint.Color;
  * @author Jeffrey
  */
 public class Renderer {
-    int mapX, mapY, mapSize; //width, height & area
     
-    public int[][] map = {
+    private int mapX =5, mapY =5;
+    private int[][] map = {
         {1, 1, 1, 1, 1},
         {1, 0, 0, 0, 1},
         {1, 0, 2, 0, 1},
@@ -24,106 +25,128 @@ public class Renderer {
         {1, 1, 1, 1, 1}
     };
     
-    private int screenHeight = 800, screenWidth = 450;
-    public WritableImage frame = new WritableImage(screenWidth, screenHeight);
-    private PixelWriter writer = frame.getPixelWriter();
+    private int screenWidth = 800, screenHeight = 450;
+    public Canvas frame = new Canvas(screenWidth, screenHeight);
+    private GraphicsContext gc = frame.getGraphicsContext2D();
     
-    private float posX, posY, camA, fov;
+    private Point2D cam;
+    private double camA, fov;
     
     public Renderer(){
-        posX = 1.5f;
-        posY = 1.5f;
-        camA = 315f;
-        fov = 10f;
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, screenWidth, screenHeight);
+        gc.setFill(Color.GREEN);
+        gc.fillRect(0, screenHeight/2, screenWidth, screenHeight/2);
+        
+        cam = new Point2D(1.5, 2.5);
+        camA = 0.0;
+        fov = 60.0;
     }
     
     //renders one frame
     public void render(){
-        int tileX, tileY; //player grid position
-        float offX, offY; //offset within tile
+        renderLevel();
+    }
+    
+    //renders level
+    private void renderLevel(){
+        final int tileX, tileY; //player grid position
+        final float offX, offY; //offset within tile (0 <= off < 1)
         //note: posX = tileX + offX and posY = tileY + offY
+        tileX = (int)Math.floor(cam.getX());
+        tileY = (int)Math.floor(cam.getY());
+        offX = (int)Math.floor(cam.getX()-tileX);
+        offY = (int)Math.floor(cam.getY()-tileY);
         
-        float rayX, rayY, rayA; //position & direction of the ray
-        double inWithH, inWithV; //intersect with line
+        Point2D ray = new Point2D(cam.getX(), cam.getY());
+        double rayA = camA - (fov/2);
         
-        int stepX =0, stepY=0;//depends on angle of ray
-        rayA = camA; //in degrees
-        
-        
-        
-        //ray for each pixel in the width
-        for(int ray=0; ray<screenWidth;ray++){
-            rayA -= (fov/2f);
+        for(int r=0; r<screenWidth;r++){
+            if(rayA < 0)  rayA+=360;
+            if(rayA >=360)rayA-=360;
             
-            if(rayA<0) ray+=360;
-            if(rayA>=360)ray-=360;
+            boolean upward, rightward;
+            upward = rayA<180; rightward = (rayA<90 || rayA>270);
             
-            if(rayA<90 || rayA>270)stepX = 1; else {stepX = -1;}
-            if(rayA>0 && rayA<180)stepY = -1; else stepY = 1;
+            final double tan = Math.tan(Math.toRadians(rayA));
+            final double cotan = 1/tan;
             
-            int tile = 0;
-            double tan = Math.tan(Math.toRadians(rayA));
+            double stepX=0, stepY=0;
             
-            tileX = (int)Math.floor(posX);
-            tileY = (int)Math.floor(posY);
+            Point2D rH = Point2D.ZERO, rV = Point2D.ZERO;
             
-            
-            
-            //detect h-line hit
-            offY = posY-(float)tileY;
-            inWithH = offY/tan;
-            if(tan==0) inWithH = 0;
-            if(inWithH!=0){
-                while(0<tileY || tileY<mapY){
-                    tile = map[(int)Math.floor(inWithH)][tileY];
-                    if(tile>0){ break;}
-                    else{
-                        if(tan!=0)inWithH+=1/tan;
-                        tileY+=stepY;
-                    }
-                }
+            //intersects with vertical
+            if(rightward){//looking right (+x)
+                rV = new Point2D(tileX+1, ray.getY()+(1-offX)*tan);
+                stepX = 1; stepY = tan;
             }
-            //detect v-line hit
-            offX = posX-(float)tileX;
-            inWithV = offX*tan;
-            if(inWithV!=0){
-                while(0<tileX || tileX<mapX){
-                    tile = map[tileX][(int)Math.floor(inWithV)];
-                    if(tile>0){ break;}
-                    else{
-                        inWithV+=tan;
-                        tileX+=stepX;
-                    }
-                }
+            if(!rightward){//looking left (-x)
+                rV = new Point2D(tileX  , ray.getY()+(1-offX)*tan);
+                stepX = -1; stepY = tan;
             }
-            //find shortest distance
-            double Hlength = Math.sqrt(Math.pow(inWithH, 2)+Math.pow(tileY, 2));
-            double Vlength = Math.sqrt(Math.pow(inWithV, 2)+Math.pow(tileX, 2));;
-            switch(Double.compare(Hlength, Vlength)){
-                case -1: drawWallLine(ray, Vlength, getColor(tile), true); break;
-                case 0: drawWallLine(ray, Hlength, getColor(tile), false); break;
-                case 1: drawWallLine(ray, Hlength, getColor(tile), false); break;
+            if(rayA == 90 || rayA ==270){//looking directly up or down
+                rV = new Point2D(ray.getX(), ray.getY());
+                stepX = 0; stepY = 1;
+                if(rayA == 270) stepY = -1;
+            }
+            for(int i=0;i<16;i++){
+                int x = (int)Math.floor(rV.getX());
+                int y = (int)Math.floor(rV.getY());
+                if((x<0 || y<0) || (x>=mapX || y>=mapY)){ rV = Point2D.ZERO; break;}
+                if(map[x][y]>0){break;
+                }else rV.add(Math.floor(stepX), Math.floor(stepY));
             }
             
-            rayA += fov/frame.getWidth();
+            //intersects with horizontal
+            if(upward){//looking up (+y)
+                rH = new Point2D(ray.getX()+(1-offY)*cotan, tileY+1);
+                stepX = cotan; stepY = 1;
+            }
+            if(!upward){//looking down (-y)
+                rH = new Point2D(ray.getX()+(1-offY)*cotan, tileY);
+                stepX = cotan; stepY = -1;
+            }
+            if(rayA == 0 || rayA == 180){//looking directly left or right
+                rH = new Point2D(ray.getX(), ray.getY());
+                stepX = 1; stepY = 0;
+                if(rayA == 180) stepX = -1;
+            }
+            for(int i=0;i<16;i++){
+                int x = (int)Math.floor(rH.getX());
+                int y = (int)Math.floor(rH.getY());
+                if((x<0 || y<0) || (x>=mapX || y>=mapY)){ rH = Point2D.ZERO; break;}
+                if(map[x][y]>0){break;
+                }else rV.add(Math.floor(stepX), Math.floor(stepY));
+            }
+            
+            if(rH.magnitude()<rV.magnitude()){
+                int x = (int)Math.floor(rH.getX());
+                int y = (int)Math.floor(rH.getY());
+                drawWallLine(r, rH.magnitude(), getColor(map[x][y]));
+            }else{
+                int x = (int)Math.floor(rV.getX());
+                int y = (int)Math.floor(rV.getY());
+                drawWallLine(r, rH.magnitude(), getColor(map[x][y]).darker());
+            }
+            
+            rayA += (double)(fov/frame.getWidth());
         }
     }
     
     static Color getColor(int id){
         switch(id){
-            case 1: return Color.BLACK;
+            case 1: return Color.RED;
             case 2: return Color.AQUA;
-            default: return Color.WHITE;
+            default: return Color.GREENYELLOW;
         }
     }
-    void drawWallLine(int x, double distance, Color color, boolean isV){
-        double aHeight = 400.0;
-        int pHeight = (int)Math.floor(aHeight/distance);
-        if(isV) color = color.darker();
-        for(int y = 0; y<pHeight; y++){
-            writer.setColor(x, y, color);
-        }
+    private void drawWallLine(int x, double distance, Color color){
+        double maxHeight = screenHeight;
+        double height = maxHeight/distance;
+        double lineTop = (screenHeight-height)/2;
         
+        gc.setFill(color);
+        gc.fillRect(x, lineTop, 1, height);
     }
     
 }
