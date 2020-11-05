@@ -60,7 +60,6 @@ public class Game extends Application{
                 Time.update();
                 redraw(cont);
                 stage.setTitle("Optik Engine -> FPS : " + Integer.toString(Time.fps));
-                
                 long a = 0;
                 int b = 50;
                 for(int x = 0; x < b; x++)

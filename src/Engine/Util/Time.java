@@ -24,9 +24,6 @@ public class Time {
         deltaTime = (getTime() - lastTime) * timeScale;
         lastTime = getTime();
         
-        //System.out.println("delta : " + deltaTime);
-        if(deltaTime > 10)
-            deltaTime=0;
         CalculateFrameRate();
     }
     
