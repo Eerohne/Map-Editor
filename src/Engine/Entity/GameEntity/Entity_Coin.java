@@ -1,5 +1,5 @@
 
-package Engine.Entity.GameEntities;
+package Engine.Entity.GameEntity;
 
 import Engine.Entity.AbstractEntity.SpriteEntity;
 import javafx.geometry.Point2D;

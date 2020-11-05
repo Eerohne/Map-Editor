@@ -5,8 +5,8 @@
  */
 package Engine.Core;
 
-import Engine.Entity.GameEntities.Entity_Coin;
 import Engine.Level.Level;
+import Engine.Entity.GameEntity.Entity_Coin;
 import Engine.Util.Time;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
