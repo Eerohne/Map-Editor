@@ -5,6 +5,7 @@
  */
 package Engine.Core;
 
+import Engine.Entity.GameEntities.Entity_Coin;
 import Engine.Level.Level;
 import Engine.Util.Time;
 import javafx.animation.AnimationTimer;
@@ -53,6 +54,9 @@ public class Game extends Application{
         root.setRightAnchor(renderLayer, 0.0);
         root.setLeftAnchor(renderLayer, 0.0);
         
+        Entity_Coin coin = new Entity_Coin("coin1", new Point2D(1,1), Color.BLUE, 5);
+        
+        
         new AnimationTimer() { //Game main loop
 
             @Override
@@ -61,7 +65,7 @@ public class Game extends Application{
                 redraw(cont);
                 stage.setTitle("Optik Engine -> FPS : " + Integer.toString(Time.fps));
                 long a = 0;
-                int b = 50;
+                int b = 10;
                 for(int x = 0; x < b; x++)
                 {
                     for(int y = 0; y < b; y++)
