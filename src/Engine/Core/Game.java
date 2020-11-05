@@ -6,9 +6,12 @@
 package Engine.Core;
 
 import Engine.Level.Level;
+import Engine.Util.Time;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -23,7 +26,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 //Merouane Issad
-//discard any code written here, it's only test nonsense
+//for now, discard any code written here, it's only test nonsense
 public class Game extends Application{
     private static Level currentLevel;
     
@@ -33,24 +36,14 @@ public class Game extends Application{
         Canvas renderLayer = new Canvas(800, 600);
         renderLayer.widthProperty().bind(root.widthProperty());
         renderLayer.heightProperty().bind(root.heightProperty());
-        //renderLayer.draw();
         GraphicsContext cont = renderLayer.getGraphicsContext2D();
-        cont.setFill(Color.BLUE);
-        cont.fillRect(0,0,800,600);
-        
-        cont.setFill(Color.RED);
-        cont.fillRect(0,10,1000,800);
         
         Scene scene = new Scene(root, 800, 600);
         
-        Button button1 = new Button("new");
+        Button button1 = new Button("fill");
         button1.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-               renderLayer.resize(scene.getWidth(), scene.getHeight());
-               System.out.println(scene.getWidth());
-               //root.getChildren().remove(renderLayer);
-               //root.getChildren().get(0).resize(scene.getWidth(), scene.getHeight());
-               redraw(cont, renderLayer);
+               redraw(cont);
             }
         });
         
@@ -59,6 +52,29 @@ public class Game extends Application{
         root.setBottomAnchor(renderLayer, 0.0);
         root.setRightAnchor(renderLayer, 0.0);
         root.setLeftAnchor(renderLayer, 0.0);
+        
+        new AnimationTimer() { //Game main loop
+
+            @Override
+            public void handle(long l) {
+                Time.update();
+                redraw(cont);
+                stage.setTitle("Optik Engine -> FPS : " + Integer.toString(Time.fps));
+                
+                long a = 0;
+                int b = 50;
+                for(int x = 0; x < b; x++)
+                {
+                    for(int y = 0; y < b; y++)
+                    {
+                        for(int z = 0; z < b; z++)
+                        {
+                            a+= Math.pow(x, Math.pow(y, z));
+                        }
+                    }
+                }
+            }
+        }.start();
        
         stage.setScene(scene);
         stage.show();
@@ -69,9 +85,9 @@ public class Game extends Application{
         return currentLevel;
     }
     
-    public static void redraw(GraphicsContext cont, Canvas renderLayer)
+    public static void redraw(GraphicsContext cont)
     {
-        cont = renderLayer.getGraphicsContext2D();
+        //System.out.println(cont.getCanvas().getWidth() +" : "+ cont.getCanvas().getHeight());
         cont.setFill(Color.YELLOW);
         cont.fillRect(0,10,cont.getCanvas().getWidth(),cont.getCanvas().getHeight());
     }
