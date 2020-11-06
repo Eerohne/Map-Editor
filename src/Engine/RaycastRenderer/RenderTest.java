@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -20,11 +21,12 @@ public class RenderTest extends Application {
     @Override
     public void start(Stage primaryStage) {
         Renderer renderer = new Renderer();
+        Canvas canvas1 = renderer.frame;
         renderer.render();
-        Canvas canvas = renderer.frame;
-        StackPane root = new StackPane(canvas);
+        VBox root = new VBox();
+        root.getChildren().addAll(canvas1);
         
-        Scene scene = new Scene(root, canvas.getWidth(), canvas.getHeight());
+        Scene scene = new Scene(root, canvas1.getWidth(), canvas1.getHeight());
         
         primaryStage.setTitle("Render Test");
         primaryStage.setScene(scene);

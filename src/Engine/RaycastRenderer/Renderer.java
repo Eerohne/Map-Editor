@@ -38,8 +38,8 @@ public class Renderer {
         gc.setFill(Color.GREEN);
         gc.fillRect(0, screenHeight/2, screenWidth, screenHeight/2);
         
-        cam = new Point2D(1.5, 2.5);
-        camA = 0.0;
+        cam = new Point2D(1.1, 1.1);
+        camA = 45.0+90.0;
         fov = 60.0;
     }
     
@@ -68,7 +68,7 @@ public class Renderer {
             boolean upward, rightward;
             upward = rayA<180; rightward = (rayA<90 || rayA>270);
             
-            final double tan = Math.tan(Math.toRadians(rayA));
+            final double tan = -Math.tan(Math.toRadians(rayA));
             final double cotan = 1/tan;
             
             double stepX=0, stepY=0;
@@ -89,7 +89,7 @@ public class Renderer {
                 stepX = 0; stepY = 1;
                 if(rayA == 270) stepY = -1;
             }
-            for(int i=0;i<16;i++){
+            for(int i=0;i<8;i++){
                 int x = (int)Math.floor(rV.getX());
                 int y = (int)Math.floor(rV.getY());
                 if((x<0 || y<0) || (x>=mapX || y>=mapY)){ rV = Point2D.ZERO; break;}
@@ -126,16 +126,18 @@ public class Renderer {
             }else{
                 int x = (int)Math.floor(rV.getX());
                 int y = (int)Math.floor(rV.getY());
-                drawWallLine(r, rH.magnitude(), getColor(map[x][y]).darker());
+                drawWallLine(r, rV.magnitude(), getColor(map[x][y]).darker());
             }
             
-            rayA += (double)(fov/frame.getWidth());
+            rayA += (double)(fov/screenWidth);
+            
         }
     }
     
     static Color getColor(int id){
         switch(id){
-            case 1: return Color.RED;
+            case 0: return Color.RED;
+            case 1: return Color.DIMGRAY;
             case 2: return Color.AQUA;
             default: return Color.GREENYELLOW;
         }
@@ -146,7 +148,7 @@ public class Renderer {
         double lineTop = (screenHeight-height)/2;
         
         gc.setFill(color);
-        gc.fillRect(x, lineTop, 1, height);
+        gc.fillRect(x, lineTop, screenWidth/360, height);
     }
     
 }
