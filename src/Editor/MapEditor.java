@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mapeditor;
+package Editor;
 
+import Editor.Grid.Grid;
+import Editor.Controller.GridController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

@@ -1,5 +1,6 @@
-package mapeditor;
+package Editor.Grid;
 
+import Editor.Entity.Collectible;
 import java.util.Arrays;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
