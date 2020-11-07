@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Engine.RessourceManager;
+package Engine.Util.RessourceManager;
 
 import java.io.FileWriter;
 import java.io.IOException;
