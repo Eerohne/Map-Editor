@@ -10,6 +10,7 @@ import Engine.Util.Time;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -25,7 +26,7 @@ public class Game extends Application{
     
     public void start(Stage stage) throws Exception {
         
-        windowManager = new WindowManager(stage, 800, 600);
+        windowManager = new WindowManager(stage, 1280, 800);
         //give the renderer the canvas graphics context here -> renderer.setCanvasContext(windowManager.getRenderContext);
         
         
@@ -51,7 +52,6 @@ public class Game extends Application{
        
         Scene scene = new Scene(windowManager, windowManager.getWidth(), windowManager.getHeight()); //set windows inside the scene
         stage.setScene(scene);
-        //stage.setResizable(false);
         stage.show();
     }
     

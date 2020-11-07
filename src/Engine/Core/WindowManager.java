@@ -13,6 +13,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -93,21 +94,7 @@ public class WindowManager extends AnchorPane{
     private void initPauseMenu()
     {
         pauseMenu = new AnchorPane();
-        
-        //put pause menu elements inside
-        Button button1 = new Button("resize");
-        button1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                resizeWindow(1000, 800);
-            }
-        });
-        pauseMenu.getChildren().add(button1);
-        this.setBottomAnchor(button1, 0.0);
-        this.setRightAnchor(button1, 0.0);
-    }
-
-    public AnchorPane getPauseMenu() { //temporary
-        return pauseMenu;
+        //TODO : create the pause menu UI
     }
     
     public void togglePauseMenu()
@@ -126,5 +113,12 @@ public class WindowManager extends AnchorPane{
         System.out.println(stage);
         this.stage.setWidth(width);
         this.stage.setHeight(height);
+    }
+    
+    public void setFullScreen (boolean fullscreen)
+    {
+        stage.setFullScreenExitHint("");
+        stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        stage.setFullScreen(fullscreen);
     }
 }
