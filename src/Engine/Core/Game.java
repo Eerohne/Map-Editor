@@ -6,33 +6,22 @@
 package Engine.Core;
 
 import Engine.Level.Level;
-import Engine.Entity.GameEntity.Entity_Coin;
-import Engine.Renderer.*;
 import Engine.Util.Time;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseButton;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 //Merouane Issad
 //for now, discard any code written here, it's only test nonsense
 public class Game extends Application{
     private static WindowManager windowManager;
-    
     private static Level currentLevel;
+    
+    //flags
+    boolean isRunning = true;
+    boolean pauseActive = true;
     
     public void start(Stage stage) throws Exception {
         
@@ -45,16 +34,24 @@ public class Game extends Application{
 
             @Override
             public void handle(long l) {
-                Time.update();
-                stage.setTitle("Optik Engine -> FPS : " + Integer.toString(Time.fps));
-                
-                currentLevel.update();
-                //render the game -> renderer.render();
+                if(isRunning)
+                {
+                    Time.update();
+                    stage.setTitle("Optik Engine -> FPS : " + Integer.toString(Time.fps));
+                    //update all entities in the level -> currentLevel.update();
+                    //render the game -> renderer.render();
+
+                    //test render, this would normally be in the reanderer class
+                    windowManager.renderContext.clearRect(0, 0, windowManager.renderContext.getCanvas().getWidth(), windowManager.renderContext.getCanvas().getHeight());
+                    windowManager.renderContext.setFill(Color.BLUE);
+                    windowManager.renderContext.fillRect(0, 0, windowManager.renderContext.getCanvas().getWidth()/2, 200);
+                }
             }
         }.start();
        
         Scene scene = new Scene(windowManager, windowManager.getWidth(), windowManager.getHeight()); //set windows inside the scene
         stage.setScene(scene);
+        //stage.setResizable(false);
         stage.show();
     }
     
@@ -63,14 +60,21 @@ public class Game extends Application{
         return currentLevel;
     }
     
-    public static void resizeWindow(int width, int height)
+    public static WindowManager getWindowManager()
     {
-        System.out.println(windowManager.renderContext.getCanvas().getWidth());
-        windowManager.resizeWindow(width, height);
-        System.out.println(windowManager.renderContext.getCanvas().getWidth());
-        //specify to the renderer the new render width and height -> Renderer.setRendererSize
+        return windowManager;
     }
     
+    public void pauseGame(boolean state) //true -> pause, false -> play
+    {
+        this.isRunning = !state;
+        windowManager.setPauseMenuVisibility(state);
+    }
+    
+    public void togglepauseGame()
+    {
+        pauseGame(isRunning);
+    }
     public static void main(String[] args) {
         launch(args);
     }
