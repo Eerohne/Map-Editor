@@ -7,6 +7,7 @@ package Engine.Core;
 
 import Engine.Level.Level;
 import Engine.Entity.GameEntity.Entity_Coin;
+import Engine.Renderer.*;
 import Engine.Util.Time;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -29,56 +30,30 @@ import javafx.stage.StageStyle;
 //Merouane Issad
 //for now, discard any code written here, it's only test nonsense
 public class Game extends Application{
+    private static WindowManager windowManager;
+    
     private static Level currentLevel;
     
     public void start(Stage stage) throws Exception {
         
-        AnchorPane root = new AnchorPane();
-        Canvas renderLayer = new Canvas(800, 600);
-        renderLayer.widthProperty().bind(root.widthProperty());
-        renderLayer.heightProperty().bind(root.heightProperty());
-        GraphicsContext cont = renderLayer.getGraphicsContext2D();
-        
-        Scene scene = new Scene(root, 800, 600);
-        
-        Button button1 = new Button("fill");
-        button1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-               redraw(cont);
-            }
-        });
-        
-        root.getChildren().addAll(renderLayer, button1);
-        root.setTopAnchor(renderLayer, 0.0);
-        root.setBottomAnchor(renderLayer, 0.0);
-        root.setRightAnchor(renderLayer, 0.0);
-        root.setLeftAnchor(renderLayer, 0.0);
-        
-        Entity_Coin coin = new Entity_Coin("coin1", new Point2D(1,1), Color.BLUE, 5);
+        windowManager = new WindowManager(stage, 800, 600);
+        //give the renderer the canvas graphics context here -> renderer.setCanvasContext(windowManager.getRenderContext);
         
         
+        //now load the initial level -> currentLevel = LevelLoader.load(path_to_level_file);
         new AnimationTimer() { //Game main loop
 
             @Override
             public void handle(long l) {
                 Time.update();
-                redraw(cont);
                 stage.setTitle("Optik Engine -> FPS : " + Integer.toString(Time.fps));
-                long a = 0;
-                int b = 10;
-                for(int x = 0; x < b; x++)
-                {
-                    for(int y = 0; y < b; y++)
-                    {
-                        for(int z = 0; z < b; z++)
-                        {
-                            a+= Math.pow(x, Math.pow(y, z));
-                        }
-                    }
-                }
+                
+                currentLevel.update();
+                //render the game -> renderer.render();
             }
         }.start();
        
+        Scene scene = new Scene(windowManager, windowManager.getWidth(), windowManager.getHeight()); //set windows inside the scene
         stage.setScene(scene);
         stage.show();
     }
@@ -88,14 +63,13 @@ public class Game extends Application{
         return currentLevel;
     }
     
-    public static void redraw(GraphicsContext cont)
+    public static void resizeWindow(int width, int height)
     {
-        //System.out.println(cont.getCanvas().getWidth() +" : "+ cont.getCanvas().getHeight());
-        cont.setFill(Color.YELLOW);
-        cont.fillRect(0,10,cont.getCanvas().getWidth(),cont.getCanvas().getHeight());
+        System.out.println(windowManager.renderContext.getCanvas().getWidth());
+        windowManager.resizeWindow(width, height);
+        System.out.println(windowManager.renderContext.getCanvas().getWidth());
+        //specify to the renderer the new render width and height -> Renderer.setRendererSize
     }
-    
-    
     
     public static void main(String[] args) {
         launch(args);
