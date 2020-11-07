@@ -7,12 +7,12 @@ import javafx.scene.paint.Color;
 
 //Merouane Issad
 public class Entity_Coin extends SpriteEntity{
-    private int scorePoints;
+    private int scorepoint;
     
-    public Entity_Coin(String name, Point2D position, Color color, int scorePoints)
+    public Entity_Coin(String name, Point2D position, Color color, int scorepoint)
     {
         super(name, position, color);
-        this.scorePoints = scorePoints;
+        this.scorepoint = scorepoint;
     }
     
     @Override

@@ -5,8 +5,10 @@
  */
 package Engine.Core;
 
+import Engine.Entity.EntityCreator;
 import Engine.Level.Level;
 import Engine.Util.Time;
+import java.util.HashMap;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -26,9 +28,14 @@ public class Game extends Application{
     
     public void start(Stage stage) throws Exception {
         
+        HashMap<String, String> properties = new HashMap<String, String>();
+        properties.put("classname", "Entity_Coin");
+        EntityCreator.constructEntity(properties);
+        
+        
+        
         windowManager = new WindowManager(stage, 1280, 800);
         //give the renderer the canvas graphics context here -> renderer.setCanvasContext(windowManager.getRenderContext);
-        
         
         //now load the initial level -> currentLevel = LevelLoader.load(path_to_level_file);
         new AnimationTimer() { //Game main loop
@@ -49,7 +56,7 @@ public class Game extends Application{
                 }
             }
         }.start();
-       
+        
         Scene scene = new Scene(windowManager, windowManager.getWidth(), windowManager.getHeight()); //set windows inside the scene
         stage.setScene(scene);
         stage.show();

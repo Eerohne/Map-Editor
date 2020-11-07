@@ -29,4 +29,14 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
     public void setName(String name) {
         this.name = name;
     }
+
+    public Point2D getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point2D position) {
+        this.position = position;
+    }
+    
+    
 }
