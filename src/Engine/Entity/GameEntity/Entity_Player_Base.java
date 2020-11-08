@@ -5,7 +5,11 @@
  */
 package Engine.Entity.GameEntity;
 
+import Engine.Core.Game;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  *
@@ -24,6 +28,15 @@ public class Entity_Player_Base extends Entity_Player{
     @Override
     public void start() {
         this.playerSpeed = walkSpeed;
+        
+        Game.scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
+            @Override
+            public void handle(KeyEvent ke) {
+                if(ke.getCode() == KeyCode.A) {
+                    System.out.println(walkSpeed);
+                }
+            }
+        });
     }
 
     @Override

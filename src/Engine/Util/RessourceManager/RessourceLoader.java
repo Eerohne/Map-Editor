@@ -17,6 +17,7 @@ import sun.audio.AudioStream;
  
 public class RessourceLoader
 {
+    //RessourceLoader.loadImage("images/brick.png");
     public static Image loadImage(String path)
     {
         try{
@@ -29,7 +30,7 @@ public class RessourceLoader
         }
         return null;
     }
-    
+    //AudioPlayer.player.start(RessourceLoader.loadAudio("sounds/musictest.wav"));
     public static AudioStream loadAudio(String path)
     {
         try{
