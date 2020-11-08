@@ -33,46 +33,37 @@ public class Controller {
         EventHandler handler = new EventHandler() {
             @Override
             public void handle(Event event) {
-                String property = view.propertyText.getText();
-                String value = view.valueText.getText();
-                list.add(new EntityModel(property, value));
-                view.table.getItems().setAll(list);
+                add();
+            }
+        }; 
+        
+         EventHandler deleteHandler = new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                delete();
             }
         }; 
         view.btn.setOnAction(handler);
+        view.deleteBtn.setOnAction(deleteHandler);
     }
     
-        public void addBtn(){
-        Callback<TableColumn<EntityModel, Void>, TableCell<EntityModel, Void>> cellFactory = new Callback<TableColumn<EntityModel, Void>, TableCell<EntityModel, Void>>() {
-            public TableCell<EntityModel, Void> call(TableColumn<EntityModel, Void> p) {
-                TableCell<EntityModel, Void> cell = new TableCell<EntityModel, Void>(){
-                    Button btn = new Button("delete");
-                    {
-                        btn.setOnAction((ActionEvent event) ->{
-                            list.remove(view.table.getItems().get(getIndex()));
-                            view.table.getItems().setAll(list);
-                        });
-                    }
-                    public void updateItem(Void item, boolean empty){
-                        super.updateItem(item, empty);
-                        if(empty){
-                            setGraphic(null);
-                        }
-                        else{
-                            setGraphic(btn);
-                        }
-                    }
-                };
-               return cell; 
-            }
-        };
+    public void delete(){
+        int selectedIndex = view.table.getSelectionModel().getSelectedIndex();
         
-        view.deleteCol.setCellFactory(cellFactory);
-        view.table.getColumns().add(view.deleteCol);   
+        if(selectedIndex >= 0){
+            view.table.getItems().remove(selectedIndex);
+        }
     }
+    
+    public void add(){
+        String property = view.propertyText.getText();
+        String value = view.valueText.getText();
+        list.add(new EntityModel(property, value));
+        view.table.getItems().setAll(list);
+    }
+
     
     public void setData(){
         view.table.getItems().setAll(list);
-        addBtn();
     }
 }

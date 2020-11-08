@@ -24,10 +24,10 @@ public class View extends GridPane{
     public TableView table = new TableView();
     public TableColumn<EntityModel, String> propertyCol = new TableColumn<>("property");
     public TableColumn<EntityModel, String> valueCol = new TableColumn<>("value");
-    public TableColumn<EntityModel, Void> deleteCol = new TableColumn<>("delete");
     public TextField propertyText = new TextField("pro");
     public TextField valueText = new TextField("val");
     public Button btn = new Button("add");
+    public Button deleteBtn = new Button("delete");
     
     
     public View(){
@@ -40,6 +40,7 @@ public class View extends GridPane{
         this.add(propertyText, 1, 1);
         this.add(valueText, 2, 1);
         this.add(btn, 3, 1);
+        this.add(deleteBtn, 4, 1);
         propertyCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("property"));
         valueCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("value"));
         table.getColumns().addAll(propertyCol, valueCol);
