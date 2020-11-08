@@ -50,7 +50,7 @@ public class Level {
     
     public void update() //update all entities. If this is the first update, call the entities start method instead to initialize them
     {
-        if(!isRunning) //first time
+        if(!isRunning) //first update
         {
             Iterator<Entity> it = entities.values().iterator();
             while(it.hasNext())
@@ -59,12 +59,14 @@ public class Level {
             }
             isRunning = true;
         }
-        else //not first time
+        else //not first update
         {
             Iterator<Entity> it = entities.values().iterator();
             while(it.hasNext())
             {
-                it.next().update();
+                Entity entity = it.next();
+                if(entity.getActive())
+                    it.next().update();
             }
         }
     }
