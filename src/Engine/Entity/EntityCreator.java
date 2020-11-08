@@ -21,7 +21,7 @@ public class EntityCreator { //Entity creation is defined in this class
         Entity entity = null;
         
         try {
-            verifyProperties(propertyMap, "classname", "name", "pos_x", "pos_y");
+            verifyProperties(propertyMap, "classname", "name", "active", "pos_x", "pos_y");
         }
         catch(EntityCreationException e) {
             System.out.println(e);
@@ -31,16 +31,17 @@ public class EntityCreator { //Entity creation is defined in this class
         //basic entity properties
         String classname = propertyMap.get("classname");
         String name = propertyMap.get("name");
+        boolean active = Boolean.parseBoolean(propertyMap.get("active"));
         Point2D position = new Point2D(Float.parseFloat(propertyMap.get("pos_x")), Float.parseFloat(propertyMap.get("pos_y")));
         
         //entity classname list
         switch(classname) //add any new entity to this list and point to a create_Entity_... method
         {
-            case "entity_coin":
-                entity = create_Entity_Coin(propertyMap);
+            case "item_coin":
+                entity = create_Entity_Item_Coin(propertyMap);
                 break;
-            case "entity_player_base":
-                //entity = create_Entity_Player_Base(propertyMap);
+            case "player_base":
+                entity = create_Entity_Player_Base(propertyMap);
                 break;
             default:
                 entity = null;
@@ -50,11 +51,12 @@ public class EntityCreator { //Entity creation is defined in this class
         if(entity != null) 
         {
             entity.setName(name);
+            entity.setActive(active);
             entity.setPosition(position);
         }
         return entity;
     }
-    //verifies if all provided property exist inside the map in case the entity data is incomplete or corrupted
+    //verifies if all provided properties exist inside the map in case the entity data is incomplete or corrupted
     private static boolean verifyProperties(HashMap<String, String> propertyMap, String... properties) throws EntityCreationException
     {
         for(String property : properties)
@@ -68,7 +70,29 @@ public class EntityCreator { //Entity creation is defined in this class
     }
     
     //Entity construction definitions below
-    private static Entity create_Entity_Coin(HashMap<String, String> propertyMap)
+    
+    //PLAYER_
+    private static Entity create_Entity_Player_Base(HashMap<String, String> propertyMap)
+    {
+        try {
+            verifyProperties(propertyMap, "speed");
+        }
+        catch(EntityCreationException e) {
+            System.out.println(e);
+            return null;
+        }
+        
+        //SpriteEntity
+        Color color = new Color(Float.parseFloat(propertyMap.get("col_r")), Float.parseFloat(propertyMap.get("col_g")), Float.parseFloat(propertyMap.get("col_b")), Float.parseFloat(propertyMap.get("col_a")));
+        
+        //CoinEntity
+        int score = Integer.parseInt(propertyMap.get("scorepoint"));
+
+        return new Entity_Item_Coin(null, null, color, score);
+    }
+    
+    //ITEM_
+    private static Entity create_Entity_Item_Coin(HashMap<String, String> propertyMap)
     {
         try {
             verifyProperties(propertyMap, "col_r", "col_g", "col_b", "scorepoint");
@@ -84,6 +108,6 @@ public class EntityCreator { //Entity creation is defined in this class
         //CoinEntity
         int score = Integer.parseInt(propertyMap.get("scorepoint"));
 
-        return new Entity_Coin(null, null, color, score);
+        return new Entity_Item_Coin(null, null, color, score);
     }
 }

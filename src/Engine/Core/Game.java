@@ -5,8 +5,10 @@
  */
 package Engine.Core;
 
+import Engine.Entity.AbstractEntity.*;
 import Engine.Entity.EntityCreator;
 import Engine.Level.Level;
+import Engine.Util.RessourceManager.RessourceLoader;
 import Engine.Util.Time;
 import java.util.HashMap;
 import javafx.animation.AnimationTimer;
@@ -15,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import sun.audio.AudioPlayer;
 
 //Merouane Issad
 //for now, discard any code written here, it's only test nonsense
@@ -28,9 +31,12 @@ public class Game extends Application{
     
     public void start(Stage stage) throws Exception {
         
-        HashMap<String, String> properties = new HashMap<String, String>();
+        RessourceLoader.loadImage("images/brick.png");
+        AudioPlayer.player.start(RessourceLoader.loadAudio("sounds/musictest.wav"));
+        /*HashMap<String, String> properties = new HashMap<>();
         properties.put("classname", "Entity_Coin");
-        EntityCreator.constructEntity(properties);
+        Entity ent = EntityCreator.constructEntity(properties);
+        //ent.setActive(false);*/
         
         
         

@@ -28,7 +28,7 @@ public class Level {
         return levelData[x][y];
     }
     
-    public Palette acessPalette()
+    public Palette accessPalette()
     {
         return palette;
     }
