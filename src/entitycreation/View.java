@@ -13,6 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 
 /**
@@ -24,10 +25,14 @@ public class View extends GridPane{
     public TableView table = new TableView();
     public TableColumn<EntityModel, String> propertyCol = new TableColumn<>("property");
     public TableColumn<EntityModel, String> valueCol = new TableColumn<>("value");
-    public TextField propertyText = new TextField("pro");
-    public TextField valueText = new TextField("val");
-    public Button btn = new Button("add");
-    public Button deleteBtn = new Button("delete");
+    public TextField nameText = new TextField();
+    public TextField propertyText = new TextField();
+    public TextField valueText = new TextField();
+    public Button addBtn = new Button("add row");
+    public Button deleteBtn = new Button("delete selected row");
+    public Button exportBtn = new Button("export");
+    public Button newEntityBtn = new Button("create new entity");
+    public VBox vbox = new VBox();
     
     
     public View(){
@@ -37,17 +42,23 @@ public class View extends GridPane{
         this.setVgap(10);
         this.setPadding(new Insets(10));
         this.add(table, 1, 0);
-        this.add(propertyText, 1, 1);
-        this.add(valueText, 2, 1);
-        this.add(btn, 3, 1);
-        this.add(deleteBtn, 4, 1);
+        
+        vbox.getChildren().add(nameText);
+        vbox.getChildren().add(propertyText);
+        vbox.getChildren().add(valueText);
+        vbox.getChildren().add(addBtn);
+        vbox.getChildren().add(deleteBtn);
+        vbox.getChildren().add(exportBtn);
+        vbox.getChildren().add(newEntityBtn);
+        
+        this.add(vbox, 2, 0);
         propertyCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("property"));
         valueCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("value"));
         table.getColumns().addAll(propertyCol, valueCol);
+        nameText.setPromptText("name of the entity");
+        propertyText.setPromptText("property here");
+        valueText.setPromptText("value here");
         
     }
-    
-    public void setButtonHandler(EventHandler handler){
-        btn.setOnAction(handler);
-    }
+   
 }

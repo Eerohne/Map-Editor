@@ -41,5 +41,12 @@ public class EntityModel {
     public void setValue(SimpleStringProperty value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "EntityModel{" + "property=" + property + ", value=" + value + '}';
+    }
+    
+    
     
 }
