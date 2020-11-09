@@ -1,6 +1,8 @@
 package Engine.Entity.AbstractEntity;
 
+import Engine.Core.Exceptions.EntityCreationException;
 import Engine.Core.Game;
+import java.util.HashMap;
 import javafx.geometry.Point2D;
 
 //Merouane Issad
@@ -21,6 +23,13 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
         this.name = name;
         this.active = active;
         this.position = position;
+    }
+    
+    public Entity(HashMap<String, String> propertyMap)
+    {
+        this.name = propertyMap.get("name");
+        this.active = Boolean.parseBoolean(propertyMap.get("active"));
+        this.position = new Point2D(Float.parseFloat(propertyMap.get("posX")), Float.parseFloat(propertyMap.get("psoY")));
     }
     
     @Override
@@ -54,6 +63,5 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
     public void setPosition(Point2D position) {
         this.position = position;
     }
-    
     
 }

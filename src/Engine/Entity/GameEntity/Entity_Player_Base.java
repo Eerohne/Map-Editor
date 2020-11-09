@@ -6,6 +6,7 @@
 package Engine.Entity.GameEntity;
 
 import Engine.Core.Game;
+import java.util.HashMap;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
@@ -17,12 +18,20 @@ import javafx.scene.input.KeyEvent;
  */
 public class Entity_Player_Base extends Entity_Player{
 
-    float playerSpeed, walkSpeed, runSpeed;
+    protected float playerSpeed, walkSpeed, runSpeed;
     
     public Entity_Player_Base(String name, Point2D position, float rotation, float walkSpeed, float runSpeed) {
         super(name, position, rotation);
         this.walkSpeed = walkSpeed;
         this.runSpeed = runSpeed;
+    }
+    
+    public Entity_Player_Base(HashMap<String, String> propertyMap)
+    {
+        super(propertyMap);
+        
+        this.walkSpeed = Float.parseFloat(propertyMap.get("walkspeed"));
+        this.runSpeed = Float.parseFloat(propertyMap.get("runspeed"));
     }
 
     @Override

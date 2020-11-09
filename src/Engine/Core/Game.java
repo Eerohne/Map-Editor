@@ -7,7 +7,7 @@ package Engine.Core;
 
 import Engine.Entity.AbstractEntity.*;
 import Engine.Entity.EntityCreator;
-import Engine.Entity.GameEntity.Entity_Player_Base;
+import Engine.Entity.GameEntity.*;
 import Engine.Level.Level;
 import Engine.Util.RessourceManager.RessourceLoader;
 import Engine.Util.Time;
@@ -39,7 +39,9 @@ public class Game extends Application{
         /*HashMap<String, String> properties = new HashMap<>();
         properties.put("classname", "Entity_Coin");
         Entity ent = EntityCreator.constructEntity(properties);
-        //ent.setActive(false);*/
+        ent.setActive(false);*/
+        /*Entity_Player_Base player = new Entity_Player_Base("a", new Point2D(0,0), 90, 2, 5);
+        Entity_Item_Coin coin = new Entity_Item_Coin("b", new Point2D(0,0), Color.YELLOW, 5);*/
         
         windowManager = new WindowManager(stage, 1280, 800);
         //give the renderer the canvas graphics context here -> renderer.setCanvasContext(windowManager.getRenderContext);
@@ -65,7 +67,6 @@ public class Game extends Application{
         }.start();
         
         scene = new Scene(windowManager, windowManager.getWidth(), windowManager.getHeight()); //set windows inside the scene
-        //Entity_Player_Base player = new Entity_Player_Base("a", new Point2D(0,0), 90, 2, 5);
         stage.setScene(scene);
         stage.show();
     }
