@@ -108,14 +108,14 @@ public class Controller {
             array.add(object);
         }
 
-            try (FileWriter file = new FileWriter("entities.json", true)) {
+        try (FileWriter file = new FileWriter("entities.json", true)) {
              
-                file.write(array.toJSONString());
-                file.flush();
+            file.write(array.toJSONString());
+            file.flush();
  
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     public void newEntity(){
