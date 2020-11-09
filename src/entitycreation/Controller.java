@@ -5,28 +5,20 @@
  */
 package entitycreation;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.util.Callback;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
  
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -98,15 +90,15 @@ public class Controller {
     
     public void export() throws IOException{
         JSONArray array = new JSONArray();
-        
+        Map<String, String> data = new HashMap<String, String>();
         for(int i = 0; i < list.size(); i++){
-            JSONObject o = new JSONObject();
-            o.put("property" , list.get(i).getProperty().toString());
-            o.put("value",list.get(i).getValue().toString());
-            JSONObject object = new JSONObject();
-            object.put(view.nameText.getText(), o);
-            array.add(object);
+            data.put(list.get(i).getProperty(), list.get(i).getValue());
         }
+        JSONObject o = new JSONObject();
+        o.putAll(data);
+        JSONObject object = new JSONObject();
+        object.put(view.nameText.getText(), o);
+        array.add(object);
 
         try (FileWriter file = new FileWriter("entities.json", true)) {
              
