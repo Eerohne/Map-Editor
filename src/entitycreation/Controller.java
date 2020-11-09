@@ -98,9 +98,9 @@ public class Controller {
     
     public void export() throws IOException{
         JSONArray array = new JSONArray();
-        JSONObject o = new JSONObject();
         
         for(int i = 0; i < list.size(); i++){
+            JSONObject o = new JSONObject();
             o.put("property" , list.get(i).getProperty().toString());
             o.put("value",list.get(i).getValue().toString());
             JSONObject object = new JSONObject();
