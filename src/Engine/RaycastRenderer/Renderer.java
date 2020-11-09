@@ -36,7 +36,7 @@ public class Renderer {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, screenWidth, screenHeight);
         gc.setFill(Color.GREEN);
-        gc.fillRect(0, screenHeight/2, screenWidth, screenHeight/2);
+        gc.fillRect(0, screenHeight/2.0, screenWidth, screenHeight/2.0);
         
         cam = new Point2D(1.5, 2.5);
         camA = 0f;
@@ -59,7 +59,7 @@ public class Renderer {
         offY = (int)Math.floor(cam.getY()-tileY);
         
         Point2D ray = new Point2D(cam.getX(), cam.getY());
-        float rayA = camA - (fov/2);
+        float rayA = camA - (fov/2f);
         
         for(int r=0; r<screenWidth;r++){
             if(rayA < 0)  rayA+=360;
@@ -126,11 +126,13 @@ public class Renderer {
             if(rH.magnitude()<rV.magnitude() && !rH.equals(Point2D.ZERO)){
                 int x = (int)Math.floor(rH.getX());
                 int y = (int)Math.floor(rH.getY());
-                drawWallLine(r, rH.magnitude(), getColor(map[y][x]));
+                double dist = rH.magnitude();
+                drawWallLine(r, dist, getColor(map[y][x]));
             }else{
                 int x = (int)Math.floor(rV.getX());
                 int y = (int)Math.floor(rV.getY());
-                drawWallLine(r, rV.magnitude(), getColor(map[y][x]).darker());
+                double dist = rV.magnitude();
+                drawWallLine(r, dist, getColor(map[y][x]).darker());
             }
             
             rayA += (fov/(float)screenWidth);
@@ -140,19 +142,18 @@ public class Renderer {
     
     static Color getColor(int id){
         switch(id){
-            case 0: return Color.RED;
-            case 1: return Color.DIMGRAY;
-            case 2: return Color.AQUA;
+            case 1: return Color.GRAY;
+            case 2: return Color.GOLD;
             default: return Color.RED;
         }
     }
     private void drawWallLine(int x, double distance, Color color){
         double maxHeight = screenHeight;
         double height = maxHeight/distance;
-        double lineTop = (screenHeight-height)/2;
+        double lineTop = (screenHeight-height)/2.0;
         
         gc.setFill(color);
-        gc.fillRect(x, lineTop, screenWidth/360, height);
+        gc.fillRect(x, lineTop, 1, height);
     }
     
 }
