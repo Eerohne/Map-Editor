@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 
 
 public class Grid extends Pane{
-    private int cellSize;
+    private double cellSize;
     private int width;
     private int length;
     private Cell[][] cells;
@@ -46,6 +46,7 @@ public class Grid extends Pane{
         for (Cell[] cellRow : cells) {
             for (Cell cell : cellRow) {
                 cell.clear();
+                cell.getTransforms().clear();
             }
         }
     }
@@ -58,7 +59,7 @@ public class Grid extends Pane{
         this.setOnMousePressed(event);
     }
 
-    public int getCellSize() {
+    public double getCellSize() {
         return cellSize;
     }
 
@@ -74,4 +75,9 @@ public class Grid extends Pane{
         return cells;
     }
 
+    public void setCellSize(double scaleFactor) {
+        this.cellSize = cellSize*scaleFactor;
+    }
+    
+    
 }

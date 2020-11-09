@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Fix cellSize calculation
  */
 package Editor.Controller;
 
@@ -9,6 +7,7 @@ import Editor.Entity.Collectible;
 import Editor.Grid.Cell;
 import Editor.Grid.Grid;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -116,6 +115,7 @@ public class GridController {
                     cell.getTransforms().add(scale);
                 }
             }
+            grid.setCellSize(scaleFactor);
         });
         
         grid.setOnMousePressed(event -> {
@@ -147,27 +147,27 @@ public class GridController {
             }
             
             //Grid Wall Drawing
-            /*if(event.getButton().equals(MouseButton.PRIMARY)){
-                int xPos = (int)event.getX()/grid.getCellSize();
-                int yPos = (int)event.getY()/grid.getCellSize();
+            if(event.getButton().equals(MouseButton.PRIMARY)){
+                int xPos = (int)(this.getLocalX(event)/grid.getCellSize());
+                int yPos = (int)(this.getLocalY(event)/grid.getCellSize());
 
                 grid.getCells()[xPos][yPos].setFill(wallColor);
-            }*/
+            }
         });
         
         //Cell Events
-        for (Cell[] cells : this.grid.getCells()) {
-            for (Cell cell : cells) {
-                /*cell.setOnMouseClicked(e -> {
-                    cell.setFill(wallColor);
-                });*/
-                cell.setOnMouseEntered(e -> {
-                    if(e.isPrimaryButtonDown())
-                        cell.setFill(wallColor);
-                });
-                
-            }
-        }
+//        for (Cell[] cells : this.grid.getCells()) {
+//            for (Cell cell : cells) {
+//                /*cell.setOnMouseClicked(e -> {
+//                    cell.setFill(wallColor);
+//                });*/
+//                cell.setOnMouseEntered(e -> {
+//                    if(e.isPrimaryButtonDown())
+//                        cell.setFill(wallColor);
+//                });
+//                
+//            }
+//        }
         
         
         //ColorPicker Events
@@ -185,8 +185,8 @@ public class GridController {
 
         @Override
         public void handle(MouseEvent event) {
-            int xPos = (int)event.getX()/grid.getCellSize();
-            int yPos = (int)event.getY()/grid.getCellSize();
+            int xPos = (int)(event.getX()/grid.getCellSize());
+            int yPos = (int)(event.getY()/grid.getCellSize());
             
             grid.getCells()[xPos][yPos].setFill(wallColor);        
         }
@@ -199,12 +199,22 @@ public class GridController {
             double xPos = event.getX();
             double yPos = event.getY();
             
-            if(grid.getCells()[(int)xPos/grid.getCellSize()][(int)yPos/grid.getCellSize()].getFill().equals(Color.WHITE)){
+            if(grid.getCells()[(int)(xPos/grid.getCellSize())][(int)(yPos/grid.getCellSize())].getFill().equals(Color.WHITE)){
                 Collectible col = new Collectible(xPos, yPos, 10, Color.CORAL);
                 //grid.drawCollectible(col);
             }
         }
     }
+    
+    public double getLocalX(MouseEvent event){
+        Bounds paneBound = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
+        return event.getX() - paneBound.getMinX();
+    } 
+    
+    public double getLocalY(MouseEvent event){
+        Bounds paneBound = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
+        return event.getY() - paneBound.getMinY();
+    } 
 }
 
 
