@@ -123,13 +123,13 @@ public class GridController {
                 this.preMouseX = this.mouseX = event.getX();
                 this.preMouseY = this.mouseY = event.getY();
             }
-            if(event.getButton().equals(MouseButton.PRIMARY)){
-                //Test Grid Event
-                double xDouble = this.getLocalX(event)/grid.getCellSize();
-                double yDouble = this.getLocalY(event)/grid.getCellSize();
-
-                grid.getCells()[(int)xDouble][(int)yDouble].setFill(wallColor);
-            }
+//            if(event.getButton().equals(MouseButton.PRIMARY)){
+//                //Test Grid Event
+//                double xDouble = this.getLocalX(event)/grid.getCellSize();
+//                double yDouble = this.getLocalY(event)/grid.getCellSize();
+//
+//                grid.getCells()[(int)xDouble][(int)yDouble].setFill(wallColor);
+//            }
         });
         
         grid.setOnMouseDragged(event -> {
@@ -155,10 +155,12 @@ public class GridController {
             
             //Grid Wall Drawing
             if(event.getButton().equals(MouseButton.PRIMARY)){
-                double xDouble = this.getLocalX(event)/grid.getCellSize();
-                double yDouble = this.getLocalY(event)/grid.getCellSize();
-
-                grid.getCells()[(int)xDouble][(int)yDouble].setFill(wallColor);
+                if(!(getLocalX(event) < 0) && !(getLocalY(event) < 0)){
+                    double xDouble = this.getLocalX(event)/grid.getCellSize();
+                    double yDouble = this.getLocalY(event)/grid.getCellSize();
+                    grid.getCells()[(int)xDouble][(int)yDouble].setFill(wallColor);
+                }
+                
             }
         });
         
@@ -215,11 +217,13 @@ public class GridController {
     
     public double getLocalX(MouseEvent event){
         Bounds paneBound = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
+        System.out.println("X : " + (event.getX() - paneBound.getMinX()));
         return event.getX() - paneBound.getMinX();
     } 
     
     public double getLocalY(MouseEvent event){
         Bounds paneBound = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
+        System.out.println("Y : " + ((event.getY() - paneBound.getMinY()) + 25));
         return (event.getY() - paneBound.getMinY()) + 25;
     } 
 }
