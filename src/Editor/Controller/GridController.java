@@ -147,13 +147,28 @@ public class GridController {
             }
             
             //Grid Wall Drawing
-            if(event.getButton().equals(MouseButton.PRIMARY)){
+            /*if(event.getButton().equals(MouseButton.PRIMARY)){
                 int xPos = (int)event.getX()/grid.getCellSize();
                 int yPos = (int)event.getY()/grid.getCellSize();
 
                 grid.getCells()[xPos][yPos].setFill(wallColor);
-            }
+            }*/
         });
+        
+        //Cell Events
+        for (Cell[] cells : this.grid.getCells()) {
+            for (Cell cell : cells) {
+                /*cell.setOnMouseClicked(e -> {
+                    cell.setFill(wallColor);
+                });*/
+                cell.setOnMouseEntered(e -> {
+                    if(e.isPrimaryButtonDown())
+                        cell.setFill(wallColor);
+                });
+                
+            }
+        }
+        
         
         //ColorPicker Events
         this.picker.setOnAction(e -> {

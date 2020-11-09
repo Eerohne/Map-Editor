@@ -30,7 +30,7 @@ public class MapEditor extends Application {
         
         Button toggle = new Button("Mode: Place WALL");
         ColorPicker colorPicker = new ColorPicker(Color.BLACK);
-        
+       
         menu.getChildren().addAll(toggle, colorPicker);
         root.getChildren().addAll(menu, grid);
         
@@ -39,7 +39,7 @@ public class MapEditor extends Application {
         GridController gc = new GridController(scene, grid, toggle, colorPicker);
 
         
-        primaryStage.setTitle("Grid Test");
+        primaryStage.setTitle("Map Editor");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

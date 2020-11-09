@@ -5,23 +5,13 @@
  */
 package Engine.Core;
 
-import Engine.Entity.AbstractEntity.*;
-import Engine.Entity.EntityCreator;
-import Engine.Entity.GameEntity.*;
 import Engine.Level.Level;
-import Engine.Util.RessourceManager.RessourceLoader;
 import Engine.Util.Time;
-import java.util.HashMap;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.geometry.Point2D;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import sun.audio.AudioPlayer;
 
 //Merouane Issad
 //for now, discard any code written here, it's only test nonsense
