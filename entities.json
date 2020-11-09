@@ -1,0 +1,2 @@
+exported json -> [{"Coin":{"property":"classname","value":"item_coin"}},{"Coin":{"property":"score","value":"1"}},{"Coin":{"property":"pickup","value":""}}]
+smaller json -> [{"Coin":{"classname":"item_coin","score":"1","pickup":""}]

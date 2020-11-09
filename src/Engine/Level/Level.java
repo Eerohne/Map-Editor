@@ -10,11 +10,12 @@ import Engine.Entity.GameEntity.Entity_Player;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import javafx.scene.paint.Color;
 
 //Merouane Issad
 public class Level {
     private int[][] levelData; //2d array with wall data
-    private Palette palette; //Look-up table
+    private Map<Integer, PaletteEntry> palette; //Look-up table
     private Map<String, Entity> entities; //Entities stored by their name
     
     private Entity playerEntity;
@@ -22,29 +23,44 @@ public class Level {
     private boolean isRunning = false;
     
     public Level(){
+        palette = new HashMap<Integer, PaletteEntry>();
         entities = new HashMap<String, Entity>();
     }
     
-    public int getCellValue(int x, int y)
+    public boolean isWall(int x, int y)
     {
-        return levelData[x][y];
+        int index = getCellValue(x, y);
+        return !getPaletteEntry(index).isHollow();
     }
     
+    public Color getCellColor(int x, int y)
+    {
+        int index = getCellValue(x, y);
+        return getPaletteEntry(index).getColor();
+    }
+    
+    //LevelData code
     public void setLevelData(int[][] data)
     {
         this.levelData = data;
     }
     
-    public Palette getPalette()
+    private int getCellValue(int x, int y)
     {
-        return palette;
+        return levelData[x][y];
     }
     
-    public void setPalette(Palette palette)
+    //Palette code
+    private PaletteEntry getPaletteEntry(int index)
     {
-        this.palette = palette;
+        return palette.get(index);
+    }
+    private void setPaletteEntry(int index, PaletteEntry data)
+    {
+        palette.put(index, data);
     }
     
+    //Entities code
     public void addEntity(Entity entity)
     {
         entities.put(entity.getName(), entity);
