@@ -5,19 +5,29 @@
  */
 package Engine.Core;
 
+import Engine.Entity.AbstractEntity.*;
+import Engine.Entity.EntityCreator;
+import Engine.Entity.GameEntity.*;
 import Engine.Level.Level;
+import Engine.Util.RessourceManager.RessourceLoader;
 import Engine.Util.Time;
+import java.util.HashMap;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import sun.audio.AudioPlayer;
 
 //Merouane Issad
 //for now, discard any code written here, it's only test nonsense
 public class Game extends Application{
     private static WindowManager windowManager;
+    public static Scene scene;
     private static Level currentLevel;
     
     //flags
@@ -26,9 +36,15 @@ public class Game extends Application{
     
     public void start(Stage stage) throws Exception {
         
+        /*HashMap<String, String> properties = new HashMap<>();
+        properties.put("classname", "Entity_Coin");
+        Entity ent = EntityCreator.constructEntity(properties);
+        ent.setActive(false);*/
+        /*Entity_Player_Base player = new Entity_Player_Base("a", new Point2D(0,0), 90, 2, 5);
+        Entity_Item_Coin coin = new Entity_Item_Coin("b", new Point2D(0,0), Color.YELLOW, 5);*/
+        
         windowManager = new WindowManager(stage, 1280, 800);
         //give the renderer the canvas graphics context here -> renderer.setCanvasContext(windowManager.getRenderContext);
-        
         
         //now load the initial level -> currentLevel = LevelLoader.load(path_to_level_file);
         new AnimationTimer() { //Game main loop
@@ -49,8 +65,8 @@ public class Game extends Application{
                 }
             }
         }.start();
-       
-        Scene scene = new Scene(windowManager, windowManager.getWidth(), windowManager.getHeight()); //set windows inside the scene
+        
+        scene = new Scene(windowManager, windowManager.getWidth(), windowManager.getHeight()); //set windows inside the scene
         stage.setScene(scene);
         stage.show();
     }

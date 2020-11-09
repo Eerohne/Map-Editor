@@ -1,5 +1,7 @@
 package Engine.Entity.AbstractEntity;
 
+import Engine.Core.Exceptions.EntityCreationException;
+import java.util.HashMap;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
@@ -12,6 +14,13 @@ public abstract class SpriteEntity extends Entity{ //A type of entity that provi
     {
         super(name, position);
         this.color = color;
+    }
+    
+    public SpriteEntity(HashMap<String, String> propertyMap)
+    {
+        super(propertyMap);
+        
+        this.color = new Color(Float.parseFloat(propertyMap.get("col_r")), Float.parseFloat(propertyMap.get("col_g")), Float.parseFloat(propertyMap.get("col_b")), Float.parseFloat(propertyMap.get("col_a")));
     }
     
     @Override
