@@ -40,7 +40,7 @@ public class Renderer {
         
         cam = new Point2D(1.5, 2.5);
         camA = 0f;
-        fov = 60f;
+        fov = 90f;
     }
     
     //renders one frame
