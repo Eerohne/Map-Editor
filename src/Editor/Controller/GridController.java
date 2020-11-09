@@ -123,6 +123,13 @@ public class GridController {
                 this.preMouseX = this.mouseX = event.getX();
                 this.preMouseY = this.mouseY = event.getY();
             }
+            if(event.getButton().equals(MouseButton.PRIMARY)){
+                //Test Grid Event
+                double xDouble = this.getLocalX(event)/grid.getCellSize();
+                double yDouble = this.getLocalY(event)/grid.getCellSize();
+
+                grid.getCells()[(int)xDouble][(int)yDouble].setFill(wallColor);
+            }
         });
         
         grid.setOnMouseDragged(event -> {
@@ -148,10 +155,10 @@ public class GridController {
             
             //Grid Wall Drawing
             if(event.getButton().equals(MouseButton.PRIMARY)){
-                int xPos = (int)(this.getLocalX(event)/grid.getCellSize());
-                int yPos = (int)(this.getLocalY(event)/grid.getCellSize());
+                double xDouble = this.getLocalX(event)/grid.getCellSize();
+                double yDouble = this.getLocalY(event)/grid.getCellSize();
 
-                grid.getCells()[xPos][yPos].setFill(wallColor);
+                grid.getCells()[(int)xDouble][(int)yDouble].setFill(wallColor);
             }
         });
         
@@ -185,10 +192,10 @@ public class GridController {
 
         @Override
         public void handle(MouseEvent event) {
-            int xPos = (int)(event.getX()/grid.getCellSize());
-            int yPos = (int)(event.getY()/grid.getCellSize());
-            
-            grid.getCells()[xPos][yPos].setFill(wallColor);        
+            double xDouble = getLocalX(event)/grid.getCellSize();
+            double yDouble = getLocalY(event)/grid.getCellSize();
+
+            grid.getCells()[(int)xDouble][(int)yDouble].setFill(wallColor);     
         }
     }
     
@@ -213,7 +220,7 @@ public class GridController {
     
     public double getLocalY(MouseEvent event){
         Bounds paneBound = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
-        return event.getY() - paneBound.getMinY();
+        return (event.getY() - paneBound.getMinY()) + 25;
     } 
 }
 
