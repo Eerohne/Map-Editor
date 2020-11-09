@@ -1,39 +1,36 @@
 package Editor.Grid;
 
-import Editor.Entity.Collectible;
-import java.util.Arrays;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 
 public class Grid extends Pane{
-    private int cellSize;
-    private int xLength;
-    private int yLength;
-    private Rectangle[][] cells;
+    private double cellSize;
+    private int width;
+    private int length;
+    private Cell[][] cells;
 
-    public Grid(int pixelSize, int xLength, int yLength) {
+    public Grid(int cellSize, int width, int length) {
         super();
         
-        this.cellSize = pixelSize;
-        this.xLength = xLength;
-        this.yLength = yLength;
+        this.width = width;
+        this.length = length;
+        this.cellSize = cellSize;
         
-        this.cells = new Rectangle[xLength][yLength];
+        this.cells = new Cell[width][length];
         
-        this.drawGrid();
+        this.drawGrid(cellSize);
     }
     
-    private void drawGrid(){
-        for (int x = 0; x < xLength; x++) {
-            for (int y = 0; y < yLength; y++) {
-                Rectangle cell = new Rectangle(cellSize, cellSize, Color.WHITE);
+    private void drawGrid(int cellSize){
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < length; y++) {
+                Cell cell = new Cell(cellSize);
                 cell.setStroke(Color.BLACK);
-                cell.setX(x*cellSize);
-                cell.setY(y*cellSize);
+                cell.setXPos(x);
+                cell.setYPos(y);
                 
                 cells[x][y] = cell;
                 this.getChildren().add(cell);
@@ -41,20 +38,16 @@ public class Grid extends Pane{
         }
     }
     
-    public void drawCollectible(Collectible c){
-        this.getChildren().add(c.getCircle());
-    }
+//    public void drawCollectible(Collectible c){
+//        this.getChildren().add(c.getCircle());
+//    }
     
     public void clear(){
-        for (Rectangle[] cell : cells) {
-            for (Rectangle rectangle : cell) {
-                rectangle.setFill(Color.WHITE);
+        for (Cell[] cellRow : cells) {
+            for (Cell cell : cellRow) {
+                cell.clear();
+                cell.getTransforms().clear();
             }
-        }
-        Collectible.getCollectibles().clear();
-        this.getChildren().clear();
-        for (Rectangle[] cell : cells) {
-            this.getChildren().addAll(Arrays.asList(cell));
         }
     }
     
@@ -66,20 +59,25 @@ public class Grid extends Pane{
         this.setOnMousePressed(event);
     }
 
-    public int getCellSize() {
+    public double getCellSize() {
         return cellSize;
     }
 
     public int getxLength() {
-        return xLength;
+        return width;
     }
 
     public int getyLength() {
-        return yLength;
+        return length;
     }
 
-    public Rectangle[][] getCells() {
+    public Cell[][] getCells() {
         return cells;
     }
 
+    public void setCellSize(double scaleFactor) {
+        this.cellSize = cellSize*scaleFactor;
+    }
+    
+    
 }

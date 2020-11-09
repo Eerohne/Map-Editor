@@ -6,6 +6,7 @@
 package Engine.Level;
 
 import Engine.Entity.AbstractEntity.Entity;
+import Engine.Entity.GameEntity.Entity_Player;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class Level {
     private Palette palette; //Look-up table
     private Map<String, Entity> entities; //Entities stored by their name
     
+    private Entity playerEntity;
     //flags
     private boolean isRunning = false;
     
@@ -28,14 +30,32 @@ public class Level {
         return levelData[x][y];
     }
     
-    public Palette acessPalette()
+    public void setLevelData(int[][] data)
+    {
+        this.levelData = data;
+    }
+    
+    public Palette getPalette()
     {
         return palette;
+    }
+    
+    public void setPalette(Palette palette)
+    {
+        this.palette = palette;
     }
     
     public void addEntity(Entity entity)
     {
         entities.put(entity.getName(), entity);
+        if(entity instanceof Entity_Player){
+            playerEntity = entity;
+            System.out.println("player");
+        }
+        else
+        {
+            System.out.println("not player");
+        }
     }
     
     public Entity getEntity(String entityName)
@@ -50,7 +70,7 @@ public class Level {
     
     public void update() //update all entities. If this is the first update, call the entities start method instead to initialize them
     {
-        if(!isRunning) //first time
+        if(!isRunning) //first update
         {
             Iterator<Entity> it = entities.values().iterator();
             while(it.hasNext())
@@ -59,12 +79,14 @@ public class Level {
             }
             isRunning = true;
         }
-        else //not first time
+        else //not first update
         {
             Iterator<Entity> it = entities.values().iterator();
             while(it.hasNext())
             {
-                it.next().update();
+                Entity entity = it.next();
+                if(entity.getActive())
+                    it.next().update();
             }
         }
     }

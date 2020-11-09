@@ -5,48 +5,80 @@
  */
 package Engine.Util.RessourceManager;
 
+import Engine.Entity.AbstractEntity.Entity;
+import Engine.Entity.EntityCreator;
+import Engine.Level.Level;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import javafx.scene.image.Image;
  
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import sun.audio.AudioStream;
  
 public class RessourceLoader
 {
-    @SuppressWarnings("unchecked")
+    //RessourceLoader.loadImage("images/brick.png");
+    public static Image loadImage(String path)
+    {
+        try{
+            FileInputStream inputstream = new FileInputStream("ressources/"+path);
+            return new Image(inputstream);
+        }
+        catch(IOException e)
+        {
+            System.out.println(e);
+        }
+        return null;
+    }
+    //AudioPlayer.player.start(RessourceLoader.loadAudio("sounds/musictest.wav"));
+    public static AudioStream loadAudio(String path)
+    {
+        try{
+            FileInputStream inputstream = new FileInputStream("ressources/"+path);
+            return new AudioStream(inputstream);
+        }
+        catch(IOException e)
+        {
+            System.out.println(e);
+        }
+        return null;
+    }
+    
+    public static Level loadLevel(String path)
+    {
+        Level level = new Level();
+        //level file here
+        try{
+            FileInputStream inputstream = new FileInputStream("ressources/"+path);
+            //load level file (xml or json)
+        }
+        catch(IOException e)
+        {
+            System.out.println("Level file " + "ressources/"+path + "not found");
+            return null;
+        }
+        //1) parse file for level data
+        
+        //2) parse file for palette entries
+        
+        //3) parse file for all entities and get their parameters
+        /*for(all entities in the level file)
+        {
+            HashMap<String, String> entityProperties = levelfile.extractEntityPropertiesAndPutThemInTheMap;
+            Entity entity = EntityCreator.constructEntity(entityProperties);
+            if(entity != null)
+                level.addEntity(entity);
+        }*/
+        
+        return level;
+    }
+    
     public static void main( String[] args )
     {
-        //First Employee
-        JSONObject employeeDetails = new JSONObject();
-        employeeDetails.put("firstName", "Lokesh");
-        employeeDetails.put("lastName", "Gupta");
-        employeeDetails.put("website", "howtodoinjava.com");
-         
-        JSONObject employeeObject = new JSONObject(); 
-        employeeObject.put("employee", employeeDetails);
-         
-        //Second Employee
-        JSONObject employeeDetails2 = new JSONObject();
-        employeeDetails2.put("firstName", "Brian");
-        employeeDetails2.put("lastName", "Schultz");
-        employeeDetails2.put("website", "example.com");
-         
-        JSONObject employeeObject2 = new JSONObject(); 
-        employeeObject2.put("employee", employeeDetails2);
-         
-        //Add employees to list
-        JSONArray employeeList = new JSONArray();
-        employeeList.add(employeeObject);
-        employeeList.add(employeeObject2);
-         
-        //Write JSON file
-        try (FileWriter file = new FileWriter("employees.json")) {
- 
-            file.write(employeeList.toJSONString());
-            file.flush();
- 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        
     }
 }

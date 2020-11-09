@@ -5,14 +5,11 @@
  */
 package Engine.Core;
 
-import Engine.Entity.EntityCreator;
 import Engine.Level.Level;
 import Engine.Util.Time;
-import java.util.HashMap;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -20,6 +17,7 @@ import javafx.stage.Stage;
 //for now, discard any code written here, it's only test nonsense
 public class Game extends Application{
     private static WindowManager windowManager;
+    public static Scene scene;
     private static Level currentLevel;
     
     //flags
@@ -28,11 +26,12 @@ public class Game extends Application{
     
     public void start(Stage stage) throws Exception {
         
-        HashMap<String, String> properties = new HashMap<String, String>();
+        /*HashMap<String, String> properties = new HashMap<>();
         properties.put("classname", "Entity_Coin");
-        EntityCreator.constructEntity(properties);
-        
-        
+        Entity ent = EntityCreator.constructEntity(properties);
+        ent.setActive(false);*/
+        /*Entity_Player_Base player = new Entity_Player_Base("a", new Point2D(0,0), 90, 2, 5);
+        Entity_Item_Coin coin = new Entity_Item_Coin("b", new Point2D(0,0), Color.YELLOW, 5);*/
         
         windowManager = new WindowManager(stage, 1280, 800);
         //give the renderer the canvas graphics context here -> renderer.setCanvasContext(windowManager.getRenderContext);
@@ -57,7 +56,7 @@ public class Game extends Application{
             }
         }.start();
         
-        Scene scene = new Scene(windowManager, windowManager.getWidth(), windowManager.getHeight()); //set windows inside the scene
+        scene = new Scene(windowManager, windowManager.getWidth(), windowManager.getHeight()); //set windows inside the scene
         stage.setScene(scene);
         stage.show();
     }
