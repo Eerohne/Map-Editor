@@ -206,7 +206,7 @@ public class GridController {
     private double getLocalY(MouseEvent event){
         Bounds paneBound = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
         System.out.println("Y : " + ((event.getY() - paneBound.getMinY()) + 25));
-        return (event.getY() - paneBound.getMinY()) + 25;
+        return (event.getY() - paneBound.getMinY()) + 24.5;
     } 
     
     private void placeWall(MouseEvent event){
