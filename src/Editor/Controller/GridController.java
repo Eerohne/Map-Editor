@@ -1,5 +1,7 @@
 /*
  * Fix cellSize calculation
+
+TEST
  */
 package Editor.Controller;
 
