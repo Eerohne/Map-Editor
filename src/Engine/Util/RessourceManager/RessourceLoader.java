@@ -78,10 +78,6 @@ public class RessourceLoader
         return level;
     }
     
-    public static Level loadLevel(Level level){
-        
-    }
-    
     public static void main( String[] args )
     {
         
