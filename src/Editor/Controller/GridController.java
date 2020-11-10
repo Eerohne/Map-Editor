@@ -205,14 +205,17 @@ public class GridController {
     
     private double getLocalY(MouseEvent event){
         Bounds paneBound = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
-        System.out.println("Y : " + ((event.getY() - paneBound.getMinY()) + 25));
-        return (event.getY() - paneBound.getMinY()) + 24.5;
+        System.out.println("Y : " + ((event.getY() - paneBound.getMinY())));
+        return (event.getY() - paneBound.getMinY());
     } 
     
     private void placeWall(MouseEvent event){
         if(!(getLocalX(event) < 0) && !(getLocalY(event) < 0)){
             double xDouble = this.getLocalX(event)/grid.getCellSize();
             double yDouble = this.getLocalY(event)/grid.getCellSize();
+            
+            System.out.println(xDouble);
+            System.out.println(yDouble);
             grid.getCells()[(int)xDouble][(int)yDouble].setFill(wallColor);
         }
     }

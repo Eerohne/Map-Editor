@@ -34,6 +34,7 @@ public class RessourceLoader
         }
         return null;
     }
+    
     //AudioPlayer.player.start(RessourceLoader.loadAudio("sounds/musictest.wav"));
     public static AudioStream loadAudio(String path)
     {
@@ -75,6 +76,10 @@ public class RessourceLoader
         }*/
         
         return level;
+    }
+    
+    public static Level loadLevel(Level level){
+        
     }
     
     public static void main( String[] args )

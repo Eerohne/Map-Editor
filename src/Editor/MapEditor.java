@@ -24,17 +24,17 @@ public class MapEditor extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        VBox root = new VBox();
-        HBox menu = new HBox();
-        Grid grid = new Grid(50, 10, 10);
+        //VBox root = new VBox();
+        //HBox menu = new HBox();
+        Grid grid = new Grid(50, 100, 100);
         
         Button toggle = new Button("Mode: Place WALL");
         ColorPicker colorPicker = new ColorPicker(Color.BLACK);
        
-        menu.getChildren().addAll(toggle, colorPicker);
-        root.getChildren().addAll(menu, grid);
+        //menu.getChildren().addAll(toggle, colorPicker);
+        //root.getChildren().addAll(menu, grid);
         
-        Scene scene = new Scene(root, 500, 525);
+        Scene scene = new Scene(grid, 500, 525);
         
         GridController gc = new GridController(scene, grid, toggle, colorPicker);
 
