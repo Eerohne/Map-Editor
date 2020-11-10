@@ -41,9 +41,12 @@ public class GridController {
     //Grid Panning Vector Variables
     double preMouseX;
     double preMouseY; 
-    
     double mouseX;
     double mouseY; 
+    
+    //Grid Zoom Pivot coordinates
+    double pivotX;
+    double pivotY;
     
     public GridController(Scene scene, Grid grid, Button toggle, ColorPicker picker) {
         this.scene = scene;
@@ -107,7 +110,7 @@ public class GridController {
             if (event.getDeltaY() < 0) {
                 scaleFactor = 0.95;
             }
-            Scale scale = new Scale(scaleFactor, scaleFactor);
+            Scale scale = new Scale(scaleFactor, scaleFactor, pivotX, pivotY);
             
             for (Cell[] cells : grid.getCells()) {
                 for (Cell cell : cells) {
@@ -119,6 +122,8 @@ public class GridController {
         
         grid.setOnMouseMoved(event -> {
             //Update current et previous mouse positionet 
+            this.pivotX = this.getPivotX(event);
+            this.pivotY = this.getPivotY(event);
         });
         
         //On Mouse Press Event
@@ -208,6 +213,22 @@ public class GridController {
         System.out.println("Y : " + ((event.getY() - paneBound.getMinY())));
         return (event.getY() - paneBound.getMinY());
     } 
+    
+    private double getPivotX(MouseEvent event){
+        double xDouble = this.getLocalX(event)/grid.getCellSize();
+        double yDouble = this.getLocalY(event)/grid.getCellSize();
+        
+        Bounds cellBound = grid.getCells()[(int)xDouble][(int)yDouble].localToScene(grid.getCells()[(int)xDouble][(int)yDouble].getBoundsInLocal());
+        return (event.getX() - cellBound.getMinX());
+    }
+    
+    private double getPivotY(MouseEvent event){
+        double xDouble = this.getLocalX(event)/grid.getCellSize();
+        double yDouble = this.getLocalY(event)/grid.getCellSize();
+        
+        Bounds cellBound = grid.getCells()[(int)xDouble][(int)yDouble].localToScene(grid.getCells()[(int)xDouble][(int)yDouble].getBoundsInLocal());
+        return (event.getY() - cellBound.getMinY());
+    }
     
     private void placeWall(MouseEvent event){
         if(!(getLocalX(event) < 0) && !(getLocalY(event) < 0)){
