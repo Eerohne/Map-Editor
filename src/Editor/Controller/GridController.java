@@ -70,20 +70,23 @@ public class GridController {
         
         //Grid Events
         grid.setOnScroll(event -> {
-            double scaleFactor = 1.05;
-            if (event.getDeltaY() < 0) {
-                scaleFactor = 0.95;
-                zoom -= 0.05f;
-            } else zoom += 0.05f;
-            Scale scale = new Scale(scaleFactor, scaleFactor);
-            
-            grid.setCellSize(scaleFactor);
-            Translate scaleCorrector = new Translate((getLocalX() - aX*grid.getCellSize()), (getLocalY() - aY*grid.getCellSize()));
-            
-            for (Cell[] cells : grid.getCells()) {
-                for (Cell cell : cells) {
-                    cell.getTransforms().addAll(scale, scaleCorrector);
+            double scaleFactor = 1;
+            if(zoom < 2.0f) {
+                if (event.getDeltaY() < 0) {
+                    scaleFactor -= 0.05;
+                    zoom -= 0.05f;
+                } else{
+                    scaleFactor += 0.05;
+                    zoom += 0.05f;
+                }
+                
+                scale(scaleFactor);
+            } else{
+                if (event.getDeltaY() < 0) {
+                    scaleFactor -= 0.05;
+                    zoom -= 0.05f;
                     
+                    scale(scaleFactor);
                 }
             }
         });
@@ -201,6 +204,20 @@ public class GridController {
                 cell.setStroke(Color.WHITE);
             else if(cell.getStroke().equals(Color.WHITE))
                 cell.setStroke(Color.BLACK);
+        }
+    }
+    
+    private void scale(double scaleFactor){
+        Scale scale = new Scale(scaleFactor, scaleFactor);
+        
+        grid.setCellSize(scaleFactor);
+        Translate scaleCorrector = new Translate((getLocalX() - aX*grid.getCellSize()), (getLocalY() - aY*grid.getCellSize()));
+
+        for (Cell[] cells : grid.getCells()) {
+            for (Cell cell : cells) {
+                cell.getTransforms().addAll(scale, scaleCorrector);
+
+            }
         }
     }
 }
