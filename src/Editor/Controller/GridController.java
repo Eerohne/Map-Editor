@@ -29,7 +29,7 @@ public class GridController {
     //Colors - to be replacve with a palette
     Color winColor = Color.DEEPSKYBLUE;
     Color floorColor = Color.WHITE;
-    Color wallColor = Color.AQUA;
+    Color wallColor = Color.BLACK;
     
     //Editing mode
     int mode = 1;
@@ -44,7 +44,7 @@ public class GridController {
     double aX;
     double aY;
     
-    float zoom = 1.0f;
+    double zoom = 1.0d;
 
     Cell hoverCell = new Cell(1);
     
@@ -63,37 +63,33 @@ public class GridController {
                 System.out.println("Mouse : (" + mouseX + ", " + mouseY + ")\n"
                         + "Grid : (" + aX + ", " + aY + ")\n" 
                         + "Local : (" + getLocalX() + ", " + getLocalY() + ")\n" 
-                        + "Zoom : " + zoom);
+                        + "Zoom : " + zoom + "\n");
             }
         });
         
         //Grid Events
         grid.setOnScroll(event -> {
             double scaleFactor = 1;
-            if(zoom < 2.0f) {
+            if(zoom > 1.99) {
                 if (event.getDeltaY() < 0) {
                     scaleFactor -= 0.05;
-                    zoom -= 0.05f;
-                } else{
-                    scaleFactor += 0.05;
-                    zoom += 0.05f;
+                    scale(scaleFactor);
                 }
-                
-                scale(scaleFactor);
             } else{
                 if (event.getDeltaY() < 0) {
                     scaleFactor -= 0.05;
-                    zoom -= 0.05f;
-                    
-                    scale(scaleFactor);
+                } else{
+                    scaleFactor += 0.05;
                 }
+                
+                scale(scaleFactor);
             }
         });
         
         grid.setOnMouseMoved(event -> {
             updateMousePos(event);
             
-            this.hoverEvent();
+            this.onHover();
         });
         
         //On Mouse Press Event
@@ -128,29 +124,15 @@ public class GridController {
         }
     }
     
-    class CollectiblePlacerEvent implements EventHandler<MouseEvent>{
-
-        @Override
-        public void handle(MouseEvent event) {
-            double xPos = event.getX();
-            double yPos = event.getY();
-            
-            if(grid.getCells()[(int)(xPos/grid.getCellSize())][(int)(yPos/grid.getCellSize())].getFill().equals(Color.WHITE)){
-                Collectible col = new Collectible(xPos, yPos, 10, Color.CORAL);
-                //grid.drawCollectible(col);
-            }
-        }
-    }
-    
     class GridEvent implements EventHandler<MouseEvent>{
         @Override
         public void handle(MouseEvent event) {
             updateMousePos(event);
-            hoverEvent();
+            onHover();
             //Grid Translation Implementation
             if(event.getButton().equals(MouseButton.MIDDLE)){
                 //Translation vecxtor
-                Translate vector = new Translate((mouseX - preMouseX), (mouseY - preMouseY));
+                Translate vector = new Translate((mouseX - preMouseX)/getScaleRatio(), (mouseY - preMouseY)/getScaleRatio());
                 
                 //Every cell is translating with the vector above
                 for (Cell[] cells : grid.getCells()) {
@@ -196,7 +178,7 @@ public class GridController {
         }
     }
     
-    private void hoverEvent(){
+    private void onHover(){
         hoverCell.isSelected(false);
         
         hoverCell = grid.getCells()[(int)aX][(int)aY];
@@ -215,6 +197,12 @@ public class GridController {
 
             }
         }
+        
+        zoom = getScaleRatio();
+    }
+    
+    private double getScaleRatio(){
+        return grid.getCellSize()/grid.getCells()[0][0].getDefaultSize();
     }
 }
 
