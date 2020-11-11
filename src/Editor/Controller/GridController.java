@@ -1,8 +1,8 @@
 package Editor.Controller;
 
 import Editor.Entity.Collectible;
-import Editor.Grid.Cell;
-import Editor.Grid.Grid;
+import Editor.View.Grid.Cell;
+import Editor.View.Grid.Grid;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Scene;

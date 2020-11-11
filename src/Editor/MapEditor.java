@@ -5,12 +5,17 @@
  */
 package Editor;
 
-import Editor.Grid.Grid;
+import Editor.View.Grid.Grid;
 import Editor.Controller.GridController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -22,19 +27,28 @@ public class MapEditor extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        //VBox root = new VBox();
-        //HBox menu = new HBox();
+        AnchorPane root = new AnchorPane();
+        HBox menu = new HBox();
+        
         Grid grid = new Grid(60, 10, 10);
         
-        Button toggle = new Button("Mode: Place WALL");
+        GridPane entityPane = new GridPane();
+        Tab entities = new Tab("Entities", entityPane);
+        
+        GridPane wallPane = new GridPane();
+        Tab walls = new Tab("Walls", wallPane);
+        
+        TabPane tabs = new TabPane(walls, entities);
+        
         ColorPicker colorPicker = new ColorPicker(Color.BLACK);
-       
+        
+        
         //menu.getChildren().addAll(toggle, colorPicker);
         //root.getChildren().addAll(menu, grid);
         
         Scene scene = new Scene(grid, 500, 525);
         
-        GridController gc = new GridController(scene, grid, toggle, colorPicker);
+        GridController gc = new GridController(scene, grid, new Button(), colorPicker);
 
         
         primaryStage.setTitle("Optik Editor");
