@@ -43,6 +43,8 @@ public class GridController {
     
     double aX;
     double aY;
+    
+    float zoom = 1.0f;
 //Grid Zoom Pivot coordinates
 //    double pivotX;
 //    double pivotY;
@@ -61,7 +63,8 @@ public class GridController {
             if(event.getCode().equals(KeyCode.W)){
                 System.out.println("Mouse : (" + mouseX + ", " + mouseY + ")\n"
                         + "Grid : (" + aX + ", " + aY + ")\n" 
-                        + "Local : (" + getLocalX() + ", " + getLocalY() + ")\n");
+                        + "Local : (" + getLocalX() + ", " + getLocalY() + ")\n" 
+                        + "Zoom : " + zoom);
             }
         });
         
@@ -70,7 +73,8 @@ public class GridController {
             double scaleFactor = 1.05;
             if (event.getDeltaY() < 0) {
                 scaleFactor = 0.95;
-            }
+                zoom -= 0.05f;
+            } else zoom += 0.05f;
             Scale scale = new Scale(scaleFactor, scaleFactor);
             
             grid.setCellSize(scaleFactor);
