@@ -16,7 +16,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -28,27 +27,36 @@ public class MapEditor extends Application {
     @Override
     public void start(Stage primaryStage) {
         AnchorPane root = new AnchorPane();
-        HBox menu = new HBox();
         
+        //Creating top menu pane and information viewer pane
+        HBox menu = new HBox();
+        HBox info = new HBox();
+        
+        //Create the Grid Pane
         Grid grid = new Grid(60, 10, 10);
         
+        //Create Entity Tab
         GridPane entityPane = new GridPane();
         Tab entities = new Tab("Entities", entityPane);
         
+        //Create Wall Tab
         GridPane wallPane = new GridPane();
         Tab walls = new Tab("Walls", wallPane);
         
+        //Instantiationg a Tab Pane with the two tabs created
         TabPane tabs = new TabPane(walls, entities);
         
-        ColorPicker colorPicker = new ColorPicker(Color.BLACK);
+        Button b = new Button("TEST B");
+        menu.getChildren().add(b);
         
+        AnchorPane.setLeftAnchor(menu, 10d);
+        AnchorPane.setRightAnchor(grid, 10d);
+        root.getChildren().addAll(menu, grid);
         
-        //menu.getChildren().addAll(toggle, colorPicker);
-        //root.getChildren().addAll(menu, grid);
+        Scene scene = new Scene(root, 500, 525);
         
-        Scene scene = new Scene(grid, 500, 525);
-        
-        GridController gc = new GridController(scene, grid, new Button(), colorPicker);
+        //Controller Initialization
+        GridController gc = new GridController(scene, grid, new Button(), new ColorPicker());
 
         
         primaryStage.setTitle("Optik Editor");
