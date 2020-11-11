@@ -1,6 +1,3 @@
-/*
- * Fix cellSize calculation
- */
 package Editor.Controller;
 
 import Editor.Entity.Collectible;
