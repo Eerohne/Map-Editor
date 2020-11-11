@@ -7,6 +7,7 @@ package Editor;
 
 import Editor.Grid.Grid;
 import Editor.Controller.GridController;
+import Engine.Core.Game;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
