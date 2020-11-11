@@ -37,7 +37,7 @@ public class MapEditor extends Application {
         GridController gc = new GridController(scene, grid, toggle, colorPicker);
 
         
-        primaryStage.setTitle("Map Editor");
+        primaryStage.setTitle("Optik Editor");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

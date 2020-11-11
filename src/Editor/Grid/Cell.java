@@ -49,7 +49,9 @@ public class Cell extends Rectangle{
     public void setColor(Color color){
         super.setFill(color);
         this.cellColor = color;
-        this.selectColor = color.darker();
+        if (this.cellColor.equals(Color.BLACK)) {
+            this.selectColor = color.brighter();
+        } else this.selectColor = color.darker();
     }
     
     public void isSelected(boolean isSelected) {
