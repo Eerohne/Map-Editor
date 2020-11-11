@@ -29,7 +29,7 @@ public class GridController {
     //Colors - to be replacve with a palette
     Color winColor = Color.DEEPSKYBLUE;
     Color floorColor = Color.WHITE;
-    Color wallColor = Color.BLACK;
+    Color wallColor = Color.AQUA;
     
     //Editing mode
     int mode = 1;
@@ -45,9 +45,8 @@ public class GridController {
     double aY;
     
     float zoom = 1.0f;
-//Grid Zoom Pivot coordinates
-//    double pivotX;
-//    double pivotY;
+
+    Cell hoverCell = new Cell(1);
     
     public GridController(Scene scene, Grid grid, Button toggle, ColorPicker picker) {
         this.scene = scene;
@@ -92,25 +91,15 @@ public class GridController {
         });
         
         grid.setOnMouseMoved(event -> {
-            this.preMouseX = this.mouseX; 
-            this.preMouseY = this.mouseY;
+            updateMousePos(event);
             
-            this.mouseX = event.getX();
-            this.mouseY = event.getY();
-            
-            this.aX = this.getGridX();
-            this.aY = this.getGridY();
+            this.hoverEvent();
         });
         
         //On Mouse Press Event
         grid.setOnMousePressed(event -> {
-            //Places Wall On Right Click
-//            if(event.getButton().equals(MouseButton.MIDDLE)){
-//                this.preMouseX = this.mouseX = event.getX();
-//                this.preMouseY = this.mouseY = event.getY();
-//            }
             if(event.getButton().equals(MouseButton.PRIMARY))
-                this.placeWall(event);
+                this.placeWall();
         });
         
         //Wall Placement when Mouse Dragged
@@ -134,7 +123,7 @@ public class GridController {
             
             //Grid Wall Drawing
             if(event.getButton().equals(MouseButton.PRIMARY)){
-                placeWall(event);
+                placeWall();
             }  
         }
     }
@@ -156,15 +145,10 @@ public class GridController {
     class GridEvent implements EventHandler<MouseEvent>{
         @Override
         public void handle(MouseEvent event) {
+            updateMousePos(event);
+            hoverEvent();
             //Grid Translation Implementation
             if(event.getButton().equals(MouseButton.MIDDLE)){
-                //Tail of translation vector
-                preMouseX = mouseX;
-                preMouseY = mouseY;
-                //Head of translation vector
-                mouseX = event.getX();
-                mouseY = event.getY();
-                
                 //Translation vecxtor
                 Translate vector = new Translate((mouseX - preMouseX), (mouseY - preMouseY));
                 
@@ -176,6 +160,16 @@ public class GridController {
                 }
             }
         }
+    }
+    
+    private void updateMousePos(MouseEvent event){
+        preMouseX = mouseX;
+        preMouseY = mouseY;
+        this.mouseX = event.getX();
+        this.mouseY = event.getY();
+        
+        this.aX = this.getGridX();
+        this.aY = this.getGridY();
     }
     
     private double getLocalX(){
@@ -196,17 +190,19 @@ public class GridController {
         return this.getLocalY()/grid.getCellSize();
     }
     
-    private void placeWall(MouseEvent event){
-        Cell cell = grid.getCells()[(int)getGridX()][(int)getGridY()];
+    private void placeWall(){
         if(!(getLocalX() < 0) && !(getLocalY() < 0)){
-            cell.setFill(wallColor);
-            if(wallColor.equals(Color.BLACK))
-                cell.setStroke(Color.WHITE);
-            else if(cell.getStroke().equals(Color.WHITE))
-                cell.setStroke(Color.BLACK);
+            hoverCell.setColor(wallColor);
         }
     }
     
+    private void hoverEvent(){
+        hoverCell.isSelected(false);
+        
+        hoverCell = grid.getCells()[(int)aX][(int)aY];
+        
+        hoverCell.isSelected(true);
+    }
     private void scale(double scaleFactor){
         Scale scale = new Scale(scaleFactor, scaleFactor);
         

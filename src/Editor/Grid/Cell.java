@@ -15,6 +15,7 @@ import javafx.scene.shape.Rectangle;
 public class Cell extends Rectangle{
     private int size;
     private Color cellColor;
+    private Color selectColor;
     private Color floorColor = Color.WHITE;
 
     public Cell(int defaultSize) {
@@ -24,11 +25,11 @@ public class Cell extends Rectangle{
         
         this.size = defaultSize;
         this.cellColor = this.floorColor;
+        this.selectColor = this.cellColor.darker();
     }
 
     public void clear(){
-        this.cellColor = this.floorColor;
-        this.setFill(cellColor);
+        this.setColor(cellColor);
     }
     
     public int getDefaultSize() {
@@ -45,9 +46,19 @@ public class Cell extends Rectangle{
         return cellColor;
     }
 
-    public void setCellColor(Color cellColor) {
-        this.cellColor = cellColor;
-        super.setFill(cellColor);
+    public void setColor(Color color){
+        super.setFill(color);
+        this.cellColor = color;
+        this.selectColor = color.darker();
+    }
+    
+    public void isSelected(boolean isSelected) {
+        if (isSelected) {
+            this.setFill(selectColor);
+        } else{
+             super.setFill(cellColor);
+        }
+       
     }
     
     public void setXPos(double value){
