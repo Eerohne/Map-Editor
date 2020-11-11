@@ -44,9 +44,10 @@ public class GridController {
     double mouseX;
     double mouseY; 
     
+    float zoom = 1f;
     //Grid Zoom Pivot coordinates
-    double pivotX;
-    double pivotY;
+//    double pivotX;
+//    double pivotY;
     
     public GridController(Scene scene, Grid grid, Button toggle, ColorPicker picker) {
         this.scene = scene;
@@ -59,58 +60,62 @@ public class GridController {
             if(event.getCode().equals(KeyCode.R)){
                 this.grid.clear();
             }
+            if(event.getCode().equals(KeyCode.W)){
+                this.wallColor = Color.BEIGE;
+            }
         });
         
-        this.toggle.setOnAction(e -> {
-            String modeName = "";
-            
-            switch(mode++){
-                case 0: //Place Wall
-                    this.grid.setMouseDragEvent(new WallPlacerEvent());
-                    this.grid.setMousePressEvent(new WallPlacerEvent());
-                    wallColor = Color.BLACK;
-                    modeName = "Place WALL";
-                    picker.setDisable(false);
-                    break;
-                case 1: //Place Collectible
-                    this.grid.setMousePressEvent(new CollectiblePlacerEvent());
-                    this.grid.setMouseDragEvent(null);
-                    modeName = "Place COLLECTIBLE";
-                    picker.setDisable(false);
-                    break;
-                case 2: //Place Winning Cell
-                    this.grid.setMouseDragEvent(new WallPlacerEvent());
-                    this.grid.setMousePressEvent(new WallPlacerEvent());
-                    wallColor = winColor;
-                    modeName = "Place WIN CELL";
-                    picker.setDisable(true);
-                    break;
-                case 3: //Remove Wall/Winning Cell
-                    this.grid.setMouseDragEvent(new WallPlacerEvent());
-                    this.grid.setMousePressEvent(new WallPlacerEvent());
-                    wallColor = floorColor;
-                    picker.setDisable(true);
-                    modeName = "Reset CELL";
-                    break;
-                case 4: //Remove Collectible
-                    modeName = "Remove COLLECTIBLE";
-                    picker.setDisable(true);
-                    break;
-            }
-            
-            if(mode > 4){
-                mode = 0;
-            }
-            toggle.setText("Mode: " + modeName);
-        });
+//        this.toggle.setOnAction(e -> {
+//            String modeName = "";
+//            
+//            switch(mode++){
+//                case 0: //Place Wall
+//                    this.grid.setMouseDragEvent(new WallPlacerEvent());
+//                    this.grid.setMousePressEvent(new WallPlacerEvent());
+//                    wallColor = Color.BLACK;
+//                    modeName = "Place WALL";
+//                    picker.setDisable(false);
+//                    break;
+//                case 1: //Place Collectible
+//                    this.grid.setMousePressEvent(new CollectiblePlacerEvent());
+//                    this.grid.setMouseDragEvent(null);
+//                    modeName = "Place COLLECTIBLE";
+//                    picker.setDisable(false);
+//                    break;
+//                case 2: //Place Winning Cell
+//                    this.grid.setMouseDragEvent(new WallPlacerEvent());
+//                    this.grid.setMousePressEvent(new WallPlacerEvent());
+//                    wallColor = winColor;
+//                    modeName = "Place WIN CELL";
+//                    picker.setDisable(true);
+//                    break;
+//                case 3: //Remove Wall/Winning Cell
+//                    this.grid.setMouseDragEvent(new WallPlacerEvent());
+//                    this.grid.setMousePressEvent(new WallPlacerEvent());
+//                    wallColor = floorColor;
+//                    picker.setDisable(true);
+//                    modeName = "Reset CELL";
+//                    break;
+//                case 4: //Remove Collectible
+//                    modeName = "Remove COLLECTIBLE";
+//                    picker.setDisable(true);
+//                    break;
+//            }
+//            
+//            if(mode > 4){
+//                mode = 0;
+//            }
+//            toggle.setText("Mode: " + modeName);
+//        });
         
         //Grid Events
         grid.setOnScroll(event -> {
             double scaleFactor = 1.05;
             if (event.getDeltaY() < 0) {
                 scaleFactor = 0.95;
-            }
-            Scale scale = new Scale(scaleFactor, scaleFactor, pivotX, pivotY);
+                zoom -= 0.05;
+            } else zoom += 0.05;
+            Scale scale = new Scale(scaleFactor, scaleFactor);
             
             for (Cell[] cells : grid.getCells()) {
                 for (Cell cell : cells) {
@@ -121,18 +126,20 @@ public class GridController {
         });
         
         grid.setOnMouseMoved(event -> {
-            //Update current et previous mouse positionet 
-            this.pivotX = this.getPivotX(event);
-            this.pivotY = this.getPivotY(event);
+            this.preMouseX = this.mouseX; 
+            this.preMouseY = this.mouseY;
+            
+            this.mouseX = event.getX();
+            this.mouseY = event.getY();
         });
         
         //On Mouse Press Event
         grid.setOnMousePressed(event -> {
             //Places Wall On Right Click
-            if(event.getButton().equals(MouseButton.MIDDLE)){
-                this.preMouseX = this.mouseX = event.getX();
-                this.preMouseY = this.mouseY = event.getY();
-            }
+//            if(event.getButton().equals(MouseButton.MIDDLE)){
+//                this.preMouseX = this.mouseX = event.getX();
+//                this.preMouseY = this.mouseY = event.getY();
+//            }
             if(event.getButton().equals(MouseButton.PRIMARY))
                 this.placeWall(event);
         });
@@ -190,7 +197,7 @@ public class GridController {
                 mouseY = event.getY();
                 
                 //Translation vecxtor
-                Translate vector = new Translate(mouseX - preMouseX, mouseY - preMouseY);
+                Translate vector = new Translate((mouseX - preMouseX)/zoom, (mouseY - preMouseY)/zoom);
                 
                 //Every cell is translating with the vector above
                 for (Cell[] cells : grid.getCells()) {
@@ -204,40 +211,32 @@ public class GridController {
     
     private double getLocalX(MouseEvent event){
         Bounds paneBound = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
-        System.out.println("X : " + (event.getX() - paneBound.getMinX()));
+        //System.out.println("X : " + (event.getX() - paneBound.getMinX()));
         return event.getX() - paneBound.getMinX();
     } 
     
     private double getLocalY(MouseEvent event){
         Bounds paneBound = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
-        System.out.println("Y : " + ((event.getY() - paneBound.getMinY())));
+        //System.out.println("Y : " + ((event.getY() - paneBound.getMinY())));
         return (event.getY() - paneBound.getMinY());
-    } 
-    
-    private double getPivotX(MouseEvent event){
-        double xDouble = this.getLocalX(event)/grid.getCellSize();
-        double yDouble = this.getLocalY(event)/grid.getCellSize();
-        
-        Bounds cellBound = grid.getCells()[(int)xDouble][(int)yDouble].localToScene(grid.getCells()[(int)xDouble][(int)yDouble].getBoundsInLocal());
-        return (event.getX() - cellBound.getMinX());
     }
     
-    private double getPivotY(MouseEvent event){
-        double xDouble = this.getLocalX(event)/grid.getCellSize();
-        double yDouble = this.getLocalY(event)/grid.getCellSize();
-        
-        Bounds cellBound = grid.getCells()[(int)xDouble][(int)yDouble].localToScene(grid.getCells()[(int)xDouble][(int)yDouble].getBoundsInLocal());
-        return (event.getY() - cellBound.getMinY());
+    public double getGridX(MouseEvent event){
+        return this.getLocalX(event)/grid.getCellSize();
+    }
+    
+    public double getGridY(MouseEvent event){
+        return this.getLocalY(event)/grid.getCellSize();
     }
     
     private void placeWall(MouseEvent event){
+        Cell cell = grid.getCells()[(int)getGridX(event)][(int)getGridY(event)];
         if(!(getLocalX(event) < 0) && !(getLocalY(event) < 0)){
-            double xDouble = this.getLocalX(event)/grid.getCellSize();
-            double yDouble = this.getLocalY(event)/grid.getCellSize();
-            
-            System.out.println(xDouble);
-            System.out.println(yDouble);
-            grid.getCells()[(int)xDouble][(int)yDouble].setFill(wallColor);
+            cell.setFill(wallColor);
+            if(wallColor.equals(Color.BLACK))
+                cell.setStroke(Color.WHITE);
+            else if(cell.getStroke().equals(Color.WHITE))
+                cell.setStroke(Color.BLACK);
         }
     }
 }

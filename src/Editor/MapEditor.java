@@ -11,8 +11,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -26,7 +24,7 @@ public class MapEditor extends Application {
     public void start(Stage primaryStage) {
         //VBox root = new VBox();
         //HBox menu = new HBox();
-        Grid grid = new Grid(50, 10, 10);
+        Grid grid = new Grid(100, 10, 10);
         
         Button toggle = new Button("Mode: Place WALL");
         ColorPicker colorPicker = new ColorPicker(Color.BLACK);
