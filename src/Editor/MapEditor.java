@@ -24,7 +24,7 @@ public class MapEditor extends Application {
     public void start(Stage primaryStage) {
         //VBox root = new VBox();
         //HBox menu = new HBox();
-        Grid grid = new Grid(100, 10, 10);
+        Grid grid = new Grid(60, 10, 10);
         
         Button toggle = new Button("Mode: Place WALL");
         ColorPicker colorPicker = new ColorPicker(Color.BLACK);
