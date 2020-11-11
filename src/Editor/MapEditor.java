@@ -5,14 +5,17 @@
  */
 package Editor;
 
-import Editor.Grid.Grid;
+import Editor.View.Grid.Grid;
 import Editor.Controller.GridController;
-import Engine.Core.Game;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.paint.Color;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 /**
@@ -23,22 +26,40 @@ public class MapEditor extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        //VBox root = new VBox();
-        //HBox menu = new HBox();
+        AnchorPane root = new AnchorPane();
+        
+        //Creating top menu pane and information viewer pane
+        HBox menu = new HBox();
+        HBox info = new HBox();
+        
+        //Create the Grid Pane
         Grid grid = new Grid(60, 10, 10);
         
-        Button toggle = new Button("Mode: Place WALL");
-        ColorPicker colorPicker = new ColorPicker(Color.BLACK);
-       
-        //menu.getChildren().addAll(toggle, colorPicker);
-        //root.getChildren().addAll(menu, grid);
+        //Create Entity Tab
+        GridPane entityPane = new GridPane();
+        Tab entities = new Tab("Entities", entityPane);
         
-        Scene scene = new Scene(grid, 500, 525);
+        //Create Wall Tab
+        GridPane wallPane = new GridPane();
+        Tab walls = new Tab("Walls", wallPane);
         
-        GridController gc = new GridController(scene, grid, toggle, colorPicker);
+        //Instantiationg a Tab Pane with the two tabs created
+        TabPane tabs = new TabPane(walls, entities);
+        
+        Button b = new Button("TEST B");
+        menu.getChildren().add(b);
+        
+        AnchorPane.setLeftAnchor(menu, 10d);
+        AnchorPane.setRightAnchor(grid, 10d);
+        root.getChildren().addAll(menu, grid);
+        
+        Scene scene = new Scene(root, 500, 525);
+        
+        //Controller Initialization
+        GridController gc = new GridController(scene, grid, new Button(), new ColorPicker());
 
         
-        primaryStage.setTitle("Map Editor");
+        primaryStage.setTitle("Optik Editor");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
