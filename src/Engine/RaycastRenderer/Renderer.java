@@ -174,5 +174,4 @@ public class Renderer {
         gc.setFill(color);
         gc.fillRect(x, lineTop, 1, height);
     }
-    
 }
