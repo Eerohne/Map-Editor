@@ -7,6 +7,7 @@ package Editor;
 
 import Editor.View.Grid.Grid;
 import Editor.Controller.GridController;
+import Editor.View.Info;
 import Editor.View.Menu;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -14,11 +15,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -30,9 +30,10 @@ public class MapEditor extends Application {
     @Override
     public void start(Stage editorWindow) {
         Menu menu = new Menu();
-        HBox info = new HBox();
+        Info info = new Info();
         Grid gridRender = new Grid(60, 20, 10);
-        TabPane properties = new TabPane();
+        setChildrenClipping(gridRender);
+        
         
         //Create Entity Tab
         GridPane entityPane = new GridPane();
@@ -42,10 +43,18 @@ public class MapEditor extends Application {
         GridPane wallPane = new GridPane();
         Tab walls = new Tab("Walls", wallPane);
         
-        AnchorPane gridDisplay = new AnchorPane();
-        gridDisplay.getChildren().addAll(gridRender, info);
+        TabPane properties = new TabPane(entities, walls);
         
-        BorderPane layout = new BorderPane(gridRender, menu, null, null, null);
+        
+        BorderPane gridDisplay = new BorderPane();
+        gridDisplay.setCenter(gridRender);
+        gridDisplay.setBottom(info);
+        
+        BorderPane layout = new BorderPane();
+        layout.setCenter(gridDisplay);
+        layout.setTop(menu);
+        layout.setLeft(properties);
+        
         
         Scene scene = new Scene(layout, 500, 500);
         
@@ -64,4 +73,13 @@ public class MapEditor extends Application {
         launch(args);
     }
     
+    public static void setChildrenClipping(Pane pane) {
+        Rectangle clip = new Rectangle();
+        pane.setClip(clip);    
+        
+        pane.layoutBoundsProperty().addListener((observable, oldValue, newValue) -> {
+            clip.setWidth(newValue.getWidth());
+            clip.setHeight(newValue.getHeight());
+        });
+    }
 }

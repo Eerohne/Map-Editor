@@ -43,7 +43,7 @@ public class Menu extends HBox{
         HBox.setHgrow(test, Priority.ALWAYS);
         
         this.getChildren().addAll(newWall, newEntity, placePlayer, test, help);
-        
+        this.setStyle("-fx-background-color : DAE6F3;");
         
     }
     

@@ -5,10 +5,12 @@
  */
 package Editor.View;
 
+import javafx.scene.layout.HBox;
+
 /**
  *
  * @author A
  */
-public class Info {
+public class Info extends HBox{
     
 }

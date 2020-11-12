@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 
 public class Grid extends Pane{
@@ -14,7 +15,6 @@ public class Grid extends Pane{
 
     public Grid(int cellSize, int width, int length) {
         super();
-        
         this.width = width;
         this.length = length;
         this.cellSize = cellSize;
