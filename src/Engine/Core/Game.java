@@ -5,36 +5,42 @@
  */
 package Engine.Core;
 
+import Engine.Entity.EntityCreator;
+import Engine.Entity.AbstractEntity.Entity;
 import Engine.Level.Level;
+import Engine.RaycastRenderer.Renderer;
 import Engine.Util.Time;
+import java.util.HashMap;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 //Merouane Issad
 //for now, discard any code written here, it's only test nonsense
 public class Game extends Application{
-    private static WindowManager windowManager;
     public static Scene scene;
+    private static Stage gameStage;
+    private static WindowManager windowManager;
     private static Level currentLevel;
     
+    //settings
+    public static int screenWidth = 1280;
+    public static int screenHeight = 800;
     //flags
-    boolean isRunning = true;
-    boolean pauseActive = true;
+    public static boolean isRunning = true;
+    public static boolean isRendering = true;
+    public static boolean pauseActive = true;
     
     public void start(Stage stage) throws Exception {
-        
-        /*HashMap<String, String> properties = new HashMap<>();
-        properties.put("classname", "Entity_Coin");
-        Entity ent = EntityCreator.constructEntity(properties);
-        ent.setActive(false);*/
-        /*Entity_Player_Base player = new Entity_Player_Base("a", new Point2D(0,0), 90, 2, 5);
-        Entity_Item_Coin coin = new Entity_Item_Coin("b", new Point2D(0,0), Color.YELLOW, 5);*/
-        
-        windowManager = new WindowManager(stage, 1280, 800);
-        //give the renderer the canvas graphics context here -> renderer.setCanvasContext(windowManager.getRenderContext);
+        windowManager = new WindowManager(stage, screenWidth, screenHeight);
+        Renderer.setCanvas(windowManager.getRenderCanvas());
         
         //now load the initial level -> currentLevel = LevelLoader.load(path_to_level_file);
         new AnimationTimer() { //Game main loop
@@ -46,18 +52,34 @@ public class Game extends Application{
                     Time.update();
                     stage.setTitle("Optik Engine -> FPS : " + Integer.toString(Time.fps));
                     //update all entities in the level -> currentLevel.update();
-                    //render the game -> renderer.render();
-
-                    //test render, this would normally be in the reanderer class
-                    windowManager.renderContext.clearRect(0, 0, windowManager.renderContext.getCanvas().getWidth(), windowManager.renderContext.getCanvas().getHeight());
-                    windowManager.renderContext.setFill(Color.BLUE);
-                    windowManager.renderContext.fillRect(0, 0, windowManager.renderContext.getCanvas().getWidth()/2, 200);
                 }
+                if(isRendering)
+                    Renderer.render();
             }
         }.start();
         
         scene = new Scene(windowManager, windowManager.getWidth(), windowManager.getHeight()); //set windows inside the scene
         stage.setScene(scene);
+        
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
+            @Override
+            public void handle(KeyEvent key) {
+                if(key.getCode() == KeyCode.ESCAPE) {
+                    Game.togglepauseGame();
+                }
+            }
+        });
+        
+        /*stage.getOnCloseRequest()
+        .handle(
+            new WindowEvent(
+                stage,
+                WindowEvent.WINDOW_CLOSE_REQUEST
+            )
+        );*/
+        
+        stage.setResizable(false);
+        gameStage = stage;
         stage.show();
     }
     
@@ -71,16 +93,28 @@ public class Game extends Application{
         return windowManager;
     }
     
-    public void pauseGame(boolean state) //true -> pause, false -> play
+    public static void pauseGame(boolean state) //true -> pause, false -> play
     {
-        this.isRunning = !state;
+        isRunning = !state;
         windowManager.setPauseMenuVisibility(state);
     }
     
-    public void togglepauseGame()
+    public static void togglepauseGame()
     {
         pauseGame(isRunning);
     }
+    
+    public static void exit()
+    {
+        System.out.println("game exit");
+        Platform.exit();
+        /*gameStage.fireEvent(
+        new WindowEvent(
+            gameStage,
+            WindowEvent.WINDOW_CLOSE_REQUEST
+        ));*/
+    }
+
     public static void main(String[] args) {
         launch(args);
     }

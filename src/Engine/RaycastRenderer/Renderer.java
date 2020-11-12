@@ -55,6 +55,10 @@ public class Renderer {
         screenHeight = canvas.getHeight();
     }
     
+    public static void resize(){
+        screenWidth = frame.getWidth();
+        screenHeight = frame.getHeight();
+    }
     //renders level
     private static void renderLevel(){
         final int tileX, tileY; //player grid position
