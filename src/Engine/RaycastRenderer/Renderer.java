@@ -55,6 +55,7 @@ public class Renderer {
         screenHeight = canvas.getHeight();
     }
     
+    //NEW METHOD HERE!!!
     public static void resize(){
         screenWidth = frame.getWidth();
         screenHeight = frame.getHeight();
