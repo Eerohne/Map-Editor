@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Editor.View;
+package Editor.View.Properties;
 
 /**
  *
  * @author A
  */
-public class EntityTab {
+public class WallTab {
     
 }

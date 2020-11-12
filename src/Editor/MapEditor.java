@@ -7,8 +7,9 @@ package Editor;
 
 import Editor.View.Grid.Grid;
 import Editor.Controller.GridController;
+import Editor.View.Properties.EntityTab;
 import Editor.View.Info;
-import Editor.View.Menu;
+import Editor.View.Menu.Menu;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -36,7 +37,7 @@ public class MapEditor extends Application {
         
         
         //Create Entity Tab
-        GridPane entityPane = new GridPane();
+        EntityTab entityPane = new EntityTab();
         Tab entities = new Tab("Entities", entityPane);
         
         //Create Wall Tab

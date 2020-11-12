@@ -1,6 +1,5 @@
 package Editor.Controller;
 
-import Editor.Entity.Collectible;
 import Editor.View.Grid.Cell;
 import Editor.View.Grid.Grid;
 import javafx.event.EventHandler;
@@ -86,10 +85,18 @@ public class GridController {
             }
         });
         
+        for (Cell[] cells : grid.getCells()) {
+            for (Cell cell : cells) {
+                cell.setOnMouseEntered(event -> {
+                    onHover(cell);
+                });
+            }
+        }
+        
         grid.setOnMouseMoved(event -> {
             updateMousePos(event);
             
-            this.onHover();
+            //this.onHover();
         });
         
         //On Mouse Press Event
@@ -128,7 +135,7 @@ public class GridController {
         @Override
         public void handle(MouseEvent event) {
             updateMousePos(event);
-            onHover();
+            //onHover();
             //Grid Translation Implementation
             if(event.getButton().equals(MouseButton.MIDDLE)){
                 //Translation vecxtor
@@ -178,13 +185,15 @@ public class GridController {
         }
     }
     
-    private void onHover(){
-        hoverCell.isSelected(false);
+    private void onHover(Cell hoverCell){
+        this.hoverCell.isSelected(false);
         
-        hoverCell = grid.getCells()[(int)aX][(int)aY];
+        this.hoverCell = hoverCell;//grid.getCells()[(int)aX][(int)aY];
         
-        hoverCell.isSelected(true);
+        this.hoverCell.isSelected(true);
     }
+    
+    
     private void scale(double scaleFactor){
         Scale scale = new Scale(scaleFactor, scaleFactor);
         
