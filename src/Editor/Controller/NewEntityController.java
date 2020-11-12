@@ -6,7 +6,7 @@
 package Editor.Controller;
 
 import Editor.Entity.EntityModel;
-import Editor.View.Menu.View;
+import Editor.View.Menu.NewEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -26,14 +26,14 @@ import org.json.simple.JSONObject;
  *
  * @author linuo
  */
-public class Controller {
+public class NewEntityController {
     
     EntityModel model = new EntityModel();
-    View view = new View();
+    NewEntity view = new NewEntity();
     
     ObservableList<EntityModel> list = FXCollections.observableArrayList();
 
-    public Controller(EntityModel model, View view) {
+    public NewEntityController(EntityModel model, NewEntity view) {
         this.model = model;
         this.view = view;
         
@@ -57,7 +57,7 @@ public class Controller {
                 try {
                     export();
                 } catch (IOException ex) {
-                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }; 

@@ -5,7 +5,10 @@
  */
 package Editor.Controller;
 
+import Editor.NewEntityStage;
+import Editor.View.Menu.Menu;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 /**
  *
@@ -16,6 +19,20 @@ public class MenuController {
     private Button newEntity;
     private Button placePlayer;
     private Button help;
+
+    private Menu menu;
     
-    
+    public MenuController(Menu menu, Stage stage) {
+        this.menu = menu;
+        
+        this.newWall = menu.getNewWall();
+        this.newEntity = menu.getNewEntity();
+        this.placePlayer = menu.getPlacePlayer();
+        this.help = menu.getHelp();
+        
+        newWall.setOnAction(null);
+        newEntity.setOnAction(e -> {
+            new NewEntityStage(stage);
+        });
+    }
 }

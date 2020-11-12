@@ -21,7 +21,7 @@ import javafx.scene.layout.VBox;
  *
  * @author linuo
  */
-public class View extends GridPane{
+public class NewEntity extends GridPane{
     
     public TableView table = new TableView();
     public TableColumn<EntityModel, String> propertyCol = new TableColumn<>("property");
@@ -36,7 +36,7 @@ public class View extends GridPane{
     public VBox vbox = new VBox();
     
     
-    public View(){
+    public NewEntity(){
         
         table.setEditable(true);
         this.setHgap(10);

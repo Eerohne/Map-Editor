@@ -7,6 +7,7 @@ package Editor;
 
 import Editor.View.Grid.Grid;
 import Editor.Controller.GridController;
+import Editor.Controller.MenuController;
 import Editor.View.Properties.EntityTab;
 import Editor.View.Info;
 import Editor.View.Menu.Menu;
@@ -37,7 +38,7 @@ public class MapEditor extends Application {
         
         
         //Create Entity Tab
-        EntityTab entityPane = new EntityTab();
+        GridPane entityPane = new GridPane();
         Tab entities = new Tab("Entities", entityPane);
         
         //Create Wall Tab
@@ -60,6 +61,7 @@ public class MapEditor extends Application {
         Scene scene = new Scene(layout, 500, 500);
         
         GridController gc = new GridController(scene, gridRender, new Button(), new ColorPicker());
+        MenuController mc = new MenuController(menu, editorWindow);
         
         editorWindow.setTitle("Optik Editor");
         editorWindow.setScene(scene);
