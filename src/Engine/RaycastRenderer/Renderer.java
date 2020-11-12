@@ -16,8 +16,8 @@ import javafx.scene.paint.Color;
  */
 public class Renderer {
     
-    private int mapX =5, mapY =5;
-    private int[][] map = {
+    private static int mapX =5, mapY =5;
+    private static int[][] map = {
         {1, 1, 1, 1, 1},
         {1, 0, 0, 0, 1},
         {1, 0, 2, 0, 1},
@@ -25,31 +25,38 @@ public class Renderer {
         {1, 1, 1, 1, 1}
     };
     
-    private int screenWidth = 800, screenHeight = 450;
-    public Canvas frame = new Canvas(screenWidth, screenHeight);
-    private GraphicsContext gc = frame.getGraphicsContext2D();
+    private static double screenWidth = 800.0, screenHeight = 450.0;
+    public static Canvas frame = new Canvas(screenWidth, screenHeight);
+    private static GraphicsContext gc = frame.getGraphicsContext2D();
     
-    private Point2D cam;
-    private float camA, fov;
+    private static Point2D cam; //camera position
+    private static float camA, fov; //camera orientation & field of view (degrees)
     
-    public Renderer(){
+    private Renderer(){
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, screenWidth, screenHeight);
         gc.setFill(Color.GREEN);
         gc.fillRect(0, screenHeight/2.0, screenWidth, screenHeight/2.0);
         
         cam = new Point2D(1.5, 2.5);
-        camA = 0f;
+        camA = 00f;
         fov = 90f;
     }
     
     //renders one frame
-    public void render(){
+    public static void render(){
+        new Renderer();
         renderLevel();
+    }
+    public static void setCanvas(Canvas canvas){
+        frame = canvas;
+        gc = canvas.getGraphicsContext2D();
+        screenWidth = canvas.getWidth();
+        screenHeight = canvas.getHeight();
     }
     
     //renders level
-    private void renderLevel(){
+    private static void renderLevel(){
         final int tileX, tileY; //player grid position
         final float offX, offY; //offset within tile (0 <= off < 1)
         //note: posX = tileX + offX and posY = tileY + offY
@@ -62,8 +69,11 @@ public class Renderer {
         float rayA = camA - (fov/2f);
         
         for(int r=0; r<screenWidth;r++){
-            if(rayA < 0)  rayA+=360;
-            if(rayA >=360)rayA-=360;
+            while (rayA<0 || rayA>=360) {                
+                if(rayA < 0)  rayA+=360;
+                if(rayA >=360)rayA-=360;
+            }
+            
             
             boolean upward, rightward;
             upward = rayA<180; rightward = (rayA<90 || rayA>270);
@@ -77,12 +87,12 @@ public class Renderer {
             
             //intersects with vertical
             if(rightward){//looking right (+x)
-                rV = new Point2D(tileX+1, ray.getY()+(1-offX)*tan);
+                rV = new Point2D(tileX+1, (1-offX)*tan+ray.getY());
                 stepX = 1; stepY = -tan;
                 if(upward) stepY = tan;
             }
             if(!rightward){//looking left (-x)
-                rV = new Point2D(tileX  , ray.getY()+(1-offX)*tan);
+                rV = new Point2D(tileX  , (1-offX)*tan+ray.getY());
                 stepX = -1; stepY = -tan;
                 if(upward) stepY = tan;
             }
@@ -100,6 +110,7 @@ public class Renderer {
             }
             
             //intersects with horizontal
+            stepX =0; stepY=0;
             if(upward){//looking up (+y)
                 rH = new Point2D(ray.getX()+(1-offY)*cotan, tileY+1);
                 stepX = -cotan; stepY = 1;
@@ -123,7 +134,7 @@ public class Renderer {
                 }else rH = rH.add(stepX, stepY);
             }
             
-            if(rH.magnitude()<rV.magnitude() && !rH.equals(Point2D.ZERO)){
+            if(rH.magnitude()<=rV.magnitude() && !rH.equals(Point2D.ZERO) && rH.magnitude()!=Double.POSITIVE_INFINITY && rH.magnitude()!=Double.NEGATIVE_INFINITY){
                 int x = (int)Math.floor(rH.getX());
                 int y = (int)Math.floor(rH.getY());
                 double dist = rH.magnitude();
@@ -139,15 +150,18 @@ public class Renderer {
             
         }
     }
+    private static void renderEntities(){
+        //todo
+    }
     
-    static Color getColor(int id){
+    private static Color getColor(int id){
         switch(id){
             case 1: return Color.GRAY;
             case 2: return Color.GOLD;
             default: return Color.RED;
         }
     }
-    private void drawWallLine(int x, double distance, Color color){
+    private static void drawWallLine(int x, double distance, Color color){
         double maxHeight = screenHeight;
         double height = maxHeight/distance;
         double lineTop = (screenHeight-height)/2.0;
