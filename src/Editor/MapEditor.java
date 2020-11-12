@@ -8,7 +8,6 @@ package Editor;
 import Editor.View.Grid.Grid;
 import Editor.Controller.GridController;
 import Editor.Controller.MenuController;
-import Editor.View.Properties.EntityTab;
 import Editor.View.Info;
 import Editor.View.Menu.Menu;
 import javafx.application.Application;
