@@ -45,7 +45,7 @@ public class MapEditor extends Application {
         Tab walls = new Tab("Walls", wallPane);
         
         TabPane properties = new TabPane(entities, walls);
-        
+        properties.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         
         BorderPane gridDisplay = new BorderPane();
         gridDisplay.setCenter(gridRender);
