@@ -67,6 +67,7 @@ public class WindowManager extends AnchorPane{
         this.setBottomAnchor(pauseMenu, 0.0);
         this.setRightAnchor(pauseMenu, 0.0);
         this.setLeftAnchor(pauseMenu, 0.0);
+        this.resizeWindow(width, height);
     }
     
     //renderCanvas
@@ -164,7 +165,9 @@ public class WindowManager extends AnchorPane{
                     Game.getWindowManager().setFullScreen(fullscreenCheckbox.isSelected());
                 }else{
                     Game.getWindowManager().setFullScreen(false);
-                    if(screnSizeBox.getValue().equals("800 x 600"))
+                    if(screnSizeBox.getValue() == null)
+                        Game.getWindowManager().resizeWindow((int)Game.getWindowManager().getWidth(), (int)Game.getWindowManager().getHeight());
+                    else if(screnSizeBox.getValue().equals("800 x 600"))
                         Game.getWindowManager().resizeWindow(800, 600);
                     else if(screnSizeBox.getValue().equals("1280 x 800"))
                         Game.getWindowManager().resizeWindow(1280, 800);

@@ -18,9 +18,9 @@ public class Renderer {
     
     private static int mapX =5, mapY =5;
     private static int[][] map = {
-        {1, 1, 1, 1, 1},
+        {2, 2, 2, 2, 2},
         {1, 0, 0, 0, 1},
-        {1, 0, 2, 0, 1},
+        {1, 0, 0, 0, 1},
         {1, 0, 0, 0, 1},
         {1, 1, 1, 1, 1}
     };
@@ -29,8 +29,8 @@ public class Renderer {
     public static Canvas frame = new Canvas(screenWidth, screenHeight);
     private static GraphicsContext gc = frame.getGraphicsContext2D();
     
-    private static Point2D cam; //camera position
-    private static float camA, fov; //camera orientation & field of view (degrees)
+    public static Point2D cam; //camera position
+    public static float camA, fov; //camera orientation & field of view (degrees)
     
     private Renderer(){
         gc.setFill(Color.BLACK);
@@ -45,7 +45,6 @@ public class Renderer {
     
     //renders one frame
     public static void render(){
-        new Renderer();
         renderLevel();
     }
     public static void setCanvas(Canvas canvas){
@@ -53,6 +52,10 @@ public class Renderer {
         gc = canvas.getGraphicsContext2D();
         screenWidth = canvas.getWidth();
         screenHeight = canvas.getHeight();
+        
+        cam = new Point2D(2f, 2f);
+        camA = 00f;
+        fov = 90f;
     }
     
     //NEW METHOD HERE!!!
@@ -62,6 +65,7 @@ public class Renderer {
     }
     //renders level
     private static void renderLevel(){
+        gc.clearRect(0, 0, screenWidth, screenHeight);
         final int tileX, tileY; //player grid position
         final float offX, offY; //offset within tile (0 <= off < 1)
         //note: posX = tileX + offX and posY = tileY + offY
@@ -168,7 +172,7 @@ public class Renderer {
     }
     private static void drawWallLine(int x, double distance, Color color){
         double maxHeight = screenHeight;
-        double height = maxHeight/distance;
+        double height = maxHeight/distance + 200/distance;
         double lineTop = (screenHeight-height)/2.0;
         
         gc.setFill(color);

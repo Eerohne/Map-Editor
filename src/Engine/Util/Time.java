@@ -16,6 +16,8 @@ public class Time {
     public static void update()
     {
         deltaTime = ((getTime() - lastTime)/1000) * timeScale; //calculate time passed from the last time update
+        if(deltaTime > 1) //failsafe in case the value goes crazy
+            deltaTime = 0;
         lastTime = getTime();
         
         CalculateFrameRate();
