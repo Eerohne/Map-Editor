@@ -46,7 +46,4 @@ public class EntityModel {
     public String toString() {
         return "EntityModel{" + "property=" + property + ", value=" + value + '}';
     }
-    
-    
-    
 }

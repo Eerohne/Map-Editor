@@ -6,11 +6,14 @@
 package Editor.View.Properties;
 
 import Editor.Entity.EntityModel;
+import java.util.ArrayList;
 import javafx.geometry.Insets;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -19,8 +22,8 @@ import javafx.scene.layout.VBox;
  *
  * @author A
  */
-public class EntityTab extends GridPane{
-    
+public class EntityTab extends Accordion{
+    private ArrayList<TitledPane> entities = new ArrayList<>();
     
    
 }

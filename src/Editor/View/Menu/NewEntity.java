@@ -21,6 +21,7 @@ import javafx.scene.layout.VBox;
  *
  * @author linuo
  */
+
 public class NewEntity extends GridPane{
     
     public TableView table = new TableView();
