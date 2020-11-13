@@ -31,8 +31,8 @@ public class Game extends Application{
     private static Level currentLevel;
     
     //settings
-    public static int screenWidth = 1280;
-    public static int screenHeight = 800;
+    public static int screenWidth = 1920;
+    public static int screenHeight = 1080;
     //flags
     public static boolean isRunning = true;
     public static boolean isRendering = true;

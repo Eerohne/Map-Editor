@@ -9,7 +9,7 @@ import Editor.View.Grid.Grid;
 import Editor.Controller.GridController;
 import Editor.Controller.MenuController;
 import Editor.View.Info;
-import Editor.View.Menu.Menu;
+import Editor.View.Menu.TopMenu;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -30,7 +30,7 @@ public class MapEditor extends Application {
     
     @Override
     public void start(Stage editorWindow) {
-        Menu menu = new Menu();
+        TopMenu menu = new TopMenu();
         Info info = new Info();
         Grid gridRender = new Grid(60, 20, 10);
         setChildrenClipping(gridRender);
@@ -57,7 +57,7 @@ public class MapEditor extends Application {
         layout.setLeft(properties);
         
         
-        Scene scene = new Scene(layout, 500, 500);
+        Scene scene = new Scene(layout, 1920, 1080);
         
         GridController gc = new GridController(scene, gridRender, new Button(), new ColorPicker());
         MenuController mc = new MenuController(menu, editorWindow);
