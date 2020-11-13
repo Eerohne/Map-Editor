@@ -30,12 +30,9 @@ public class Game extends Application{
     private static WindowManager windowManager;
     private static Level currentLevel;
     
-    //TEST
-    private static float counter = 0;
-    
     //settings
-    public static int screenWidth = 1280;
-    public static int screenHeight = 800;
+    public static int screenWidth = 1920;
+    public static int screenHeight = 1080;
     //flags
     public static boolean isRunning = true;
     public static boolean isRendering = true;
@@ -44,7 +41,7 @@ public class Game extends Application{
     public void start(Stage stage) throws Exception {
         windowManager = new WindowManager(stage, screenWidth, screenHeight);
         Renderer.setCanvas(windowManager.getRenderCanvas());
-        //windowManager.resizeWindow(1280 , 800);
+        
         //now load the initial level -> currentLevel = LevelLoader.load(path_to_level_file);
         new AnimationTimer() { //Game main loop
 
@@ -55,8 +52,6 @@ public class Game extends Application{
                     Time.update();
                     stage.setTitle("Optik Engine -> FPS : " + Integer.toString(Time.fps));
                     //update all entities in the level -> currentLevel.update();
-                    //Renderer.camA += Time.deltaTime*45;
-                    add();
                 }
                 if(isRendering)
                     Renderer.render();
@@ -72,40 +67,42 @@ public class Game extends Application{
                 if(key.getCode() == KeyCode.ESCAPE) {
                     Game.togglepauseGame();
                 }
-                //test walking
+                
                 if(key.getCode() == KeyCode.W) {
-                    Renderer.cam = Renderer.cam.add(0, 2 * Time.deltaTime);
-                }
-                if(key.getCode() == KeyCode.S) {
                     Renderer.cam = Renderer.cam.add(0, -2 * Time.deltaTime);
                 }
+                if(key.getCode() == KeyCode.S) {
+                    Renderer.cam = Renderer.cam.add(0, 2 * Time.deltaTime);
+                }
                 if(key.getCode() == KeyCode.A) {
-                    Renderer.cam = Renderer.cam.add(-2 * Time.deltaTime,0);
+                    Renderer.cam = Renderer.cam.add(-2 * Time.deltaTime, 0);
                 }
                 if(key.getCode() == KeyCode.D) {
                     Renderer.cam = Renderer.cam.add(2 * Time.deltaTime, 0);
                 }
                 
                 if(key.getCode() == KeyCode.RIGHT) {
-                    Renderer.camA += 180*Time.deltaTime;
+                    Renderer.camA += 100 * Time.deltaTime;
                 }
                 if(key.getCode() == KeyCode.LEFT) {
-                    Renderer.camA += -180*Time.deltaTime;
+                    Renderer.camA -= 100 * Time.deltaTime;
                 }
-                
-                System.out.println(Renderer.cam);
             }
         });
+        
+        /*stage.getOnCloseRequest()
+        .handle(
+            new WindowEvent(
+                stage,
+                WindowEvent.WINDOW_CLOSE_REQUEST
+            )
+        );*/
         
         stage.setResizable(false);
         gameStage = stage;
         stage.show();
     }
     
-    public static void add()
-    {
-        counter += Time.deltaTime;
-    }
     public static Level getCurrentLevel()
     {
         return currentLevel;
@@ -130,7 +127,12 @@ public class Game extends Application{
     public static void exit()
     {
         System.out.println("game exit");
-        gameStage.close();
+        Platform.exit();
+        /*gameStage.fireEvent(
+        new WindowEvent(
+            gameStage,
+            WindowEvent.WINDOW_CLOSE_REQUEST
+        ));*/
     }
 
     public static void main(String[] args) {
