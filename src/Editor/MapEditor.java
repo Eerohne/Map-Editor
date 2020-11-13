@@ -9,6 +9,7 @@ import Editor.View.Grid.Grid;
 import Editor.Controller.GridController;
 import Editor.Controller.MenuController;
 import Editor.View.Info;
+import Editor.View.Menu.ShortcutBar;
 import Editor.View.Menu.TopMenu;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -31,6 +32,9 @@ public class MapEditor extends Application {
     @Override
     public void start(Stage editorWindow) {
         TopMenu menu = new TopMenu();
+        ShortcutBar shortcuts = new ShortcutBar();
+        BorderPane tools = new BorderPane(shortcuts, menu, null, null, null);
+        
         Info info = new Info();
         Grid gridRender = new Grid(60, 20, 10);
         setChildrenClipping(gridRender);
@@ -53,7 +57,7 @@ public class MapEditor extends Application {
         
         BorderPane layout = new BorderPane();
         layout.setCenter(gridDisplay);
-        layout.setTop(menu);
+        layout.setTop(tools);
         layout.setLeft(properties);
         
         
