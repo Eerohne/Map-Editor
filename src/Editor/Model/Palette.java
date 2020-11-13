@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Editor.View.Properties;
-
-import javafx.scene.control.Accordion;
+package Editor.Model;
 
 /**
  *
  * @author A
  */
-public class WallTab extends Accordion{
-    ArrayList<>
+public class Palette {
+    
 }

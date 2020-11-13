@@ -5,7 +5,7 @@
  */
 package Editor.Controller;
 
-import Editor.Entity.EntityModel;
+import Editor.Model.EntityModel;
 import Editor.View.Menu.NewEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

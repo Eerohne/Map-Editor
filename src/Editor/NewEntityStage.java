@@ -5,7 +5,7 @@
  */
 package Editor;
 
-import Editor.Entity.EntityModel;
+import Editor.Model.EntityModel;
 import Editor.View.Menu.NewEntity;
 import Editor.Controller.NewEntityController;
 import javafx.application.Application;

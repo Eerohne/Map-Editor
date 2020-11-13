@@ -5,7 +5,7 @@
  */
 package Editor.View.Menu;
 
-import Editor.Entity.EntityModel;
+import Editor.Model.EntityModel;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;

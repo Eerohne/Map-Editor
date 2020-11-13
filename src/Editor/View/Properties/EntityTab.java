@@ -5,7 +5,7 @@
  */
 package Editor.View.Properties;
 
-import Editor.Entity.EntityModel;
+import Editor.Model.EntityModel;
 import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Accordion;
