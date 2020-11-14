@@ -8,6 +8,7 @@ package Editor;
 import Editor.View.Grid.Grid;
 import Editor.Controller.GridController;
 import Editor.Controller.MenuController;
+import Editor.Controller.ShortcutController;
 import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Menu.TopMenu;
@@ -67,6 +68,7 @@ public class MapEditor extends Application {
         
         GridController gc = new GridController(scene, gridRender, new Button(), new ColorPicker());
         MenuController mc = new MenuController(menu, editorWindow);
+        ShortcutController sc = new ShortcutController(shortcuts, editorWindow);
         
         editorWindow.setTitle("Optik Editor");
         editorWindow.setScene(scene);

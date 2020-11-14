@@ -40,5 +40,26 @@ public class ShortcutBar extends HBox{
         this.setSpacing(5);
         this.getChildren().addAll(wallShort, entityShort, playerShort, space, runShort, help);
     }
+
+    public Button getWallShort() {
+        return wallShort;
+    }
+
+    public Button getEntityShort() {
+        return entityShort;
+    }
+
+    public Button getPlayerShort() {
+        return playerShort;
+    }
+
+    public Button getRunShort() {
+        return runShort;
+    }
+
+    public Button getHelp() {
+        return help;
+    }
         
+    
 }
