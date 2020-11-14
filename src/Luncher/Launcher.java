@@ -21,12 +21,12 @@ import javafx.stage.Stage;
  *
  * @author child
  */
-public class Luncher extends Application{
-    public void start(Stage luncherStage) {
+public class Launcher extends Application{
+    public void start(Stage launcherStage) {
         VBox buttonVBox = new VBox();
         buttonVBox.setSpacing(50);
                 
-        Button gameButton = new Button("Lunch Game");
+        Button gameButton = new Button("Launch Game");
         gameButton.setMinSize(200, 80);
         gameButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
@@ -34,17 +34,17 @@ public class Luncher extends Application{
                 Stage engine = new Stage();
                 Game game = new Game();
                 game.start(engine);
-                luncherStage.close();
+                launcherStage.close();
             } catch (Exception ex) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Luncher Error");
+                alert.setTitle("Launcher Error");
                 alert.setContentText("Engine cannot be oppened");
                 alert.showAndWait();
             }
             }
         });
         
-        Button editorButton = new Button("Lunch Editor");
+        Button editorButton = new Button("Launch Editor");
         editorButton.setMinSize(200, 80);
         editorButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
@@ -52,10 +52,10 @@ public class Luncher extends Application{
                 Stage ediorStage = new Stage();
                 MapEditor editor = new MapEditor();
                 editor.start(ediorStage);
-                luncherStage.close();
+                launcherStage.close();
             } catch (Exception ex) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Luncher Error");
+                alert.setTitle("Launcher Error");
                 alert.setContentText("Editor cannot be oppened");
                 alert.showAndWait();
             }
@@ -65,11 +65,11 @@ public class Luncher extends Application{
         buttonVBox.getChildren().addAll(gameButton, editorButton);
         buttonVBox.setAlignment(Pos.CENTER);
         
-        Scene scene = new Scene(buttonVBox, 800, 800);
-        luncherStage.setTitle("Optik Engine Luncher");
-        luncherStage.setResizable(false);
-        luncherStage.setScene(scene);
-        luncherStage.show();
+        Scene scene = new Scene(buttonVBox, 600, 600);
+        launcherStage.setTitle("Optik Engine Launcher");
+        launcherStage.setResizable(false);
+        launcherStage.setScene(scene);
+        launcherStage.show();
         
     }
     
