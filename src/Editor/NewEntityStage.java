@@ -8,7 +8,6 @@ package Editor;
 import Editor.Model.EntityModel;
 import Editor.View.Menu.NewEntity;
 import Editor.Controller.NewEntityController;
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;

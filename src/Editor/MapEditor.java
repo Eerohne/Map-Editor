@@ -11,6 +11,8 @@ import Editor.Controller.MenuController;
 import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Menu.TopMenu;
+import Editor.View.Properties.EntityTab;
+import Editor.View.Properties.WallTab;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -41,12 +43,12 @@ public class MapEditor extends Application {
         
         
         //Create Entity Tab
-        GridPane entityPane = new GridPane();
-        Tab entities = new Tab("Entities", entityPane);
+        EntityTab entityTab = new EntityTab();
+        Tab entities = new Tab("Entities", entityTab);
         
         //Create Wall Tab
-        GridPane wallPane = new GridPane();
-        Tab walls = new Tab("Walls", wallPane);
+        WallTab wallTab = new WallTab();
+        Tab walls = new Tab("Walls", wallTab);
         
         TabPane properties = new TabPane(entities, walls);
         properties.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);

@@ -5,7 +5,9 @@
  */
 package Editor.Model;
 
+import java.util.LinkedList;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -15,6 +17,8 @@ public class EntityModel {
     
     public SimpleStringProperty property;
     public SimpleStringProperty value;
+    
+    public static LinkedList<ObservableList<EntityModel>> entityList = new LinkedList<>();
 
     public EntityModel(String property, String value) {
         this.property = new SimpleStringProperty(property);

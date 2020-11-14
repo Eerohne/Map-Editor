@@ -48,9 +48,9 @@ public class MenuController {
         List<MenuItem> runItems = run.getItems();
         runItems.get(0).setOnAction(e ->{
             try {
-                System.out.println("YAY");
                 Stage engine = new Stage();
                 Game game = new Game();
+                engine.initOwner(editorStage);
                 game.start(engine);
             } catch (Exception ex) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -60,5 +60,9 @@ public class MenuController {
             }
         });
         
+        List<MenuItem> editItems = edit.getItems();
+        editItems.get(1).setOnAction(e -> {
+            new NewEntityStage(editorStage);
+        });
     }
 }

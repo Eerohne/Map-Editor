@@ -55,6 +55,7 @@ public class NewEntityController {
             @Override
             public void handle(Event event) {
                 try {
+                    EntityModel.entityList.add(list);
                     export();
                 } catch (IOException ex) {
                     Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
