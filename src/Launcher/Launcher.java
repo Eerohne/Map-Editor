@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Luncher;
+package Launcher;
 
 import Editor.MapEditor;
 import Engine.Core.Game;
