@@ -19,7 +19,7 @@ public class Time {
         if(deltaTime > 1) //failsafe in case the value goes crazy
             deltaTime = 0;
         lastTime = getTime();
-        System.out.println(deltaTime);
+        
         CalculateFrameRate();
     }
     

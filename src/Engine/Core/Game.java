@@ -10,6 +10,7 @@ import Engine.Entity.AbstractEntity.Entity;
 import Engine.Level.Level;
 import Engine.RaycastRenderer.Renderer;
 import Engine.Util.Time;
+import java.io.File;
 import java.util.HashMap;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -89,6 +90,14 @@ public class Game extends Application{
                 }
             }
         });
+        
+        String pathName = "ressources/style.css" ;
+        File file = new File(pathName);
+        if (file.exists()) {
+            scene.getStylesheets().add(file.toURI().toURL().toExternalForm());
+        } else {
+           System.out.println("Could not find css file: "+pathName);
+        }
         
         stage.setResizable(false);
         gameStage = stage;

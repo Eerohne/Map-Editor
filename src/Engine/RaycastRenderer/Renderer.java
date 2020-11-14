@@ -66,6 +66,10 @@ public class Renderer {
     //renders level
     private static void renderLevel(){
         gc.clearRect(0, 0, screenWidth, screenHeight);
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, screenWidth, screenHeight);
+        gc.setFill(Color.GREEN);
+        gc.fillRect(0, screenHeight/2.0, screenWidth, screenHeight/2.0);
         final int tileX, tileY; //player grid position
         final float offX, offY; //offset within tile (0 <= off < 1)
         //note: posX = tileX + offX and posY = tileY + offY

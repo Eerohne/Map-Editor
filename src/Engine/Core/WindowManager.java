@@ -88,9 +88,13 @@ public class WindowManager extends AnchorPane{
         //only a setup test, this would normally be code inside some entities
         Label label = new Label("Press esc to toggle pause menu");
         label.setFont(Font.font("Cambria", 32));
-        ingameDisplay.getChildren().add(label);
+        Label label2 = new Label("Rendering in testing phase");
+        label2.setFont(Font.font("Cambria", 20));
+        ingameDisplay.getChildren().addAll(label, label2);
         ingameDisplay.setBottomAnchor(label, 0.0);
         ingameDisplay.setLeftAnchor(label, 0.0);
+        ingameDisplay.setTopAnchor(label2, 0.0);
+        ingameDisplay.setRightAnchor(label2, 50.0);
     }
     
     public AnchorPane getIngameDisplay() {
