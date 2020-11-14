@@ -99,6 +99,8 @@ public class Game extends Application{
            System.out.println("Could not find css file: "+pathName);
         }
         
+        
+        
         stage.setResizable(false);
         gameStage = stage;
         stage.show();
