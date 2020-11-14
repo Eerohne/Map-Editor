@@ -39,7 +39,7 @@ public class Launcher extends Application{
         anchor.setBottomAnchor(buttonVBox, 0.0);
         anchor.setRightAnchor(buttonVBox, 0.0);
         anchor.setLeftAnchor(buttonVBox, 0.0);
-        anchor.setBottomAnchor(mark, 10.0);
+        anchor.setBottomAnchor(mark, 5.0);
         anchor.setLeftAnchor(mark, 10.0);
         Scene scene = new Scene(anchor, 600, 600);
         

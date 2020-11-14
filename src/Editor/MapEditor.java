@@ -14,6 +14,8 @@ import Editor.View.Menu.ShortcutBar;
 import Editor.View.Menu.TopMenu;
 import Editor.View.Properties.EntityTab;
 import Editor.View.Properties.WallTab;
+import java.io.File;
+import java.net.MalformedURLException;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -33,7 +35,7 @@ import javafx.stage.Stage;
 public class MapEditor extends Application {
     
     @Override
-    public void start(Stage editorWindow) {
+    public void start(Stage editorWindow) throws MalformedURLException {
         TopMenu menu = new TopMenu();
         ShortcutBar shortcuts = new ShortcutBar();
         BorderPane tools = new BorderPane(shortcuts, menu, null, null, null);
@@ -69,6 +71,14 @@ public class MapEditor extends Application {
         GridController gc = new GridController(scene, gridRender, new Button(), new ColorPicker());
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow);
+        
+        String pathName = "ressources/style.css" ;
+        File file = new File(pathName);
+        if (file.exists()) {
+            scene.getStylesheets().add(file.toURI().toURL().toExternalForm());
+        } else {
+           System.out.println("Could not find css file: "+pathName);
+        }
         
         editorWindow.setTitle("Optik Editor");
         editorWindow.setScene(scene);
