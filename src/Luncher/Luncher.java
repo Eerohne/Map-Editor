@@ -14,7 +14,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -26,6 +28,9 @@ public class Luncher extends Application{
         VBox buttonVBox = new VBox();
         buttonVBox.setSpacing(50);
                 
+        Label title = new Label("OPTIK ENGINE");
+        title.setFont(new Font("Fantasy", 25));
+        
         Button gameButton = new Button("Lunch Game");
         gameButton.setMinSize(200, 80);
         gameButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -62,7 +67,7 @@ public class Luncher extends Application{
             }
         });
         
-        buttonVBox.getChildren().addAll(gameButton, editorButton);
+        buttonVBox.getChildren().addAll(title, gameButton, editorButton);
         buttonVBox.setAlignment(Pos.CENTER);
         
         Scene scene = new Scene(buttonVBox, 800, 800);
