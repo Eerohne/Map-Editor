@@ -72,6 +72,7 @@ public class MapEditor extends Application {
         
         editorWindow.setTitle("Optik Editor");
         editorWindow.setScene(scene);
+        editorWindow.setMaximized(true);
         editorWindow.show();
     }
     

@@ -31,8 +31,8 @@ public class Game extends Application{
     private static Level currentLevel;
     
     //settings
-    public static int screenWidth = 1920;
-    public static int screenHeight = 1080;
+    public static int screenWidth = 1280;
+    public static int screenHeight = 800;
     //flags
     public static boolean isRunning = true;
     public static boolean isRendering = true;
@@ -90,14 +90,6 @@ public class Game extends Application{
             }
         });
         
-        /*stage.getOnCloseRequest()
-        .handle(
-            new WindowEvent(
-                stage,
-                WindowEvent.WINDOW_CLOSE_REQUEST
-            )
-        );*/
-        
         stage.setResizable(false);
         gameStage = stage;
         stage.show();
@@ -127,12 +119,7 @@ public class Game extends Application{
     public static void exit()
     {
         System.out.println("game exit");
-        Platform.exit();
-        /*gameStage.fireEvent(
-        new WindowEvent(
-            gameStage,
-            WindowEvent.WINDOW_CLOSE_REQUEST
-        ));*/
+        gameStage.close();
     }
 
     public static void main(String[] args) {
