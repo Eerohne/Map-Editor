@@ -5,6 +5,7 @@
  */
 package Engine.Core;
 
+import Engine.Window.WindowManager;
 import Engine.Entity.EntityCreator;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Level.Level;

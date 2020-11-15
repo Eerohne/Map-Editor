@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Engine.Core;
+package Engine.Window;
 
 //Merouane Issad
 
+import Engine.Core.Game;
 import Engine.RaycastRenderer.Renderer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,6 +24,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -33,7 +35,8 @@ public class WindowManager extends AnchorPane{
     private Stage stage;
     private Canvas renderCanvas; //first layer, never initiated two times, handled by the renderer
     private AnchorPane ingameDisplay; //second layer, cleared and rebuilt at every level load, controlled by entities and game logic
-    private AnchorPane pauseMenu; //third layer, built only once at game start, hidden and visible on user request (Example : button press)
+    private AnchorPane pausePane; //third layer, built only once at game start, hidden and visible on user request (Example : button press)
+    private GameMenu pauseMenu; //menu controller
     
     private int oldWidth, oldHeight;
     private boolean isFullscreen;
@@ -49,9 +52,9 @@ public class WindowManager extends AnchorPane{
         initRenderCanvas();
         buildIngameDisplay();
         buildPauseMenu();
-        pauseMenu.setVisible(false);
+        pausePane.setVisible(true);
         
-        this.getChildren().addAll(renderCanvas, ingameDisplay, pauseMenu);
+        this.getChildren().addAll(renderCanvas, ingameDisplay, pausePane);
         
         this.setTopAnchor(renderCanvas, 0.0);
         this.setBottomAnchor(renderCanvas, 0.0);
@@ -63,10 +66,10 @@ public class WindowManager extends AnchorPane{
         this.setRightAnchor(ingameDisplay, 0.0);
         this.setLeftAnchor(ingameDisplay, 0.0);
         
-        this.setTopAnchor(pauseMenu, 0.0);
-        this.setBottomAnchor(pauseMenu, 0.0);
-        this.setRightAnchor(pauseMenu, 0.0);
-        this.setLeftAnchor(pauseMenu, 0.0);
+        this.setTopAnchor(pausePane, 0.0);
+        this.setBottomAnchor(pausePane, 0.0);
+        this.setRightAnchor(pausePane, 0.0);
+        this.setLeftAnchor(pausePane, 0.0);
         this.resizeWindow(width, height);
     }
     
@@ -106,17 +109,17 @@ public class WindowManager extends AnchorPane{
         this.ingameDisplay.getChildren().clear();
     }
     
-    //pauseMenu
+    //pausePane
     private void buildPauseMenu()
     {
-        //Game.getWindowManager().setFullScreen(!isFullscreen);
-        System.out.println("pause build");
-        pauseMenu = new AnchorPane();
+        pausePane = new AnchorPane();
+        
+        pauseMenu = new GameMenu("main");
         
         //main pause screen
-        VBox pauseVbox = new VBox();
-        pauseVbox.setAlignment(Pos.CENTER);
-        pauseVbox.setSpacing(40);
+        VBox mainBox = new VBox();
+        mainBox.setAlignment(Pos.CENTER);
+        mainBox.setSpacing(40);
         
         Button resumeButton = new Button("resume game");
         resumeButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -140,13 +143,14 @@ public class WindowManager extends AnchorPane{
         });
         quitButton.setMinWidth(300);
         quitButton.setMinHeight(80);
-
-        pauseVbox.getChildren().addAll(resumeButton, optionButton, quitButton);
+        
+        mainBox.getChildren().addAll(resumeButton, optionButton, quitButton);
+        pauseMenu.addScreen("main", mainBox);
         
         //option screen
-        VBox optionVbox = new VBox();
-        optionVbox.setAlignment(Pos.CENTER);
-        optionVbox.setSpacing(40);
+        VBox optionBox = new VBox();
+        optionBox.setAlignment(Pos.CENTER);
+        optionBox.setSpacing(40);
         
         ComboBox screnSizeBox = new ComboBox();
         screnSizeBox.setPromptText((int)this.getWidth()+" x "+(int)this.getHeight());
@@ -193,28 +197,29 @@ public class WindowManager extends AnchorPane{
         buttonBar.setSpacing(30);
         buttonBar.getChildren().addAll(applyButton, returnButton);
 
-        optionVbox.getChildren().addAll(screnSizeBox, fullscreenCheckbox, buttonBar);
-        optionVbox.setVisible(false);
-        optionVbox.setManaged(false);
+        optionBox.getChildren().addAll(screnSizeBox, fullscreenCheckbox, buttonBar);
+        optionBox.setVisible(false);
+        optionBox.setManaged(false);
         
         optionButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                optionVbox.setVisible(true);
-                optionVbox.setManaged(true);
-                pauseVbox.setVisible(false);
-                pauseVbox.setManaged(false);
+                optionBox.setVisible(true);
+                optionBox.setManaged(true);
+                mainBox.setVisible(false);
+                mainBox.setManaged(false);
             }
         });
         
         returnButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                optionVbox.setVisible(false);
-                optionVbox.setManaged(false);
-                pauseVbox.setVisible(true);
-                pauseVbox.setManaged(true);
+                optionBox.setVisible(false);
+                optionBox.setManaged(false);
+                mainBox.setVisible(true);
+                mainBox.setManaged(true);
             }
         });
-        
+        pauseMenu.addScreen("option", optionBox);
+        //pauseMenu.transitionToScreen("main");
         //root boxes
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.CENTER);
@@ -222,28 +227,33 @@ public class WindowManager extends AnchorPane{
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(40);
         
-        vbox.getChildren().addAll(pauseVbox, optionVbox); //add here all pause screens
+        vbox.getChildren().addAll(mainBox, optionBox); //add here all pause screens
         hbox.getChildren().addAll(vbox);
-        pauseMenu.getChildren().add(hbox);
-        pauseMenu.setTopAnchor(hbox, 0.0);
-        pauseMenu.setBottomAnchor(hbox, 0.0);
-        pauseMenu.setRightAnchor(hbox, 0.0);
-        pauseMenu.setLeftAnchor(hbox, 0.0);
+        pausePane.getChildren().add(hbox);
+        pausePane.setTopAnchor(hbox, 0.0);
+        pausePane.setBottomAnchor(hbox, 0.0);
+        pausePane.setRightAnchor(hbox, 0.0);
+        pausePane.setLeftAnchor(hbox, 0.0);
     }
     
     public void clearPauseMenu()
     {
-        this.pauseMenu.getChildren().clear();
+        this.pausePane.getChildren().clear();
     }
     
     public void togglePauseMenu()
     {
-        this.pauseMenu.setVisible(!this.pauseMenu.isVisible());
+        this.pausePane.setVisible(!this.pausePane.isVisible());
     }
     
     public void setPauseMenuVisibility(boolean visible)
     {
-        this.pauseMenu.setVisible(visible);
+        System.out.println("open menu -> "+visible);
+        //this.pausePane.setVisible(visible);
+        if(visible)
+            this.pauseMenu.open();
+        else
+            this.pauseMenu.close();
     }
     
     //window
