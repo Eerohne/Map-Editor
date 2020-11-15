@@ -3,10 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Engine.Window;
+package Engine.Window.Menu;
 
+import Engine.Util.RessourceManager.RessourceLoader;
 import java.util.HashMap;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  *
@@ -16,6 +19,8 @@ public class GameMenu {
     private HashMap<String, Pane> screens;
     private String currentScreen;
     private String mainScreen;
+    
+    
     
     public GameMenu()
     {
@@ -30,7 +35,7 @@ public class GameMenu {
         this.mainScreen = mainScreen;
     }
     public void open()
-    {
+    {         
         for(Pane p :screens.values())
         {
             p.setVisible(false);
@@ -39,6 +44,7 @@ public class GameMenu {
         Pane main = screens.get(mainScreen);
         main.setVisible(true);
         main.setManaged(true);
+        currentScreen = "main";
     }
     public void close()
     {
@@ -91,6 +97,7 @@ public class GameMenu {
         Pane target = getScreen(name);
         target.setVisible(true);
         target.setManaged(true);
+        currentScreen = name;
         }
         catch(NullPointerException e)
         {

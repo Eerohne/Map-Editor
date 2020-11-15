@@ -7,6 +7,8 @@ package Engine.Window;
 
 //Merouane Issad
 
+import Engine.Window.Menu.MenuButton;
+import Engine.Window.Menu.PauseMenu;
 import Engine.Core.Game;
 import Engine.RaycastRenderer.Renderer;
 import javafx.event.ActionEvent;
@@ -36,7 +38,7 @@ public class WindowManager extends AnchorPane{
     private Canvas renderCanvas; //first layer, never initiated two times, handled by the renderer
     private AnchorPane ingameDisplay; //second layer, cleared and rebuilt at every level load, controlled by entities and game logic
     private AnchorPane pausePane; //third layer, built only once at game start, hidden and visible on user request (Example : button press)
-    private GameMenu pauseMenu; //menu controller
+    private PauseMenu pauseMenu; //menu controller
     
     private int oldWidth, oldHeight;
     private boolean isFullscreen;
@@ -114,28 +116,33 @@ public class WindowManager extends AnchorPane{
     {
         pausePane = new AnchorPane();
         
-        pauseMenu = new GameMenu("main");
+        pauseMenu = new PauseMenu("main");
         
         //main pause screen
         VBox mainBox = new VBox();
         mainBox.setAlignment(Pos.CENTER);
         mainBox.setSpacing(40);
         
-        Button resumeButton = new Button("resume game");
+        Button resumeButton = new MenuButton("resume game");
         resumeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                Game.togglepauseGame();
+                Game.pauseGame(false);
             }
         });
         resumeButton.setMinWidth(300);
         resumeButton.setMinHeight(80);
         
-        Button optionButton = new Button("options");
+        Button optionButton = new MenuButton("options");
+        optionButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                pauseMenu.transitionToScreen("option");
+            }
+        });
         
         optionButton.setMinWidth(300);
         optionButton.setMinHeight(80);
         
-        Button quitButton = new Button("quit game");
+        Button quitButton = new MenuButton("quit game");
         quitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 Game.exit();
@@ -166,7 +173,7 @@ public class WindowManager extends AnchorPane{
                 screnSizeBox.setDisable(fullscreenCheckbox.isSelected());
             }
         });
-        Button applyButton = new Button("Apply settings");
+        Button applyButton = new MenuButton("Apply settings");
         applyButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 if(fullscreenCheckbox.isSelected()){
@@ -188,8 +195,12 @@ public class WindowManager extends AnchorPane{
         applyButton.setMinWidth(80);
         applyButton.setMinHeight(30);
         
-        Button returnButton = new Button("return");
-        
+        Button returnButton = new MenuButton("return");
+        returnButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                pauseMenu.transitionToScreen("main");
+            }
+        });
         returnButton.setMinWidth(80);
         returnButton.setMinHeight(30);
         
@@ -201,25 +212,8 @@ public class WindowManager extends AnchorPane{
         optionBox.setVisible(false);
         optionBox.setManaged(false);
         
-        optionButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                optionBox.setVisible(true);
-                optionBox.setManaged(true);
-                mainBox.setVisible(false);
-                mainBox.setManaged(false);
-            }
-        });
-        
-        returnButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                optionBox.setVisible(false);
-                optionBox.setManaged(false);
-                mainBox.setVisible(true);
-                mainBox.setManaged(true);
-            }
-        });
         pauseMenu.addScreen("option", optionBox);
-        //pauseMenu.transitionToScreen("main");
+        
         //root boxes
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.CENTER);

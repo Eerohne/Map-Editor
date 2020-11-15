@@ -8,12 +8,14 @@ package Engine.Util.RessourceManager;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Entity.EntityCreator;
 import Engine.Level.Level;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
  
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -36,17 +38,9 @@ public class RessourceLoader
     }
     
     //AudioPlayer.player.start(RessourceLoader.loadAudio("sounds/musictest.wav"));
-    public static AudioStream loadAudio(String path)
+    public static Media loadAudio(String path)
     {
-        try{
-            FileInputStream inputstream = new FileInputStream("ressources/"+path);
-            return new AudioStream(inputstream);
-        }
-        catch(IOException e)
-        {
-            System.out.println(e);
-        }
-        return null;
+        return new Media(new File("ressources/"+path).toURI().toString());
     }
     
     public static Level loadLevel(String path)
