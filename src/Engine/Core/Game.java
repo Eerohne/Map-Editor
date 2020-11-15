@@ -54,6 +54,9 @@ public class Game extends Application{
                     Time.update();
                     stage.setTitle("Optik Engine -> FPS : " + Integer.toString(Time.fps));
                     //update all entities in the level -> currentLevel.update();
+                    
+                    //Camera rotation test
+                    //Renderer.camA += 90*Time.deltaTime;
                 }
                 if(isRendering)
                     Renderer.render();
