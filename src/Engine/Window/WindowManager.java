@@ -158,36 +158,52 @@ public class WindowManager extends AnchorPane{
         VBox optionBox = new VBox();
         optionBox.setAlignment(Pos.CENTER);
         optionBox.setSpacing(40);
+        optionBox.setStyle("-fx-background-color: rgba(33, 35, 46, 0.8); -fx-background-radius: 10; -fx-padding: 20;");
         
-        ComboBox screnSizeBox = new ComboBox();
-        screnSizeBox.setPromptText((int)this.getWidth()+" x "+(int)this.getHeight());
-        screnSizeBox.getItems().addAll(
+        ComboBox screenSizeBox = new ComboBox();
+        screenSizeBox.setPromptText((int)this.getWidth()+" x "+(int)this.getHeight());
+        screenSizeBox.setValue((int)this.getWidth()+" x "+(int)this.getHeight());
+        screenSizeBox.getItems().addAll(
             "800 x 600",
             "1280 x 800",
-            "1600 x 900"
+            "1600 x 900",
+            "1920 x 1080"
         );
         
         CheckBox fullscreenCheckbox = new CheckBox("fullscreen");
         fullscreenCheckbox.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                screnSizeBox.setDisable(fullscreenCheckbox.isSelected());
+                screenSizeBox.setDisable(fullscreenCheckbox.isSelected());
             }
         });
-        Button applyButton = new MenuButton("Apply settings");
+        MenuButton applyButton = new MenuButton("Apply settings");
         applyButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 if(fullscreenCheckbox.isSelected()){
                     Game.getWindowManager().setFullScreen(fullscreenCheckbox.isSelected());
                 }else{
                     Game.getWindowManager().setFullScreen(false);
-                    if(screnSizeBox.getValue() == null)
-                        Game.getWindowManager().resizeWindow((int)Game.getWindowManager().getWidth(), (int)Game.getWindowManager().getHeight());
-                    else if(screnSizeBox.getValue().equals("800 x 600"))
-                        Game.getWindowManager().resizeWindow(800, 600);
-                    else if(screnSizeBox.getValue().equals("1280 x 800"))
-                        Game.getWindowManager().resizeWindow(1280, 800);
-                    else if(screnSizeBox.getValue().equals("1600 x 900"))
-                        Game.getWindowManager().resizeWindow(1600, 900);
+                    
+                    if(screenSizeBox.getValue() == null){
+                        applyButton.valid = false;
+                        System.out.println("null screen size");
+                    }
+                    else
+                    {
+                        applyButton.valid = true;
+                        if(screenSizeBox.getValue().equals("800 x 600"))
+                           Game.getWindowManager().resizeWindow(800, 600);
+                       else if(screenSizeBox.getValue().equals("1280 x 800"))
+                           Game.getWindowManager().resizeWindow(1280, 800);
+                       else if(screenSizeBox.getValue().equals("1600 x 900"))
+                           Game.getWindowManager().resizeWindow(1600, 900);
+                       else if(screenSizeBox.getValue().equals("1920 x 1080"))
+                           Game.getWindowManager().resizeWindow(1920, 1080);
+                       else{ //fail safe in case the screen resolution doesnt exist
+                           Game.getWindowManager().resizeWindow(1280, 800);
+                           screenSizeBox.setValue("1280 x 800");
+                           }
+                    }
                 }
                     
             }
@@ -208,7 +224,7 @@ public class WindowManager extends AnchorPane{
         buttonBar.setSpacing(30);
         buttonBar.getChildren().addAll(applyButton, returnButton);
 
-        optionBox.getChildren().addAll(screnSizeBox, fullscreenCheckbox, buttonBar);
+        optionBox.getChildren().addAll(screenSizeBox, fullscreenCheckbox, buttonBar);
         optionBox.setVisible(false);
         optionBox.setManaged(false);
         
@@ -280,13 +296,4 @@ public class WindowManager extends AnchorPane{
             stage.setFullScreen(fullscreen);
         }
     }
-    
-    
-    /*private Pane getCentedBox(Control... nodes, String type)
-    {
-        if(type == "hbox")
-        {
-            Hbox
-        }
-    }*/
 }

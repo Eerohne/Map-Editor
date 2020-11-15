@@ -17,13 +17,17 @@ import javafx.scene.media.MediaPlayer;
  * @author child
  */
 public class MenuButton extends Button{
+    public  boolean valid = true;
     private MediaPlayer mediaPlayer;
     private static Media mouseEnterSound = RessourceLoader.loadAudio("sounds/ui/button_hover.wav");
     private static Media mouseClickSound = RessourceLoader.loadAudio("sounds/ui/button_click.wav");
+    private static Media mouseClickInvalideSound = RessourceLoader.loadAudio("sounds/ui/button_click_invalide.wav");
     
     public MenuButton(String text)
     {
         super(text);
+        
+        this.getStyleClass().add("button1");
         this.addEventHandler(MouseEvent.MOUSE_ENTERED,
         new EventHandler<MouseEvent>() {
           @Override
@@ -42,7 +46,10 @@ public class MenuButton extends Button{
           public void handle(MouseEvent e) {
               if(mediaPlayer != null)
                 mediaPlayer.dispose();
-              mediaPlayer = new MediaPlayer(mouseClickSound);
+              if(valid)
+                mediaPlayer = new MediaPlayer(mouseClickSound);
+              else
+                  mediaPlayer = new MediaPlayer(mouseClickInvalideSound);
               mediaPlayer.play();
           }
         });
