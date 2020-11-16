@@ -160,13 +160,13 @@ public class Renderer {
                 int y = (int)Math.floor(rH.getY());
                 double dist = rH.magnitude();
                 drawWallLine(r, dist, getColor(map[y][x]));
-                MiniMap.createLine(rH, true);
+                MiniMap.createLine(rH, getColor(map[y][x]).brighter());
             }else{
                 int x = (int)Math.floor(rV.getX());
                 int y = (int)Math.floor(rV.getY());
                 double dist = rV.magnitude();
                 drawWallLine(r, dist, getColor(map[y][x]).darker());
-                MiniMap.createLine(rV, false);
+                MiniMap.createLine(rV, getColor(map[y][x]).darker());
             }
             
             rayA += (fov/(float)screenWidth);
@@ -179,6 +179,7 @@ public class Renderer {
     
     private static Color getColor(int id){
         switch(id){
+            case 0: return Color.GREEN;
             case 1: return Color.GRAY;
             case 2: return Color.GOLD;
             default: return Color.RED;
@@ -212,9 +213,9 @@ public class Renderer {
                 }
             }
         }
-        private static void createLine(Point2D hitP, boolean isH){
+        private static void createLine(Point2D hitP, Color color){
             Line line = new Line(sq*cam.getX(), sq*cam.getY(), sq*hitP.getX(), sq*hitP.getY());
-            line.setStroke(Color.LIGHTGRAY); if(isH)line.setStroke(Color.WHITE);
+            line.setStroke(color);
             rayPane.getChildren().add(line);
         }
     }
