@@ -156,7 +156,10 @@ public class Renderer {
                 }else rH = rH.add(stepX, stepY);
             }
             
-            if(rH.magnitude()<=rV.magnitude() && !rH.equals(Point2D.ZERO)){
+            double hLength = Math.abs(rH.subtract(ray).magnitude());
+            double vLength = Math.abs(rV.subtract(ray).magnitude());
+            
+            if(hLength<vLength){
                 int x = (int)Math.floor(rH.getX());
                 int y = (int)Math.floor(rH.getY());
                 double dist = rH.magnitude();
