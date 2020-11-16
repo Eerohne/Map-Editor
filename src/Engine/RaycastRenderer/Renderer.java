@@ -52,6 +52,7 @@ public class Renderer {
         renderLevel();
         renderEntities();
     }
+    
     public static void setCanvas(Canvas canvas){
         frame = canvas;
         gc = canvas.getGraphicsContext2D();
