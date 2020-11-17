@@ -61,16 +61,15 @@ public class Game extends Application{
                     //Camera rotation test
                     //Renderer.camA += 90*Time.deltaTime;
                     
-                    if(Input.keyPressed(KeyCode.W)){
+                    //this code should be in the player entity update
+                    if(Input.keyPressed(KeyCode.W))
                         Renderer.cam = Renderer.cam.add(0, -3*Time.deltaTime);
-                    }
                     if(Input.keyPressed(KeyCode.S))
                         Renderer.cam = Renderer.cam.add(0, 3*Time.deltaTime);
                     if(Input.keyPressed(KeyCode.A))
                         Renderer.cam = Renderer.cam.add(-3*Time.deltaTime, 0);
                     if(Input.keyPressed(KeyCode.D))
                         Renderer.cam = Renderer.cam.add(3*Time.deltaTime, 0);
-                    
                     if(Input.keyPressed(KeyCode.LEFT))
                         Renderer.camA -= 100 * Time.deltaTime;
                     if(Input.keyPressed(KeyCode.RIGHT))
@@ -97,7 +96,7 @@ public class Game extends Application{
         
         //style path
         String pathName = "style/style.css" ;
-        scene.getStylesheets().add(RessourceLoader.loadStyleFile("style/style.css"));
+        scene.getStylesheets().add(RessourceLoader.loadStyleFile(pathName));
         
         stage.setResizable(false);
         gameStage = stage;
