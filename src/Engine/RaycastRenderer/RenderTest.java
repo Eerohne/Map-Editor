@@ -25,9 +25,10 @@ public class RenderTest extends Application {
     public void start(Stage primaryStage) {
         
         Canvas canvas = new Canvas(400, 225);
+        Renderer.test=true;
         Renderer.setCanvas(canvas);
-        Renderer.setPos(2.5, 2.5);
-        Renderer.setDir(45f);
+        Renderer.setPos(1.5, 1.75);
+        Renderer.setDir(0f);
         Renderer.setFov(90f);
         Renderer.MiniMap.generate();
         Renderer.render();

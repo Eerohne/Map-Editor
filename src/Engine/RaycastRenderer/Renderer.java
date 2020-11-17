@@ -13,7 +13,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 
 /**
  *
@@ -39,6 +42,8 @@ public class Renderer {
     //---Use setters to set up initial values---
     public static Point2D cam = Point2D.ZERO; //camera position (player position)
     public static float camA=0f, fov=60f; //camera orientation & field of view (degrees)
+    
+    public static boolean test = false;
     
     private Renderer(){}
     
@@ -112,7 +117,6 @@ public class Renderer {
             double stepX=0, stepY=0;
             
             Point2D rH = Point2D.ZERO, rV = Point2D.ZERO;
-            
             //intersects with vertical
             if(rightward){//looking right (+x)
                 rV = new Point2D(tileX+1, cam.getY()+(1-offX)*tan);
@@ -122,16 +126,16 @@ public class Renderer {
                 rV = new Point2D(tileX  , cam.getY()-(1-offX)*tan);
                 stepX = -1; stepY = -tan;
             }
-            if(rayA == 90 || rayA ==270){//looking directly up or down
+            if(tan>60.0 || tan<-60.0){//looking directly up or down
                 rV = cam.add(Point2D.ZERO);
                 stepX = 0; stepY = -1;
-                if(rayA==90) stepY = 1;
+                if(tan>60.0) stepY = 1;
             }
-            int v=0;
+            int v=-1;
             for(int i=0;i<8;i++){
                 int x = (int)Math.floor(rV.getX());
                 int y = (int)Math.floor(rV.getY());
-                if((x<0 || y<0) || (x>=mapX || y>=mapY)){ rV = Point2D.ZERO; break;}
+                if((x<0 || y<0) || (x>=mapX || y>=mapY)){; break;}
                 if(map[y][x]>0){v=map[y][x];break;}
                 if(map[y][x-1]>0 && !rightward){v=map[y][x-1];break;}
                 rV = rV.add(stepX, stepY);
@@ -147,16 +151,16 @@ public class Renderer {
                 rH = new Point2D(cam.getX()-(1-offY)*cotan, tileY);
                 stepX = -cotan; stepY = -1;
             }
-            if(rayA == 0 || rayA == 180){//looking directly left or right
+            if(cotan>60.0 || cotan <-60.0){//looking directly left or right
                 rH = cam.add(Point2D.ZERO);
                 stepX = -1; stepY = 0;
-                if(rayA==0) stepX = 1;
+                if(cotan>60.0) stepX = 1;
             }
-            int h = 0;
+            int h = -1;
             for(int i=0;i<8;i++){
                 int x = (int)(rH.getX());
                 int y = (int)(rH.getY());
-                if((x<0 || y<0) || (x>=mapX || y>=mapY)){ rH = Point2D.ZERO; break;}
+                if((x<0 || y<0) || (x>=mapX || y>=mapY)){; break;}
                 if(map[y][x]>0){h=map[y][x];break;}
                 if(map[y-1][x]>0 && !upward){h=map[y-1][x];break;}
                 rH = rH.add(stepX, stepY);
@@ -173,13 +177,13 @@ public class Renderer {
                 int y = (int)(rH.getY());
                 double dist = hLength*Math.cos(Math.toRadians(rayA-camA));
                 drawWallLine(r, dist, getColor(h));
-                //MiniMap.createLine(rH, getColor(h).brighter());
+                if(test)MiniMap.createLine(rH, getColor(h).brighter());
             }else{
                 int x = (int)(rV.getX());
                 int y = (int)(rV.getY());
                 double dist = vLength*Math.cos(Math.toRadians(rayA-camA));
                 drawWallLine(r, dist, getColor(v).darker());
-                //MiniMap.createLine(rV, getColor(v).darker());
+                if(test)MiniMap.createLine(rV, getColor(v).darker());
             }
             rayA += (fov/screenWidth);
             
@@ -209,9 +213,9 @@ public class Renderer {
     }
     
     static class MiniMap{//minimap that shows the level and the rays (for debugging)
-        private static GridPane grid = new GridPane();
-        private static GridPane gridLines = new GridPane();
-        private static Pane rayPane = new Pane();
+        private final static GridPane grid = new GridPane();
+        private final static GridPane gridLines = new GridPane();
+        private final static Pane rayPane = new Pane();
         public static StackPane minimap = new StackPane(grid, rayPane, gridLines);
         
         //private static int sq = 40; //size of 1 grid square, is used for scaling
@@ -227,7 +231,7 @@ public class Renderer {
                 for(int x=0;x<mapX;x++){
                     Rectangle rect = new Rectangle(sq, sq);
                     Rectangle rect1 = new Rectangle(sq-1, sq-1);
-                    rect.setFill(getColor(map[y][x])); rect.setOpacity(0.5);
+                    rect.setFill(getColor(map[y][x])); rect.setOpacity(0.8);
                     rect1.setFill(Color.TRANSPARENT); rect1.setStroke(Color.BLACK);
                     grid.add(rect, x, y); gridLines.add(rect1, x, y);
                 }
