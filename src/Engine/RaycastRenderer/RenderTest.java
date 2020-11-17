@@ -10,6 +10,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -21,26 +24,21 @@ public class RenderTest extends Application {
     @Override
     public void start(Stage primaryStage) {
         
-        Canvas canvas = new Canvas(800, 450);
+        Canvas canvas = new Canvas(400, 225);
         Renderer.setCanvas(canvas);
         Renderer.setPos(2.5, 2.5);
         Renderer.setDir(0f);
         Renderer.setFov(90f);
-        
-        canvas.setWidth(400);canvas.setHeight(225);
-        Renderer.resize();
-        
         Renderer.MiniMap.generate();
-        
-        HBox root = new HBox();
-        root.setSpacing(10); root.setPadding(new Insets(0, 10, 0, 10));
-        root.getChildren().addAll(Renderer.MiniMap.minimap, canvas);
-        
         Renderer.render();
         
-        Scene scene = new Scene(root, canvas.getWidth()+40*5+20, canvas.getHeight());
+        HBox root = new HBox();
+        root.setSpacing(5);
+        root.getChildren().addAll(Renderer.MiniMap.minimap, canvas);
         
-        primaryStage.setTitle("Render Test");
+        Scene scene = new Scene(root, 400+40*5+20, 225);
+        
+        primaryStage.setTitle("Render Test: "+Renderer.getDir()+" deg");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

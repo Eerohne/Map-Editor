@@ -23,11 +23,11 @@ public class Renderer {
     
     private static int mapX =5, mapY =5;
     private static int[][] map = {
-        {2, 2, 2, 2, 2},
-        {1, 0, 0, 0, 1},
-        {1, 0, 0, 0, 1},
-        {1, 0, 0, 0, 1},
-        {1, 1, 1, 1, 1}
+        {3, 4, 3, 4, 3},
+        {4, 0, 0, 0, 4},
+        {3, 0, 0, 0, 3},
+        {4, 0, 0, 0, 4},
+        {3, 4, 3, 4, 3}
     };
     
     
@@ -35,17 +35,21 @@ public class Renderer {
     private static GraphicsContext gc = frame.getGraphicsContext2D();
     private static double screenWidth = frame.getWidth(), screenHeight = frame.getHeight();
     
+    //!!These will be private in the future!! \/
+    //---Use setters to set up initial values---
     public static Point2D cam = Point2D.ZERO; //camera position (player position)
     public static float camA=0f, fov=60f; //camera orientation & field of view (degrees)
     
-    private Renderer(){
-    }
+    private Renderer(){}
     
     //renders one frame
     public static void render(){
+        //change colors here
         gc.clearRect(0, 0, screenWidth, screenHeight);
+        //ceiling
         gc.setFill(Color.LIGHTBLUE);
         gc.fillRect(0, 0, screenWidth, screenHeight);
+        //floor
         gc.setFill(Color.GREEN);
         gc.fillRect(0, screenHeight/2.0, screenWidth, screenHeight/2.0);
         
@@ -68,10 +72,13 @@ public class Renderer {
     public static Point2D getPos(){return cam;}
     public static void setPos(double x, double y){setPos(new Point2D(x, y));} //set camera position
     public static void setPos(Point2D point){cam = point;} //set camera position
+    public static void addPos(double x, double y){cam = cam.add(x, y);}
+    public static void addPos(Point2D point){cam = cam.add(point);}
     
     public static float getDir(){return camA;}
-    public static void setDir(float angle){camA = angle;} // set the camera direction
-    public static void setFov(float angle){fov = angle;} // set the field of view
+    public static void addDir(float angInc){camA += angInc;} //increases camera direction
+    public static void setDir(float angdeg){camA = angdeg;} // set the camera direction
+    public static void setFov(float angdeg){fov = angdeg;} // set the field of view
     
     public static void resize(){
         screenWidth = frame.getWidth();
@@ -81,15 +88,14 @@ public class Renderer {
     //renders level
     private static void renderLevel(){
         final int tileX, tileY; //player grid position
-        final float offX, offY; //offset within tile (0 <= off < 1)
+        final double offX, offY; //offset within tile (0 <= off < 1)
         //note: posX = tileX + offX and posY = tileY + offY
         tileX = (int)Math.floor(cam.getX());
         tileY = (int)Math.floor(cam.getY());
-        offX = (int)Math.floor(cam.getX()-tileX);
-        offY = (int)Math.floor(cam.getY()-tileY);
+        offX = cam.getX()-tileX;
+        offY = cam.getY()-tileY;
         
-        Point2D ray = new Point2D(cam.getX(), cam.getY());
-        float rayA = camA - (fov/2f);
+        float rayA = camA - (fov/(2f));
         
         for(int r=0; r<screenWidth;r++){
             while (rayA<0 || rayA>=360) {                
@@ -109,71 +115,71 @@ public class Renderer {
             
             //intersects with vertical
             if(rightward){//looking right (+x)
-                rV = new Point2D(tileX+1, (1-offX)*tan+ray.getY());
-                stepX = 1; stepY = -tan;
-                if(upward) stepY = tan;
+                rV = new Point2D(tileX+1, cam.getY()+(1-offX)*tan);
+                stepX = 1; stepY = tan;
             }
             if(!rightward){//looking left (-x)
-                rV = new Point2D(tileX  , (1-offX)*tan+ray.getY());
+                rV = new Point2D(tileX  , cam.getY()-(1-offX)*tan);
                 stepX = -1; stepY = -tan;
-                if(upward) stepY = tan;
             }
             if(rayA == 90 || rayA ==270){//looking directly up or down
-                rV = ray.add(Point2D.ZERO);
+                rV = cam.add(Point2D.ZERO);
                 stepX = 0; stepY = -1;
                 if(rayA==90) stepY = 1;
             }
+            int v=0;
             for(int i=0;i<8;i++){
                 int x = (int)Math.floor(rV.getX());
                 int y = (int)Math.floor(rV.getY());
                 if((x<0 || y<0) || (x>=mapX || y>=mapY)){ rV = Point2D.ZERO; break;}
-                if(map[y][x]>0){break;
-                }else rV = rV.add(stepX, stepY);
+                if(map[y][x]>0){v=map[y][x];break;}
+                if(map[y][x-1]>0 && !rightward){v=map[y][x-1];break;}
+                rV = rV.add(stepX, stepY);
             }
             
             //intersects with horizontal
             stepX =0; stepY=0;
             if(upward){//looking up (+y)
-                rH = new Point2D(ray.getX()+(1-offY)*cotan, tileY+1);
-                stepX = -cotan; stepY = 1;
-                if(rightward) stepX = cotan;
+                rH = new Point2D(cam.getX()+(1-offY)*cotan, tileY+1);
+                stepX = cotan; stepY = 1;
             }
             if(!upward){//looking down (-y)
-                rH = new Point2D(ray.getX()+(1-offY)*cotan, tileY);
+                rH = new Point2D(cam.getX()-(1-offY)*cotan, tileY);
                 stepX = -cotan; stepY = -1;
-                if(rightward) stepX = cotan;
             }
             if(rayA == 0 || rayA == 180){//looking directly left or right
-                rH = ray.add(Point2D.ZERO);
+                rH = cam.add(Point2D.ZERO);
                 stepX = -1; stepY = 0;
                 if(rayA==0) stepX = 1;
             }
+            int h = 0;
             for(int i=0;i<8;i++){
                 int x = (int)Math.floor(rH.getX());
                 int y = (int)Math.floor(rH.getY());
                 if((x<0 || y<0) || (x>=mapX || y>=mapY)){ rH = Point2D.ZERO; break;}
-                if(map[y][x]>0){break;
-                }else rH = rH.add(stepX, stepY);
+                if(map[y][x]>0){h=map[y][x];break;}
+                if(map[y-1][x]>0 && !upward){h=map[y-1][x];break;}
+                rH = rH.add(stepX, stepY);
+
             }
             
-            double hLength = Math.abs(rH.subtract(ray).magnitude());
-            double vLength = Math.abs(rV.subtract(ray).magnitude());
+            double hLength = rH.subtract(cam).magnitude();
+            double vLength = rV.subtract(cam).magnitude();
             
-            if(hLength<vLength){
+            if(hLength<vLength && hLength!=0){
                 int x = (int)Math.floor(rH.getX());
                 int y = (int)Math.floor(rH.getY());
-                double dist = rH.magnitude();
-                drawWallLine(r, dist, getColor(map[y][x]));
-                MiniMap.createLine(rH, getColor(map[y][x]).brighter());
+                double dist = hLength*Math.cos(Math.toRadians(rayA-camA));
+                drawWallLine(r, dist, getColor(h));
+                MiniMap.createLine(rH, getColor(h).brighter());
             }else{
                 int x = (int)Math.floor(rV.getX());
                 int y = (int)Math.floor(rV.getY());
-                double dist = rV.magnitude();
-                drawWallLine(r, dist, getColor(map[y][x]).darker());
-                MiniMap.createLine(rV, getColor(map[y][x]).darker());
+                double dist = vLength*Math.cos(Math.toRadians(rayA-camA));
+                drawWallLine(r, dist, getColor(v).darker());
+                MiniMap.createLine(rV, getColor(v).darker());
             }
-            
-            rayA += (fov/(float)screenWidth);
+            rayA += (fov/screenWidth);
             
         }
     }
@@ -186,11 +192,13 @@ public class Renderer {
             case 0: return Color.GREEN;
             case 1: return Color.GRAY;
             case 2: return Color.GOLD;
+            case 3: return Color.VIOLET;
+            case 4: return Color.BLUEVIOLET;
             default: return Color.RED;
         }
     }
     private static void drawWallLine(int x, double distance, Color color){
-        double maxHeight = screenHeight*1.5;
+        double maxHeight = screenHeight;
         double height = maxHeight/distance;
         double lineTop = (screenHeight-height)/2.0;
         
@@ -200,20 +208,26 @@ public class Renderer {
     
     static class MiniMap{//minimap that shows the level and the rays (for debugging)
         private static GridPane grid = new GridPane();
+        private static GridPane gridLines = new GridPane();
         private static Pane rayPane = new Pane();
-        public static StackPane minimap = new StackPane(grid, rayPane);
+        public static StackPane minimap = new StackPane(grid, rayPane, gridLines);
         
-        private static int sq = 40; //size of 1 grid square, is used for scaling
+        //private static int sq = 40; //size of 1 grid square, is used for scaling
+        private static int sq = (int)screenHeight/mapY;
         
         public static void generate(){
+            rayPane.getChildren().clear();
             createGrid();
         }
+        
         private static void createGrid(){
             for(int y=0;y<mapY;y++){
                 for(int x=0;x<mapX;x++){
                     Rectangle rect = new Rectangle(sq, sq);
-                    rect.setFill(getColor(map[y][x])); rect.setStroke(Color.BLACK);
-                    grid.add(rect, x, y);
+                    Rectangle rect1 = new Rectangle(sq-1, sq-1);
+                    rect.setFill(getColor(map[y][x])); rect.setOpacity(0.5);
+                    rect1.setFill(Color.TRANSPARENT); rect1.setStroke(Color.BLACK);
+                    grid.add(rect, x, y); gridLines.add(rect1, x, y);
                 }
             }
         }
