@@ -5,6 +5,7 @@
  */
 package Engine.Util.RessourceManager;
 
+import static Engine.Core.Game.scene;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Entity.EntityCreator;
 import Engine.Level.Level;
@@ -13,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -41,6 +43,18 @@ public class RessourceLoader
     public static Media loadAudio(String path)
     {
         return new Media(new File("ressources/"+path).toURI().toString());
+    }
+    
+    public static String loadStyleFile(String path) throws MalformedURLException
+    {
+        String pathName = "ressources/"+path;
+        File file = new File(pathName);
+        if (file.exists()) {
+            return file.toURI().toURL().toExternalForm();
+        } else {
+           System.out.println("Could not find css file: " + pathName);
+        }
+        return null;
     }
     
     public static Level loadLevel(String path)

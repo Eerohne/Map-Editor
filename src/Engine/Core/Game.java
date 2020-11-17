@@ -10,8 +10,10 @@ import Engine.Entity.EntityCreator;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Level.Level;
 import Engine.RaycastRenderer.Renderer;
+import Engine.Util.RessourceManager.RessourceLoader;
 import Engine.Util.Time;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -41,10 +43,8 @@ public class Game extends Application{
     public static boolean pauseActive = true;
     
     public void start(Stage stage) throws Exception {
-        windowManager = new WindowManager(stage, screenWidth, screenHeight);
-        Renderer.setCanvas(windowManager.getRenderCanvas());
+        initEngine(stage);
         
-        //now load the initial level -> currentLevel = LevelLoader.load(path_to_level_file);
         new AnimationTimer() { //Game main loop
 
             @Override
@@ -57,57 +57,45 @@ public class Game extends Application{
                     
                     //Camera rotation test
                     //Renderer.camA += 90*Time.deltaTime;
+                    
+                    if(Input.keyPressed(KeyCode.RIGHT))
+                        Renderer.camA += 100 * Time.deltaTime;
                 }
                 if(isRendering)
                     Renderer.render();
             }
         }.start();
         
+        stage.show();
+    }
+    
+    private static void initEngine(Stage stage) throws MalformedURLException
+    {
+        //config file stuff
+        //window size
+        windowManager = new WindowManager(stage, screenWidth, screenHeight);
         scene = new Scene(windowManager, windowManager.getWidth(), windowManager.getHeight()); //set windows inside the scene
         stage.setScene(scene);
+
+        Input.init();
+        Renderer.setCanvas(windowManager.getRenderCanvas());
         
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
-            @Override
-            public void handle(KeyEvent key) {
-                if(key.getCode() == KeyCode.ESCAPE) {
-                    Game.togglepauseGame();
-                }
-                
-                if(key.getCode() == KeyCode.W) {
-                    Renderer.cam = Renderer.cam.add(0, -2 * Time.deltaTime);
-                }
-                if(key.getCode() == KeyCode.S) {
-                    Renderer.cam = Renderer.cam.add(0, 2 * Time.deltaTime);
-                }
-                if(key.getCode() == KeyCode.A) {
-                    Renderer.cam = Renderer.cam.add(-2 * Time.deltaTime, 0);
-                }
-                if(key.getCode() == KeyCode.D) {
-                    Renderer.cam = Renderer.cam.add(2 * Time.deltaTime, 0);
-                }
-                
-                if(key.getCode() == KeyCode.RIGHT) {
-                    Renderer.camA += 100 * Time.deltaTime;
-                }
-                if(key.getCode() == KeyCode.LEFT) {
-                    Renderer.camA -= 100 * Time.deltaTime;
-                }
-            }
-        });
-        
-        String pathName = "ressources/style.css" ;
-        File file = new File(pathName);
-        if (file.exists()) {
-            scene.getStylesheets().add(file.toURI().toURL().toExternalForm());
-        } else {
-           System.out.println("Could not find css file: "+pathName);
-        }
-        
-        
+        //style path
+        String pathName = "style/style.css" ;
+        scene.getStylesheets().add(RessourceLoader.loadStyleFile("style/style.css"));
         
         stage.setResizable(false);
         gameStage = stage;
-        stage.show();
+        //now load the initial level -> currentLevel = LevelLoader.load(path_to_level_file);
+        
+        //some general input setup
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
+            @Override
+            public void handle(KeyEvent key) {
+                if(key.getCode() == KeyCode.ESCAPE)
+                    Game.togglepauseGame();
+            }
+        });
     }
     
     public static Level getCurrentLevel()

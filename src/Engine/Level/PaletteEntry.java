@@ -13,18 +13,18 @@ import javafx.scene.paint.Color;
  */
 public class PaletteEntry {
     private Color color;
-    private boolean hollow;
+    private int flag;
 
-    public PaletteEntry(Color color, boolean hollow) {
+    public PaletteEntry(Color color, int flag) {
         this.color = color;
-        this.hollow = hollow;
+        this.flag = flag;
     }
 
     public Color getColor() {
         return color;
     }
 
-    public boolean isHollow() {
-        return hollow;
+    public int getFlag() {
+        return flag;
     }
 }

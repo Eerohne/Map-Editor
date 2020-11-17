@@ -43,7 +43,7 @@ public class Launcher extends Application{
         anchor.setLeftAnchor(mark, 10.0);
         Scene scene = new Scene(anchor, 600, 600);
         
-        String pathName = "ressources/style.css" ;
+        String pathName = "ressources/style/style.css" ;
         File file = new File(pathName);
         if (file.exists()) {
             scene.getStylesheets().add(file.toURI().toURL().toExternalForm());

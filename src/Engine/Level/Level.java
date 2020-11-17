@@ -20,7 +20,7 @@ public class Level {
     
     private Entity playerEntity;
     //flags
-    private boolean isRunning = false;
+    private boolean firstUpdate = true;
     
     public Level(){
         palette = new HashMap<Integer, PaletteEntry>();
@@ -30,7 +30,7 @@ public class Level {
     public boolean isWall(int x, int y)
     {
         int index = getCellValue(x, y);
-        return !getPaletteEntry(index).isHollow();
+        return getPaletteEntry(index).getFlag() == 1;
     }
     
     public Color getCellColor(int x, int y)
@@ -86,14 +86,14 @@ public class Level {
     
     public void update() //update all entities. If this is the first update, call the entities start method instead to initialize them
     {
-        if(!isRunning) //first update
+        if(firstUpdate) //first update
         {
             Iterator<Entity> it = entities.values().iterator();
             while(it.hasNext())
             {
                 it.next().start();
             }
-            isRunning = true;
+            firstUpdate = false;
         }
         else //not first update
         {
