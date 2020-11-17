@@ -154,8 +154,8 @@ public class Renderer {
             }
             int h = 0;
             for(int i=0;i<8;i++){
-                int x = (int)Math.floor(rH.getX());
-                int y = (int)Math.floor(rH.getY());
+                int x = (int)(rH.getX());
+                int y = (int)(rH.getY());
                 if((x<0 || y<0) || (x>=mapX || y>=mapY)){ rH = Point2D.ZERO; break;}
                 if(map[y][x]>0){h=map[y][x];break;}
                 if(map[y-1][x]>0 && !upward){h=map[y-1][x];break;}
@@ -166,15 +166,17 @@ public class Renderer {
             double hLength = rH.subtract(cam).magnitude();
             double vLength = rV.subtract(cam).magnitude();
             
+            // createLine() is not to be used when running the game
+            // it's for debugging only
             if(hLength<vLength && hLength!=0){
-                int x = (int)Math.floor(rH.getX());
-                int y = (int)Math.floor(rH.getY());
+                int x = (int)(rH.getX());
+                int y = (int)(rH.getY());
                 double dist = hLength*Math.cos(Math.toRadians(rayA-camA));
                 drawWallLine(r, dist, getColor(h));
                 //MiniMap.createLine(rH, getColor(h).brighter());
             }else{
-                int x = (int)Math.floor(rV.getX());
-                int y = (int)Math.floor(rV.getY());
+                int x = (int)(rV.getX());
+                int y = (int)(rV.getY());
                 double dist = vLength*Math.cos(Math.toRadians(rayA-camA));
                 drawWallLine(r, dist, getColor(v).darker());
                 //MiniMap.createLine(rV, getColor(v).darker());

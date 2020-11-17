@@ -27,7 +27,7 @@ public class RenderTest extends Application {
         Canvas canvas = new Canvas(400, 225);
         Renderer.setCanvas(canvas);
         Renderer.setPos(2.5, 2.5);
-        Renderer.setDir(0f);
+        Renderer.setDir(45f);
         Renderer.setFov(90f);
         Renderer.MiniMap.generate();
         Renderer.render();
@@ -36,7 +36,7 @@ public class RenderTest extends Application {
         root.setSpacing(5);
         root.getChildren().addAll(Renderer.MiniMap.minimap, canvas);
         
-        Scene scene = new Scene(root, 400+40*5+20, 225);
+        Scene scene = new Scene(root);
         
         primaryStage.setTitle("Render Test: "+Renderer.getDir()+" deg");
         primaryStage.setScene(scene);
