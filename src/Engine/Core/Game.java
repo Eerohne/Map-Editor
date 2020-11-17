@@ -53,7 +53,6 @@ public class Game extends Application{
             public void handle(long l) {
                 if(isRunning)
                 {
-                    Input.init();
                     Time.update();
                     stage.setTitle("Optik Engine -> FPS : " + Integer.toString(Time.fps));
                     //update all entities in the level -> currentLevel.update();
@@ -103,13 +102,14 @@ public class Game extends Application{
         //now load the initial level -> currentLevel = LevelLoader.load(path_to_level_file);
         
         //some general input setup
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
+        /*scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
             @Override
             public void handle(KeyEvent key) {
+                System.out.println("AHAHAHAHHAHA");
                 if(key.getCode() == KeyCode.ESCAPE)
                     Game.togglepauseGame();
             }
-        });
+        });*/
     }
     
     public static Level getCurrentLevel()

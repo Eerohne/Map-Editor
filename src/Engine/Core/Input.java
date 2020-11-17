@@ -24,6 +24,8 @@ public class Input {
             public void handle(KeyEvent key) {
                 //System.out.println(key.getCode());
                 keyMap.put(key.getCode(), true);
+                if(key.getCode() == KeyCode.ESCAPE)
+                    Game.togglepauseGame();
             }
         });
         
