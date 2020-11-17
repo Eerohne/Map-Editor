@@ -19,6 +19,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -45,12 +46,14 @@ public class Game extends Application{
     public void start(Stage stage) throws Exception {
         initEngine(stage);
         
+        Renderer.setPos(2.5, 2.5);
         new AnimationTimer() { //Game main loop
 
             @Override
             public void handle(long l) {
                 if(isRunning)
                 {
+                    Input.init();
                     Time.update();
                     stage.setTitle("Optik Engine -> FPS : " + Integer.toString(Time.fps));
                     //update all entities in the level -> currentLevel.update();
@@ -58,6 +61,18 @@ public class Game extends Application{
                     //Camera rotation test
                     //Renderer.camA += 90*Time.deltaTime;
                     
+                    if(Input.keyPressed(KeyCode.W)){
+                        Renderer.cam = Renderer.cam.add(0, -3*Time.deltaTime);
+                    }
+                    if(Input.keyPressed(KeyCode.S))
+                        Renderer.cam = Renderer.cam.add(0, 3*Time.deltaTime);
+                    if(Input.keyPressed(KeyCode.A))
+                        Renderer.cam = Renderer.cam.add(-3*Time.deltaTime, 0);
+                    if(Input.keyPressed(KeyCode.D))
+                        Renderer.cam = Renderer.cam.add(3*Time.deltaTime, 0);
+                    
+                    if(Input.keyPressed(KeyCode.LEFT))
+                        Renderer.camA -= 100 * Time.deltaTime;
                     if(Input.keyPressed(KeyCode.RIGHT))
                         Renderer.camA += 100 * Time.deltaTime;
                 }

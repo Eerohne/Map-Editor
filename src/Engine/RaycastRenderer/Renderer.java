@@ -171,13 +171,13 @@ public class Renderer {
                 int y = (int)Math.floor(rH.getY());
                 double dist = hLength*Math.cos(Math.toRadians(rayA-camA));
                 drawWallLine(r, dist, getColor(h));
-                MiniMap.createLine(rH, getColor(h).brighter());
+                //MiniMap.createLine(rH, getColor(h).brighter());
             }else{
                 int x = (int)Math.floor(rV.getX());
                 int y = (int)Math.floor(rV.getY());
                 double dist = vLength*Math.cos(Math.toRadians(rayA-camA));
                 drawWallLine(r, dist, getColor(v).darker());
-                MiniMap.createLine(rV, getColor(v).darker());
+                //MiniMap.createLine(rV, getColor(v).darker());
             }
             rayA += (fov/screenWidth);
             

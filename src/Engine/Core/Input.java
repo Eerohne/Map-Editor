@@ -19,10 +19,10 @@ public class Input {
     
     public static void init()
     {
-        System.out.println("init");
         Game.scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
             @Override
             public void handle(KeyEvent key) {
+                //System.out.println(key.getCode());
                 keyMap.put(key.getCode(), true);
             }
         });
@@ -38,6 +38,7 @@ public class Input {
     {
         if(keyMap.containsKey(keyName))
         {
+            System.out.println(keyName);
             return keyMap.get(keyName);
         }
         else
