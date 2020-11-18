@@ -5,6 +5,7 @@
  */
 package Engine.Core;
 
+import Engine.Util.Input;
 import Engine.Window.WindowManager;
 import Engine.Entity.EntityCreator;
 import Engine.Entity.AbstractEntity.Entity;
@@ -47,6 +48,7 @@ public class Game extends Application{
         initEngine(stage);
         
         Renderer.setPos(2.5, 2.5);
+        float speed = 1.5f;
         new AnimationTimer() { //Game main loop
 
             @Override
@@ -62,13 +64,13 @@ public class Game extends Application{
                     
                     //this code should be in the player entity update
                     if(Input.keyPressed(KeyCode.W))
-                        Renderer.cam = Renderer.cam.add(0, -3*Time.deltaTime);
+                        Renderer.cam = Renderer.cam.add(speed* Math.cos(Math.toRadians(Renderer.camA))* Time.deltaTime, speed* Math.sin(Math.toRadians(Renderer.camA)) *Time.deltaTime);
                     if(Input.keyPressed(KeyCode.S))
-                        Renderer.cam = Renderer.cam.add(0, 3*Time.deltaTime);
+                        Renderer.cam = Renderer.cam.add(speed* -Math.cos(Math.toRadians(Renderer.camA))* Time.deltaTime, speed* -Math.sin(Math.toRadians(Renderer.camA)) *Time.deltaTime);
                     if(Input.keyPressed(KeyCode.A))
-                        Renderer.cam = Renderer.cam.add(-3*Time.deltaTime, 0);
+                        Renderer.cam = Renderer.cam.add(speed* Math.sin(Math.toRadians(Renderer.camA))* Time.deltaTime, speed* -Math.cos(Math.toRadians(Renderer.camA)) *Time.deltaTime);
                     if(Input.keyPressed(KeyCode.D))
-                        Renderer.cam = Renderer.cam.add(3*Time.deltaTime, 0);
+                        Renderer.cam = Renderer.cam.add(speed* -Math.sin(Math.toRadians(Renderer.camA))* Time.deltaTime, speed* Math.cos(Math.toRadians(Renderer.camA)) *Time.deltaTime);
                     if(Input.keyPressed(KeyCode.LEFT))
                         Renderer.camA -= 100 * Time.deltaTime;
                     if(Input.keyPressed(KeyCode.RIGHT))
@@ -100,16 +102,6 @@ public class Game extends Application{
         stage.setResizable(false);
         gameStage = stage;
         //now load the initial level -> currentLevel = LevelLoader.load(path_to_level_file);
-        
-        //some general input setup
-        /*scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
-            @Override
-            public void handle(KeyEvent key) {
-                System.out.println("AHAHAHAHHAHA");
-                if(key.getCode() == KeyCode.ESCAPE)
-                    Game.togglepauseGame();
-            }
-        });*/
     }
     
     public static Level getCurrentLevel()

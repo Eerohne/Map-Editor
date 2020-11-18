@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Engine.Core;
+package Engine.Util;
 
+import Engine.Core.Game;
 import java.util.HashMap;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
@@ -22,7 +23,6 @@ public class Input {
         Game.scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
             @Override
             public void handle(KeyEvent key) {
-                //System.out.println(key.getCode());
                 keyMap.put(key.getCode(), true);
                 if(key.getCode() == KeyCode.ESCAPE)
                     Game.togglepauseGame();
@@ -40,7 +40,6 @@ public class Input {
     {
         if(keyMap.containsKey(keyName))
         {
-            System.out.println(keyName);
             return keyMap.get(keyName);
         }
         else
