@@ -160,6 +160,9 @@ public class WindowManager extends AnchorPane{
         optionBox.setSpacing(40);
         optionBox.setStyle("-fx-background-color: rgba(33, 35, 46, 0.8); -fx-background-radius: 10; -fx-padding: 20;");
         
+        MenuButton applyButton = new MenuButton("Apply settings"); //defined on top here to allow access from other elements
+        applyButton.setDisable(true);
+        
         ComboBox screenSizeBox = new ComboBox();
         screenSizeBox.setPromptText((int)this.getWidth()+" x "+(int)this.getHeight());
         screenSizeBox.setValue((int)this.getWidth()+" x "+(int)this.getHeight());
@@ -169,14 +172,20 @@ public class WindowManager extends AnchorPane{
             "1600 x 900",
             "1920 x 1080"
         );
+        screenSizeBox.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                applyButton.setDisable(false);
+            }
+        });
         
         CheckBox fullscreenCheckbox = new CheckBox("fullscreen");
         fullscreenCheckbox.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 screenSizeBox.setDisable(fullscreenCheckbox.isSelected());
+                applyButton.setDisable(false);
             }
         });
-        MenuButton applyButton = new MenuButton("Apply settings");
+        
         applyButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 if(fullscreenCheckbox.isSelected()){
@@ -205,6 +214,7 @@ public class WindowManager extends AnchorPane{
                            }
                     }
                 }
+                applyButton.setDisable(true); //disable the apply button when we save the changes
                     
             }
         });
