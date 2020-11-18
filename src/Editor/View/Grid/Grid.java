@@ -1,5 +1,6 @@
 package Editor.View.Grid;
 
+import java.io.Serializable;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -7,7 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 
-public class Grid extends Pane{
+public class Grid extends Pane implements Serializable{
     private double cellSize;
     private int width;
     private int length;
@@ -22,6 +23,10 @@ public class Grid extends Pane{
         this.cells = new Cell[width][length];
         
         this.drawGrid(cellSize);
+    }
+
+    public Grid() {
+        
     }
     
     private void drawGrid(int cellSize){

@@ -26,7 +26,8 @@ public class Info extends HBox{
     private Label color;
     private Rectangle colorViewer;
     
-    private Button save;
+    public Button save;
+    public Button load;
 
     public Info() {
         mouseX = new Label("X : 0.00");
@@ -40,11 +41,12 @@ public class Info extends HBox{
         colorViewer.setStroke(Color.BLACK);
         
         save = new Button("Save");
+        load = new Button("Load");
         
         Region spacing = new Region();
         HBox.setHgrow(spacing, Priority.ALWAYS);
         
-        this.getChildren().addAll(mouseX, mouseY, zoom, mode, color, colorViewer, spacing, save);
+        this.getChildren().addAll(mouseX, mouseY, zoom, mode, color, colorViewer, spacing, save, load);
         this.setSpacing(10);
         
         Insets insets = new Insets(5);

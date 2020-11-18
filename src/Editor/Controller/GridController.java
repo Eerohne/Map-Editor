@@ -2,6 +2,13 @@ package Editor.Controller;
 
 import Editor.View.Grid.Cell;
 import Editor.View.Grid.Grid;
+import Editor.View.Info;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Scene;
@@ -46,6 +53,7 @@ public class GridController {
     double zoom = 1.0d;
 
     Cell hoverCell = new Cell(1);
+    Info info = new Info();
     
     public GridController(Scene scene, Grid grid, Button toggle, ColorPicker picker) {
         this.scene = scene;
@@ -213,6 +221,8 @@ public class GridController {
     private double getScaleRatio(){
         return grid.getCellSize()/grid.getCells()[0][0].getDefaultSize();
     }
+    
+    
 }
 
 

@@ -7,6 +7,7 @@ package Editor;
 
 import Editor.View.Grid.Grid;
 import Editor.Controller.GridController;
+import Editor.Controller.InfoController;
 import Editor.Controller.MenuController;
 import Editor.Controller.ShortcutController;
 import Editor.View.Info;
@@ -68,6 +69,7 @@ public class MapEditor extends Application {
         
         Scene scene = new Scene(layout, 1920, 1080);
         
+        InfoController ic = new InfoController(info);
         GridController gc = new GridController(scene, gridRender, new Button(), new ColorPicker());
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow);
