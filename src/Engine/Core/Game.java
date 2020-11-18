@@ -46,6 +46,7 @@ public class Game extends Application{
     
     public void start(Stage stage) throws Exception {
         initEngine(stage);
+        RessourceLoader.loadLevel("levels/level1.lvl");
         
         Renderer.setPos(2.5, 2.5);
         float speed = 1.5f;
