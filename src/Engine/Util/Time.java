@@ -26,7 +26,6 @@ public class Time {
     private static void CalculateFrameRate()
     {
         if (getTime() - lastFrameTime > 1000) { //if one second has passed (1000 in miliseconds), then fps is the fpsCounter we've been incrementing every game cycle
-            System.out.println("fps : "+fps);
             fps = fpsCounter;
             fpsCounter = 0;
             lastFrameTime = getTime();
