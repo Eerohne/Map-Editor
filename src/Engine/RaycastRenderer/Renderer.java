@@ -24,7 +24,7 @@ import javafx.scene.transform.Translate;
  */
 public class Renderer {
     
-    private static int mapX =5, mapY =5;
+    
     private static int[][] map = {
         {3, 4, 3, 4, 3},
         {4, 0, 0, 0, 4},
@@ -32,7 +32,7 @@ public class Renderer {
         {4, 0, 0, 0, 4},
         {3, 4, 3, 4, 3}
     };
-    
+    private static int mapX=map[0].length, mapY=map.length;
     
     private static Canvas frame = new Canvas();
     private static GraphicsContext gc = frame.getGraphicsContext2D();
@@ -41,7 +41,7 @@ public class Renderer {
     //!!These will be private in the future!! \/
     //---Use setters to set up initial values---
     public static Point2D cam = Point2D.ZERO; //camera position (player position)
-    public static float camA=0f, fov=60f; //camera orientation & field of view (degrees)
+    public static float camA=0f, fov=90f; //camera orientation & field of view (degrees)
     
     public static boolean test = false;
     
@@ -112,7 +112,7 @@ public class Renderer {
             upward = rayA<180; rightward = (rayA<90 || rayA>270);
             
             final double tan = Math.tan(Math.toRadians(rayA));
-            final double cotan = 1/tan;
+            final double cotan = 1.0/tan;
             
             double stepX=0, stepY=0;
             
@@ -124,13 +124,14 @@ public class Renderer {
             }
             if(!rightward){//looking left (-x)
                 rV = new Point2D(tileX  , cam.getY()-(1-offX)*tan);
+                if(cam.getY()/tileY == 1.0)rV = rV.add(-1,0);
                 stepX = -1; stepY = -tan;
             }
-            if(tan>60.0 || tan<-60.0){//looking directly up or down
-                rV = cam.add(Point2D.ZERO);
-                stepX = 0; stepY = -1;
-                if(tan>60.0) stepY = 1;
+            if(tan>80.0 || tan<-80.0){//looking directly up or down
+                rV = new Point2D(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
             }
+            
+            //System.out.printf("%3.3f rV: %1.4f, %1.4f %n",rayA, rV.getX(), rV.getY());
             int v=-1;
             for(int i=0;i<8;i++){
                 int x = (int)Math.floor(rV.getX());
@@ -149,13 +150,14 @@ public class Renderer {
             }
             if(!upward){//looking down (-y)
                 rH = new Point2D(cam.getX()-(1-offY)*cotan, tileY);
+                if(cam.getX()/tileX == 1.0)rH = rH.add(0, -1);
                 stepX = -cotan; stepY = -1;
             }
-            if(cotan>60.0 || cotan <-60.0){//looking directly left or right
-                rH = cam.add(Point2D.ZERO);
-                stepX = -1; stepY = 0;
-                if(cotan>60.0) stepX = 1;
+            if(cotan>80.0 || cotan <-80.0){//looking directly left or right
+                rH = new Point2D(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
             }
+            
+            //System.out.printf("%3.3f rH: %1.4f, %1.4f %n",rayA, rH.getX(), rH.getY());
             int h = -1;
             for(int i=0;i<8;i++){
                 int x = (int)(rH.getX());
@@ -195,17 +197,17 @@ public class Renderer {
     
     private static Color getColor(int id){
         switch(id){
-            case 0: return Color.GREEN;
+            case 0: return Color.WHITE;
             case 1: return Color.GRAY;
             case 2: return Color.GOLD;
             case 3: return Color.VIOLET;
             case 4: return Color.BLUEVIOLET;
-            default: return Color.RED;
+            default: return Color.RED; //indicates error
         }
     }
     private static void drawWallLine(int x, double distance, Color color){
         double maxHeight = screenHeight;
-        double height = maxHeight/distance;
+        double height = maxHeight/(distance +.25);
         double lineTop = (screenHeight-height)/2.0;
         
         gc.setFill(color);
@@ -239,7 +241,7 @@ public class Renderer {
         }
         private static void createLine(Point2D hitP, Color color){
             Line line = new Line(sq*cam.getX(), sq*cam.getY(), sq*hitP.getX(), sq*hitP.getY());
-            line.setStroke(color);
+            line.setStroke(color); line.setOpacity(0.5);
             rayPane.getChildren().add(line);
         }
     }

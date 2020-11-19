@@ -23,12 +23,20 @@ public class RenderTest extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        
+        int[][] map = {
+        {3, 4, 3, 4, 3, 4},
+        {4, 0, 0, 0, 0, 3},
+        {3, 0, 0, 0, 0, 4},
+        {4, 0, 0, 0, 0, 3},
+        {3, 0, 0, 0, 0, 4},
+        {4, 3, 4, 3, 4, 3}
+        };
+        Renderer.setMap(map);
         Canvas canvas = new Canvas(400, 225);
         Renderer.test=true;
         Renderer.setCanvas(canvas);
-        Renderer.setPos(1.5, 1.75);
-        Renderer.setDir(0f);
+        Renderer.setPos(3.0, 3.0);
+        Renderer.setDir(90f);
         Renderer.setFov(90f);
         Renderer.MiniMap.generate();
         Renderer.render();
@@ -39,7 +47,7 @@ public class RenderTest extends Application {
         
         Scene scene = new Scene(root);
         
-        primaryStage.setTitle("Render Test: "+Renderer.getDir()+" deg");
+        primaryStage.setTitle("Render Test: ("+Renderer.getPos().getX()+", "+Renderer.getPos().getY()+"), "+Renderer.getDir()+" deg, fov: "+Renderer.fov);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
