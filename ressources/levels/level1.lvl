@@ -1,38 +1,57 @@
 {
 "grid":{
-	"width":"5",
-	"height":"5",
-	"data": [ 
-		[1,0,1,0,1],
-		[2,0,2,0,2],
-		[3,0,3,0,3],
-		[4,0,4,0,4],
-		[5,0,5,0,5]
-		],
-        "palette": [
-            "entry1":{
-                    "id":"0",
-                    "color":"WHITE",
-                    "flag":"0"
-                   },
-            "entry2":{
-                    "id":"1",
-                    "color":"BLUE",
-                    "flag":"1"
-                   }
-                   ]         
+    "width":"5",
+    "height":"5",
+    "data": [ 
+            [1,0,1,0,1],
+            [2,0,2,0,2],
+            [3,0,3,0,3],
+            [4,0,4,0,4],
+            [5,0,5,0,5]
+            ],
+    "palette": [
+        {
+                "id":"0",
+                "color":[1, 1, 1],
+                "flag":"0"
+               },
+        {
+                "id":"1",
+                "color":[0, 0, 1],
+                "flag":"1"
+               }
+               ]
 },
 
-"entities":{
-    "entity1"{
-            "classname":"player_base",
-            "name":"player",
-            "active":"TRUE",
-            "posx":"2.5",
-            "posy":"2.5",
-            "rotation":"90",
-            "walkspeed":"2",
-            "runspeed":"4"
-            }		
-}
+"entities": [
+    {
+    "classname":"player_base",
+    "name":"player1",
+    "active":"TRUE",
+    "posx":"2.5",
+    "posy":"2.5",
+    "rotation":"90",
+    "walkspeed":"2",
+    "runspeed":"4"
+    },
+    {
+    "classname":"logic_timer",
+    "name":"timer1",
+    "active":"TRUE",
+    "posx":"1",
+    "posy":"1",
+    "maxtime":"1"
+    },
+    {
+    "classname":"logic_counter",
+    "name":"counter1",
+    "active":"TRUE",
+    "posx":"0",
+    "posy":"0",
+    "minvalue":"0",
+    "maxvalue":"3",
+    "startingvalue":"0",
+    "canreset":"TRUE"
+    }
+]
 }

@@ -29,7 +29,7 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
     {
         this.name = propertyMap.get("name");
         this.active = Boolean.parseBoolean(propertyMap.get("active"));
-        this.position = new Point2D(Float.parseFloat(propertyMap.get("posX")), Float.parseFloat(propertyMap.get("psoY")));
+        this.position = new Point2D(Float.parseFloat(propertyMap.get("posx")), Float.parseFloat(propertyMap.get("posy")));
     }
     
     @Override
@@ -37,6 +37,8 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
 
         Game.getCurrentLevel().removeEntity(this.name); //temporary code
     }
+    
+    public void trigger(Object... arguments){} //method present in all entities. Can be called from any entity and will execute logic specific to the method holder by override
     
     public String getName() { //if you can't understand this one then I'm sorry...
         return this.name;

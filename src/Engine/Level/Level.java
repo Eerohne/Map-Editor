@@ -36,7 +36,15 @@ public class Level {
     public Color getCellColor(int x, int y)
     {
         int index = getCellValue(x, y);
+        try{
+        getPaletteEntry(index);
         return getPaletteEntry(index).getColor();
+        }
+        catch(NullPointerException e)
+        {
+            System.out.println("palette entry "+index+" does not exist");
+        }
+        return null;
     }
     
     //LevelData code
@@ -64,14 +72,8 @@ public class Level {
     public void addEntity(Entity entity)
     {
         entities.put(entity.getName(), entity);
-        if(entity instanceof Entity_Player){
+        if(entity instanceof Entity_Player) //store player in a global variable for easy access
             playerEntity = entity;
-            System.out.println("player");
-        }
-        else
-        {
-            System.out.println("not player");
-        }
         if(!firstUpdate)
             entity.start();
     }
@@ -93,13 +95,17 @@ public class Level {
         {
             Entity entity = it.next();
             if(entity.getActive()){
-                if(firstUpdate){
-                    it.next().start();
-                    firstUpdate = false;
-                }else{
-                    it.next().update();
-                }
+                if(firstUpdate)
+                    entity.start();
+                else
+                    entity.update();
             }
         }
+        firstUpdate = false;
+    }
+    
+    public Entity getPlayer()
+    {
+        return playerEntity;
     }
 }

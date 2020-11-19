@@ -31,11 +31,12 @@ import org.json.simple.parser.ParseException;
  
 public class RessourceLoader
 {
+    public static String ressourcePath = "ressources/";
     //RessourceLoader.loadImage("images/brick.png");
     public static Image loadImage(String path)
     {
         try{
-            FileInputStream inputstream = new FileInputStream("ressources/"+path);
+            FileInputStream inputstream = new FileInputStream(ressourcePath + path);
             return new Image(inputstream);
         }
         catch(IOException e)
@@ -48,12 +49,12 @@ public class RessourceLoader
     //AudioPlayer.player.start(RessourceLoader.loadAudio("sounds/musictest.wav"));
     public static Media loadAudio(String path)
     {
-        return new Media(new File("ressources/"+path).toURI().toString());
+        return new Media(new File(ressourcePath + path).toURI().toString());
     }
     
     public static String loadStyleFile(String path) throws MalformedURLException
     {
-        String pathName = "ressources/"+path;
+        String pathName = ressourcePath + path;
         File file = new File(pathName);
         if (file.exists()) {
             return file.toURI().toURL().toExternalForm();
@@ -68,14 +69,13 @@ public class RessourceLoader
         Level level = new Level();
         
         JSONParser parser = new JSONParser();
-        try (Reader reader = new FileReader("ressources/"+path)) {
+        try (Reader reader = new FileReader(ressourcePath + path)) {
             
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
-            System.out.println(jsonObject.toJSONString());
 
             JSONObject grid = (JSONObject) jsonObject.get("grid");
             
-            //level grid
+            //1) level grid
             int gridWidth = Integer.valueOf((String)grid.get("width"));
             int gridHeight = Integer.valueOf((String)grid.get("height"));
             int gridArray[][] = new int[gridWidth][gridHeight];
@@ -94,33 +94,43 @@ public class RessourceLoader
                 }
                 row++;
             }
+            level.setLevelData(gridArray);
 
-            //level palette
-            JSONArray paletteData = (JSONArray) grid.get("palette");
-            Iterator<Object> paletteIterator = paletteData.iterator();
+            //2) level palette
+            JSONArray paletteArray = (JSONArray) grid.get("palette");
+            Iterator<Object> paletteIterator = paletteArray.iterator();
             while (paletteIterator.hasNext()) {
                 JSONObject jsonEntry = (JSONObject) paletteIterator.next();
                 
                 int id = Integer.valueOf((String)jsonEntry.get("id"));
                 
-                JSONArray colorArr = (JSONArray) paletteIterator.next();
+                JSONArray colorArr = (JSONArray) jsonEntry.get("color");
                 Color color = Color.color(
-                        Float.valueOf((String)colorArr.get(0)),
-                        Float.valueOf((String)colorArr.get(1)),
-                        Float.valueOf((String)colorArr.get(2)));
+                        Float.valueOf((long)colorArr.get(0)),
+                        Float.valueOf((long)colorArr.get(1)),
+                        Float.valueOf((long)colorArr.get(2)));
                 
                 int flag = Integer.valueOf((String)jsonEntry.get("flag"));
                 
                 PaletteEntry entry = new PaletteEntry(color, flag);
-                System.out.println(entry.getColor());
                 level.putPaletteEntry(id, entry);
             }
-//            // loop array
-//            JSONArray msg = (JSONArray) jsonObject.get("messages");
-//            Iterator<String> iterator = msg.iterator();
-//            while (iterator.hasNext()) {
-//                System.out.println(iterator.next());
-//            }
+            
+            //3) level entities
+            JSONArray entityArray = (JSONArray) jsonObject.get("entities");
+            Iterator<Object> entityIterator = entityArray.iterator();
+            while (entityIterator.hasNext()) {
+                JSONObject jsonEntry = (JSONObject) entityIterator.next();
+                HashMap<String, String> properties = new HashMap<>();
+                jsonEntry.forEach((k, v) -> {
+                    properties.put((String)k, (String)v);
+                });
+                Entity entity = EntityCreator.constructEntity(properties);
+                if(entity != null)
+                    level.addEntity(entity);
+            }
+            
+            
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -129,6 +139,11 @@ public class RessourceLoader
         }
         
         return level;
+    }
+    
+    public static void setRessourcePath(String path)
+    {
+        ressourcePath = path+"/";
     }
     
     public static void main( String[] args )
