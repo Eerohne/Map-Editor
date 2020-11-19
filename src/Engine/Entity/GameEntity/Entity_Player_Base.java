@@ -34,12 +34,12 @@ public class Entity_Player_Base extends Entity_Player{
         this.runSpeed = runSpeed;
     }
     
-    public Entity_Player_Base(HashMap<String, String> propertyMap)
+    public Entity_Player_Base(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
         
-        this.walkSpeed = Float.parseFloat(propertyMap.get("walkspeed"));
-        this.runSpeed = Float.parseFloat(propertyMap.get("runspeed"));
+        this.walkSpeed = Float.parseFloat((String) propertyMap.get("walkspeed"));
+        this.runSpeed = Float.parseFloat((String) propertyMap.get("runspeed"));
     }
 
     @Override
@@ -76,7 +76,8 @@ public class Entity_Player_Base extends Entity_Player{
         Renderer.cam = this.position;
         Renderer.camA = this.rotation;
         
-        label.setText(this.position.toString());
+        if(label != null)
+            label.setText(this.position.toString());
     }
     
 }

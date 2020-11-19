@@ -5,6 +5,7 @@
  */
 package Engine.Util.RessourceManager;
 
+import Engine.Core.Exceptions.LevelCreationException;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Entity.EntityCreator;
 import Engine.Level.Level;
@@ -64,7 +65,7 @@ public class RessourceLoader
         return null;
     }
     
-    public static Level loadLevel(String path) throws ParseException
+    public static Level loadLevel(String path) throws LevelCreationException
     {
         Level level = new Level();
         
@@ -121,16 +122,17 @@ public class RessourceLoader
             Iterator<Object> entityIterator = entityArray.iterator();
             while (entityIterator.hasNext()) {
                 JSONObject jsonEntry = (JSONObject) entityIterator.next();
-                HashMap<String, String> properties = new HashMap<>();
+                HashMap<String, Object> properties = new HashMap<>();
                 jsonEntry.forEach((k, v) -> {
-                    properties.put((String)k, (String)v);
+                    properties.put((String)k, (Object)v);
                 });
                 Entity entity = EntityCreator.constructEntity(properties);
                 if(entity != null)
                     level.addEntity(entity);
             }
-            
-            
+            //verify if player entity exists
+            if(level.getPlayer() == null)
+                throw new LevelCreationException("No player entity inside the level");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -150,8 +152,9 @@ public class RessourceLoader
     {
         try {
             loadLevel("levels/level1.lvl");
-        } catch (ParseException ex) {
-            Logger.getLogger(RessourceLoader.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+        catch(LevelCreationException ex) {
+            System.out.println(ex);
         }
     }
 }

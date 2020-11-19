@@ -11,35 +11,58 @@ import javafx.geometry.Point2D;
 public class Entity_Logic_Timer extends Entity{
     protected float time;
     protected float maxTime;
+    protected boolean counting;
     
-    public Entity_Logic_Timer(String name, Point2D position, float maxTime) {
+    public Entity_Logic_Timer(String name, Point2D position, float maxTime, boolean onStart) {
         super(name, position);
         this.maxTime = maxTime;
+        this.counting = onStart;
     }
     
-    public Entity_Logic_Timer(HashMap<String, String> propertyMap)
+    public Entity_Logic_Timer(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
-        this.maxTime = Float.parseFloat(propertyMap.get("maxtime"));
+        this.maxTime = Float.parseFloat((String) propertyMap.get("maxtime"));
+        this.counting = Boolean.parseBoolean((String) propertyMap.get("onstart"));
     }
     
     @Override
     public void start() {
-        this.time = maxTime;
     }
     
     @Override
     public void update() {
-        time -= Time.deltaTime;
-        if(time <=0)
+        if(this.counting){
+            time -= Time.deltaTime;
+            if(time <=0)
+            {
+                System.out.println("logic_timer logic");
+                fireSignal("OnTimerEnded");
+                time = maxTime;
+            }
+        }
+    }
+    
+    @Override
+    public void handleSignal(String signalName, Object[] arguments){
+        
+        switch(signalName)
         {
-            System.out.println("logic timer logic");
-            Entity counter = Game.getCurrentLevel().getEntity("counter1");
-            if(counter != null)
-                counter.trigger(1);
-            else
-                System.out.println("counter not found");
-            time = maxTime;
+            case "start":
+                this.counting = true;
+                break;
+            case "stop":
+                this.counting = false;
+                break;
+            case "reset":
+                this.time = maxTime;
+                break;
+            case "printMessage":
+                System.out.println("message called in the timer, success!!!");
+                break;
+            default:
+                super.handleSignal(signalName, arguments);
+                
         }
     }
     

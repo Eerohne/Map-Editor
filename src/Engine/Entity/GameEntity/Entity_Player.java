@@ -19,10 +19,10 @@ public abstract class Entity_Player extends Entity{
         this.rotation = rotation;
     }
     
-    public Entity_Player(HashMap<String, String> propertyMap)
+    public Entity_Player(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
-        this.rotation = Float.parseFloat(propertyMap.get("rotation"));
+        this.rotation = Float.parseFloat((String) propertyMap.get("rotation"));
     }
 
     public float getRotation() {

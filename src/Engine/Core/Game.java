@@ -5,29 +5,20 @@
  */
 package Engine.Core;
 
+import Engine.Core.Exceptions.LevelCreationException;
 import Engine.Util.Input;
 import Engine.Window.WindowManager;
-import Engine.Entity.EntityCreator;
-import Engine.Entity.AbstractEntity.Entity;
 import Engine.Level.Level;
 import Engine.RaycastRenderer.Renderer;
 import Engine.Util.RessourceManager.RessourceLoader;
+import static Engine.Util.RessourceManager.RessourceLoader.loadLevel;
 import Engine.Util.Time;
-import java.io.File;
 import java.net.MalformedURLException;
-import java.util.HashMap;
 import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import org.json.simple.parser.ParseException;
 
 //Merouane Issad
@@ -93,18 +84,30 @@ public class Game extends Application{
         gameStage = stage;
         
         //now load the initial level, path in the config file
-        try { 
-            currentLevel = RessourceLoader.loadLevel("levels/level1.lvl");
-        } catch (ParseException ex) {
-            Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        try {
+            currentLevel = loadLevel("levels/level1.lvl");
+        } 
+        catch(LevelCreationException ex) {
+            System.out.println(ex);
+            isRunning = false;
         }
-        
-        currentLevel.getPlayer().trigger(7, "hi");
     }
     
     public static Level getCurrentLevel()
     {
         return currentLevel;
+    }
+    
+    public static void reloadCurrentLevel()
+    {
+        windowManager.reloadWindow();
+        try {
+            currentLevel = loadLevel("levels/level1.lvl");
+        } 
+        catch(LevelCreationException ex) {
+            System.out.println(ex);
+            isRunning = false;
+        }
     }
     
     public static WindowManager getWindowManager()

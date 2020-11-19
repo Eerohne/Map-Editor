@@ -16,11 +16,11 @@ public abstract class SpriteEntity extends Entity{ //A type of entity that provi
         this.color = color;
     }
     
-    public SpriteEntity(HashMap<String, String> propertyMap)
+    public SpriteEntity(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
         
-        this.color = new Color(Float.parseFloat(propertyMap.get("col_r")), Float.parseFloat(propertyMap.get("col_g")), Float.parseFloat(propertyMap.get("col_b")), Float.parseFloat(propertyMap.get("col_a")));
+        //this.color = new Color(Float.parseFloat(propertyMap.get("col_r")), Float.parseFloat(propertyMap.get("col_g")), Float.parseFloat(propertyMap.get("col_b")), Float.parseFloat(propertyMap.get("col_a")));
     }
     
     @Override
@@ -32,6 +32,17 @@ public abstract class SpriteEntity extends Entity{ //A type of entity that provi
     public void destroy() {
         removeFromRenderList();
         super.destroy();
+    }
+    
+    @Override
+    public void handleSignal(String signalName, Object[] arguments){
+        
+        switch(signalName)
+        {
+            default:
+                super.handleSignal(signalName, arguments);
+                
+        }
     }
     
     public void addToRenderList() {

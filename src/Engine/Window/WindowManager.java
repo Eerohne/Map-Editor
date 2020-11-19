@@ -75,6 +75,11 @@ public class WindowManager extends AnchorPane{
         this.resizeWindow(width, height);
     }
     
+    public void reloadWindow()
+    {
+        clearIngameDiplay();
+    }
+    
     //renderCanvas
     private void initRenderCanvas()
     {
@@ -279,7 +284,6 @@ public class WindowManager extends AnchorPane{
     //window
     public void resizeWindow(int width, int height)
     {
-        System.out.println("resizing to : "+width+", "+height);
         this.stage.setWidth(width);
         this.stage.setHeight(height);
         this.renderCanvas.setWidth(width);

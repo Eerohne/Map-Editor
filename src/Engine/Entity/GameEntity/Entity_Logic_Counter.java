@@ -32,13 +32,13 @@ public class Entity_Logic_Counter extends Entity{
         this.canReset = canReset;
     }
     
-    public Entity_Logic_Counter(HashMap<String, String> propertyMap)
+    public Entity_Logic_Counter(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
-        this.minValue = Integer.valueOf(propertyMap.get("minvalue"));
-        this.maxValue = Integer.valueOf(propertyMap.get("maxvalue"));
-        this.value = Integer.valueOf(propertyMap.get("startingvalue"));
-        this.canReset = Boolean.valueOf(propertyMap.get("canreset"));
+        this.minValue = Integer.valueOf((String) propertyMap.get("minvalue"));
+        this.maxValue = Integer.valueOf((String) propertyMap.get("maxvalue"));
+        this.value = Integer.valueOf((String) propertyMap.get("startingvalue"));
+        this.canReset = Boolean.valueOf((String) propertyMap.get("canreset"));
     }
 
     @Override
@@ -50,23 +50,45 @@ public class Entity_Logic_Counter extends Entity{
     }
     
     @Override
-    public void trigger(Object... properties)
-    {
-        if(properties == null)
-            this.value += 1;
-        else
-            this.value += (int) properties[0];
-        
-        if(this.canCount == true){
-            if(this.value >= maxValue | this.value <= minValue){
-                System.out.println("counter triggered");
-                if(this.canReset == true){
-                    this.value = this.startingValue;
-                }
-                else
-                    this.canCount = false;
-            }
+    public void handleSignal(String signalName, Object[] arguments){
+        switch(signalName)
+        {
+            case "increment":
+                this.value++;
+                verifyCount();
+                break;
+            case "decrement":
+                this.value--;
+                verifyCount();
+                break;
+            case "reset":
+                this.value = startingValue;
+                break;
+            default:
+                super.handleSignal(signalName, arguments);
+                
         }
+    }
+    
+    public void verifyCount()
+    {
+        if(canCount && (value >= maxValue | value <= minValue)){
+            System.out.println("logic_counter logic");
+            fireSignal("OnValueReached");
+            if(canReset)
+                reset();
+            else
+                canCount = false;
+        }
+    }
+    
+    public int getCount()
+    {
+        return this.value;
+    }
+    public void reset()
+    {
+        this.value = startingValue;
     }
     
 }

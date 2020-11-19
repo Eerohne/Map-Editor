@@ -28,8 +28,7 @@
     "classname":"player_base",
     "name":"player1",
     "active":"TRUE",
-    "posx":"2.5",
-    "posy":"2.5",
+    "position":[2.5,2.5],
     "rotation":"90",
     "walkspeed":"2",
     "runspeed":"4"
@@ -38,20 +37,42 @@
     "classname":"logic_timer",
     "name":"timer1",
     "active":"TRUE",
-    "posx":"1",
-    "posy":"1",
-    "maxtime":"1"
+    "position":[1.0,1.0],
+    "maxtime":"1",
+    "onstart":"TRUE"
+    "signals": [
+                    {
+                        "name":"OnTimerEnded",
+                        "targetname":"counter1",
+                        "inputname":"increment",
+                        "arguments":[]
+                    }
+                    ]
     },
     {
     "classname":"logic_counter",
     "name":"counter1",
     "active":"TRUE",
-    "posx":"0",
-    "posy":"0",
+    "position":[0.0,0.0],
     "minvalue":"0",
     "maxvalue":"3",
     "startingvalue":"0",
-    "canreset":"TRUE"
+    "canreset":"TRUE",
+    "signals": [
+                {
+                    "name":"OnValueReached",
+                    "targetname":"messenger1",
+                    "inputname":"printMessage",
+                    "arguments":["the counter has reached it's target value"]
+                }
+                ]
+    },
+    {
+    "classname":"logic_messenger",
+    "name":"messenger1",
+    "active":"TRUE",
+    "position":[0.0,0.0],
+    "signals": []
     }
 ]
 }
