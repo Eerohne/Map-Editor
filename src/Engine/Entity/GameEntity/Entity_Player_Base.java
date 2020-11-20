@@ -27,6 +27,7 @@ public class Entity_Player_Base extends Entity_Player{
     protected float playerSpeed, walkSpeed, runSpeed;
     
     private Label label;
+    private float headBobTime;
     
     public Entity_Player_Base(String name, Point2D position, float rotation, float walkSpeed, float runSpeed) {
         super(name, position, rotation);
@@ -54,6 +55,7 @@ public class Entity_Player_Base extends Entity_Player{
 
     @Override
     public void update() {
+        Point2D oldPosition = this.position;
         if(Input.keyPressed(KeyCode.W))
             this.position = this.position.add(playerSpeed* Math.cos(Math.toRadians(this.rotation))* Time.deltaTime, playerSpeed* Math.sin(Math.toRadians(this.rotation)) *Time.deltaTime);
         if(Input.keyPressed(KeyCode.S))
@@ -73,9 +75,14 @@ public class Entity_Player_Base extends Entity_Player{
         else
             playerSpeed = walkSpeed;
         
-        Renderer.cam = this.position;
-        Renderer.camA = this.rotation;
-        
+        Renderer.setPos(position);
+        Renderer.setDir(rotation);
+        if(!oldPosition.equals(position)){
+            headBobTime += Time.deltaTime;
+            Renderer.heightOffset = (float)Math.sin(headBobTime*10)*20;
+        }
+        else
+             Renderer.heightOffset = 0;
         if(label != null)
             label.setText(this.position.toString());
     }

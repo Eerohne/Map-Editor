@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.json.simple.parser.ParseException;
 
@@ -42,6 +43,7 @@ public class Game extends Application{
         
         //temporary very ugly code to set the view position
         Renderer.setPos(2.5, 2.5);
+        Renderer.setFov(70);
         float speed = 1.5f;
         new AnimationTimer() { //Game main loop
 

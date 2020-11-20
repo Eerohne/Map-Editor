@@ -21,7 +21,6 @@ public class Input {
     public static void init()
     {
         Game.scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
-            @Override
             public void handle(KeyEvent key) {
                 keyMap.put(key.getCode(), true);
                 if(key.getCode() == KeyCode.ESCAPE)

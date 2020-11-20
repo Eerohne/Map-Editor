@@ -45,6 +45,9 @@ public class Renderer {
     
     public static boolean test = false, pV = false, pH = false;
     
+    //LINE ADDED BY LOGITHSS
+    public static float heightOffset = 0;
+    
     private Renderer(){}
     
     //renders one frame
@@ -207,8 +210,11 @@ public class Renderer {
     }
     private static void drawWallLine(int x, double distance, Color color){
         double maxHeight = screenHeight;
-        double height = maxHeight/(distance +.25);
-        double lineTop = (screenHeight-height)/2.0;
+        double height = (maxHeight/(distance +.25));
+        double lineTop = ((screenHeight-height)/2.0);
+        
+        //LINE ADDED BY LOGITHSS
+        lineTop += -(heightOffset);
         
         gc.setFill(color);
         gc.fillRect(x, lineTop, 1, height);
