@@ -43,7 +43,7 @@ public class Renderer {
     public static Point2D cam = Point2D.ZERO; //camera position (player position)
     public static float camA=0f, fov=90f; //camera orientation & field of view (degrees)
     
-    public static boolean test = false;
+    public static boolean test = false, pV = false, pH = false;
     
     private Renderer(){}
     
@@ -92,15 +92,11 @@ public class Renderer {
     
     //renders level
     private static void renderLevel(){
-        final int tileX, tileY; //player grid position
-        final double offX, offY; //offset within tile (0 <= off < 1)
-        //note: posX = tileX + offX and posY = tileY + offY
-        tileX = (int)Math.floor(cam.getX());
-        tileY = (int)Math.floor(cam.getY());
-        offX = cam.getX()-tileX;
-        offY = cam.getY()-tileY;
+        final double tileX, tileY; //player grid position
+        tileX = Math.floor(cam.getX());
+        tileY = Math.floor(cam.getY());
         
-        float rayA = camA - (fov/(2f));
+        float rayA = camA - fov/2f*(float)(1.0-1.0/screenWidth);
         
         for(int r=0; r<screenWidth;r++){
             while (rayA<0 || rayA>=360) {                
@@ -119,19 +115,21 @@ public class Renderer {
             Point2D rH = Point2D.ZERO, rV = Point2D.ZERO;
             //intersects with vertical
             if(rightward){//looking right (+x)
-                rV = new Point2D(tileX+1, cam.getY()+(1-offX)*tan);
+                rV = rV.add(tileX+1, cam.getY());
+                rV = rV.subtract(0, (cam.getX()-rV.getX())*tan);
                 stepX = 1; stepY = tan;
             }
             if(!rightward){//looking left (-x)
-                rV = new Point2D(tileX  , cam.getY()-(1-offX)*tan);
-                if(cam.getY()/tileY == 1.0)rV = rV.add(-1,0);
+                rV = new Point2D(tileX  , cam.getY());
+                if(cam.getX() == tileX)rV = rV.add(-1,0);
+                rV = rV.subtract(0, (cam.getX()-rV.getX())*tan);
                 stepX = -1; stepY = -tan;
             }
             if(tan>80.0 || tan<-80.0){//looking directly up or down
                 rV = new Point2D(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
             }
             
-            //System.out.printf("%3.3f rV: %1.4f, %1.4f %n",rayA, rV.getX(), rV.getY());
+            if(pV)System.out.printf("%3.3f rV: %1.4f, %1.4f %n",rayA, rV.getX(), rV.getY());
             int v=-1;
             for(int i=0;i<8;i++){
                 int x = (int)Math.floor(rV.getX());
@@ -145,19 +143,21 @@ public class Renderer {
             //intersects with horizontal
             stepX =0; stepY=0;
             if(upward){//looking up (+y)
-                rH = new Point2D(cam.getX()+(1-offY)*cotan, tileY+1);
+                rH = rH.add(cam.getX(), tileY+1);
+                rH = rH.subtract((cam.getY()-rH.getY())*cotan, 0);
                 stepX = cotan; stepY = 1;
             }
             if(!upward){//looking down (-y)
-                rH = new Point2D(cam.getX()-(1-offY)*cotan, tileY);
-                if(cam.getX()/tileX == 1.0)rH = rH.add(0, -1);
+                rH = rH.add(cam.getX(), tileY);
+                if(cam.getY() == tileY)rH = rH.add(0, -1);
+                rH = rH.subtract((cam.getY()-rH.getY())*cotan, 0);
                 stepX = -cotan; stepY = -1;
             }
             if(cotan>80.0 || cotan <-80.0){//looking directly left or right
                 rH = new Point2D(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
             }
             
-            //System.out.printf("%3.3f rH: %1.4f, %1.4f %n",rayA, rH.getX(), rH.getY());
+            if(pH)System.out.printf("%3.3f rH: %1.4f, %1.4f %n",rayA, rH.getX(), rH.getY());
             int h = -1;
             for(int i=0;i<8;i++){
                 int x = (int)(rH.getX());
@@ -197,7 +197,7 @@ public class Renderer {
     
     private static Color getColor(int id){
         switch(id){
-            case 0: return Color.WHITE;
+            case 0: return Color.TRANSPARENT;
             case 1: return Color.GRAY;
             case 2: return Color.GOLD;
             case 3: return Color.VIOLET;
@@ -218,7 +218,8 @@ public class Renderer {
         private final static GridPane grid = new GridPane();
         private final static GridPane gridLines = new GridPane();
         private final static Pane rayPane = new Pane();
-        public static StackPane minimap = new StackPane(grid, rayPane, gridLines);
+        private final static Pane layer = new Pane();
+        public static StackPane minimap = new StackPane(layer, grid, rayPane, gridLines);
         
         //private static int sq = 40; //size of 1 grid square, is used for scaling
         private static int sq = (int)screenHeight/mapY;
@@ -226,6 +227,12 @@ public class Renderer {
         public static void generate(){
             rayPane.getChildren().clear();
             createGrid();
+            //create a triangle that shows a 90 deg fov
+            Polygon fov3 = new Polygon();
+            fov3.getPoints().addAll(0.0, 0.0, (double)sq*mapX, (double)sq*mapY, (double)sq*mapX, (double)-sq*mapY);
+            fov3.setOpacity(1.0); fov3.getTransforms().add(new Rotate(camA)); fov3.relocate(sq*cam.getX(), sq*(cam.getY()-mapY));
+            layer.getChildren().add(fov3); layer.setMaxSize(sq*mapX, sq*mapY);
+            fov3.setVisible(false);
         }
         
         private static void createGrid(){
@@ -233,7 +240,7 @@ public class Renderer {
                 for(int x=0;x<mapX;x++){
                     Rectangle rect = new Rectangle(sq, sq);
                     Rectangle rect1 = new Rectangle(sq-1, sq-1);
-                    rect.setFill(getColor(map[y][x])); rect.setOpacity(0.8);
+                    rect.setFill(getColor(map[y][x])); rect.setOpacity(0.25);
                     rect1.setFill(Color.TRANSPARENT); rect1.setStroke(Color.BLACK);
                     grid.add(rect, x, y); gridLines.add(rect1, x, y);
                 }

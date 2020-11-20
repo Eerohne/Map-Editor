@@ -32,11 +32,13 @@ public class RenderTest extends Application {
         {4, 3, 4, 3, 4, 3}
         };
         Renderer.setMap(map);
-        Canvas canvas = new Canvas(400, 225);
+        Canvas canvas = new Canvas(400, 270);
         Renderer.test=true;
+        Renderer.pV = false;
+        
         Renderer.setCanvas(canvas);
-        Renderer.setPos(3.0, 3.0);
-        Renderer.setDir(90f);
+        Renderer.setPos(3.0, 4.25);
+        Renderer.setDir(0f);
         Renderer.setFov(90f);
         Renderer.MiniMap.generate();
         Renderer.render();
