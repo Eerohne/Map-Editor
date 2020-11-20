@@ -5,28 +5,22 @@
  */
 package Engine.Core;
 
+import Engine.Core.Exceptions.LevelCreationException;
 import Engine.Util.Input;
 import Engine.Window.WindowManager;
-import Engine.Entity.EntityCreator;
-import Engine.Entity.AbstractEntity.Entity;
 import Engine.Level.Level;
 import Engine.RaycastRenderer.Renderer;
 import Engine.Util.RessourceManager.RessourceLoader;
+import static Engine.Util.RessourceManager.RessourceLoader.loadLevel;
 import Engine.Util.Time;
-import java.io.File;
 import java.net.MalformedURLException;
-import java.util.HashMap;
+import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import org.json.simple.parser.ParseException;
 
 //Merouane Issad
 //for now, discard any code written here, it's only test nonsense
@@ -44,10 +38,12 @@ public class Game extends Application{
     public static boolean isRendering = true;
     public static boolean pauseActive = true;
     
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage){
         initEngine(stage);
         
+        //temporary very ugly code to set the view position
         Renderer.setPos(2.5, 2.5);
+        Renderer.setFov(70);
         float speed = 1.5f;
         new AnimationTimer() { //Game main loop
 
@@ -55,26 +51,9 @@ public class Game extends Application{
             public void handle(long l) {
                 if(isRunning)
                 {
-                    Time.update();
+                    Time.update(); //update time
                     stage.setTitle("Optik Engine -> FPS : " + Integer.toString(Time.fps));
-                    //update all entities in the level -> currentLevel.update();
-                    
-                    //Camera rotation test
-                    //Renderer.camA += 90*Time.deltaTime;
-                    
-                    //this code should be in the player entity update
-                    if(Input.keyPressed(KeyCode.W))
-                        Renderer.cam = Renderer.cam.add(speed* Math.cos(Math.toRadians(Renderer.camA))* Time.deltaTime, speed* Math.sin(Math.toRadians(Renderer.camA)) *Time.deltaTime);
-                    if(Input.keyPressed(KeyCode.S))
-                        Renderer.cam = Renderer.cam.add(speed* -Math.cos(Math.toRadians(Renderer.camA))* Time.deltaTime, speed* -Math.sin(Math.toRadians(Renderer.camA)) *Time.deltaTime);
-                    if(Input.keyPressed(KeyCode.A))
-                        Renderer.cam = Renderer.cam.add(speed* Math.sin(Math.toRadians(Renderer.camA))* Time.deltaTime, speed* -Math.cos(Math.toRadians(Renderer.camA)) *Time.deltaTime);
-                    if(Input.keyPressed(KeyCode.D))
-                        Renderer.cam = Renderer.cam.add(speed* -Math.sin(Math.toRadians(Renderer.camA))* Time.deltaTime, speed* Math.cos(Math.toRadians(Renderer.camA)) *Time.deltaTime);
-                    if(Input.keyPressed(KeyCode.LEFT))
-                        Renderer.camA -= 100 * Time.deltaTime;
-                    if(Input.keyPressed(KeyCode.RIGHT))
-                        Renderer.camA += 100 * Time.deltaTime;
+                    currentLevel.update(); //update all entities in the level
                 }
                 if(isRendering)
                     Renderer.render();
@@ -84,7 +63,7 @@ public class Game extends Application{
         stage.show();
     }
     
-    private static void initEngine(Stage stage) throws MalformedURLException
+    private static void initEngine(Stage stage)
     {
         //config file stuff
         //window size
@@ -95,18 +74,42 @@ public class Game extends Application{
         Input.init();
         Renderer.setCanvas(windowManager.getRenderCanvas());
         
-        //style path
+        //load .css style
         String pathName = "style/style.css" ;
-        scene.getStylesheets().add(RessourceLoader.loadStyleFile(pathName));
+        try {
+            scene.getStylesheets().add(RessourceLoader.loadStyleFile(pathName));
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
         
         stage.setResizable(false);
         gameStage = stage;
-        //now load the initial level -> currentLevel = LevelLoader.load(path_to_level_file);
+        
+        //now load the initial level, path in the config file
+        try {
+            currentLevel = loadLevel("levels/level1.lvl");
+        } 
+        catch(LevelCreationException ex) {
+            System.out.println(ex);
+            isRunning = false;
+        }
     }
     
     public static Level getCurrentLevel()
     {
         return currentLevel;
+    }
+    
+    public static void reloadCurrentLevel()
+    {
+        windowManager.reloadWindow();
+        try {
+            currentLevel = loadLevel("levels/level1.lvl");
+        } 
+        catch(LevelCreationException ex) {
+            System.out.println(ex);
+            isRunning = false;
+        }
     }
     
     public static WindowManager getWindowManager()

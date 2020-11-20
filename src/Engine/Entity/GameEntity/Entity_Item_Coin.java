@@ -16,11 +16,11 @@ public class Entity_Item_Coin extends SpriteEntity{
         this.scorepoint = scorepoint;
     }
     
-    public Entity_Item_Coin(HashMap<String, String> propertyMap)
+    public Entity_Item_Coin(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
         
-        int score = Integer.parseInt(propertyMap.get("scorepoint"));
+        int score = Integer.parseInt((String) propertyMap.get("scorepoint"));
     }
     
     @Override

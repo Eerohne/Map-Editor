@@ -36,7 +36,15 @@ public class Level {
     public Color getCellColor(int x, int y)
     {
         int index = getCellValue(x, y);
+        try{
+        getPaletteEntry(index);
         return getPaletteEntry(index).getColor();
+        }
+        catch(NullPointerException e)
+        {
+            System.out.println("palette entry "+index+" does not exist");
+        }
+        return null;
     }
     
     //LevelData code
@@ -45,17 +53,17 @@ public class Level {
         this.levelData = data;
     }
     
-    private int getCellValue(int x, int y)
+    public int getCellValue(int x, int y)
     {
         return levelData[x][y];
     }
     
     //Palette code
-    private PaletteEntry getPaletteEntry(int index)
+    public PaletteEntry getPaletteEntry(int index)
     {
         return palette.get(index);
     }
-    private void setPaletteEntry(int index, PaletteEntry data)
+    public void putPaletteEntry(int index, PaletteEntry data)
     {
         palette.put(index, data);
     }
@@ -64,14 +72,10 @@ public class Level {
     public void addEntity(Entity entity)
     {
         entities.put(entity.getName(), entity);
-        if(entity instanceof Entity_Player){
+        if(entity instanceof Entity_Player) //store player in a global variable for easy access
             playerEntity = entity;
-            System.out.println("player");
-        }
-        else
-        {
-            System.out.println("not player");
-        }
+        if(!firstUpdate)
+            entity.start();
     }
     
     public Entity getEntity(String entityName)
@@ -86,24 +90,22 @@ public class Level {
     
     public void update() //update all entities. If this is the first update, call the entities start method instead to initialize them
     {
-        if(firstUpdate) //first update
+        Iterator<Entity> it = entities.values().iterator();
+        while(it.hasNext())
         {
-            Iterator<Entity> it = entities.values().iterator();
-            while(it.hasNext())
-            {
-                it.next().start();
-            }
-            firstUpdate = false;
-        }
-        else //not first update
-        {
-            Iterator<Entity> it = entities.values().iterator();
-            while(it.hasNext())
-            {
-                Entity entity = it.next();
-                if(entity.getActive())
-                    it.next().update();
+            Entity entity = it.next();
+            if(entity.getActive()){
+                if(firstUpdate)
+                    entity.start();
+                else
+                    entity.update();
             }
         }
+        firstUpdate = false;
+    }
+    
+    public Entity getPlayer()
+    {
+        return playerEntity;
     }
 }

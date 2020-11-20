@@ -2,8 +2,12 @@ package Engine.Entity.AbstractEntity;
 
 import Engine.Core.Exceptions.EntityCreationException;
 import Engine.Core.Game;
+import Engine.Entity.Signal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 //Merouane Issad
 public abstract class Entity implements IEntity{ //An entity is any object that moves, has behavior or affects the game in any way. By default a simple entity cannot be seen,
@@ -12,6 +16,8 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
     protected String name; //all entities have a name, the name can never change and no entity can have the same name
     protected boolean active; //if false, this entity will not be updated
     protected Point2D position; //all entities have a position in the world
+    
+    protected ArrayList<Signal> signals = new ArrayList<>();
 
     public Entity(String name, Point2D position) {
         this.name = name;
@@ -25,17 +31,65 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
         this.position = position;
     }
     
-    public Entity(HashMap<String, String> propertyMap)
+    public Entity(HashMap<String, Object> propertyMap)
     {
-        this.name = propertyMap.get("name");
-        this.active = Boolean.parseBoolean(propertyMap.get("active"));
-        this.position = new Point2D(Float.parseFloat(propertyMap.get("posX")), Float.parseFloat(propertyMap.get("psoY")));
+        this.name = (String)propertyMap.get("name");
+        this.active = Boolean.parseBoolean((String)propertyMap.get("active"));
+        JSONArray posArray = (JSONArray) propertyMap.get("position");
+        this.position = new Point2D((double) posArray.get(0),(double) posArray.get(1));
+        
+        JSONArray signalArr = (JSONArray) propertyMap.get("signals");
+        if(signalArr != null)
+        {
+            if(signalArr.size() > 0){
+                for(Object o : signalArr)
+                {
+                    JSONObject jsonEntry = (JSONObject) o;
+                    String name = (String) jsonEntry.get("name");
+                    String targetName = (String) jsonEntry.get("targetname");
+                    String inputName = (String) jsonEntry.get("inputname");
+                    Object[] arguments = ((JSONArray) jsonEntry.get("arguments")).toArray();
+
+                    Signal signal = new Signal(name, targetName, inputName, arguments);
+                    this.addSignal(signal);
+                }
+            }
+        }
     }
     
     @Override
     public void destroy() { //remove from the current level Entity list by name
 
         Game.getCurrentLevel().removeEntity(this.name); //temporary code
+    }
+    
+    public void handleSignal(String signalName, Object[] arguments){
+        
+        switch(signalName)
+        {
+            case "enable":
+                this.active = true;
+                break;
+            case "disable":
+                this.active = false;
+            default:
+                System.out.println("signal '"+signalName+"' was not found in entity '"+this.name+"'");
+                
+        }
+    }
+    
+    public void fireSignal(String signalName){
+        for(Signal signal : signals)
+        {
+            if(signal.name.equals(signalName))
+            {
+                Entity targetEntity = Game.getCurrentLevel().getEntity(signal.targetName);
+                if(targetEntity != null)
+                {
+                    targetEntity.handleSignal(signal.inputname, signal.arguments);
+                }
+            }
+        }
     }
     
     public String getName() { //if you can't understand this one then I'm sorry...
@@ -62,6 +116,11 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
 
     public void setPosition(Point2D position) {
         this.position = position;
+    }
+    
+    public void addSignal(Signal signal)
+    {
+        signals.add(signal);
     }
     
 }

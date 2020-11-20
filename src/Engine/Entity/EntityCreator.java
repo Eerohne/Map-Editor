@@ -16,20 +16,27 @@ import javafx.scene.paint.Color;
 public class EntityCreator { //Entity creation is defined in this class
 
     //Entity classname listing 
-    public static Entity constructEntity(HashMap<String, String> propertyMap) //provide a map with all needed properties, outputs an entity
+    public static Entity constructEntity(HashMap<String, Object> propertyMap) //provide a map with all needed properties, outputs an entity
     {
         Entity entity = null;
         
-        if(verifyProperties(propertyMap, "classname", "name", "active", "pos_x", "pos_y"))
+        if(!verifyProperties(propertyMap, "classname", "name", "active", "position"))
             return null;
         
-        String classname = propertyMap.get("classname");
+        String classname = (String)propertyMap.get("classname");
         //entity classname list
         switch(classname) //add any new entity to this list and point to a create_Entity_... method
         {
             case "item_coin":
                 if(verifyProperties(propertyMap, "scorepoint"))
                     entity = new Entity_Item_Coin(propertyMap);
+                break;
+            case "logic_counter":
+                if(verifyProperties(propertyMap, "minvalue", "maxvalue", "startingvalue"))
+                    entity = new Entity_Logic_Counter(propertyMap);
+                break;
+            case "logic_messenger":
+                entity = new Entity_Logic_Messenger(propertyMap);
                 break;
             case "logic_timer":
                 if(verifyProperties(propertyMap, "maxtime"))
@@ -40,6 +47,7 @@ public class EntityCreator { //Entity creation is defined in this class
                     entity = new Entity_Player_Base(propertyMap);
                 break;
             default:
+                System.out.println(new EntityCreationException("classname '"+classname+"' is not defined"));
                 entity = null;
         }
         return entity;
@@ -47,7 +55,7 @@ public class EntityCreator { //Entity creation is defined in this class
     
     
     //verifies if all provided properties exist inside the map in case the entity data is incomplete or corrupted
-    private static boolean verifyProperties(HashMap<String, String> propertyMap, String... properties)
+    private static boolean verifyProperties(HashMap<String, Object> propertyMap, String... properties)
     {
         try {
             for(String property : properties)
@@ -55,7 +63,7 @@ public class EntityCreator { //Entity creation is defined in this class
                 if(property.equals("classname"))
                     throw new EntityCreationException("Property '" + property + "' was not provided, entity type is unknown");
                 else
-                    throw new EntityCreationException("Missing requiered properties when trying to create " + propertyMap.get("classname"));
+                    throw new EntityCreationException("Missing requiered propertiy '"+property+"' when trying to create '" + propertyMap.get("classname")+"'");
             }
         }
         catch(EntityCreationException e) {
