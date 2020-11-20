@@ -5,6 +5,10 @@
  */
 package Engine.RaycastRenderer;
 
+import Engine.Entity.AbstractEntity.SpriteEntity;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -16,12 +20,18 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 
 /**
  *
  * @author Jeffrey
  */
+
+/*  TODO FEATURES:
+*   Render Level        +
+*   Render Entities     started
+*   Render Textures     -
+*   Game Minimap        -
+*/
 public class Renderer {
     
     
@@ -34,15 +44,16 @@ public class Renderer {
     };
     private static int mapX=map[0].length, mapY=map.length;
     
+    private static ArrayList<SpriteEntity> spriteEntities = new ArrayList();
+    
     private static Canvas frame = new Canvas();
     private static GraphicsContext gc = frame.getGraphicsContext2D();
     private static double screenWidth = frame.getWidth(), screenHeight = frame.getHeight();
     
-    //!!These will be private in the future!! \/
-    //---Use setters to set up initial values---
     public static Point2D cam = Point2D.ZERO; //camera position (player position)
     public static float camA=0f, fov=90f; //camera orientation & field of view (degrees)
     
+    //for enabling test messages
     public static boolean test = false, pV = false, pH = false;
     
     //LINE ADDED BY LOGITHSS
@@ -76,6 +87,13 @@ public class Renderer {
         map = nMap;
         mapX = nMap[0].length; mapY = nMap.length;
     }
+    
+    public static void setEntityList(List<SpriteEntity> list){
+        spriteEntities.clear();
+        spriteEntities.addAll(list);
+    }
+    public static void addEntities(List<SpriteEntity> list){spriteEntities.addAll(list);}
+    public static void addEntities(SpriteEntity... entities){spriteEntities.addAll(Arrays.asList(entities));}
     
     public static Point2D getPos(){return cam;}
     public static void setPos(double x, double y){setPos(new Point2D(x, y));} //set camera position
@@ -132,7 +150,7 @@ public class Renderer {
                 rV = new Point2D(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
             }
             
-            if(pV)System.out.printf("%3.3f rV: %1.4f, %1.4f %n",rayA, rV.getX(), rV.getY());
+            if(pV)System.out.printf("%3.3f rV: %1.4f, %1.4f %n",rayA, rV.getX(), rV.getY()); //prints the point of first hit with a vertical line
             int v=-1;
             for(int i=0;i<8;i++){
                 int x = (int)Math.floor(rV.getX());
@@ -160,7 +178,7 @@ public class Renderer {
                 rH = new Point2D(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
             }
             
-            if(pH)System.out.printf("%3.3f rH: %1.4f, %1.4f %n",rayA, rH.getX(), rH.getY());
+            if(pH)System.out.printf("%3.3f rH: %1.4f, %1.4f %n",rayA, rH.getX(), rH.getY());//prints the point of first hit with a horizontal line
             int h = -1;
             for(int i=0;i<8;i++){
                 int x = (int)(rH.getX());
@@ -169,23 +187,17 @@ public class Renderer {
                 if(map[y][x]>0){h=map[y][x];break;}
                 if(map[y-1][x]>0 && !upward){h=map[y-1][x];break;}
                 rH = rH.add(stepX, stepY);
-
             }
             
             double hLength = rH.subtract(cam).magnitude();
             double vLength = rV.subtract(cam).magnitude();
             
             // createLine() is not to be used when running the game
-            // it's for debugging only
             if(hLength<vLength && hLength!=0){
-                int x = (int)(rH.getX());
-                int y = (int)(rH.getY());
                 double dist = hLength*Math.cos(Math.toRadians(rayA-camA));
                 drawWallLine(r, dist, getColor(h));
                 if(test)MiniMap.createLine(rH, getColor(h).brighter());
             }else{
-                int x = (int)(rV.getX());
-                int y = (int)(rV.getY());
                 double dist = vLength*Math.cos(Math.toRadians(rayA-camA));
                 drawWallLine(r, dist, getColor(v).darker());
                 if(test)MiniMap.createLine(rV, getColor(v).darker());
@@ -195,7 +207,19 @@ public class Renderer {
         }
     }
     private static void renderEntities(){
-        //todo
+        Point2D dir = new Point2D(Math.cos(Math.toRadians(camA)), Math.sin(Math.toRadians(camA)));
+        for(SpriteEntity e: spriteEntities){
+            Point2D ePos = e.getPosition();
+            ePos = ePos.subtract(cam);
+            if(dir.angle(ePos)<=(double)(fov/2f)){
+                double dist = ePos.magnitude();
+                double scPos = screenWidth*dir.angle(ePos)/fov;
+                double relX, relY; //relX = scPos - (entityWidth/2), relY = (screenHeight-entityHeight)/2;
+                
+                //gc.drawImage(e.image, relX, relY, e.image.getWidth()/dist , e.image.getHeight()/dist );
+                
+            }
+        }
     }
     
     private static Color getColor(int id){
@@ -208,6 +232,7 @@ public class Renderer {
             default: return Color.RED; //indicates error
         }
     }
+    //draws the line representing a slice of a wall
     private static void drawWallLine(int x, double distance, Color color){
         double maxHeight = screenHeight;
         double height = (maxHeight/(distance +.25));
@@ -227,9 +252,9 @@ public class Renderer {
         private final static Pane layer = new Pane();
         public static StackPane minimap = new StackPane(layer, grid, rayPane, gridLines);
         
-        //private static int sq = 40; //size of 1 grid square, is used for scaling
-        private static int sq = (int)screenHeight/mapY;
+        private static int sq = (int)screenHeight/mapY;//size of 1 grid square, is used for scaling
         
+        //generate the minimap
         public static void generate(){
             rayPane.getChildren().clear();
             createGrid();
@@ -240,7 +265,7 @@ public class Renderer {
             layer.getChildren().add(fov3); layer.setMaxSize(sq*mapX, sq*mapY);
             fov3.setVisible(false);
         }
-        
+        //creates the grid squares and the grid lines
         private static void createGrid(){
             for(int y=0;y<mapY;y++){
                 for(int x=0;x<mapX;x++){
@@ -252,6 +277,7 @@ public class Renderer {
                 }
             }
         }
+        //draws a line from the camera to the hit points
         private static void createLine(Point2D hitP, Color color){
             Line line = new Line(sq*cam.getX(), sq*cam.getY(), sq*hitP.getX(), sq*hitP.getY());
             line.setStroke(color); line.setOpacity(0.5);
