@@ -7,6 +7,11 @@ package Editor.Controller;
 
 import Editor.Model.EntityModel;
 import Editor.View.Menu.NewEntity;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
+import java.io.File;
+import java.io.FileReader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -14,6 +19,8 @@ import javafx.event.EventHandler;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringReader;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -21,6 +28,8 @@ import java.util.logging.Logger;
  
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -92,25 +101,49 @@ public class NewEntityController {
     }
     
     public void export() throws IOException{
+      
+        Gson gson = new GsonBuilder().setPrettyPrinting().create(); 
         JSONArray array = new JSONArray();
-        Map<String, String> data = new HashMap<String, String>();
-        for(int i = 0; i < list.size(); i++){
-            data.put(list.get(i).getProperty(), list.get(i).getValue());
+        File newFile = new File("entities.json");
+        Map<String, String> data = new HashMap<>();
+        FileWriter writer = new FileWriter("entities.json", true);
+        if(newFile.length() == 0 || !newFile.exists()){
+               
+            for(int i = 0; i < list.size(); i++){
+                data.put(list.get(i).getProperty(), list.get(i).getValue());
+            }
+            JSONObject o = new JSONObject();
+            o.putAll(data);
+            JSONObject o1 = new JSONObject();
+            o1.put(view.nameText.getText(), data);
+            array.add(o1);
+            gson.toJson(array, writer);
+            writer.close();
         }
-        JSONObject o = new JSONObject();
-        o.putAll(data);
-        JSONObject object = new JSONObject();
-        object.put(view.nameText.getText(), o);
-        array.add(object);
+        else{
+            try {
+                
+                FileReader reader = new FileReader(newFile);
+                JSONArray existingArray = (JSONArray) new JSONParser().parse(reader);
 
-        try (FileWriter file = new FileWriter("entities.json", true)) {
-             
-            file.write(array.toJSONString());
-            file.flush();
- 
-        } catch (IOException e) {
-            e.printStackTrace();
+                for(int i = 0; i < list.size(); i++){
+                    data.put(list.get(i).getProperty(), list.get(i).getValue());
+                }
+                JSONObject o2 = new JSONObject();
+                o2.putAll(data);
+                JSONObject obj = new JSONObject();
+                obj.put(view.nameText.getText(), o2);
+                existingArray.add(obj);
+                //file writer2 here used to truncate the json file, so that the entities do not repeat
+                FileWriter writer2 = new FileWriter(newFile);
+                gson.toJson(existingArray, writer);
+                writer.close();
+            } catch (ParseException ex) {
+                Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                
         }
+        
     }
     
     public void newEntity(){

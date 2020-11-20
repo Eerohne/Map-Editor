@@ -1,1 +1,20 @@
-[{"player1":{"classname":"player_base"}}]
+[
+  {
+    "player1": {
+      "hp": "12",
+      "atk": "12"
+    }
+  },
+  {
+    "player2": {
+      "hp": "12`",
+      "atk": "122"
+    }
+  },
+  {
+    "player3": {
+      "hp": "1234",
+      "atk": "1234"
+    }
+  }
+]

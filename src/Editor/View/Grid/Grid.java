@@ -8,11 +8,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 
-public class Grid extends Pane implements Serializable{
+public class Grid extends Pane{
     private double cellSize;
     private int width;
     private int length;
-    private Cell[][] cells;
+    public Cell[][] cells;
 
     public Grid(int cellSize, int width, int length) {
         super();
