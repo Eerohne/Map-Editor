@@ -140,7 +140,7 @@ public class Renderer {
             for(int i=0;i<8;i++){
                 int x = (int)Math.floor(rV.getX());
                 int y = (int)Math.floor(rV.getY());
-                if(x>=level.width || y>= level.height)break;
+                if(x>=level.width || y>= level.height || x<0 || y<0)break;
                 if(level.isWall(y, x-1) && !rightward){v=level.getCellColor(y, x-1);break;}
                 if(level.isWall(y, x)){v=level.getCellColor(y, x);break;}
                 rV = rV.add(stepX, stepY);
@@ -168,7 +168,7 @@ public class Renderer {
             for(int i=0;i<8;i++){
                 int x = (int)Math.floor(rH.getX());
                 int y = (int)Math.floor(rH.getY());
-                if(x>=level.width || y>= level.height)break;
+                if(x>=level.width || y>= level.height || x<0 || y<0)break;
                 if(level.isWall(y-1, x) && !upward){h = level.getCellColor(y-1, x);break;}
                 if(level.isWall(y, x)){h = level.getCellColor(y, x);break;}
                 rH = rH.add(stepX, stepY);
