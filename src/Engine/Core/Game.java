@@ -6,6 +6,7 @@
 package Engine.Core;
 
 import Engine.Core.Exceptions.LevelCreationException;
+import Engine.Entity.GameEntity.Entity_Player;
 import Engine.Util.Input;
 import Engine.Window.WindowManager;
 import Engine.Level.Level;
@@ -42,7 +43,6 @@ public class Game extends Application{
         initEngine(stage);
         
         //temporary very ugly code to set the view position
-        Renderer.setPos(2.5, 2.5);
         Renderer.setFov(70);
         float speed = 1.5f;
         new AnimationTimer() { //Game main loop

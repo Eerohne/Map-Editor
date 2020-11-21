@@ -51,6 +51,8 @@ public class Entity_Player_Base extends Entity_Player{
         label.setFont(Font.font("Cambria", 20));
         display.getChildren().add(label);
         display.setTopAnchor(label, 10.0);
+        
+        Renderer.setPlayer(this);
     }
 
     @Override
@@ -75,14 +77,14 @@ public class Entity_Player_Base extends Entity_Player{
         else
             playerSpeed = walkSpeed;
         
-        Renderer.setPos(position);
-        Renderer.setDir(rotation);
+        /*Renderer.setPos(position);
+        Renderer.setDir(rotation);*/
         if(!oldPosition.equals(position)){
             headBobTime += Time.deltaTime;
-            Renderer.heightOffset = (float)Math.sin(headBobTime*10)*20;
+            Renderer.heightOffset = (float)Math.sin(headBobTime*10)*10;
         }
-        else
-             Renderer.heightOffset = 0;
+        /*else
+             Renderer.heightOffset = 0;*/
         if(label != null)
             label.setText(this.position.toString());
     }

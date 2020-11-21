@@ -107,9 +107,9 @@ public class RessourceLoader
                 
                 JSONArray colorArr = (JSONArray) jsonEntry.get("color");
                 Color color = Color.color(
-                        Float.valueOf((long)colorArr.get(0)),
-                        Float.valueOf((long)colorArr.get(1)),
-                        Float.valueOf((long)colorArr.get(2)));
+                        (double) colorArr.get(0),
+                        (double) colorArr.get(1),
+                        (double) colorArr.get(2));
                 
                 int flag = Integer.valueOf((String)jsonEntry.get("flag"));
                 
