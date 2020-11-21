@@ -23,27 +23,18 @@ public class RenderTest extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        int[][] map = {
-        {3, 4, 3, 4, 3, 4},
-        {4, 0, 0, 0, 0, 3},
-        {3, 0, 0, 0, 0, 4},
-        {4, 0, 0, 0, 0, 3},
-        {3, 0, 0, 0, 0, 4},
-        {4, 3, 4, 3, 4, 3}
-        };
-        Renderer.setMap(map);
+        
         Canvas canvas = new Canvas(400, 270);
         Renderer.test=true;
         Renderer.pV = false;
         
         Renderer.setCanvas(canvas);
         Renderer.setFov(90f);
-        Renderer.MiniMap.generate();
         Renderer.render();
         
         HBox root = new HBox();
         root.setSpacing(5);
-        root.getChildren().addAll(Renderer.MiniMap.minimap, canvas);
+        root.getChildren().addAll(canvas);
         
         Scene scene = new Scene(root);
         

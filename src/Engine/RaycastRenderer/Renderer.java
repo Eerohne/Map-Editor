@@ -132,14 +132,15 @@ public class Renderer {
                 stepX = -1; stepY = -tan;
             }
             if(tan>80.0 || tan<-80.0){//looking directly up or down
-                rV = new Point2D(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+                rV = new Point2D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
             }
             
             if(pV)System.out.printf("%3.3f rV: %1.4f, %1.4f %n",rayA, rV.getX(), rV.getY()); //prints the point of first hit with a vertical line
             Color v = Color.TRANSPARENT;
             for(int i=0;i<8;i++){
-                int x = (int)(rV.getX());
-                int y = (int)(rV.getY());
+                int x = (int)Math.floor(rV.getX());
+                int y = (int)Math.floor(rV.getY());
+                if(x>=level.width || y>= level.height)break;
                 if(level.isWall(y, x-1) && !rightward){v=level.getCellColor(y, x-1);break;}
                 if(level.isWall(y, x)){v=level.getCellColor(y, x);break;}
                 rV = rV.add(stepX, stepY);
@@ -159,14 +160,15 @@ public class Renderer {
                 stepX = -cotan; stepY = -1;
             }
             if(cotan>80.0 || cotan <-80.0){//looking directly left or right
-                rH = new Point2D(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+                rH = new Point2D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
             }
             
             if(pH)System.out.printf("%3.3f rH: %1.4f, %1.4f %n",rayA, rH.getX(), rH.getY());//prints the point of first hit with a horizontal line
             Color h = Color.TRANSPARENT;
             for(int i=0;i<8;i++){
-                int x = (int)(rH.getX());
-                int y = (int)(rH.getY());
+                int x = (int)Math.floor(rH.getX());
+                int y = (int)Math.floor(rH.getY());
+                if(x>=level.width || y>= level.height)break;
                 if(level.isWall(y-1, x) && !upward){h = level.getCellColor(y-1, x);break;}
                 if(level.isWall(y, x)){h = level.getCellColor(y, x);break;}
                 rH = rH.add(stepX, stepY);
