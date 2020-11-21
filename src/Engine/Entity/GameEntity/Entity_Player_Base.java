@@ -79,7 +79,7 @@ public class Entity_Player_Base extends Entity_Player{
         Renderer.setDir(rotation);*/
         if(!oldPosition.equals(position)){
             headBobTime += Time.deltaTime;
-            Renderer.heightOffset = (float)Math.sin(headBobTime*10)*20;
+            Renderer.heightOffset = (float)Math.sin(headBobTime*10)*10;
         }
         else
              Renderer.heightOffset = 0;

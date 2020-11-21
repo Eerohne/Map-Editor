@@ -58,7 +58,14 @@ public class Level {
     
     public int getCellValue(int x, int y)
     {
+        try{
         return levelData[x][y];
+        }
+        catch(ArrayIndexOutOfBoundsException e)
+        {
+            System.out.println(x+" "+y);
+        }
+        return 0;
     }
     
     //Palette code
