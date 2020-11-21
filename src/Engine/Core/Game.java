@@ -88,7 +88,6 @@ public class Game extends Application{
         //now load the initial level, path in the config file
         try {
             currentLevel = loadLevel("levels/level1.lvl");
-            Renderer.setPlayer((Entity_Player) currentLevel.getPlayer());
         } 
         catch(LevelCreationException ex) {
             System.out.println(ex);
