@@ -10,9 +10,7 @@ import Engine.Entity.AbstractEntity.SpriteEntity;
 import Engine.Entity.GameEntity.Entity_Player;
 import Engine.Level.Level;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -37,18 +35,6 @@ import javafx.scene.transform.Rotate;
 *   Game Minimap        -
 */
 public class Renderer {
-    
-    
-    private static int[][] map;
-    /*{
-        {3, 4, 3, 4, 3},
-        {4, 0, 0, 0, 4},
-        {3, 0, 0, 0, 3},
-        {4, 0, 0, 0, 4},
-        {3, 4, 3, 4, 3}
-    };
-*/
-    private static int mapX=map[0].length, mapY=map.length;
     
     private static HashMap<String, SpriteEntity> spriteEntities = new HashMap<>();
     
@@ -76,10 +62,7 @@ public class Renderer {
         screenHeight = canvas.getHeight();
     }
     
-    public static void setMap(int[][] nMap){
-        map = nMap;
-        mapX = nMap[0].length; mapY = nMap.length;
-    }
+    
     
     public static void setEntityList(HashMap<String, SpriteEntity> list){spriteEntities = list;}
     public static void addEntity(SpriteEntity spriteEntity){spriteEntities.put(spriteEntity.getName(), spriteEntity);}
@@ -196,11 +179,11 @@ public class Renderer {
             if(hLength<vLength && hLength!=0){
                 double dist = hLength*Math.cos(Math.toRadians(rayA-camA));
                 drawWallLine(r, dist, h);
-                if(test)MiniMap.createLine(rH, h.brighter());
+//                if(test)MiniMap.createLine(rH, h.brighter());
             }else{
                 double dist = vLength*Math.cos(Math.toRadians(rayA-camA));
                 drawWallLine(r, dist, v.darker());
-                if(test)MiniMap.createLine(rV, v.darker());
+//                if(test)MiniMap.createLine(rV, v.darker());
             }
             rayA += (fov/screenWidth);
         }
@@ -248,7 +231,7 @@ public class Renderer {
         gc.setFill(color);
         gc.fillRect(x, lineTop, 1, height);
     }
-    
+/*    
     static class MiniMap{//minimap that shows the level and the rays (for debugging)
         private final static GridPane grid = new GridPane(),gridLines = new GridPane();
         private final static Pane rayPane = new Pane(), layer = new Pane();
@@ -288,4 +271,5 @@ public class Renderer {
             rayPane.getChildren().add(line);
         }
     }
+  */  
 }
