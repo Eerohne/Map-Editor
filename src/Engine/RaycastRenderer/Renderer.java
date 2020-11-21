@@ -6,6 +6,7 @@
 package Engine.RaycastRenderer;
 
 import Engine.Entity.AbstractEntity.SpriteEntity;
+import Engine.Entity.GameEntity.Entity_Player;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +51,7 @@ public class Renderer {
     private static GraphicsContext gc = frame.getGraphicsContext2D();
     private static double screenWidth = frame.getWidth(), screenHeight = frame.getHeight();
     
+    private static Entity_Player player;
     public static Point2D cam = Point2D.ZERO; //camera position (player position)
     public static float camA=0f, fov=90f; //camera orientation & field of view (degrees)
     
@@ -61,20 +63,7 @@ public class Renderer {
     
     private Renderer(){}
     
-    //renders one frame
-    public static void render(){
-        //change colors here
-        gc.clearRect(0, 0, screenWidth, screenHeight);
-        //ceiling
-        gc.setFill(Color.LIGHTBLUE);
-        gc.fillRect(0, 0, screenWidth, screenHeight);
-        //floor
-        gc.setFill(Color.GREEN);
-        gc.fillRect(0, screenHeight/2.0, screenWidth, screenHeight/2.0);
-        
-        renderLevel();
-        renderEntities();
-    }
+    public static void setPlayer(Entity_Player player){Renderer.player = player;}
     
     public static void setCanvas(Canvas canvas){
         frame = canvas;
@@ -111,8 +100,26 @@ public class Renderer {
         screenHeight = frame.getHeight();
     }
     
+    //renders one frame
+    public static void render(){
+        //change colors here
+        gc.clearRect(0, 0, screenWidth, screenHeight);
+        //ceiling
+        gc.setFill(Color.LIGHTBLUE);
+        gc.fillRect(0, 0, screenWidth, screenHeight);
+        //floor
+        gc.setFill(Color.GREEN);
+        gc.fillRect(0, screenHeight/2.0, screenWidth, screenHeight/2.0);
+        
+        ArrayList<Point2D> hPoints = renderLevel();
+        
+        renderEntities(hPoints);
+    }
+    
     //renders level
-    private static void renderLevel(){
+    private static ArrayList<Point2D> renderLevel(){
+        ArrayList<Point2D> hPoints = new ArrayList<>((int)screenWidth);
+        
         final double tileX, tileY; //player grid position
         tileX = Math.floor(cam.getX());
         tileY = Math.floor(cam.getY());
@@ -203,14 +210,13 @@ public class Renderer {
                 if(test)MiniMap.createLine(rV, getColor(v).darker());
             }
             rayA += (fov/screenWidth);
-            
         }
+        return hPoints;
     }
-    private static void renderEntities(){
+    private static void renderEntities(ArrayList<Point2D> hPoints){
         Point2D dir = new Point2D(Math.cos(Math.toRadians(camA)), Math.sin(Math.toRadians(camA)));
         for(SpriteEntity e: spriteEntities){
-            Point2D ePos = e.getPosition();
-            ePos = ePos.subtract(cam);
+            Point2D ePos = e.getPosition().subtract(cam);
             if(dir.angle(ePos)<=(double)(fov/2f)){
                 double dist = ePos.magnitude();
                 double scPos = screenWidth*dir.angle(ePos)/fov;
@@ -271,7 +277,7 @@ public class Renderer {
                 for(int x=0;x<mapX;x++){
                     Rectangle rect = new Rectangle(sq, sq);
                     Rectangle rect1 = new Rectangle(sq-1, sq-1);
-                    rect.setFill(getColor(map[y][x])); rect.setOpacity(0.25);
+                    rect.setFill(getColor(map[y][x])); rect.setOpacity(0.5);
                     rect1.setFill(Color.TRANSPARENT); rect1.setStroke(Color.BLACK);
                     grid.add(rect, x, y); gridLines.add(rect1, x, y);
                 }
@@ -280,7 +286,7 @@ public class Renderer {
         //draws a line from the camera to the hit points
         private static void createLine(Point2D hitP, Color color){
             Line line = new Line(sq*cam.getX(), sq*cam.getY(), sq*hitP.getX(), sq*hitP.getY());
-            line.setStroke(color); line.setOpacity(0.5);
+            line.setStroke(color); line.setOpacity(0.75);
             rayPane.getChildren().add(line);
         }
     }
