@@ -37,8 +37,6 @@ public class RenderTest extends Application {
         Renderer.pV = false;
         
         Renderer.setCanvas(canvas);
-        Renderer.setPos(3.0, 4.25);
-        Renderer.setDir(0f);
         Renderer.setFov(90f);
         Renderer.MiniMap.generate();
         Renderer.render();
@@ -49,7 +47,7 @@ public class RenderTest extends Application {
         
         Scene scene = new Scene(root);
         
-        primaryStage.setTitle("Render Test: ("+Renderer.getPos().getX()+", "+Renderer.getPos().getY()+"), "+Renderer.getDir()+" deg, fov: "+Renderer.fov);
+        primaryStage.setTitle("Render Test");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
