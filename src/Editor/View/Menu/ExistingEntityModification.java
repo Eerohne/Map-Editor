@@ -8,6 +8,7 @@ package Editor.View.Menu;
 import Editor.Model.EntityModel;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -19,10 +20,11 @@ import javafx.scene.layout.VBox;
  *
  * @author linuo
  */
+
 public class ExistingEntityModification extends GridPane{
     
     public TableView table = new TableView();
-    public TableColumn<EntityModel, String> nameCol = new TableColumn<>("name");
+    //public TableColumn<EntityModel, String> nameCol = new TableColumn<>("name");
     public TableColumn<EntityModel, String> propertyCol = new TableColumn<>("property");
     public TableColumn<EntityModel, String> valueCol = new TableColumn<>("value");
     public TextField nameText = new TextField();
@@ -32,6 +34,7 @@ public class ExistingEntityModification extends GridPane{
     public Button deleteBtn = new Button("delete selected row");
     public Button exportBtn = new Button("export");
     public Button newEntityBtn = new Button("create new entity");
+    public ComboBox<String> cb = new ComboBox();
     public VBox vbox = new VBox();
 
     public ExistingEntityModification() {
@@ -42,6 +45,7 @@ public class ExistingEntityModification extends GridPane{
         this.setPadding(new Insets(10));
         this.add(table, 1, 0);
         
+        vbox.getChildren().add(cb);
         vbox.getChildren().add(nameText);
         vbox.getChildren().add(propertyText);
         vbox.getChildren().add(valueText);
@@ -51,7 +55,7 @@ public class ExistingEntityModification extends GridPane{
         vbox.getChildren().add(newEntityBtn);
         
         this.add(vbox, 2, 0);
-        nameCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("name"));
+        //nameCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("name"));
         propertyCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("property"));
         valueCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("value"));
         table.getColumns().addAll(propertyCol, valueCol);
