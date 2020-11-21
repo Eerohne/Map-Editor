@@ -9,10 +9,12 @@ import Editor.Model.EntityModel;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
@@ -23,10 +25,11 @@ import javafx.scene.layout.VBox;
 
 public class ExistingEntityModification extends GridPane{
     
-    public TableView table = new TableView();
+   //public TableView table = new TableView();
     //public TableColumn<EntityModel, String> nameCol = new TableColumn<>("name");
-    public TableColumn<EntityModel, String> propertyCol = new TableColumn<>("property");
-    public TableColumn<EntityModel, String> valueCol = new TableColumn<>("value");
+//    public TableColumn<EntityModel, String> propertyCol = new TableColumn<>("property");
+//    public TableColumn<EntityModel, String> valueCol = new TableColumn<>("value");
+    public ListView listview = new ListView();
     public TextField nameText = new TextField();
     public TextField propertyText = new TextField();
     public TextField valueText = new TextField();
@@ -39,11 +42,12 @@ public class ExistingEntityModification extends GridPane{
 
     public ExistingEntityModification() {
         
-        table.setEditable(true);
+        listview.setEditable(true);
+        listview.setCellFactory(TextFieldListCell.forListView());
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(10));
-        this.add(table, 1, 0);
+        this.add(listview, 1, 0);
         
         vbox.getChildren().add(cb);
         vbox.getChildren().add(nameText);
@@ -56,9 +60,9 @@ public class ExistingEntityModification extends GridPane{
         
         this.add(vbox, 2, 0);
         //nameCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("name"));
-        propertyCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("property"));
-        valueCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("value"));
-        table.getColumns().addAll(propertyCol, valueCol);
+//        propertyCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("property"));
+//        valueCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("value"));
+//        table.getColumns().addAll(propertyCol, valueCol);
         nameText.setPromptText("change name of the entity");
         propertyText.setPromptText("change property here");
         valueText.setPromptText("change value here");

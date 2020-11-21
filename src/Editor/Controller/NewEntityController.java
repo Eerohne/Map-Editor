@@ -136,7 +136,7 @@ public class NewEntityController {
                 JSONObject obj = new JSONObject();
                 obj.put(view.nameText.getText(), o2);
                 existingArray.add(obj);
-                //file writer2 here used to truncate the json file, so that the entities do not repeat
+                
                 FileWriter writer2 = new FileWriter(newFile);
                 gson.toJson(existingArray, writer);
                 writer.close();
