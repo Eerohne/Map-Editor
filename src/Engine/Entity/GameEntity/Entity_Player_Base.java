@@ -75,8 +75,8 @@ public class Entity_Player_Base extends Entity_Player{
         else
             playerSpeed = walkSpeed;
         
-        Renderer.setPos(position);
-        Renderer.setDir(rotation);
+        /*Renderer.setPos(position);
+        Renderer.setDir(rotation);*/
         if(!oldPosition.equals(position)){
             headBobTime += Time.deltaTime;
             Renderer.heightOffset = (float)Math.sin(headBobTime*10)*20;
