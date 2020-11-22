@@ -48,10 +48,10 @@
     "classname":"player_base",
     "name":"player1",
     "active":"TRUE",
-    "position":[1.1,1.1],
-    "rotation":"90",
+    "position":[1.6,1.4],
+    "rotation":"45",
     "walkspeed":"2",
-    "runspeed":"3"
+    "runspeed":"1"
     },
     {
     "classname":"logic_timer",
@@ -96,11 +96,22 @@
     },
     {
     "classname":"sprite_decor",
-    "name":"decor1",
+    "name":"coin",
     "active":"TRUE",
     "position":[1.5,1.5],
-    "color":[120.0,0.0,0.0],
-    "height":"0.3",
+    "height":"0.5",
+    "texture":"images/coin.png",
+    "size":"0.3"
+    "signals": []
+    },
+    {
+    "classname":"sprite_decor",
+    "name":"lamppost",
+    "active":"TRUE",
+    "position":[1.7,1.5],
+    "height":"0.5",
+    "texture":"images/lamppost.png",
+    "size":"1.0"
     "signals": []
     }
 ]

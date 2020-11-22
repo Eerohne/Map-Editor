@@ -12,30 +12,22 @@ import org.json.simple.JSONArray;
 //Merouane Issad
 public abstract class SpriteEntity extends Entity{ //A type of entity that provides itself to the renderer, it is taken in consideration when rendering the game level (not the game UI)
     
-    public Image texture;
-    public Color color; //temp code until we get sprites working, for now they only have a color
+    private Image texture;
+    private float size;
     
-    public SpriteEntity(String name, Point2D position, Color color)
+    public SpriteEntity(String name, Point2D position, String texture, float size)
     {
         super(name, position);
-        this.color = color;
-        
-        texture = ResourceLoader.loadImage("images/sprite1.png");
+        this.texture = ResourceLoader.loadImage("images/sprite1.png");
+        this.size = size;
     }
     
     public SpriteEntity(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
         
-        JSONArray colArray = (JSONArray) propertyMap.get("color");
-        this.color = Color.rgb((int) ((double) colArray.get(0)), (int) ((double) colArray.get(0)), (int) ((double) colArray.get(0)));
-        
-        if(propertyMap.containsKey("height"))
-            this.height = Float.parseFloat((String) propertyMap.get("height"));
-        else
-            this.height = 0;
-        
-        texture = ResourceLoader.loadImage("images/sprite1.png");
+        this.texture = ResourceLoader.loadImage((String) propertyMap.get("texture"));
+        this.size = Float.parseFloat((String) propertyMap.get("size"));
     }
     
     @Override
@@ -69,5 +61,9 @@ public abstract class SpriteEntity extends Entity{ //A type of entity that provi
     }
     
     public Image getTexture(){return texture;}
+    
+    public float getSize(){return this.size;}
+    
+    public void setSize(float height){this.size = size;}
     
 }

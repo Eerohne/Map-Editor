@@ -39,6 +39,11 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
         JSONArray posArray = (JSONArray) propertyMap.get("position");
         this.position = new Point2D((double) posArray.get(0),(double) posArray.get(1));
         
+        if(propertyMap.containsKey("height"))
+            this.height = Float.parseFloat((String) propertyMap.get("height"));
+        else
+            this.height = 0;
+        
         JSONArray signalArr = (JSONArray) propertyMap.get("signals");
         if(signalArr != null)
         {
