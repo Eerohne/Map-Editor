@@ -31,6 +31,7 @@ import org.json.simple.parser.ParseException;
 import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonKey;
 import com.github.cliftonlabs.json_simple.JsonObject;
+import java.util.Set;
 /**
  *
  * @author linuo
@@ -92,30 +93,27 @@ public class ExistingEntityController {
                         entity = (JSONObject) entitiesArray.get(i);
                         String str = entity.keySet().toString();
                         if(newValue.equals(str)){
-//                            JSONArray objArray = new JSONArray();
-//                            objArray.add(entity.values());
-//                            
-//                            for(int j = 0; j < objArray.size(); j++){
-//                                JSONObject obj1 = new JSONObject();
-//                                obj1 = (JSONObject) objArray.get(j);
-//                                System.out.println(obj1.values());
-//                            }
-                            HashMap<String, String> map = gson.fromJson(entity.toJSONString(), HashMap.class);
-                            JSONObject obj = new JSONObject();
-                            obj.putAll(map);
-//                            
-                            JsonObject obj1 = new JsonObject();
-                            obj1.putAll(map);
-                            view.listview.getItems().add(obj.toString());
-//                            System.out.println(obj1.keySet());
-//                            JSONObject childObj = new JSONObject();
-
-//                            System.out.println(entity.toString());
-//                            Map<String,String> newMap =new HashMap<String,String>();
-//                            for (Map.Entry<String, Object> entry : map.entrySet()) {
-//                                newMap.put(entry.getKey(), (String) entry.getValue().toString());
-//                                
-//                            }
+                            //System.out.println(entity);
+                            for(Object keyStr : entity.keySet()){
+                                JSONObject obj1 = new JSONObject();
+                                obj1 = (JSONObject) entity.get(keyStr);
+                                //System.out.println(obj1);
+                                ObservableList<String> keylist = FXCollections.observableArrayList(obj1.keySet());
+                                //System.out.println(keylist);
+                                ObservableList<String> valuelist = FXCollections.observableArrayList(obj1.values());
+                                //System.out.println(valuelist);
+                                for(int j = 0; j < keylist.size(); j++){
+                                    list.add(new EntityModel(keylist.get(j), valuelist.get(j)));
+                                    //System.out.println(list);
+                                    view.table.getItems().setAll(list);
+                                }
+                                list.clear();
+                                
+                            }
+                            
+                            //System.out.println(entity.keySet());
+                            
+                            
                         }
 
                     }
@@ -131,18 +129,20 @@ public class ExistingEntityController {
         });
     }
     
-//    public void delete(){
-//        int selectedIndex = view.table.getSelectionModel().getSelectedIndex();
-//        
-//        if(selectedIndex >= 0){
-//            view.table.getItems().remove(selectedIndex);
-//            list.remove(list.get(selectedIndex));
-//        }
-//    }
-//    
-//    public void setData(){
-//        view.table.getItems().setAll(list);
-//    }
+
+    
+    public void delete(){
+        int selectedIndex = view.table.getSelectionModel().getSelectedIndex();
+        
+        if(selectedIndex >= 0){
+            view.table.getItems().remove(selectedIndex);
+            list.remove(list.get(selectedIndex));
+        }
+    }
+    
+    public void setData(){
+        view.table.getItems().setAll(list);
+    }
     
     
 }
