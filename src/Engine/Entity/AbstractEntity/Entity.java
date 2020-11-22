@@ -16,6 +16,7 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
     protected String name; //all entities have a name, the name can never change and no entity can have the same name
     protected boolean active; //if false, this entity will not be updated
     protected Point2D position; //all entities have a position in the world
+    protected float height;
     
     protected ArrayList<Signal> signals = new ArrayList<>();
 
@@ -116,6 +117,16 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
 
     public void setPosition(Point2D position) {
         this.position = position;
+    }
+    
+    public float getHeight()
+    {
+        return this.height;
+    }
+    
+    public void setHeight(float height)
+    {
+        this.height = height;
     }
     
     public void addSignal(Signal signal)

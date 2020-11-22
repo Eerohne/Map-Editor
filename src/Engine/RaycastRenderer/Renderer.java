@@ -14,14 +14,8 @@ import java.util.HashMap;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.transform.Rotate;
 
 /**
  *
@@ -44,9 +38,7 @@ public class Renderer {
     
     private static Entity_Player player;
     private static float fov=70f; //default field of view (degrees)
-    
-    //for enabling test messages
-    public static boolean test = false, pV = false, pH = false;
+    private static double viewD=8.0; //default view distance
     
     //LINE ADDED BY LOGITHSS
     public static float heightOffset = 0;
@@ -69,6 +61,7 @@ public class Renderer {
     public static void removeEntity(String name){spriteEntities.remove(name);}
     
     public static void setFov(float angdeg){fov = angdeg;} // set the field of view
+    public static void setViewDistance(double dist){viewD = dist;} // set the view distance
     
     public static void resize(){
         screenWidth = frame.getWidth();
@@ -86,14 +79,14 @@ public class Renderer {
         gc.setFill(Color.GREEN);
         gc.fillRect(0, screenHeight/2.0, screenWidth, screenHeight/2.0);
         
-        ArrayList<Point2D> hPoints = renderLevel();
+        ArrayList<HitPoint> hPoints = renderLevel();
         
         renderEntities(hPoints);
     }
     
     //renders level
-    private static ArrayList<Point2D> renderLevel(){
-        ArrayList<Point2D> hPoints = new ArrayList<>((int)screenWidth);
+    private static ArrayList<HitPoint> renderLevel(){
+        ArrayList<HitPoint> hPoints = new ArrayList((int) screenWidth);
         Level level = Game.getCurrentLevel();
         Point2D cam = player.getPosition();
         float camA = player.getRotation();
@@ -135,15 +128,15 @@ public class Renderer {
                 rV = new Point2D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
             }
             
-            if(pV)System.out.printf("%3.3f rV: %1.4f, %1.4f %n",rayA, rV.getX(), rV.getY()); //prints the point of first hit with a vertical line
             Color v = Color.TRANSPARENT;
-            for(int i=0;i<8;i++){
+            for(int i=0;i<viewD;i++){
                 int x = (int)Math.floor(rV.getX());
                 int y = (int)Math.floor(rV.getY());
                 if(x>=level.width || y>= level.height || x<0 || y<0)break;
-                if(level.isWall(y, x-1) && !rightward){v=level.getCellColor(y, x-1);break;}
-                if(level.isWall(y, x)){v=level.getCellColor(y, x);break;}
+                if(level.isWall(x-1, y) && !rightward){v=level.getCellColor(x-1, y);break;}
+                if(level.isWall(x, y)){v=level.getCellColor(x, y);break;}
                 rV = rV.add(stepX, stepY);
+                if(i+1.0==viewD){v=Color.WHITESMOKE;rV = cam.add(viewD*Math.cos(Math.toRadians(rayA)), viewD*Math.sin(Math.toRadians(rayA)));}
             }
             
             //intersects with horizontal
@@ -163,64 +156,73 @@ public class Renderer {
                 rH = new Point2D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
             }
             
-            if(pH)System.out.printf("%3.3f rH: %1.4f, %1.4f %n",rayA, rH.getX(), rH.getY());//prints the point of first hit with a horizontal line
             Color h = Color.TRANSPARENT;
-            for(int i=0;i<8;i++){
+            for(int i=0;i<viewD;i++){
                 int x = (int)Math.floor(rH.getX());
                 int y = (int)Math.floor(rH.getY());
                 if(x>=level.width || y>= level.height || x<0 || y<0)break;
-                if(level.isWall(y-1, x) && !upward){h = level.getCellColor(y-1, x);break;}
-                if(level.isWall(y, x)){h = level.getCellColor(y, x);break;}
+                if(level.isWall(x, y-1) && !upward){h = level.getCellColor(x, y-1);break;}
+                if(level.isWall(x, y)){h = level.getCellColor(x, y);break;}
                 rH = rH.add(stepX, stepY);
+                if(i+1.0==viewD){h = Color.WHITESMOKE;rH = cam.add(viewD*Math.cos(Math.toRadians(rayA)), viewD*Math.sin(Math.toRadians(rayA)));}
             }
             
-            double hLength = rH.subtract(cam).magnitude();
-            double vLength = rV.subtract(cam).magnitude();
-            
-            // createLine() is not to be used when running the game
-            if(hLength<vLength && hLength!=0){
+            double hLength = cam.distance(rH);
+            double vLength = cam.distance(rV);
+            if(rH.equals(rV)){
+                drawWallLine(r, viewD*Math.cos(Math.toRadians(rayA-camA)), h);
+                hPoints.add(new HitPoint(rH, h));
+            }
+            else if(hLength<vLength){
                 double dist = hLength*Math.cos(Math.toRadians(rayA-camA));
                 drawWallLine(r, dist, h);
-//                if(test)MiniMap.createLine(rH, h.brighter());
-            }else{
+                hPoints.add(new HitPoint(rH, h));
+            }
+            else{
                 double dist = vLength*Math.cos(Math.toRadians(rayA-camA));
-                drawWallLine(r, dist, v.darker());
-//                if(test)MiniMap.createLine(rV, v.darker());
+                drawWallLine(r, dist, v);
+                hPoints.add(new HitPoint(rV, v));
             }
             rayA += (fov/screenWidth);
         }
         return hPoints;
     }
-    private static void renderEntities(ArrayList<Point2D> hPoints){
+    private static void renderEntities(ArrayList<HitPoint> hPoints){
         Point2D cam = player.getPosition();
         float camA = player.getRotation();
         
-        Point2D dir = new Point2D(Math.cos(Math.toRadians(camA)), Math.sin(Math.toRadians(camA)));
-        spriteEntities.forEach(((k, e) -> {
+        final Point2D dir = new Point2D(Math.cos(Math.toRadians(camA)), Math.sin(Math.toRadians(camA)));
+        spriteEntities.forEach(((k, e) -> 
+        {
             Point2D ePos = e.getPosition().subtract(cam); //vector from player to entity
-            if(dir.angle(ePos)<=(double)(fov/2f)){
-                //Image sprite = e.getTexture();
-                double dist = ePos.magnitude();
-                double scPos = screenWidth*dir.angle(ePos)/fov;
-                double relX, relY; //relX = scPos - (entityWidth/2), relY = (screenHeight-entityHeight)/2;
+            if(dir.angle(ePos)<(1.0+fov/2.0) && ePos.magnitude()<viewD){ //if entity is within the player's fov and within view range
+                double fovR = -Math.toRadians(fov/2.0);
+                Point2D fovLeft = new Point2D( //vector representing the left edge of the fov triangle
+                        dir.getX()*Math.cos(fovR)-dir.getY()*Math.sin(fovR),
+                        dir.getX()*Math.sin(fovR)+dir.getY()*Math.cos(fovR)
+                );
                 
-                //gc.drawImage(sprite, relX, relY, sprite/dist , sprite/dist );
+                Image sprite = e.texture;
+                double dist = ePos.magnitude() +.25;
+                double screenPos = screenWidth*fovLeft.angle(ePos)/fov, height = e.texture.getHeight()/dist;
+                double relX = screenPos - (e.texture.getWidth()/2.0), relY = (screenHeight-height)/2.0;
+                gc.drawImage(sprite, relX, relY, sprite.getWidth()/dist , height );
                 
+                //draw walls that are in front of the entity
+                for(int i = (int)(screenPos-e.texture.getWidth()); i<(screenPos+e.texture.getWidth()) && i<screenWidth; i++){
+                    if(i<0){i=0;}
+                    double pDist = cam.distance(hPoints.get(i));
+                    double eDist = ePos.magnitude();
+                    if(pDist<eDist){
+                        double rayA = dir.angle(hPoints.get(i));
+                        drawWallLine(i, pDist*Math.cos(Math.toRadians(rayA)), hPoints.get(i).getColor());
+                    }
+                }
             }
         }));
         
     }
-    
-    private static Color getColor(int id){
-        switch(id){
-            case 0: return Color.TRANSPARENT;
-            case 1: return Color.GRAY;
-            case 2: return Color.GOLD;
-            case 3: return Color.VIOLET;
-            case 4: return Color.BLUEVIOLET;
-            default: return Color.RED; //indicates error
-        }
-    }
+
     //draws the line representing a slice of a wall
     private static void drawWallLine(int x, double distance, Color color){
         double maxHeight = screenHeight;
@@ -233,45 +235,13 @@ public class Renderer {
         gc.setFill(color);
         gc.fillRect(x, lineTop, 1, height);
     }
-/*    
-    static class MiniMap{//minimap that shows the level and the rays (for debugging)
-        private final static GridPane grid = new GridPane(),gridLines = new GridPane();
-        private final static Pane rayPane = new Pane(), layer = new Pane();
-        public static StackPane minimap = new StackPane(layer, grid, rayPane, gridLines);
-        private static int sq = (int)screenHeight/mapY;//size of 1 grid square, is used for scaling
-        private static Point2D cam = player.getPosition();
-        private static float camA = player.getRotation();
-        
-        //generate the minimap
-        public static void generate(){
-            
-            rayPane.getChildren().clear();
-            createGrid();
-            //create a triangle that shows a 90 deg fov
-            Polygon fov3 = new Polygon();
-            fov3.getPoints().addAll(0.0, 0.0, (double)sq*mapX, (double)sq*mapY, (double)sq*mapX, (double)-sq*mapY);
-            fov3.setOpacity(1.0); fov3.getTransforms().add(new Rotate(camA)); fov3.relocate(sq*cam.getX(), sq*(cam.getY()-mapY));
-            layer.getChildren().add(fov3); layer.setMaxSize(sq*mapX, sq*mapY);
-            fov3.setVisible(false);
-        }
-        //creates the grid squares and the grid lines
-        private static void createGrid(){
-            for(int y=0;y<mapY;y++){
-                for(int x=0;x<mapX;x++){
-                    Rectangle rect = new Rectangle(sq, sq);
-                    Rectangle rect1 = new Rectangle(sq-1, sq-1);
-                    rect.setFill(getColor(map[y][x])); rect.setOpacity(0.5);
-                    rect1.setFill(Color.TRANSPARENT); rect1.setStroke(Color.BLACK);
-                    grid.add(rect, x, y); gridLines.add(rect1, x, y);
-                }
-            }
-        }
-        //draws a line from the camera to the hit points
-        private static void createLine(Point2D hitP, Color color){
-            Line line = new Line(sq*cam.getX(), sq*cam.getY(), sq*hitP.getX(), sq*hitP.getY());
-            line.setStroke(color); line.setOpacity(0.75);
-            rayPane.getChildren().add(line);
-        }
+
+}
+class HitPoint extends Point2D{
+    final private Color color;
+    protected HitPoint(Point2D point, Color color){
+        super(point.getX(), point.getY());
+        this.color = color;
     }
-  */  
+    protected Color getColor(){return this.color;}
 }

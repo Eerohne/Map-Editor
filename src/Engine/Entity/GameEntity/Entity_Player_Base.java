@@ -25,9 +25,13 @@ import javafx.scene.text.Font;
 public class Entity_Player_Base extends Entity_Player{
 
     protected float playerSpeed, walkSpeed, runSpeed;
+    protected Point2D velocity;
+    protected float colisionRadius = 0.1f;
     
     private Label label;
     private float headBobTime;
+    private float headBobRange = 10;
+    private float headBobFrequency = 10;
     
     public Entity_Player_Base(String name, Point2D position, float rotation, float walkSpeed, float runSpeed) {
         super(name, position, rotation);
@@ -45,46 +49,53 @@ public class Entity_Player_Base extends Entity_Player{
 
     @Override
     public void start() {
+        super.start();
+        
         this.playerSpeed = walkSpeed;
         AnchorPane display = Game.getWindowManager().getIngameDisplay();
         label = new Label();
         label.setFont(Font.font("Cambria", 20));
         display.getChildren().add(label);
         display.setTopAnchor(label, 10.0);
-        
-        Renderer.setPlayer(this);
     }
 
     @Override
     public void update() {
+        Point2D dir = Point2D.ZERO;
         Point2D oldPosition = this.position;
         if(Input.keyPressed(KeyCode.W))
-            this.position = this.position.add(playerSpeed* Math.cos(Math.toRadians(this.rotation))* Time.deltaTime, playerSpeed* Math.sin(Math.toRadians(this.rotation)) *Time.deltaTime);
+            dir = dir.add(Math.cos(Math.toRadians(this.rotation)), Math.sin(Math.toRadians(this.rotation)));
         if(Input.keyPressed(KeyCode.S))
-            this.position = this.position.add(playerSpeed* -Math.cos(Math.toRadians(this.rotation))* Time.deltaTime, playerSpeed* -Math.sin(Math.toRadians(this.rotation)) *Time.deltaTime);
+            dir = dir.add(-Math.cos(Math.toRadians(this.rotation)), -Math.sin(Math.toRadians(this.rotation)));
         if(Input.keyPressed(KeyCode.A))
-            this.position = this.position.add(playerSpeed* Math.sin(Math.toRadians(this.rotation))* Time.deltaTime, playerSpeed* -Math.cos(Math.toRadians(this.rotation)) *Time.deltaTime);
+            dir = dir.add(Math.sin(Math.toRadians(this.rotation)), -Math.cos(Math.toRadians(this.rotation)));
         if(Input.keyPressed(KeyCode.D))
-            this.position = this.position.add(playerSpeed* -Math.sin(Math.toRadians(this.rotation))* Time.deltaTime, playerSpeed* Math.cos(Math.toRadians(this.rotation)) *Time.deltaTime);
+            dir = dir.add(-Math.sin(Math.toRadians(this.rotation)), Math.cos(Math.toRadians(this.rotation)));
+        
+        
+        dir = Game.getCurrentLevel().checkCollision(position, dir, colisionRadius);
         
         if(Input.keyPressed(KeyCode.LEFT))
             this.rotation -= 100 * Time.deltaTime;
         if(Input.keyPressed(KeyCode.RIGHT))
             this.rotation += 100 * Time.deltaTime;
         
-        if(Input.keyPressed(KeyCode.SHIFT))
+        if(Input.keyPressed(KeyCode.SHIFT)){
             playerSpeed = runSpeed;
-        else
+            headBobFrequency = 20;
+        }else{
             playerSpeed = walkSpeed;
+            headBobFrequency = 10;
+        }
         
-        /*Renderer.setPos(position);
-        Renderer.setDir(rotation);*/
+        dir = dir.multiply(playerSpeed * Time.deltaTime);
+        position = position.add(dir);
+        
+        //headbob code
         if(!oldPosition.equals(position)){
             headBobTime += Time.deltaTime;
-            Renderer.heightOffset = (float)Math.sin(headBobTime*10)*10;
+            this.height = (float)Math.sin(headBobTime * headBobFrequency) * headBobRange;
         }
-        /*else
-             Renderer.heightOffset = 0;*/
         if(label != null)
             label.setText(this.position.toString());
     }

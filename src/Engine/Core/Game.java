@@ -11,8 +11,8 @@ import Engine.Util.Input;
 import Engine.Window.WindowManager;
 import Engine.Level.Level;
 import Engine.RaycastRenderer.Renderer;
-import Engine.Util.RessourceManager.RessourceLoader;
-import static Engine.Util.RessourceManager.RessourceLoader.loadLevel;
+import Engine.Util.RessourceManager.ResourceLoader;
+import static Engine.Util.RessourceManager.ResourceLoader.loadLevel;
 import Engine.Util.Time;
 import java.net.MalformedURLException;
 import java.util.logging.Logger;
@@ -30,10 +30,6 @@ public class Game extends Application{
     private static Stage gameStage;
     private static WindowManager windowManager;
     private static Level currentLevel;
-    
-    //settings
-    public static int screenWidth = 1280;
-    public static int screenHeight = 800;
     //flags
     public static boolean isRunning = true;
     public static boolean isRendering = true;
@@ -52,7 +48,7 @@ public class Game extends Application{
                 if(isRunning)
                 {
                     Time.update(); //update time
-                    stage.setTitle("Optik Engine -> FPS : " + Integer.toString(Time.fps));
+                    stage.setTitle(Settings.get("gamename") + " -> FPS : " + Integer.toString(Time.fps));
                     currentLevel.update(); //update all entities in the level
                 }
                 if(isRendering)
@@ -65,34 +61,30 @@ public class Game extends Application{
     
     private static void initEngine(Stage stage)
     {
-        //config file stuff
-        //window size
-        windowManager = new WindowManager(stage, screenWidth, screenHeight);
+        //load config.cgf file
+        Settings.init(); 
+        
+        //next initialise the window and stage
+        windowManager = new WindowManager(stage, Settings.getInt("r_window_width"), Settings.getInt("r_window_height"));
         scene = new Scene(windowManager, windowManager.getWidth(), windowManager.getHeight()); //set windows inside the scene
         stage.setScene(scene);
-
-        Input.init();
-        Renderer.setCanvas(windowManager.getRenderCanvas());
-        
-        //load .css style
-        String pathName = "style/style.css" ;
-        try {
-            scene.getStylesheets().add(RessourceLoader.loadStyleFile(pathName));
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        
         stage.setResizable(false);
         gameStage = stage;
         
-        //now load the initial level, path in the config file
-        try {
-            currentLevel = loadLevel("levels/level1.lvl");
-        } 
-        catch(LevelCreationException ex) {
-            System.out.println(ex);
-            isRunning = false;
-        }
+        //give the render canvas to the renderer
+        Renderer.setCanvas(windowManager.getRenderCanvas());
+        
+        //load .css style
+        String pathName = Settings.get("stylesheetpath");
+        String styleSheet = ResourceLoader.loadStyleFile(pathName);
+        if(styleSheet != null)
+            scene.getStylesheets().add(ResourceLoader.loadStyleFile(pathName));
+        
+        //initialise input
+        Input.init();
+        
+        //now load the initial level
+        loadLevel(Settings.get("initiallevel"));
     }
     
     public static Level getCurrentLevel()
@@ -100,16 +92,22 @@ public class Game extends Application{
         return currentLevel;
     }
     
-    public static void reloadCurrentLevel()
+    public static void loadLevel(String path)
     {
-        windowManager.reloadWindow();
         try {
-            currentLevel = loadLevel("levels/level1.lvl");
+            currentLevel = ResourceLoader.loadLevel(path);
         } 
         catch(LevelCreationException ex) {
             System.out.println(ex);
             isRunning = false;
+            isRendering = false;
         }
+    }
+    
+    public static void reloadCurrentLevel()
+    {
+        if(currentLevel != null)
+            loadLevel(currentLevel.path);
     }
     
     public static WindowManager getWindowManager()

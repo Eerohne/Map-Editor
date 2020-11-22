@@ -5,8 +5,10 @@
  */
 package Engine.Core;
 
+import Engine.Util.RessourceManager.ResourceLoader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  *
@@ -14,10 +16,30 @@ import java.util.Map;
  */
 public class Settings {
     
-    public Map<String, Object> settings = new HashMap<>();
+    private static Properties properties;
     
-    public static void loadSettings(String path)
+    public static void init()
     {
-        
+        properties = ResourceLoader.loadConfigFile();
+    }
+    
+    public static String get(String name)
+    {
+        return properties.getProperty(name);
+    }
+    
+    public static int getInt(String name)
+    {
+        return Integer.valueOf(properties.getProperty(name));
+    }
+    
+    public static float getFloat(String name)
+    {
+        return Float.valueOf(properties.getProperty(name));
+    }
+    
+    public static double getDouble(String name)
+    {
+        return Double.valueOf(properties.getProperty(name));
     }
 }

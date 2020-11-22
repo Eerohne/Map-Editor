@@ -24,7 +24,6 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -42,7 +41,7 @@ public class MapEditor extends Application {
         BorderPane tools = new BorderPane(shortcuts, menu, null, null, null);
         
         Info info = new Info();
-        Grid gridRender = new Grid(60, 20, 10);
+        Grid gridRender = new Grid(100, 20, 20);
         setChildrenClipping(gridRender);
         
         
@@ -96,7 +95,7 @@ public class MapEditor extends Application {
         launch(args);
     }
     
-    public static void setChildrenClipping(Pane pane) {
+    private static void setChildrenClipping(Pane pane) {
         Rectangle clip = new Rectangle();
         pane.setClip(clip);    
         

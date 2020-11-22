@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
@@ -39,6 +40,10 @@ public class ExistingEntityModification extends GridPane{
     public Button newEntityBtn = new Button("create new entity");
     public ComboBox<String> cb = new ComboBox();
     public VBox vbox = new VBox();
+//    public HBox hbox = new HBox();
+//    public TextField propertyEdit = new TextField();
+//    public TextField valueEdit = new TextField();
+    public Button saveEdit = new Button("save");
 
     public ExistingEntityModification() {
         
@@ -53,7 +58,7 @@ public class ExistingEntityModification extends GridPane{
         vbox.getChildren().add(nameText);
         vbox.getChildren().add(propertyText);
         vbox.getChildren().add(valueText);
-        vbox.getChildren().add(addBtn);
+        vbox.getChildren().add(saveEdit);
         vbox.getChildren().add(deleteBtn);
         vbox.getChildren().add(exportBtn);
         vbox.getChildren().add(newEntityBtn);

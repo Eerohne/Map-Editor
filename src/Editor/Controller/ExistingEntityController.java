@@ -6,32 +6,29 @@
 package Editor.Controller;
 import Editor.Model.EntityModel;
 import Editor.View.Menu.ExistingEntityModification;
-import Editor.View.Menu.NewEntity;
 import com.google.gson.Gson;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
+import com.google.gson.GsonBuilder;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collector;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import com.github.cliftonlabs.json_simple.JsonArray;
-import com.github.cliftonlabs.json_simple.JsonKey;
-import com.github.cliftonlabs.json_simple.JsonObject;
-import java.util.Set;
 /**
  *
  * @author linuo
@@ -40,7 +37,7 @@ public class ExistingEntityController {
     EntityModel model = new EntityModel();
     ExistingEntityModification view = new ExistingEntityModification();
     ObservableList<EntityModel> list = FXCollections.observableArrayList();
-   
+    ObservableList<EntityModel> templist = FXCollections.observableArrayList();
 
     public ExistingEntityController(EntityModel model, ExistingEntityModification view) {
         this.model = model;
@@ -52,6 +49,14 @@ public class ExistingEntityController {
             Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
         }
         comboBoxHandler();
+        
+        view.saveEdit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                editEntity();
+            }
+        }
+        );
     }
     
     private void allEntities() throws ParseException{
@@ -104,16 +109,15 @@ public class ExistingEntityController {
                                 //System.out.println(valuelist);
                                 for(int j = 0; j < keylist.size(); j++){
                                     list.add(new EntityModel(keylist.get(j), valuelist.get(j)));
+                                    templist = list;
                                     //System.out.println(list);
-                                    view.table.getItems().setAll(list);
+                                    view.table.getItems().setAll(templist);
                                 }
-                                list.clear();
-                                
+                                templist.clear();
                             }
                             
                             //System.out.println(entity.keySet());
-                            
-                            
+
                         }
 
                     }
@@ -128,8 +132,22 @@ public class ExistingEntityController {
                 }
         });
     }
-    
+    public void editEntity(){
+        EntityModel model = new EntityModel(view.propertyText.getText(), view.valueText.getText());
+        int selectedIndex = view.table.getSelectionModel().getSelectedIndex();
+        
+        if(selectedIndex >= 0){
+            view.table.getItems().set(selectedIndex, model);    
+            list.add(model);
+        }
+    }
 
+    public void add(){
+        String property = view.propertyText.getText();
+        String value = view.valueText.getText();
+        list.add(new EntityModel(property, value));
+        view.table.getItems().setAll(list);
+    }
     
     public void delete(){
         int selectedIndex = view.table.getSelectionModel().getSelectedIndex();

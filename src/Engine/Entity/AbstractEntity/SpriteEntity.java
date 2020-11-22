@@ -1,11 +1,13 @@
 package Engine.Entity.AbstractEntity;
 
 import Engine.Core.Exceptions.EntityCreationException;
-import Engine.Util.RessourceManager.RessourceLoader;
+import Engine.RaycastRenderer.Renderer;
+import Engine.Util.RessourceManager.ResourceLoader;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import org.json.simple.JSONArray;
 
 //Merouane Issad
 public abstract class SpriteEntity extends Entity{ //A type of entity that provides itself to the renderer, it is taken in consideration when rendering the game level (not the game UI)
@@ -18,15 +20,22 @@ public abstract class SpriteEntity extends Entity{ //A type of entity that provi
         super(name, position);
         this.color = color;
         
-        texture = new Image(RessourceLoader.ressourcePath+"images/sprite1.png", true);
+        texture = ResourceLoader.loadImage("images/sprite1.png");
     }
     
     public SpriteEntity(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
         
-        //this.color = new Color(Float.parseFloat(propertyMap.get("col_r")), Float.parseFloat(propertyMap.get("col_g")), Float.parseFloat(propertyMap.get("col_b")), Float.parseFloat(propertyMap.get("col_a")));
-        texture = new Image(RessourceLoader.ressourcePath+"images/sprite1.png", true);
+        JSONArray colArray = (JSONArray) propertyMap.get("color");
+        this.color = Color.rgb((int) ((double) colArray.get(0)), (int) ((double) colArray.get(0)), (int) ((double) colArray.get(0)));
+        
+        if(propertyMap.containsKey("height"))
+            this.height = Float.parseFloat((String) propertyMap.get("height"));
+        else
+            this.height = 0;
+        
+        texture = ResourceLoader.loadImage("images/sprite1.png");
     }
     
     @Override
@@ -52,11 +61,13 @@ public abstract class SpriteEntity extends Entity{ //A type of entity that provi
     }
     
     public void addToRenderList() {
-        //add to render list
+        Renderer.addEntity(this);
     }
     
     public void removeFromRenderList() {
-        //remove from render list
+        Renderer.removeEntity(name);
     }
+    
+    public Image getTexture(){return texture;}
     
 }

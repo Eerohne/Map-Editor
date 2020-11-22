@@ -3,12 +3,6 @@ package Editor.Controller;
 import Editor.View.Grid.Cell;
 import Editor.View.Grid.Grid;
 import Editor.View.Info;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Scene;
@@ -70,7 +64,8 @@ public class GridController {
                 System.out.println("Mouse : (" + mouseX + ", " + mouseY + ")\n"
                         + "Grid : (" + aX + ", " + aY + ")\n" 
                         + "Local : (" + getLocalX() + ", " + getLocalY() + ")\n" 
-                        + "Zoom : " + zoom + "\n");
+                        + "Zoom : " + zoom + "\n" 
+                        + grid.cells[0][0].getTransforms());
             }
         });
         
@@ -143,16 +138,18 @@ public class GridController {
         @Override
         public void handle(MouseEvent event) {
             updateMousePos(event);
-            //onHover();
+            
             //Grid Translation Implementation
             if(event.getButton().equals(MouseButton.MIDDLE)){
                 //Translation vecxtor
                 Translate vector = new Translate((mouseX - preMouseX)/getScaleRatio(), (mouseY - preMouseY)/getScaleRatio());
                 
+                
                 //Every cell is translating with the vector above
                 for (Cell[] cells : grid.getCells()) {
                     for (Cell cell : cells) {
-                        cell.getTransforms().add(vector);
+                        //cell.getTransforms().add(vector);
+                        cell.addTranslationVector(vector);
                     }
                 }
             }

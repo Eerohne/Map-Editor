@@ -5,7 +5,7 @@
  */
 package Engine.Window.Menu;
 
-import Engine.Util.RessourceManager.RessourceLoader;
+import Engine.Util.RessourceManager.ResourceLoader;
 import java.util.HashMap;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;

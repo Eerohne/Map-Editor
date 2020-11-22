@@ -27,6 +27,10 @@ public class EntityCreator { //Entity creation is defined in this class
         //entity classname list
         switch(classname) //add any new entity to this list and point to a create_Entity_... method
         {
+            case "classname_of_entity_all_lowercase": //example of how to setup a new entity
+                //if(verifyProperties(propertyMap, "rotation", "walkspeed", "runspeed"))
+                    //entity = new Entity_Name_Of_Entity_Class(propertyMap);
+                break;
             case "item_coin":
                 if(verifyProperties(propertyMap, "scorepoint"))
                     entity = new Entity_Item_Coin(propertyMap);
@@ -45,6 +49,10 @@ public class EntityCreator { //Entity creation is defined in this class
             case "player_base":
                 if(verifyProperties(propertyMap, "rotation", "walkspeed", "runspeed"))
                     entity = new Entity_Player_Base(propertyMap);
+                break;
+            case "sprite_decor":
+                if(verifyProperties(propertyMap, "color"))
+                    entity = new Entity_Decor(propertyMap);
                 break;
             default:
                 System.out.println(new EntityCreationException("classname '"+classname+"' is not defined"));
