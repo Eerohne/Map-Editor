@@ -6,6 +6,7 @@
 package Editor.Controller;
 
 import Editor.Model.EntityModel;
+import Editor.View.Menu.ExistingEntityModification;
 import Editor.View.Menu.NewEntity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -39,8 +40,10 @@ public class NewEntityController {
     
     EntityModel model = new EntityModel();
     NewEntity view = new NewEntity();
+    ExistingEntityModification eem = new ExistingEntityModification();
     
     ObservableList<EntityModel> list = FXCollections.observableArrayList();
+    ObservableList<String> nameList = FXCollections.observableArrayList();
 
     public NewEntityController(EntityModel model, NewEntity view) {
         this.model = model;
@@ -108,7 +111,6 @@ public class NewEntityController {
         Map<String, String> data = new HashMap<>();
         FileWriter writer = new FileWriter("entities.json", true);
         if(newFile.length() == 0 || !newFile.exists()){
-               
             for(int i = 0; i < list.size(); i++){
                 data.put(list.get(i).getProperty(), list.get(i).getValue());
             }
@@ -134,7 +136,7 @@ public class NewEntityController {
                 JSONObject obj = new JSONObject();
                 obj.put(view.nameText.getText(), o2);
                 existingArray.add(obj);
-                //file writer2 here used to truncate the json file, so that the entities do not repeat
+                
                 FileWriter writer2 = new FileWriter(newFile);
                 gson.toJson(existingArray, writer);
                 writer.close();
@@ -143,6 +145,9 @@ public class NewEntityController {
             }
                 
         }
+        nameList.add(view.nameText.getText());
+        System.out.println(nameList.toString());
+        
         
     }
     

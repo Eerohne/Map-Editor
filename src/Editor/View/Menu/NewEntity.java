@@ -9,6 +9,7 @@ import Editor.Model.EntityModel;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -34,6 +35,7 @@ public class NewEntity extends GridPane{
     public Button deleteBtn = new Button("delete selected row");
     public Button exportBtn = new Button("export");
     public Button newEntityBtn = new Button("create new entity");
+    public ComboBox<String> cb = new ComboBox();
     public VBox vbox = new VBox();
     
     
@@ -43,6 +45,7 @@ public class NewEntity extends GridPane{
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(10));
+        //this.add(cb, 0, 0);
         this.add(table, 1, 0);
         
         vbox.getChildren().add(nameText);
