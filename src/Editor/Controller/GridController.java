@@ -142,13 +142,13 @@ public class GridController {
             //Grid Translation Implementation
             if(event.getButton().equals(MouseButton.MIDDLE)){
                 //Translation vecxtor
-                Translate vector = new Translate((mouseX - preMouseX)/getScaleRatio(), (mouseY - preMouseY)/getScaleRatio());
+                Translate vector = new Translate((mouseX - preMouseX), (mouseY - preMouseY));
+                
                 
                 
                 //Every cell is translating with the vector above
                 for (Cell[] cells : grid.getCells()) {
                     for (Cell cell : cells) {
-                        //cell.getTransforms().add(vector);
                         cell.addTranslationVector(vector);
                     }
                 }
@@ -218,8 +218,6 @@ public class GridController {
     private double getScaleRatio(){
         return grid.getCellSize()/grid.getCells()[0][0].getDefaultSize();
     }
-    
-    
 }
 
 

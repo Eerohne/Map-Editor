@@ -132,13 +132,13 @@ public class ExistingEntityController {
                 }
         });
     }
-    public void editEntity(){
+    public void editEntity(){ // needs to edit the json file directly.
         EntityModel model = new EntityModel(view.propertyText.getText(), view.valueText.getText());
         int selectedIndex = view.table.getSelectionModel().getSelectedIndex();
         
         if(selectedIndex >= 0){
             view.table.getItems().set(selectedIndex, model);    
-            list.add(model);
+            
         }
     }
 
