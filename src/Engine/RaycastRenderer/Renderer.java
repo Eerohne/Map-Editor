@@ -14,6 +14,7 @@ import java.util.HashMap;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -181,10 +182,12 @@ public class Renderer {
             if(hLength<vLength && hLength!=0){
                 double dist = hLength*Math.cos(Math.toRadians(rayA-camA));
                 drawWallLine(r, dist, h);
+                hPoints.add(rH);
 //                if(test)MiniMap.createLine(rH, h.brighter());
             }else{
                 double dist = vLength*Math.cos(Math.toRadians(rayA-camA));
-                drawWallLine(r, dist, v.darker());
+                drawWallLine(r, dist, v);
+                hPoints.add(rV);
 //                if(test)MiniMap.createLine(rV, v.darker());
             }
             rayA += (fov/screenWidth);
@@ -194,33 +197,38 @@ public class Renderer {
     private static void renderEntities(ArrayList<Point2D> hPoints){
         Point2D cam = player.getPosition();
         float camA = player.getRotation();
+        ArrayList<SpriteEntity> visibleEntities = new ArrayList();
         
         Point2D dir = new Point2D(Math.cos(Math.toRadians(camA)), Math.sin(Math.toRadians(camA)));
-        spriteEntities.forEach(((k, e) -> {
+        spriteEntities.forEach(((k, e) -> 
+        {
             Point2D ePos = e.getPosition().subtract(cam); //vector from player to entity
-            if(dir.angle(ePos)<=(double)(fov/2f)){
-                //Image sprite = e.getTexture();
-                double dist = ePos.magnitude();
-                double scPos = screenWidth*dir.angle(ePos)/fov;
-                double relX, relY; //relX = scPos - (entityWidth/2), relY = (screenHeight-entityHeight)/2;
-                
-                //gc.drawImage(sprite, relX, relY, sprite/dist , sprite/dist );
-                
+            if(dir.angle(ePos)<=(double)(2.0+fov/2.0)){ //if entity is within the player's fov
+                Image sprite = e.texture;
+                double dist = ePos.magnitude() +.25;
+                double screenPos = screenWidth*dir.angle(ePos)/fov, height = e.texture.getHeight()/dist;
+                double relX = screenPos - (e.texture.getWidth()/2.0), relY = (screenHeight-height)/2.0;
+                gc.drawImage(sprite, relX, relY, sprite.getWidth()/dist , height );
+                visibleEntities.add(e);
             }
         }));
         
-    }
-    
-    private static Color getColor(int id){
-        switch(id){
-            case 0: return Color.TRANSPARENT;
-            case 1: return Color.GRAY;
-            case 2: return Color.GOLD;
-            case 3: return Color.VIOLET;
-            case 4: return Color.BLUEVIOLET;
-            default: return Color.RED; //indicates error
+        for(int i=0;i<hPoints.size();i++){
+            for(SpriteEntity e: visibleEntities){
+                double pDist, eDist; //distance from point and distance from entity
+                pDist = hPoints.get(i).subtract(cam).magnitude();
+                eDist = e.getPosition().subtract(cam).magnitude();
+                
+                if(pDist<eDist){
+                    Color color = Game.getCurrentLevel().getCellColor((int)hPoints.get(i).getX(), (int)hPoints.get(i).getY());
+                    drawWallLine(i, pDist, color);
+                }
+                
+            }
         }
+        
     }
+
     //draws the line representing a slice of a wall
     private static void drawWallLine(int x, double distance, Color color){
         double maxHeight = screenHeight;
