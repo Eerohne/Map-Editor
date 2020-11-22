@@ -6,6 +6,7 @@
 package Engine.Entity.GameEntity;
 
 import Engine.Entity.AbstractEntity.Entity;
+import Engine.RaycastRenderer.Renderer;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 
@@ -23,6 +24,16 @@ public abstract class Entity_Player extends Entity{
     {
         super(propertyMap);
         this.rotation = Float.parseFloat((String) propertyMap.get("rotation"));
+        if(propertyMap.containsKey("height"))
+            this.height = Float.parseFloat((String) propertyMap.get("height"));
+        else
+            this.height = 0;
+    }
+    
+    @Override
+    public void start()
+    {
+        Renderer.setPlayer(this);
     }
 
     public float getRotation() {

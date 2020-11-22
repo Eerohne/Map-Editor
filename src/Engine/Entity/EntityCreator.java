@@ -46,6 +46,9 @@ public class EntityCreator { //Entity creation is defined in this class
                 if(verifyProperties(propertyMap, "rotation", "walkspeed", "runspeed"))
                     entity = new Entity_Player_Base(propertyMap);
                 break;
+            case "sprite_decor":
+                entity = new Entity_Decor(propertyMap);
+                break;
             default:
                 System.out.println(new EntityCreationException("classname '"+classname+"' is not defined"));
                 entity = null;

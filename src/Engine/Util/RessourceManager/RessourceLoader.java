@@ -79,7 +79,7 @@ public class RessourceLoader
             //1) level grid
             int gridWidth = Integer.valueOf((String)grid.get("width"));
             int gridHeight = Integer.valueOf((String)grid.get("height"));
-            int gridArray[][] = new int[gridWidth][gridHeight];
+            int gridArray[][] = new int[gridHeight][gridWidth];
             
             JSONArray rowsData = (JSONArray) grid.get("data");
             Iterator<JSONArray> rowsIterator = rowsData.iterator();
