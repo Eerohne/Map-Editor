@@ -7,6 +7,7 @@ package Editor.View.Grid;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Translate;
 
 /**
  *
@@ -17,7 +18,8 @@ public class Cell extends Rectangle{
     private Color cellColor;
     private Color selectColor;
     private Color floorColor = Color.WHITE;
-
+    private Translate tVector = new Translate(0, 0);
+    
     public Cell(int defaultSize) {
         super(defaultSize, defaultSize);
         super.setFill(floorColor);
@@ -26,6 +28,7 @@ public class Cell extends Rectangle{
         this.size = defaultSize;
         this.cellColor = this.floorColor;
         this.selectColor = this.cellColor.darker();
+        this.getTransforms().add(tVector);
     }
 
     public void clear(){
@@ -69,5 +72,17 @@ public class Cell extends Rectangle{
     
     public void setYPos(double value){
         super.setY(value * size);
+    }
+    
+    public Translate getTranslationVector(){
+        return tVector;
+    }
+    
+    public void addTranslationVector(Translate vector){
+        double x = vector.getX() + tVector.getX();
+        double y = vector.getY() + tVector.getY();
+        
+        this.tVector.setX(x);
+        this.tVector.setY(y);
     }
 }

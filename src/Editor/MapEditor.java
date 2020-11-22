@@ -41,7 +41,7 @@ public class MapEditor extends Application {
         BorderPane tools = new BorderPane(shortcuts, menu, null, null, null);
         
         Info info = new Info();
-        Grid gridRender = new Grid(60, 20, 10);
+        Grid gridRender = new Grid(100, 20, 20);
         setChildrenClipping(gridRender);
         
         
