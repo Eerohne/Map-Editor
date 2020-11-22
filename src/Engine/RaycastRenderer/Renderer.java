@@ -197,7 +197,7 @@ public class Renderer {
         
         spriteEntities.forEach(((s, e) -> {sprites.put(cam.distance(e.getPosition()), e);}));
             
-        sprites.forEach(((d, e) -> 
+        spriteEntities.forEach(((d, e) -> 
         {
             Point2D ePos = e.getPosition().subtract(cam); //vector from player to entity
             if(dir.angle(ePos)<(1.0+fov/2.0) && ePos.magnitude()<viewD){ //if entity is within the player's fov and within view range
@@ -207,7 +207,7 @@ public class Renderer {
                         dir.getX()*Math.sin(fovR)+dir.getY()*Math.cos(fovR)
                 );
                 
-                Image sprite = e.texture;
+                Image sprite = e.getTexture();
                 double dist = ePos.magnitude() +.25;
                 
                 double screenPos = screenWidth*fovLeft.angle(ePos)/fov, height = sprite.getHeight()/dist;
