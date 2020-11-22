@@ -2,7 +2,7 @@ package Engine.Entity.AbstractEntity;
 
 import Engine.Core.Exceptions.EntityCreationException;
 import Engine.RaycastRenderer.Renderer;
-import Engine.Util.RessourceManager.RessourceLoader;
+import Engine.Util.RessourceManager.ResourceLoader;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -20,7 +20,7 @@ public abstract class SpriteEntity extends Entity{ //A type of entity that provi
         super(name, position);
         this.color = color;
         
-        texture = new Image(RessourceLoader.ressourcePath+"images/sprite1.png", true);
+        texture = ResourceLoader.loadImage("images/sprite1.png");
     }
     
     public SpriteEntity(HashMap<String, Object> propertyMap)
@@ -35,7 +35,7 @@ public abstract class SpriteEntity extends Entity{ //A type of entity that provi
         else
             this.height = 0;
         
-        texture = RessourceLoader.loadImage("images/sprite1.png");
+        texture = ResourceLoader.loadImage("images/sprite1.png");
     }
     
     @Override

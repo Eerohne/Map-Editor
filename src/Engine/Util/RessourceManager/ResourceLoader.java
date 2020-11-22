@@ -16,10 +16,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.logging.Logger;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -30,14 +32,31 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
  
-public class RessourceLoader
+public class ResourceLoader
 {
-    public static String ressourcePath = "ressources/";
+    public static String resourcePath = "";
+    
+    public static Properties loadConfigFile()
+    {
+        Properties prop = new Properties();
+
+        try {
+            InputStream in = new FileInputStream("config.cfg"); //the config file is always in the engine root folder
+            prop.load(in);
+            in.close();
+
+            resourcePath = prop.getProperty("resourcepath"); //right here set the resourcePath
+        }
+        catch(IOException e) {
+            System.out.println("'config.cfg' file was not found in root folder");
+        }
+        return prop;
+    }
     //RessourceLoader.loadImage("images/brick.png");
     public static Image loadImage(String path)
     {
         try{
-            FileInputStream inputstream = new FileInputStream(ressourcePath + path);
+            FileInputStream inputstream = new FileInputStream(resourcePath + path);
             return new Image(inputstream);
         }
         catch(IOException e)
@@ -47,20 +66,29 @@ public class RessourceLoader
         return null;
     }
     
-    //AudioPlayer.player.start(RessourceLoader.loadAudio("sounds/musictest.wav"));
+    //AudioPlayer.player.start(ResourceLoader.loadAudio("sounds/musictest.wav"));
     public static Media loadAudio(String path)
     {
-        return new Media(new File(ressourcePath + path).toURI().toString());
+        try{
+        return new Media(new File(resourcePath + path).toURI().toString());
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        return null;
     }
     
-    public static String loadStyleFile(String path) throws MalformedURLException
+    public static String loadStyleFile(String path)
     {
-        String pathName = ressourcePath + path;
-        File file = new File(pathName);
-        if (file.exists()) {
+        try{
+            String pathName = resourcePath + path;
+            File file = new File(pathName);
             return file.toURI().toURL().toExternalForm();
-        } else {
-           System.out.println("Could not find css file: " + pathName);
+        }
+        catch(IOException e)
+        {
+            System.out.println(e);
         }
         return null;
     }
@@ -68,9 +96,9 @@ public class RessourceLoader
     public static Level loadLevel(String path) throws LevelCreationException
     {
         Level level = new Level();
-        
+        level.path = path;
         JSONParser parser = new JSONParser();
-        try (Reader reader = new FileReader(ressourcePath + path)) {
+        try (Reader reader = new FileReader(resourcePath + path)) {
             
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
 
@@ -135,26 +163,11 @@ public class RessourceLoader
                 throw new LevelCreationException("No player entity inside the level");
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new LevelCreationException("invalid or inexistant level path '"+resourcePath + path+"'");
         } catch (ParseException e) {
             e.printStackTrace();
         }
         
         return level;
-    }
-    
-    public static void setRessourcePath(String path)
-    {
-        ressourcePath = path+"/";
-    }
-    
-    public static void main( String[] args )
-    {
-        try {
-            loadLevel("levels/level1.lvl");
-        } 
-        catch(LevelCreationException ex) {
-            System.out.println(ex);
-        }
     }
 }

@@ -5,7 +5,7 @@
  */
 package Engine.Window.Menu;
 
-import Engine.Util.RessourceManager.RessourceLoader;
+import Engine.Util.RessourceManager.ResourceLoader;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -16,8 +16,8 @@ import javafx.scene.media.MediaPlayer;
 public class PauseMenu extends GameMenu{
     //sounds
     private MediaPlayer mediaPlayer;
-    private static Media menuOpen = RessourceLoader.loadAudio("sounds/ui/menu_open.wav");
-    private static Media menuClosed = RessourceLoader.loadAudio("sounds/ui/menu_close.wav");
+    private static Media menuOpen = ResourceLoader.loadAudio("sounds/ui/menu_open.wav");
+    private static Media menuClosed = ResourceLoader.loadAudio("sounds/ui/menu_close.wav");
     
     public PauseMenu()
     {

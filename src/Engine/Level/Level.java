@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 
 //Merouane Issad
 public class Level {
+    public String path;
     public int width, height;
     private int[][] levelData; //2d array with wall data
     private Map<Integer, PaletteEntry> palette; //Look-up table

@@ -5,7 +5,7 @@
  */
 package Engine.Window.Menu;
 
-import Engine.Util.RessourceManager.RessourceLoader;
+import Engine.Util.RessourceManager.ResourceLoader;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -19,9 +19,9 @@ import javafx.scene.media.MediaPlayer;
 public class MenuButton extends Button{
     public  boolean valid = true;
     private MediaPlayer mediaPlayer;
-    private static Media mouseEnterSound = RessourceLoader.loadAudio("sounds/ui/button_hover.wav");
-    private static Media mouseClickSound = RessourceLoader.loadAudio("sounds/ui/button_click.wav");
-    private static Media mouseClickInvalideSound = RessourceLoader.loadAudio("sounds/ui/button_click_invalide.wav");
+    private static Media mouseEnterSound = ResourceLoader.loadAudio("sounds/ui/button_hover.wav");
+    private static Media mouseClickSound = ResourceLoader.loadAudio("sounds/ui/button_click.wav");
+    private static Media mouseClickInvalideSound = ResourceLoader.loadAudio("sounds/ui/button_click_invalide.wav");
     
     public MenuButton(String text)
     {
