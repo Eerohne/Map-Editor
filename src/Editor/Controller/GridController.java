@@ -148,7 +148,6 @@ public class GridController {
                 //Every cell is translating with the vector above
                 for (Cell[] cells : grid.getCells()) {
                     for (Cell cell : cells) {
-                        //cell.getTransforms().add(vector);
                         cell.addTranslationVector(vector);
                     }
                 }
