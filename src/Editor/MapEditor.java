@@ -73,7 +73,7 @@ public class MapEditor extends Application {
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow);
         
-        String pathName = "ressources/style/style.css" ;
+        String pathName = "resources/style/style.css" ;
         File file = new File(pathName);
         if (file.exists()) {
             scene.getStylesheets().add(file.toURI().toURL().toExternalForm());
