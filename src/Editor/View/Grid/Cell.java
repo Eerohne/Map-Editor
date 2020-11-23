@@ -76,7 +76,7 @@ public class Cell extends Rectangle{
         super.setY(value * size);
     }
     
-    public Translate getTranslationVector(){
+    public Translate getTranslationObject(){
         return tVector;
     }
     

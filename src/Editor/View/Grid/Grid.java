@@ -79,8 +79,6 @@ public class Grid extends Pane{
     }
 
     public void setCellSize(double scaleFactor) {
-        this.cellSize = cellSize*(1+scaleFactor);
-        System.out.println(cellSize + ", " + cells[0][0].getWidth());
-        
+        this.cellSize = cellSize*(1+scaleFactor);//cells[0][0].getDefaultSize()*cells[0][0].getScaleObject().getX();
     }
 }

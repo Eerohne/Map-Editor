@@ -76,7 +76,8 @@ public class GridController {
                     scaleShift -= 0.05;
                     scale(scaleShift);
                 }
-            } else{
+            }
+            else{
                 if (event.getDeltaY() < 0) {
                     scaleShift -= 0.05;
                 } else{
@@ -91,12 +92,6 @@ public class GridController {
             for (Cell cell : cells) {
                 cell.setOnMouseEntered(event -> {
                     onHover(cell);
-                });
-                cell.setOnMouseClicked(event -> {
-                    hoverCell.setColor(wallColor);
-                });
-                cell.setOnMouseDragged(event -> {
-                    hoverCell.setColor(wallColor);
                 });
             }
         }
@@ -204,7 +199,7 @@ public class GridController {
     }
     
     private void placeWall(){
-        //this.grid.getCells()[(int)getGridX()][(int)getGridY()].setColor(wallColor);
+       this.grid.getCells()[(int)getGridX()][(int)getGridY()].setColor(wallColor);
     }
     
     private void onHover(Cell hoverCell){
@@ -220,7 +215,7 @@ public class GridController {
         
         grid.setCellSize(scaleFactor);
         //Fix Scale Corrector
-        Translate scaleCorrector = new Translate((getLocalX() - aX*grid.getCellSize()), (getLocalY() - aY*grid.getCellSize()));
+        //Translate scaleCorrector = new Translate((getLocalX() - aX*grid.getCellSize()), (getLocalY() - aY*grid.getCellSize()));
 
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {
@@ -229,7 +224,7 @@ public class GridController {
             }
         }
         
-        zoom = getScaleRatio();
+        zoom = this.getScaleRatio();
     }
     
     private double getScaleRatio(){
