@@ -42,4 +42,9 @@ public class Settings {
     {
         return Double.valueOf(properties.getProperty(name));
     }
+    
+    public static boolean getBoolean(String name)
+    {
+        return Boolean.valueOf(properties.getProperty(name));
+    }
 }

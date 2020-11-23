@@ -139,9 +139,10 @@ public class ResourceLoader
                         (double) colorArr.get(1),
                         (double) colorArr.get(2));
                 
+                Image texture = loadImage((String)jsonEntry.get("texture"));
                 int flag = Integer.valueOf((String)jsonEntry.get("flag"));
                 
-                PaletteEntry entry = new PaletteEntry(color, flag);
+                PaletteEntry entry = new PaletteEntry(color, texture, flag);
                 level.putPaletteEntry(id, entry);
             }
             

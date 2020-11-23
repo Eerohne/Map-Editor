@@ -54,6 +54,7 @@ public class Renderer {
         gc = canvas.getGraphicsContext2D();
         screenWidth = canvas.getWidth();
         screenHeight = canvas.getHeight();
+        System.out.println("set canvas : "+canvas.getWidth()+", "+canvas.getHeight());
     }
     
     
@@ -68,6 +69,7 @@ public class Renderer {
     public static void resize(){
         screenWidth = frame.getWidth();
         screenHeight = frame.getHeight();
+        System.out.println("renderer resize to : "+frame.getWidth()+", "+frame.getHeight());
     }
     
     //renders one frame
