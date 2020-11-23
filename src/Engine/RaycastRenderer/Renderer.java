@@ -197,11 +197,12 @@ public class Renderer {
         
         spriteEntities.forEach(((s, e) -> {sprites.put(cam.distance(e.getPosition()), e);}));
             
-        spriteEntities.forEach(((d, e) -> 
+        sprites.forEach(((d, e) -> 
         {
             Point2D ePos = e.getPosition().subtract(cam); //vector from player to entity
             if(dir.angle(ePos)<(1.0+fov/2.0) && ePos.magnitude()<viewD){ //if entity is within the player's fov and within view range
-                double fovR = -Math.toRadians(fov/2.0);
+                
+                double fovR = -Math.toRadians(fov/2f);
                 Point2D fovLeft = new Point2D( //vector representing the left edge of the fov triangle
                         dir.getX()*Math.cos(fovR)-dir.getY()*Math.sin(fovR),
                         dir.getX()*Math.sin(fovR)+dir.getY()*Math.cos(fovR)
@@ -209,19 +210,33 @@ public class Renderer {
                 
                 Image sprite = e.getTexture();
                 double dist = ePos.magnitude() +.25;
+                double screenPos = screenWidth*fovLeft.angle(ePos)/fov;
+                double scale = (e.getSize()*screenHeight/sprite.getHeight())/dist;
+                double height = scale*sprite.getHeight();
+                double width = scale*sprite.getWidth();
                 
-                double screenPos = screenWidth*fovLeft.angle(ePos)/fov, height = sprite.getHeight()/dist;
-                double relX = screenPos - (sprite.getWidth()/(2.0*dist)), relY = (screenHeight-height)/2.0;
-                gc.drawImage(sprite, relX, relY, sprite.getWidth()/dist , height );
                 
-                //draw walls that are in front of the entity
-                for(int i = (int)(screenPos-sprite.getWidth()/(2.0*dist)); i<(screenPos+sprite.getWidth()/(2.0*dist)) && i<screenWidth; i++){
+                boolean hidden = true;
+                for(int i = (int)(screenPos-(width/2.0)); i<(screenPos+(width/2.0)) && i<screenWidth; i++){
                     if(i<0){i=0;}
                     double pDist = cam.distance(hPoints.get(i));
                     double eDist = cam.distance(e.getPosition());
-                    if(pDist<eDist){
-                        double rayA = dir.angle(hPoints.get(i));
-                        drawWallLine(i, pDist, hPoints.get(i).getColor());
+                    if(eDist<pDist){hidden = false;break;}
+                }
+                if(!hidden){
+                    double relX =screenPos-(width/2.0), relY = (screenHeight-height)/2.0; //coordinates of the top left corner of the image
+                    gc.drawImage(sprite, relX, relY, width, height );
+
+                    //draw walls that are in front of the entity
+                    for(int i = (int)(screenPos-(width/2.0)); i<(screenPos+(width/2.0)) && i<screenWidth; i++)
+                    {
+                        if(i<0){i=0;}
+                        double pDist = cam.distance(hPoints.get(i));
+                        double eDist = cam.distance(e.getPosition());
+                        if(pDist<eDist){
+                            double rayA = dir.angle(hPoints.get(i));
+                            drawWallLine(i, pDist, hPoints.get(i).getColor());
+                        }
                     }
                 }
             }
