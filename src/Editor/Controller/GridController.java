@@ -92,6 +92,12 @@ public class GridController {
                 cell.setOnMouseEntered(event -> {
                     onHover(cell);
                 });
+                cell.setOnMouseClicked(event -> {
+                    hoverCell.setColor(wallColor);
+                });
+                cell.setOnMouseDragged(event -> {
+                    hoverCell.setColor(wallColor);
+                });
             }
         }
         
@@ -198,7 +204,7 @@ public class GridController {
     }
     
     private void placeWall(){
-        this.grid.getCells()[(int)getGridX()][(int)getGridY()].setColor(wallColor);
+        //this.grid.getCells()[(int)getGridX()][(int)getGridY()].setColor(wallColor);
     }
     
     private void onHover(Cell hoverCell){
