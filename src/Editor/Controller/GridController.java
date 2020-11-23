@@ -61,7 +61,8 @@ public class GridController {
             if(event.getCode().equals(KeyCode.W)){
                 System.out.println("**********\n" 
                         + "Mouse : (" + mouseX + ", " + mouseY + ")\n"
-                        + "Grid : (" + aX + ", " + aY + ")\n" + "cellSize : " + grid.getCellSize() + "\n"
+                        + "Grid : (" + aX + ", " + aY + ")\n" 
+                        +"cellSize : "+grid.getCellSize()+"\n"
                         + "Local : (" + getLocalX() + ", " + getLocalY() + ")\n" 
                         + "Zoom : " + zoom + "\n" 
                         + grid.cells[0][0].getTransforms() + "\n" );
@@ -199,7 +200,9 @@ public class GridController {
     }
     
     private void placeWall(){
-       this.grid.getCells()[(int)getGridX()][(int)getGridY()].setColor(wallColor);
+       if(!(mouseX < 0 || mouseY < 0)){
+           this.grid.getCells()[(int)getGridX()][(int)getGridY()].setColor(wallColor);
+       }
     }
     
     private void onHover(Cell hoverCell){
@@ -223,7 +226,7 @@ public class GridController {
                 cell.addScaleMatrix(scale);
             }
         }
-        
+        grid.setCellSize(grid.getCells()[0][0].getDefaultSize() * grid.getCells()[0][0].getScaleObject().getX());
         zoom = this.getScaleRatio();
     }
     
