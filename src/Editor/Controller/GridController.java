@@ -200,9 +200,13 @@ public class GridController {
     }
     
     private void placeWall(){
-       if(!(mouseX < 0 || mouseY < 0)){
-           this.grid.getCells()[(int)getGridX()][(int)getGridY()].setColor(wallColor);
-       }
+        try {
+            if(!(mouseX < 0 || mouseY < 0)){
+                this.grid.getCells()[(int)getGridX()][(int)getGridY()].setColor(wallColor);
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("DON'T DRAW OUTSIDE THE GRID");
+        }
     }
     
     private void onHover(Cell hoverCell){
