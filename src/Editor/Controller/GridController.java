@@ -62,6 +62,7 @@ public class GridController {
                 System.out.println("**********\n" 
                         + "Mouse : (" + mouseX + ", " + mouseY + ")\n"
                         + "Grid : (" + aX + ", " + aY + ")\n" 
+                        +"cellSize : "+grid.getCellSize()+"\n"
                         + "Local : (" + getLocalX() + ", " + getLocalY() + ")\n" 
                         + "Zoom : " + zoom + "\n" 
                         + grid.cells[0][0].getTransforms() + "\n" );
@@ -223,7 +224,7 @@ public class GridController {
                 cell.addScaleMatrix(scale);
             }
         }
-        
+        grid.setCellSize(50 * grid.getCells()[0][0].getScaleObject().getX());
         zoom = this.getScaleRatio();
     }
     
