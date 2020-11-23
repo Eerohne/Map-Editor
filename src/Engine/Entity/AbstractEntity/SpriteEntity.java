@@ -12,7 +12,7 @@ import org.json.simple.JSONArray;
 //Merouane Issad
 public abstract class SpriteEntity extends Entity{ //A type of entity that provides itself to the renderer, it is taken in consideration when rendering the game level (not the game UI)
     
-    private Image texture;
+    public Image texture;
     private float size;
     
     public SpriteEntity(String name, Point2D position, String texture, float size)

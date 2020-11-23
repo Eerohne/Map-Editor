@@ -202,7 +202,7 @@ public class Renderer {
         sprites.forEach(((d, e) -> 
         {
             Point2D ePos = e.getPosition().subtract(cam); //vector from player to entity
-            if(dir.angle(ePos)<(1.0+fov/2.0) && ePos.magnitude()<viewD){ //if entity is within the player's fov and within view range
+            if(dir.angle(ePos)<(0.1+fov/2.0) && ePos.magnitude()<viewD){ //if entity is within the player's fov and within view range
                 
                 double fovR = -Math.toRadians(fov/2f);
                 Point2D fovLeft = new Point2D( //vector representing the left edge of the fov triangle
@@ -218,7 +218,7 @@ public class Renderer {
                 double width = scale*sprite.getWidth();
                 
                 
-                boolean hidden = true;
+                boolean hidden = true; //if the entity is completely obscured by a wall
                 for(int i = (int)(screenPos-(width/2.0)); i<(screenPos+(width/2.0)) && i<screenWidth; i++){
                     if(i<0){i=0;}
                     double pDist = cam.distance(hPoints.get(i));
@@ -227,6 +227,7 @@ public class Renderer {
                 }
                 if(!hidden){
                     double relX =screenPos-(width/2.0), relY = (screenHeight-height)/2.0; //coordinates of the top left corner of the image
+                    relY -= (e.getHeight()-0.5)*screenHeight/dist;
                     gc.drawImage(sprite, relX, relY, width, height );
 
                     //draw walls that are in front of the entity
