@@ -7,30 +7,41 @@ package Editor.View.Menu;
 
 import Editor.Controller.ExistingEntityController;
 import Editor.Model.EntityModel;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.json.simple.parser.ParseException;
 
 /**
  *
  * @author linuo
  */
-public class ExistingEntityTest extends Application {
+public class ExistingEntityStage{
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    public ExistingEntityStage(Stage primaryStage) throws IOException, FileNotFoundException, ParseException {
+        
+        Stage existingEntity = new Stage();
+        existingEntity.initOwner(primaryStage);
+        existingEntity.initModality(Modality.WINDOW_MODAL);
         
         ExistingEntityModification view = new ExistingEntityModification();
         EntityModel model = new EntityModel();
         ExistingEntityController controller = new ExistingEntityController(model, view);
-        
+        existingEntity.setTitle("Edit Existing Entities");
         Scene scene = new Scene(view, 600, 400);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        existingEntity.setScene(scene);
+        existingEntity.show();
     }
     
-    public static void main(String[] args) {
-        launch(args);
-    }
+    
+
+    
+//    
+//    public static void main(String[] args) {
+//        launch(args);
+//    }
     
 }

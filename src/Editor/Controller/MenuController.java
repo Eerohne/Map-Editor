@@ -6,16 +6,21 @@
 package Editor.Controller;
 
 import Editor.NewEntityStage;
+import Editor.View.Menu.ExistingEntityStage;
 import Editor.View.Menu.TopMenu;
 import Engine.Core.Game;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -63,6 +68,15 @@ public class MenuController {
         List<MenuItem> editItems = edit.getItems();
         editItems.get(1).setOnAction(e -> {
             new NewEntityStage(editorStage);
+        });
+        editItems.get(2).setOnAction((event) -> {
+            try {
+                new ExistingEntityStage(editorStage);
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
 }
