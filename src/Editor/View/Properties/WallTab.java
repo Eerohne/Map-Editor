@@ -5,7 +5,7 @@
  */
 package Editor.View.Properties;
 
-import Editor.Model.WallModel;
+import Editor.Model.WallProfile;
 import java.util.ArrayList;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.ColorPicker;
@@ -22,12 +22,12 @@ public class WallTab extends Accordion{
     //private ArrayList<TitledPane> entities = new ArrayList<>();
 
     public WallTab() {
-        TitledPane floorPane = setupWallPane(new WallModel("Floor", Color.WHITE, 1));
-        TitledPane blackWallPane = setupWallPane(new WallModel("Black", Color.BLACK, 1));
+        TitledPane floorPane = setupWallPane(new WallProfile("Floor", Color.WHITE, 1));
+        TitledPane blackWallPane = setupWallPane(new WallProfile("Black", Color.BLACK, 1));
         this.getPanes().addAll(floorPane, blackWallPane);
     }
     
-    private TitledPane setupWallPane(WallModel wall){
+    private TitledPane setupWallPane(WallProfile wall){
         Label name = new Label("Name : " + wall.getName());
         ColorPicker color = new ColorPicker(wall.getColor());
         Label mode = new Label("Wall Mode : " + wall.getWallMode());

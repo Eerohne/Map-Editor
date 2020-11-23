@@ -36,13 +36,15 @@ public class MapEditor extends Application {
     
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {
+        //Top Elements
         TopMenu menu = new TopMenu();
         ShortcutBar shortcuts = new ShortcutBar();
         BorderPane tools = new BorderPane(shortcuts, menu, null, null, null);
         
+        //Center Elements
+        Grid grid = new Grid(50, 20, 20);
         Info info = new Info();
-        Grid gridRender = new Grid(100, 20, 20);
-        setChildrenClipping(gridRender);
+        setChildrenClipping(grid);
         
         
         //Create Entity Tab
@@ -56,8 +58,9 @@ public class MapEditor extends Application {
         TabPane properties = new TabPane(walls, entities);
         properties.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         
+        //
         BorderPane gridDisplay = new BorderPane();
-        gridDisplay.setCenter(gridRender);
+        gridDisplay.setCenter(grid);
         gridDisplay.setBottom(info);
         
         BorderPane layout = new BorderPane();
@@ -68,8 +71,8 @@ public class MapEditor extends Application {
         
         Scene scene = new Scene(layout, 1920, 1080);
         
-        InfoController ic = new InfoController(info);
-        GridController gc = new GridController(scene, gridRender, new Button(), new ColorPicker());
+        GridController gc = new GridController(scene, grid, new Button(), new ColorPicker());
+        InfoController ic = new InfoController(info, grid, gc);
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow);
         

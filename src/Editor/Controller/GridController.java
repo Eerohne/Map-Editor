@@ -27,8 +27,6 @@ public class GridController {
     ColorPicker picker;
     
     //Colors - to be replacve with a palette
-    Color winColor = Color.DEEPSKYBLUE;
-    Color floorColor = Color.WHITE;
     Color wallColor = Color.BLACK;
     
     //Editing mode
@@ -99,8 +97,6 @@ public class GridController {
         
         grid.setOnMouseMoved(event -> {
             updateMousePos(event);
-            
-            //this.onHover();
         });
         
         //On Mouse Press Event
@@ -166,20 +162,32 @@ public class GridController {
         this.aX = this.getGridX();
         this.aY = this.getGridY();
     }
+
+    public double getMouseX() {
+        return mouseX;
+    }
+
+    public double getMouseY() {
+        return mouseY;
+    }
+
+    public double getZoom() {
+        return zoom;
+    }
     
     private double getLocalX(){
         Bounds paneBounds = grid.getCells()[0][0].getParent().localToScene(grid.getCells()[0][0].getParent().getBoundsInLocal());
-        return mouseY + paneBounds.getMinX();
+        return mouseX + paneBounds.getMinX();
     } 
     
     private double getLocalY(){
         Bounds paneBounds = grid.getCells()[0][0].getParent().localToScene(grid.getCells()[0][0].getParent().getBoundsInLocal());
-        return (mouseY + paneBounds.getMinY());
+        return mouseY + paneBounds.getMinY();
     }
     
     public double getGridX(){
         Bounds gridBounds = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
-        //System.out.println(gridBounds.getMinX());
+        //System.out.println(gridBounds.getMinX() + ", " + gridBounds.getMinY());
         return (this.getLocalX() - gridBounds.getMinX())/grid.getCellSize();
     }
     
@@ -190,9 +198,7 @@ public class GridController {
     }
     
     private void placeWall(){
-        if(!(getLocalX() < 0) && !(getLocalY() < 0)){
-            hoverCell.setColor(wallColor);
-        }
+        this.grid.getCells()[(int)getGridX()][(int)getGridY()].setColor(wallColor);
     }
     
     private void onHover(Cell hoverCell){
@@ -203,16 +209,16 @@ public class GridController {
         this.hoverCell.isSelected(true);
     }
     
-    
     private void scale(double scaleFactor){
         Scale scale = new Scale(scaleFactor, scaleFactor);
         
         grid.setCellSize(scaleFactor);
+        //Fix Scale Corrector
         Translate scaleCorrector = new Translate((getLocalX() - aX*grid.getCellSize()), (getLocalY() - aY*grid.getCellSize()));
 
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {
-                cell.addTranslationVector(scaleCorrector);
+                //cell.addTranslationVector(scaleCorrector);
                 cell.addScaleMatrix(scale);
             }
         }

@@ -39,26 +39,38 @@ import org.json.simple.JSONObject;
  */
 public class InfoController {
 
-    Info info = new Info();
-    Grid grid = new Grid(60, 20, 10);
+    Info info;
+    Grid grid;
+    GridController gc;
     String testStr = "123testing testing testing";
     
-    public InfoController(Info info) {
+    public InfoController(Info info, Grid grid, GridController gc) {
+        this.info = info;
+        this.grid = grid;
+        this.gc = gc;
         
-       EventHandler saveHandler = new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                try {
-                    save();
-                } catch (IOException ex) {
-                    Logger.getLogger(InfoController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }; 
-       info.save.setOnAction(saveHandler);
+        this.info.setupInfoBar(gc);
+        
+        EventHandler saveHandler = new EventHandler() {
+             @Override
+             public void handle(Event event) {
+                 try {
+                     save();
+                 } catch (IOException ex) {
+                     Logger.getLogger(InfoController.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+             }
+         }; 
+        info.save.setOnAction(saveHandler);
     }
     
-    
+    public void refreshInfoBar(){
+        info.setMouseX(gc.getMouseX());
+        info.setMouseY(gc.getMouseY());
+        info.setZoom(gc.getZoom());
+        
+        info.reset();
+    }
     
     public void save() throws IOException{
         

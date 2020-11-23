@@ -14,7 +14,7 @@ import javafx.scene.paint.Color;
  *
  * @author A
  */
-public class WallModel {
+public class WallProfile {
     public static int wallCounter = 1;
     
     private int wallMode; //0 : Empty, 1: Full, 2 : Door
@@ -23,7 +23,7 @@ public class WallModel {
     
     public static Map<Integer, Color> palette = new TreeMap<Integer, Color>();
 
-    public WallModel(String name, Color color, int wallMode) {
+    public WallProfile(String name, Color color, int wallMode) {
         this.wallMode = wallMode;
         this.paletteID = wallCounter++;
         
@@ -49,7 +49,7 @@ public class WallModel {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final WallModel other = (WallModel) obj;
+        final WallProfile other = (WallProfile) obj;
         if (this.wallMode != other.wallMode) {
             return false;
         }

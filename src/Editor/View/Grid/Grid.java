@@ -1,11 +1,9 @@
 package Editor.View.Grid;
 
-import java.io.Serializable;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 
 public class Grid extends Pane{
@@ -81,8 +79,6 @@ public class Grid extends Pane{
     }
 
     public void setCellSize(double scaleFactor) {
-        this.cellSize = cellSize*scaleFactor;
+        this.cellSize = cellSize*(1+scaleFactor);
     }
-    
-    
 }
