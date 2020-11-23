@@ -37,10 +37,6 @@ public class Game extends Application{
     
     public void start(Stage stage){
         initEngine(stage);
-        
-        //temporary very ugly code to set the view position
-        Renderer.setFov(70);
-        float speed = 1.5f;
         new AnimationTimer() { //Game main loop
 
             @Override
@@ -70,6 +66,9 @@ public class Game extends Application{
         stage.setScene(scene);
         stage.setResizable(false);
         gameStage = stage;
+        
+        //temporary very ugly code to set the view position
+        Renderer.setFov(Settings.getFloat("r_fov"));
         
         //load .css style
         String pathName = Settings.get("stylesheetpath");

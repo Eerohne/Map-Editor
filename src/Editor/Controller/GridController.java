@@ -62,6 +62,7 @@ public class GridController {
                 System.out.println("**********\n" 
                         + "Mouse : (" + mouseX + ", " + mouseY + ")\n"
                         + "Grid : (" + aX + ", " + aY + ")\n" 
+                        +"cellSize : "+grid.getCellSize()+"\n"
                         + "Local : (" + getLocalX() + ", " + getLocalY() + ")\n" 
                         + "Zoom : " + zoom + "\n" 
                         + grid.cells[0][0].getTransforms() + "\n" );
@@ -76,7 +77,8 @@ public class GridController {
                     scaleShift -= 0.05;
                     scale(scaleShift);
                 }
-            } else{
+            }
+            else{
                 if (event.getDeltaY() < 0) {
                     scaleShift -= 0.05;
                 } else{
@@ -91,12 +93,6 @@ public class GridController {
             for (Cell cell : cells) {
                 cell.setOnMouseEntered(event -> {
                     onHover(cell);
-                });
-                cell.setOnMouseClicked(event -> {
-                    hoverCell.setColor(wallColor);
-                });
-                cell.setOnMouseDragged(event -> {
-                    hoverCell.setColor(wallColor);
                 });
             }
         }
@@ -204,7 +200,13 @@ public class GridController {
     }
     
     private void placeWall(){
-        //this.grid.getCells()[(int)getGridX()][(int)getGridY()].setColor(wallColor);
+        try {
+            if(!(mouseX < 0 || mouseY < 0)){
+                this.grid.getCells()[(int)getGridX()][(int)getGridY()].setColor(wallColor);
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("DON'T DRAW OUTSIDE THE GRID");
+        }
     }
     
     private void onHover(Cell hoverCell){
@@ -220,7 +222,7 @@ public class GridController {
         
         grid.setCellSize(scaleFactor);
         //Fix Scale Corrector
-        Translate scaleCorrector = new Translate((getLocalX() - aX*grid.getCellSize()), (getLocalY() - aY*grid.getCellSize()));
+        //Translate scaleCorrector = new Translate((getLocalX() - aX*grid.getCellSize()), (getLocalY() - aY*grid.getCellSize()));
 
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {
@@ -228,8 +230,8 @@ public class GridController {
                 cell.addScaleMatrix(scale);
             }
         }
-        
-        zoom = getScaleRatio();
+        grid.setCellSize(grid.getCells()[0][0].getDefaultSize() * grid.getCells()[0][0].getScaleObject().getX());
+        zoom = this.getScaleRatio();
     }
     
     private double getScaleRatio(){

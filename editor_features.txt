@@ -1,4 +1,3 @@
-Resolve wall placing system
 Wall Saving to Memory (New Wall Profile)
 Wall Editing from left panel
 Entity Placement System
