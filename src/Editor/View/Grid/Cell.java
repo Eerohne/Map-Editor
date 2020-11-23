@@ -7,6 +7,7 @@ package Editor.View.Grid;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
 /**
@@ -15,10 +16,12 @@ import javafx.scene.transform.Translate;
  */
 public class Cell extends Rectangle{
     private int size;
+    private int scaleSize;
     private Color cellColor;
     private Color selectColor;
     private Color floorColor = Color.WHITE;
     private Translate tVector = new Translate(0, 0);
+    private Scale sMatrix = new Scale(1, 1);
     
     public Cell(int defaultSize) {
         super(defaultSize, defaultSize);
@@ -26,9 +29,10 @@ public class Cell extends Rectangle{
         super.setStroke(Color.BLACK);
         
         this.size = defaultSize;
+        this.scaleSize = size;
         this.cellColor = this.floorColor;
         this.selectColor = this.cellColor.darker();
-        this.getTransforms().add(tVector);
+        this.getTransforms().addAll(tVector, sMatrix);
     }
 
     public void clear(){
@@ -78,11 +82,27 @@ public class Cell extends Rectangle{
         return tVector;
     }
     
+    public Scale getScaleObject(){
+        return sMatrix;
+    }
+    
     public void addTranslationVector(Translate vector){
         double x = vector.getX() + tVector.getX();
         double y = vector.getY() + tVector.getY();
         
         this.tVector.setX(x);
         this.tVector.setY(y);
+    }
+    
+    public void addScaleMatrix(Scale matrix){
+        double x = matrix.getX();
+        double y = matrix.getY();
+
+        
+        this.setHeight(scaleSize);
+        this.setWidth(scaleSize);
+        
+        this.sMatrix.setX(x);
+        this.sMatrix.setY(y);
     }
 }

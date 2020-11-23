@@ -192,7 +192,7 @@ public class GridController {
     private void onHover(Cell hoverCell){
         this.hoverCell.isSelected(false);
         
-        this.hoverCell = hoverCell;//grid.getCells()[(int)aX][(int)aY];
+        this.hoverCell = hoverCell;
         
         this.hoverCell.isSelected(true);
     }
@@ -206,8 +206,8 @@ public class GridController {
 
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {
-                cell.getTransforms().addAll(scale, scaleCorrector);
-
+                cell.addTranslationVector(scaleCorrector);
+                cell.addScaleMatrix(scale);
             }
         }
         
