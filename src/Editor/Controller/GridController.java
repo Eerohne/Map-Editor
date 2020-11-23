@@ -61,7 +61,7 @@ public class GridController {
             if(event.getCode().equals(KeyCode.W)){
                 System.out.println("**********\n" 
                         + "Mouse : (" + mouseX + ", " + mouseY + ")\n"
-                        + "Grid : (" + aX + ", " + aY + ")\n" 
+                        + "Grid : (" + aX + ", " + aY + ")\n" + "cellSize : " + grid.getCellSize() + "\n"
                         + "Local : (" + getLocalX() + ", " + getLocalY() + ")\n" 
                         + "Zoom : " + zoom + "\n" 
                         + grid.cells[0][0].getTransforms() + "\n" );
