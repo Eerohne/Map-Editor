@@ -145,6 +145,7 @@ public class GridController {
                 Translate vector = new Translate((mouseX - preMouseX), (mouseY - preMouseY));
                 
                 
+                
                 //Every cell is translating with the vector above
                 for (Cell[] cells : grid.getCells()) {
                     for (Cell cell : cells) {

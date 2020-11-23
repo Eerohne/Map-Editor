@@ -180,8 +180,8 @@ public class Renderer {
             }
             else{
                 double dist = vLength*Math.cos(Math.toRadians(rayA-camA));
-                drawWallLine(r, dist, v);
-                hPoints.add(new HitPoint(rV, v));
+                drawWallLine(r, dist, v.darker());
+                hPoints.add(new HitPoint(rV, v.darker()));
             }
             rayA += (fov/screenWidth);
         }
@@ -204,18 +204,19 @@ public class Renderer {
                 
                 Image sprite = e.texture;
                 double dist = ePos.magnitude() +.25;
-                double screenPos = screenWidth*fovLeft.angle(ePos)/fov, height = e.texture.getHeight()/dist;
-                double relX = screenPos - (e.texture.getWidth()/2.0), relY = (screenHeight-height)/2.0;
+                
+                double screenPos = screenWidth*fovLeft.angle(ePos)/fov, height = sprite.getHeight()/dist;
+                double relX = screenPos - (sprite.getWidth()/(2.0*dist)), relY = (screenHeight-height)/2.0;
                 gc.drawImage(sprite, relX, relY, sprite.getWidth()/dist , height );
                 
                 //draw walls that are in front of the entity
-                for(int i = (int)(screenPos-e.texture.getWidth()); i<(screenPos+e.texture.getWidth()) && i<screenWidth; i++){
+                for(int i = (int)(screenPos-sprite.getWidth()/(2.0*dist)); i<(screenPos+sprite.getWidth()/(2.0*dist)) && i<screenWidth; i++){
                     if(i<0){i=0;}
                     double pDist = cam.distance(hPoints.get(i));
-                    double eDist = ePos.magnitude();
+                    double eDist = cam.distance(e.getPosition());
                     if(pDist<eDist){
                         double rayA = dir.angle(hPoints.get(i));
-                        drawWallLine(i, pDist*Math.cos(Math.toRadians(rayA)), hPoints.get(i).getColor());
+                        drawWallLine(i, pDist, hPoints.get(i).getColor());
                     }
                 }
             }

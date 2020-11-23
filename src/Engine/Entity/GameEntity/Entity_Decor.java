@@ -16,9 +16,9 @@ import javafx.scene.paint.Color;
  */
 public class Entity_Decor extends SpriteEntity{
     
-    public Entity_Decor(String name, Point2D position, Color color)
+    public Entity_Decor(String name, Point2D position, Color color, String texture, float size)
     {
-        super(name, position, color);
+        super(name, position, texture, size);
     }
     
     public Entity_Decor(HashMap<String, Object> propertyMap)

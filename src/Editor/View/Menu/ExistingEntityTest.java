@@ -24,7 +24,7 @@ public class ExistingEntityTest extends Application {
         EntityModel model = new EntityModel();
         ExistingEntityController controller = new ExistingEntityController(model, view);
         
-        Scene scene = new Scene(view, 300, 300);
+        Scene scene = new Scene(view, 600, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
