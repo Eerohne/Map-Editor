@@ -61,30 +61,32 @@ public class GridController {
                 this.grid.clear();
             }
             if(event.getCode().equals(KeyCode.W)){
-                System.out.println("Mouse : (" + mouseX + ", " + mouseY + ")\n"
+                System.out.println("**********\n" 
+                        + "Mouse : (" + mouseX + ", " + mouseY + ")\n"
                         + "Grid : (" + aX + ", " + aY + ")\n" 
                         + "Local : (" + getLocalX() + ", " + getLocalY() + ")\n" 
                         + "Zoom : " + zoom + "\n" 
-                        + grid.cells[0][0].getTransforms());
+                        + grid.cells[0][0].getTransforms() 
+                        + "**********\n");
             }
         });
         
         //Grid Events
         grid.setOnScroll(event -> {
-            double scaleFactor = 1;
+            double scaleShift = 0;
             if(zoom > 1.99) {
                 if (event.getDeltaY() < 0) {
-                    scaleFactor -= 0.05;
-                    scale(scaleFactor);
+                    scaleShift -= 0.05;
+                    scale(scaleShift);
                 }
             } else{
                 if (event.getDeltaY() < 0) {
-                    scaleFactor -= 0.05;
+                    scaleShift -= 0.05;
                 } else{
-                    scaleFactor += 0.05;
+                    scaleShift += 0.05;
                 }
                 
-                scale(scaleFactor);
+                scale(scaleShift);
             }
         });
         
@@ -167,21 +169,25 @@ public class GridController {
     }
     
     private double getLocalX(){
-        Bounds paneBound = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
-        return mouseX - paneBound.getMinX();
+        Bounds paneBounds = grid.getCells()[0][0].getParent().localToScene(grid.getCells()[0][0].getParent().getBoundsInLocal());
+        return mouseY + paneBounds.getMinX();
     } 
     
     private double getLocalY(){
-        Bounds paneBound = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
-        return (mouseY - paneBound.getMinY());
+        Bounds paneBounds = grid.getCells()[0][0].getParent().localToScene(grid.getCells()[0][0].getParent().getBoundsInLocal());
+        return (mouseY + paneBounds.getMinY());
     }
     
     public double getGridX(){
-        return this.getLocalX()/grid.getCellSize();
+        Bounds gridBounds = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
+        System.out.println(gridBounds.getMinX());
+        return (this.getLocalX() - gridBounds.getMinX())/grid.getCellSize();
     }
     
     public double getGridY(){
-        return this.getLocalY()/grid.getCellSize();
+        Bounds gridBounds = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
+
+        return (this.getLocalY() - gridBounds.getMinY())/grid.getCellSize();
     }
     
     private void placeWall(){

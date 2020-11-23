@@ -16,7 +16,6 @@ import javafx.scene.transform.Translate;
  */
 public class Cell extends Rectangle{
     private int size;
-    private int scaleSize;
     private Color cellColor;
     private Color selectColor;
     private Color floorColor = Color.WHITE;
@@ -29,7 +28,6 @@ public class Cell extends Rectangle{
         super.setStroke(Color.BLACK);
         
         this.size = defaultSize;
-        this.scaleSize = size;
         this.cellColor = this.floorColor;
         this.selectColor = this.cellColor.darker();
         this.getTransforms().addAll(tVector, sMatrix);
@@ -95,12 +93,8 @@ public class Cell extends Rectangle{
     }
     
     public void addScaleMatrix(Scale matrix){
-        double x = matrix.getX();
-        double y = matrix.getY();
-
-        
-        this.setHeight(scaleSize);
-        this.setWidth(scaleSize);
+        double x = matrix.getX() + sMatrix.getX();
+        double y = matrix.getY() + sMatrix.getY();
         
         this.sMatrix.setX(x);
         this.sMatrix.setY(y);
