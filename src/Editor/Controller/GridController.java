@@ -66,8 +66,7 @@ public class GridController {
                         + "Grid : (" + aX + ", " + aY + ")\n" 
                         + "Local : (" + getLocalX() + ", " + getLocalY() + ")\n" 
                         + "Zoom : " + zoom + "\n" 
-                        + grid.cells[0][0].getTransforms() 
-                        + "**********\n");
+                        + grid.cells[0][0].getTransforms() + "\n" );
             }
         });
         
@@ -180,7 +179,7 @@ public class GridController {
     
     public double getGridX(){
         Bounds gridBounds = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
-        System.out.println(gridBounds.getMinX());
+        //System.out.println(gridBounds.getMinX());
         return (this.getLocalX() - gridBounds.getMinX())/grid.getCellSize();
     }
     
