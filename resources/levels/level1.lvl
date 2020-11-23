@@ -105,7 +105,7 @@
     "active":"TRUE",
     "position":[1.5,1.5],
     "height":"0.5",
-    "texture":"images/sprites/coin.png",
+    "texture":"images/sprites/oin.png",
     "size":"0.3"
     "signals": []
     },
@@ -114,9 +114,9 @@
     "name":"lamppost",
     "active":"TRUE",
     "position":[1.7,1.5],
-    "height":"0.5",
-    "texture":"images/sprites/lamppost.png",
-    "size":"0.5"
+    "height":"0.0",
+    "texture":"images/sprites/amppost.png",
+    "size":"1.0"
     "signals": []
     }
 ]
