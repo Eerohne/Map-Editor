@@ -10,9 +10,9 @@ import javafx.scene.paint.Color;
 public class Entity_Item_Coin extends SpriteEntity{
     protected int scorepoint;
     
-    public Entity_Item_Coin(String name, Point2D position, Color color, int scorepoint)
+    public Entity_Item_Coin(String name, Point2D position, String texture, float size, int scorepoint)
     {
-        super(name, position, color);
+        super(name, position, texture, size);
         this.scorepoint = scorepoint;
     }
     

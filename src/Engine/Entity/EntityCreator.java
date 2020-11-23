@@ -51,7 +51,7 @@ public class EntityCreator { //Entity creation is defined in this class
                     entity = new Entity_Player_Base(propertyMap);
                 break;
             case "sprite_decor":
-                if(verifyProperties(propertyMap, "color"))
+                if(verifyProperties(propertyMap, "texture", "size"))
                     entity = new Entity_Decor(propertyMap);
                 break;
             default:
