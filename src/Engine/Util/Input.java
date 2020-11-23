@@ -25,8 +25,9 @@ public class Input {
                 keyMap.put(key.getCode(), true);
                 if(key.getCode() == KeyCode.ESCAPE)
                     Game.togglepauseGame();
-                if(key.getCode() == KeyCode.Q)
+                if(key.getCode() == KeyCode.Q){
                     Game.reloadCurrentLevel();
+                }
             }
         });
         

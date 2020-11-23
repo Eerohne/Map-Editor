@@ -43,13 +43,15 @@ public class WindowManager extends AnchorPane{
     private int oldWidth, oldHeight;
     private boolean isFullscreen;
         
-    public WindowManager(Stage stage, int width, int height)
+    public WindowManager(Stage stage, int width, int height, boolean fullscreen)
     {
         super();
         this.stage = stage;
         this.setWidth(width);
         this.setHeight(height);
-        this.isFullscreen = false;
+        this.oldWidth = width;
+        this.oldHeight = height;
+        this.isFullscreen = fullscreen;
         
         initRenderCanvas();
         buildIngameDisplay();
@@ -58,6 +60,7 @@ public class WindowManager extends AnchorPane{
         
         this.getChildren().addAll(renderCanvas, ingameDisplay, pausePane);
         
+        //anchor all panels to force them to fit on the whole window
         this.setTopAnchor(renderCanvas, 0.0);
         this.setBottomAnchor(renderCanvas, 0.0);
         this.setRightAnchor(renderCanvas, 0.0);
@@ -73,6 +76,15 @@ public class WindowManager extends AnchorPane{
         this.setRightAnchor(pausePane, 0.0);
         this.setLeftAnchor(pausePane, 0.0);
         this.resizeWindow(width, height);
+        
+        //give the render canvas to the renderer
+        Renderer.setCanvas(renderCanvas);
+        if(fullscreen){
+            this.setFullScreen(fullscreen); //setting fullscreen at the end when everything is initialised
+            System.out.println("+ " + this.getWidth());
+            resizeWindow((int) this.getWidth(), (int) this.getHeight());
+        }
+        
     }
     
     public void reloadWindow()
@@ -171,6 +183,7 @@ public class WindowManager extends AnchorPane{
         ComboBox screenSizeBox = new ComboBox();
         screenSizeBox.setPromptText((int)this.getWidth()+" x "+(int)this.getHeight());
         screenSizeBox.setValue((int)this.getWidth()+" x "+(int)this.getHeight());
+        screenSizeBox.setDisable(isFullscreen);//when created, set disabled based on if the game runs fullscreen
         screenSizeBox.getItems().addAll(
             "800 x 600",
             "1280 x 800",
@@ -184,6 +197,7 @@ public class WindowManager extends AnchorPane{
         });
         
         CheckBox fullscreenCheckbox = new CheckBox("fullscreen");
+        fullscreenCheckbox.setSelected(isFullscreen);
         fullscreenCheckbox.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 screenSizeBox.setDisable(fullscreenCheckbox.isSelected());
@@ -191,10 +205,11 @@ public class WindowManager extends AnchorPane{
             }
         });
         
+        //define what happens when we apply the settings
         applyButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 if(fullscreenCheckbox.isSelected()){
-                    Game.getWindowManager().setFullScreen(fullscreenCheckbox.isSelected());
+                    Game.getWindowManager().setFullScreen(true);
                 }else{
                     Game.getWindowManager().setFullScreen(false);
                     
@@ -274,7 +289,6 @@ public class WindowManager extends AnchorPane{
     public void setPauseMenuVisibility(boolean visible)
     {
         System.out.println("open menu -> "+visible);
-        //this.pausePane.setVisible(visible);
         if(visible)
             this.pauseMenu.open();
         else
@@ -301,13 +315,14 @@ public class WindowManager extends AnchorPane{
         if(fullscreen){
             this.oldWidth = (int) this.getWidth();
             this.oldHeight = (int) this.getHeight();
-            stage.setFullScreen(fullscreen);
+            stage.setFullScreen(true);
             this.resizeWindow((int) this.getWidth(), (int) this.getHeight());
+            System.out.println("- "+(int) this.getWidth()+", "+(int) this.getHeight());
         }
         else
         {
             this.resizeWindow(oldWidth, oldHeight);
-            stage.setFullScreen(fullscreen);
+            stage.setFullScreen(false);
         }
     }
 }

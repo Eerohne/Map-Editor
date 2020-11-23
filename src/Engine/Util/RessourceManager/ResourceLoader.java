@@ -10,6 +10,7 @@ import Engine.Entity.AbstractEntity.Entity;
 import Engine.Entity.EntityCreator;
 import Engine.Level.Level;
 import Engine.Level.PaletteEntry;
+import com.sun.scenario.Settings;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,6 +37,8 @@ public class ResourceLoader
 {
     public static String resourcePath = "";
     
+    public static String error_imagePath = "";
+    
     public static Properties loadConfigFile()
     {
         Properties prop = new Properties();
@@ -46,6 +49,7 @@ public class ResourceLoader
             in.close();
 
             resourcePath = prop.getProperty("resourcepath"); //right here set the resourcePath
+            error_imagePath = prop.getProperty("error_image");
         }
         catch(IOException e) {
             System.out.println("'config.cfg' file was not found in root folder");
@@ -62,6 +66,10 @@ public class ResourceLoader
         catch(IOException e)
         {
             System.out.println(e);
+            if(error_imagePath != null)
+                return loadImage(error_imagePath);
+            else
+                System.out.println("error sprite is undefined or inexistant");
         }
         return null;
     }
@@ -139,9 +147,10 @@ public class ResourceLoader
                         (double) colorArr.get(1),
                         (double) colorArr.get(2));
                 
+                Image texture = loadImage((String)jsonEntry.get("texture"));
                 int flag = Integer.valueOf((String)jsonEntry.get("flag"));
                 
-                PaletteEntry entry = new PaletteEntry(color, flag);
+                PaletteEntry entry = new PaletteEntry(color, texture, flag);
                 level.putPaletteEntry(id, entry);
             }
             

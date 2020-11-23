@@ -65,14 +65,11 @@ public class Game extends Application{
         Settings.init(); 
         
         //next initialise the window and stage
-        windowManager = new WindowManager(stage, Settings.getInt("r_window_width"), Settings.getInt("r_window_height"));
+        windowManager = new WindowManager(stage, Settings.getInt("r_window_width"), Settings.getInt("r_window_height"), Settings.getBoolean("r_window_fullscreen"));
         scene = new Scene(windowManager, windowManager.getWidth(), windowManager.getHeight()); //set windows inside the scene
         stage.setScene(scene);
         stage.setResizable(false);
         gameStage = stage;
-        
-        //give the render canvas to the renderer
-        Renderer.setCanvas(windowManager.getRenderCanvas());
         
         //load .css style
         String pathName = Settings.get("stylesheetpath");
@@ -96,11 +93,16 @@ public class Game extends Application{
     {
         try {
             currentLevel = ResourceLoader.loadLevel(path);
+            isRunning = true;
+            isRendering = true;
+            Game.getWindowManager().reloadWindow();
         } 
         catch(LevelCreationException ex) {
             System.out.println(ex);
-            isRunning = false;
-            isRendering = false;
+            if(currentLevel == null){
+                isRunning = false;
+                isRendering = false;
+            }
         }
     }
     
@@ -108,6 +110,7 @@ public class Game extends Application{
     {
         if(currentLevel != null)
             loadLevel(currentLevel.path);
+            //loadLevel(Settings.get("initiallevel"));
     }
     
     public static WindowManager getWindowManager()

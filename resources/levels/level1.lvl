@@ -18,26 +18,31 @@
         {
                 "id":"0",
                 "color":[1.0, 1.0, 1.0],
+                "texture":"images/textures/brick.png",
                 "flag":"0"
                },
                {
                 "id":"1",
                 "color":[0.0, 1.0, 0.5],
+                "texture":"images/textures/grey_brick_vines.png",
                 "flag":"1"
                },
                {
                 "id":"2",
                 "color":[1.0, 0.6, 0.0],
+                "texture":"images/textures/grey_brick.png",
                 "flag":"1"
                },
                {
                 "id":"3",
                 "color":[0.0, 0.0, 1.0],
+                "texture":"images/textures/grey_brick.png",
                 "flag":"1"
                },
                {
                 "id":"4",
                 "color":[1.0, 0.0, 0.0],
+                "texture":"images/textures/grey_brick_vines.png",
                 "flag":"1"
                }
                ]
@@ -48,8 +53,8 @@
     "classname":"player_base",
     "name":"player1",
     "active":"TRUE",
-    "position":[1.6,1.4],
-    "rotation":"45",
+    "position":[2.5,2.5],
+    "rotation":"230",
     "walkspeed":"2",
     "runspeed":"1"
     },
@@ -99,9 +104,9 @@
     "name":"coin",
     "active":"TRUE",
     "position":[1.5,1.5],
-    "height":"0.5",
-    "texture":"images/coin.png",
-    "size":"0.3"
+    "height":"0.4",
+    "texture":"images/sprites/coin.png",
+    "size":"0.2"
     "signals": []
     },
     {
@@ -109,9 +114,19 @@
     "name":"lamppost",
     "active":"TRUE",
     "position":[1.7,1.5],
+    "height":"0.45",
+    "texture":"images/sprites/lamppost.png",
+    "size":"1.1"
+    "signals": []
+    },
+    {
+    "classname":"sprite_decor",
+    "name":"errordecor",
+    "active":"TRUE",
+    "position":[1.5,7.0],
     "height":"0.5",
-    "texture":"images/lamppost.png",
-    "size":"1.0"
+    "texture":"images/sprites/nonexistantsprite.png",
+    "size":"0.5"
     "signals": []
     }
 ]
