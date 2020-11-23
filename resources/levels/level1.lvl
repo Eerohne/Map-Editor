@@ -53,8 +53,8 @@
     "classname":"player_base",
     "name":"player1",
     "active":"TRUE",
-    "position":[1.6,1.4],
-    "rotation":"45",
+    "position":[2.5,2.5],
+    "rotation":"230",
     "walkspeed":"2",
     "runspeed":"1"
     },
@@ -104,9 +104,9 @@
     "name":"coin",
     "active":"TRUE",
     "position":[1.5,1.5],
-    "height":"0.5",
-    "texture":"images/sprites/oin.png",
-    "size":"0.3"
+    "height":"0.4",
+    "texture":"images/sprites/coin.png",
+    "size":"0.2"
     "signals": []
     },
     {
@@ -114,9 +114,19 @@
     "name":"lamppost",
     "active":"TRUE",
     "position":[1.7,1.5],
-    "height":"0.0",
-    "texture":"images/sprites/amppost.png",
-    "size":"1.0"
+    "height":"0.45",
+    "texture":"images/sprites/lamppost.png",
+    "size":"1.1"
+    "signals": []
+    },
+    {
+    "classname":"sprite_decor",
+    "name":"errordecor",
+    "active":"TRUE",
+    "position":[1.5,7.0],
+    "height":"0.5",
+    "texture":"images/sprites/nonexistantsprite.png",
+    "size":"0.5"
     "signals": []
     }
 ]

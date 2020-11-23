@@ -95,6 +95,7 @@ public class Game extends Application{
             currentLevel = ResourceLoader.loadLevel(path);
             isRunning = true;
             isRendering = true;
+            Game.getWindowManager().reloadWindow();
         } 
         catch(LevelCreationException ex) {
             System.out.println(ex);
