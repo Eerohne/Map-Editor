@@ -33,9 +33,10 @@ public class TopMenu extends MenuBar{
         //Add Edit Options
         MenuItem newWall = new MenuItem("Add New Wall");
         MenuItem newEntity = new MenuItem("Create New Entity");
+        MenuItem editEntity = new MenuItem("Edit Entities");
         MenuItem player = new MenuItem("Place Player");
         
-        this.edit = new Menu("Edit", null, newWall, newEntity, player);
+        this.edit = new Menu("Edit", null, newWall, newEntity, editEntity, player);
         
         //Add run options
         MenuItem runOption = new MenuItem("Run Map");

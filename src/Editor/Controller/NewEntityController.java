@@ -7,10 +7,10 @@ package Editor.Controller;
 
 import Editor.Model.EntityModel;
 import Editor.View.Menu.ExistingEntityModification;
+import Editor.View.Menu.ExistingEntityStage;
 import Editor.View.Menu.NewEntity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 import java.io.File;
 import java.io.FileReader;
 import javafx.collections.FXCollections;
@@ -20,17 +20,18 @@ import javafx.event.EventHandler;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringReader;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.stage.Stage;
  
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+
 
 /**
  *
@@ -44,6 +45,12 @@ public class NewEntityController {
     
     ObservableList<EntityModel> list = FXCollections.observableArrayList();
     ObservableList<String> nameList = FXCollections.observableArrayList();
+    
+    ExistingEntityModification existView = new ExistingEntityModification();
+    ObservableList<EntityModel> existEntityList = FXCollections.observableArrayList();
+    ObservableList<EntityModel> templist = FXCollections.observableArrayList();
+    ObservableList selectedCells = FXCollections.observableArrayList();
+    Gson gson = new GsonBuilder().setPrettyPrinting().create(); 
 
     public NewEntityController(EntityModel model, NewEntity view) {
         this.model = model;
@@ -81,6 +88,8 @@ public class NewEntityController {
                 newEntity();
             }
         }; 
+        
+        switchWindow();
         view.addBtn.setOnAction(handler);
         view.deleteBtn.setOnAction(deleteHandler);
         view.exportBtn.setOnAction(exportHandler);
@@ -147,8 +156,6 @@ public class NewEntityController {
         }
         nameList.add(view.nameText.getText());
         System.out.println(nameList.toString());
-        
-        
     }
     
     public void newEntity(){
@@ -157,6 +164,20 @@ public class NewEntityController {
         tempList.removeAll(list);
         view.table.getItems().setAll(tempList);
     }
+    
+    private void switchWindow(){
+        view.switchBtn.setOnAction((event) -> {
+            Stage stage = new Stage();
+            try {
+                new ExistingEntityStage(stage);
+            } catch (IOException ex) {
+                Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
+    
     
     public void setData(){
         view.table.getItems().setAll(list);

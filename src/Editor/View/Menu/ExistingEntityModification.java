@@ -32,14 +32,15 @@ public class ExistingEntityModification extends GridPane{
     public TextField nameText = new TextField();
     public TextField propertyText = new TextField();
     public TextField valueText = new TextField();
+    //public Button nameEdit = new Button("edit the name");
+    public Button switchBtn = new Button("open entity creation window");
     public Button addBtn = new Button("add row");
     public Button deleteBtn = new Button("delete selected row");
     public Button removeEntityBtn = new Button("remove entity");
-    public Button newEntityBtn = new Button("create new entity");
     public ComboBox<String> cb = new ComboBox();
     public VBox vbox = new VBox();
 
-    public Button saveEdit = new Button("save");
+    public Button saveEdit = new Button("save modification");
 
     public ExistingEntityModification() {
         
@@ -49,7 +50,7 @@ public class ExistingEntityModification extends GridPane{
         this.setPadding(new Insets(10));
         this.add(table, 1, 0);
         
-        
+        vbox.setPadding(new Insets(10));
         vbox.getChildren().add(cb);
         vbox.getChildren().add(nameText);
         vbox.getChildren().add(propertyText);
@@ -58,12 +59,13 @@ public class ExistingEntityModification extends GridPane{
         vbox.getChildren().add(addBtn);
         vbox.getChildren().add(deleteBtn);
         vbox.getChildren().add(removeEntityBtn);
-        vbox.getChildren().add(newEntityBtn);
+        vbox.getChildren().add(switchBtn);
         
         this.add(vbox, 2, 0);
         propertyCol.setCellValueFactory(new PropertyValueFactory<>("property"));
         valueCol.setCellValueFactory(new PropertyValueFactory<>("value"));
         table.getColumns().addAll(propertyCol, valueCol);
+        cb.setPromptText("select an entity");
         nameText.setPromptText("change name of the entity");
         propertyText.setPromptText("add or change property here");
         valueText.setPromptText("add or change value here");
