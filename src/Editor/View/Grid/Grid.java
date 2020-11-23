@@ -1,5 +1,6 @@
 package Editor.View.Grid;
 
+import Editor.Model.WallProfile;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -12,7 +13,7 @@ public class Grid extends Pane{
     private int length;
     public Cell[][] cells;
 
-    public Grid(int cellSize, int width, int length) {
+    public Grid(int cellSize, int width, int length, WallProfile floorProfile) {
         super();
         this.width = width;
         this.length = length;
@@ -20,17 +21,13 @@ public class Grid extends Pane{
         
         this.cells = new Cell[width][length];
         
-        this.drawGrid(cellSize);
-    }
-
-    public Grid() {
-        
+        this.drawGrid(cellSize, floorProfile);
     }
     
-    private void drawGrid(int cellSize){
+    private void drawGrid(int cellSize, WallProfile floorProfile){
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < length; y++) {
-                Cell cell = new Cell(cellSize);
+                Cell cell = new Cell(cellSize, floorProfile);
                 cell.setStroke(Color.BLACK);
                 cell.setXPos(x);
                 cell.setYPos(y);
@@ -40,10 +37,6 @@ public class Grid extends Pane{
             }
         }
     }
-    
-//    public void drawCollectible(Collectible c){
-//        this.getChildren().add(c.getCircle());
-//    }
     
     public void clear(){
         for (Cell[] cellRow : cells) {

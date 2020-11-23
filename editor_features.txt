@@ -9,3 +9,4 @@ New Project System
 Fix Scale Corrector
 Load Map
 Help Menu
+Fix Mouse Drag Leak

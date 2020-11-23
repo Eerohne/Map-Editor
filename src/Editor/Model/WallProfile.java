@@ -5,9 +5,14 @@
  */
 package Editor.Model;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 /**
@@ -16,20 +21,31 @@ import javafx.scene.paint.Color;
  */
 public class WallProfile {
     public static int wallCounter = 1;
+    public static String resourceFolder = "resources/images/textures/";
     
-    private int wallMode; //0 : Empty, 1: Full, 2 : Door
+    private boolean isDefault;
+    private int flag; //0 : Empty, 1: Full, 2 : Door
     private int paletteID;
     private String name;
     
-    public static Map<Integer, Color> palette = new TreeMap<Integer, Color>();
+    public static Map<Integer, Image> palette = new TreeMap<Integer, Image>();
 
-    public WallProfile(String name, Color color, int wallMode) {
-        this.wallMode = wallMode;
+    public WallProfile(String name, String imageName, int wallMode) {
+        this(name, imageName, wallMode, false);
+    }
+    
+    public WallProfile(String name, String imageName, int wallMode, boolean isDefault){
+        this.flag = wallMode;
         this.paletteID = wallCounter++;
+        this.isDefault = isDefault;
         
         this.name = name;
         
-        palette.put(paletteID, color);
+        try {
+            palette.put(paletteID, new Image(new FileInputStream(resourceFolder + imageName), 100, 100, false, false));
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Override
@@ -50,7 +66,7 @@ public class WallProfile {
             return false;
         }
         final WallProfile other = (WallProfile) obj;
-        if (this.wallMode != other.wallMode) {
+        if (this.flag != other.flag) {
             return false;
         }
         if (this.paletteID != other.paletteID) {
@@ -62,15 +78,28 @@ public class WallProfile {
         return true;
     }
 
-    public int getWallMode() {
-        return wallMode;
+    public int getFlag() {
+        return flag;
     }
 
-    public Color getColor() {
+    public Image getImage() {
         return palette.get(paletteID);
     }
 
     public String getName() {
         return name;
+    }
+    
+    public int getPaletteID(){
+        return paletteID;
+    }
+    
+    public static int getPaletteID(Image img){
+        for (Map.Entry<Integer, Image> entry : palette.entrySet()) {
+            if (entry.getValue().equals(img)) {
+                return entry.getKey();
+            }
+        }
+        return -1;
     }
 }

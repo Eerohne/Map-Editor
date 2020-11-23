@@ -1,17 +1,24 @@
 package Editor.Controller;
 
+import Editor.Model.WallProfile;
 import Editor.View.Grid.Cell;
 import Editor.View.Grid.Grid;
 import Editor.View.Info;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
@@ -20,11 +27,12 @@ import javafx.scene.transform.Translate;
  * @author A
  */
 public class GridController {
+    //
+    public static WallProfile selectedWallProfile = new WallProfile("Grey", "grey_brick_vines.png", 1);
+    
     //Objects to be controlled
     Scene scene;
     Grid grid;
-    Button toggle;
-    ColorPicker picker;
     
     //Colors - to be replacve with a palette
     Color wallColor = Color.BLACK;
@@ -39,19 +47,14 @@ public class GridController {
     double mouseX;
     double mouseY;
     
-    double aX;
-    double aY;
-    
     double zoom = 1.0d;
 
-    Cell hoverCell = new Cell(1);
+    Cell hoverCell = new Cell();
     Info info = new Info();
     
-    public GridController(Scene scene, Grid grid, Button toggle, ColorPicker picker) {
+    public GridController(Scene scene, Grid grid) {
         this.scene = scene;
         this.grid = grid;
-        this.toggle = toggle;
-        this.picker = picker;
         
         //Scene Events
         scene.setOnKeyPressed( event -> {
@@ -61,15 +64,17 @@ public class GridController {
             if(event.getCode().equals(KeyCode.W)){
                 System.out.println("**********\n" 
                         + "Mouse : (" + mouseX + ", " + mouseY + ")\n"
-                        + "Grid : (" + aX + ", " + aY + ")\n" 
+                        + "Grid : (" + getGridX() + ", " + getGridY() + ")\n" 
                         +"cellSize : "+grid.getCellSize()+"\n"
-                        + "Local : (" + getLocalX() + ", " + getLocalY() + ")\n" 
+                        + "MaxY : " + getPaneBounds().getMaxY() + "\n" 
                         + "Zoom : " + zoom + "\n" 
                         + grid.cells[0][0].getTransforms() + "\n" );
             }
         });
         
         //Grid Events
+        
+        //Zoom Event
         grid.setOnScroll(event -> {
             double scaleShift = 0;
             if(zoom > 1.99) {
@@ -89,6 +94,7 @@ public class GridController {
             }
         });
         
+        //Hover Event
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {
                 cell.setOnMouseEntered(event -> {
@@ -97,11 +103,12 @@ public class GridController {
             }
         }
         
+        //Update Mouse Position on Mouse Moved
         grid.setOnMouseMoved(event -> {
             updateMousePos(event);
         });
         
-        //On Mouse Press Event
+        //Place Wall on Mouse Pressed
         grid.setOnMousePressed(event -> {
             if(event.getButton().equals(MouseButton.PRIMARY))
                 this.placeWall();
@@ -109,12 +116,6 @@ public class GridController {
         
         //Wall Placement when Mouse Dragged
         grid.setOnMouseDragged(new WallPlacerEvent());
-        
-        
-        //ColorPicker Events
-        this.picker.setOnAction(e -> {
-            this.wallColor = picker.getValue();
-        });
     }
     
     /**
@@ -160,9 +161,6 @@ public class GridController {
         preMouseY = mouseY;
         this.mouseX = event.getX();
         this.mouseY = event.getY();
-        
-        this.aX = this.getGridX();
-        this.aY = this.getGridY();
     }
 
     public double getMouseX() {
@@ -177,32 +175,35 @@ public class GridController {
         return zoom;
     }
     
-    private double getLocalX(){
-        Bounds paneBounds = grid.getCells()[0][0].getParent().localToScene(grid.getCells()[0][0].getParent().getBoundsInLocal());
-        return mouseX + paneBounds.getMinX();
+    private double getGlobalX(){
+        return mouseX + getPaneBounds().getMinX();
     } 
     
-    private double getLocalY(){
-        Bounds paneBounds = grid.getCells()[0][0].getParent().localToScene(grid.getCells()[0][0].getParent().getBoundsInLocal());
-        return mouseY + paneBounds.getMinY();
+    private double getGlobalY(){
+        return mouseY + getPaneBounds().getMinY();
     }
     
+    private Bounds getPaneBounds(){
+        return grid.getCells()[0][0].getParent().localToScene(grid.getCells()[0][0].getParent().getBoundsInLocal());
+    } 
+    
+    private Bounds getGridBounds(){
+        return grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
+    } 
+    
     public double getGridX(){
-        Bounds gridBounds = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
-        //System.out.println(gridBounds.getMinX() + ", " + gridBounds.getMinY());
-        return (this.getLocalX() - gridBounds.getMinX())/grid.getCellSize();
+        return (this.getGlobalX() - getGridBounds().getMinX())/grid.getCellSize();
     }
     
     public double getGridY(){
-        Bounds gridBounds = grid.getCells()[0][0].localToScene(grid.getCells()[0][0].getBoundsInLocal());
-
-        return (this.getLocalY() - gridBounds.getMinY())/grid.getCellSize();
+        return (this.getGlobalY() - getGridBounds().getMinY())/grid.getCellSize();
     }
     
     private void placeWall(){
+        //Fix Mouse Drag Leak
         try {
-            if(!(mouseX < 0 || mouseY < 0)){
-                this.grid.getCells()[(int)getGridX()][(int)getGridY()].setColor(wallColor);
+            if(!(mouseX < 0 || mouseY < 0 || mouseX > getPaneBounds().getMaxX() || mouseY > getPaneBounds().getMaxY())){
+                this.grid.getCells()[(int)getGridX()][(int)getGridY()].setImg(selectedWallProfile.getImage());
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("DON'T DRAW OUTSIDE THE GRID");
@@ -235,7 +236,7 @@ public class GridController {
     }
     
     private double getScaleRatio(){
-        return grid.getCellSize()/grid.getCells()[0][0].getDefaultSize();
+        return grid.getCells()[0][0].getScaleObject().getX();
     }
 }
 

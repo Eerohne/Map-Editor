@@ -22,18 +22,18 @@ public class WallTab extends Accordion{
     //private ArrayList<TitledPane> entities = new ArrayList<>();
 
     public WallTab() {
-        TitledPane floorPane = setupWallPane(new WallProfile("Floor", Color.WHITE, 1));
-        TitledPane blackWallPane = setupWallPane(new WallProfile("Black", Color.BLACK, 1));
-        this.getPanes().addAll(floorPane, blackWallPane);
+        //TitledPane floorPane = setupWallPane(new WallProfile("Floor", Color.WHITE, 1));
+        //TitledPane blackWallPane = setupWallPane(new WallProfile("Black", Color.BLACK, 1));
+        //this.getPanes().addAll(floorPane, blackWallPane);
     }
     
-    private TitledPane setupWallPane(WallProfile wall){
-        Label name = new Label("Name : " + wall.getName());
-        ColorPicker color = new ColorPicker(wall.getColor());
-        Label mode = new Label("Wall Mode : " + wall.getWallMode());
-        
-        VBox floorPane = new VBox(name, color, mode);
-        
-        return new TitledPane(wall.getName(), floorPane);
-    }
+//    private TitledPane setupWallPane(WallProfile wall){
+//        Label name = new Label("Name : " + wall.getName());
+//        ColorPicker color = new ColorPicker(wall.getColor());
+//        Label mode = new Label("Wall Mode : " + wall.getWallMode());
+//        
+//        VBox floorPane = new VBox(name, color, mode);
+//        
+//        return new TitledPane(wall.getName(), floorPane);
+//    }
 }

@@ -5,7 +5,13 @@
  */
 package Editor.View.Grid;
 
+import Editor.MapEditor;
+import Editor.Model.WallProfile;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
@@ -16,25 +22,26 @@ import javafx.scene.transform.Translate;
  */
 public class Cell extends Rectangle{
     private int size;
-    private Color cellColor;
-    private Color selectColor;
-    private Color floorColor = Color.WHITE;
+    
+    private ImagePattern texture;
+    private int wallID;
+    
     private Translate tVector = new Translate(0, 0);
     private Scale sMatrix = new Scale(1, 1);
     
-    public Cell(int defaultSize) {
+    public Cell(int defaultSize, WallProfile floor) {
         super(defaultSize, defaultSize);
-        super.setFill(floorColor);
+        this.setImg(floor.getPaletteID());
         super.setStroke(Color.BLACK);
         
         this.size = defaultSize;
-        this.cellColor = this.floorColor;
-        this.selectColor = this.cellColor.darker();
         this.getTransforms().addAll(tVector, sMatrix);
     }
 
+    public Cell() {
+    }
+
     public void clear(){
-        this.setColor(cellColor);
     }
     
     public int getDefaultSize() {
@@ -46,26 +53,24 @@ public class Cell extends Rectangle{
         super.setWidth(this.size);
         super.setHeight(this.size);
     }
-
-    public Color getCellColor() {
-        return cellColor;
+    
+    public void setImg(int paletteID){
+        this.wallID = paletteID;
+        this.texture = new ImagePattern(WallProfile.palette.get(paletteID));
+        this.setFill(texture);
     }
-
-    public void setColor(Color color){
-        super.setFill(color);
-        this.cellColor = color;
-        if (this.cellColor.equals(Color.BLACK)) {
-            this.selectColor = color.brighter();
-        } else this.selectColor = color.darker();
+    
+    public void setImg(Image img){
+        this.wallID = WallProfile.getPaletteID(img);
+        this.setImg(wallID);
     }
     
     public void isSelected(boolean isSelected) {
         if (isSelected) {
-            this.setFill(selectColor);
+            //this.setFill(selectColor);
         } else{
-             super.setFill(cellColor);
+            // super.setFill(cellColor);
         }
-       
     }
     
     public void setXPos(double value){

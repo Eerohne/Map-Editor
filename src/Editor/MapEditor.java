@@ -10,6 +10,7 @@ import Editor.Controller.GridController;
 import Editor.Controller.InfoController;
 import Editor.Controller.MenuController;
 import Editor.Controller.ShortcutController;
+import Editor.Model.WallProfile;
 import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Menu.TopMenu;
@@ -33,16 +34,20 @@ import javafx.stage.Stage;
  * @author A
  */
 public class MapEditor extends Application {
+    //Default WallProfile
+    WallProfile floor;
     
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {
+        floor = new WallProfile("Floor", "brick.png", 1);
+        
         //Top Elements
         TopMenu menu = new TopMenu();
         ShortcutBar shortcuts = new ShortcutBar();
         BorderPane tools = new BorderPane(shortcuts, menu, null, null, null);
         
         //Center Elements
-        Grid grid = new Grid(50, 20, 20);
+        Grid grid = new Grid(50, 20, 20, floor);
         Info info = new Info();
         setChildrenClipping(grid);
         
@@ -71,7 +76,7 @@ public class MapEditor extends Application {
         
         Scene scene = new Scene(layout, 1920, 1080);
         
-        GridController gc = new GridController(scene, grid, new Button(), new ColorPicker());
+        GridController gc = new GridController(scene, grid);
         InfoController ic = new InfoController(info, grid, gc);
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow);
