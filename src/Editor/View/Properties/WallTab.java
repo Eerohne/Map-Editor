@@ -8,7 +8,6 @@ package Editor.View.Properties;
 import Editor.Model.WallProfile;
 import java.util.ArrayList;
 import javafx.scene.control.Accordion;
-import javafx.scene.control.TitledPane;
 
 /**
  *
@@ -25,6 +24,19 @@ public class WallTab extends Accordion{
         walls.add(mossPane);
         
         this.getPanes().addAll(floorPane, mossPane);
+    }
+    
+    public WallTab(WallProfile... profiles) {
+        for (WallProfile profile : profiles) {
+            WallPane pane = new WallPane(profile);
+            walls.add(pane);
+            this.getPanes().add(pane);
+        }
+        WallPane mossPane = new WallPane(new WallProfile("Black", "grey_brick_vines.png", 1));
+        
+        walls.add(mossPane);
+        
+        this.getPanes().addAll(mossPane);
     }
 
     public ArrayList<WallPane> getWalls() {

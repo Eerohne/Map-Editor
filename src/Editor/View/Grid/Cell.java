@@ -29,9 +29,9 @@ public class Cell extends Rectangle{
     private Translate tVector = new Translate(0, 0);
     private Scale sMatrix = new Scale(1, 1);
     
-    public Cell(int defaultSize, WallProfile floor) {
+    public Cell(int defaultSize, Image img) {
         super(defaultSize, defaultSize);
-        this.setImg(floor.getPaletteID());
+        this.setImg(img);
         super.setStroke(Color.BLACK);
         
         this.size = defaultSize;
@@ -48,7 +48,7 @@ public class Cell extends Rectangle{
         return size;
     }
     
-    public int getFlag(){
+    public int getID(){
         return wallID;
     }
 

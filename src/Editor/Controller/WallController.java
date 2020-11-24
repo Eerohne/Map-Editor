@@ -5,14 +5,17 @@
  */
 package Editor.Controller;
 
+import Editor.Model.WallProfile;
 import Editor.View.Grid.Cell;
 import Editor.View.Grid.Grid;
 import Editor.View.Properties.WallPane;
+import java.util.Map;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
@@ -48,7 +51,14 @@ public class WallController {
         select.setOnAction(e -> {
             GridController.selectedWallProfile = this.wallPane.getWallProfile();
         });
-        
+        delete.setOnAction(e -> {
+            System.out.println(wallPane.getWallProfile().getPaletteID());
+            System.out.println(WallProfile.palette);
+            for (Map.Entry<Integer, Image> en : WallProfile.palette.entrySet()) {
+                System.out.println(en.getValue().toString());
+                
+            }
+        });
     }
     
     private void setupReferences(){
@@ -68,7 +78,7 @@ public class WallController {
     }
     
     private void cancelEvent(){
-        disableButtons(false);
+        disableButtons(true);
         wallPane.reset();
     }
     
@@ -78,7 +88,7 @@ public class WallController {
         wallPane.getWallProfile().setName(nameField.getText());
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {
-                if(cell.getFlag() == wallPane.getWallProfile().getFlag())
+                if(cell.getID() == wallPane.getWallProfile().getPaletteID())
                     cell.setImg(wallPane.getWallProfile().getImage());
             }
         }

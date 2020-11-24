@@ -10,8 +10,6 @@ import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.scene.image.Image;
 
 /**
@@ -19,7 +17,7 @@ import javafx.scene.image.Image;
  * @author A
  */
 public class WallProfile {
-    public static int wallCounter = 1;
+    public static int wallCounter = 0;
     public static String resourceFolder = "resources/images/textures/";
     
     private boolean isDefault;

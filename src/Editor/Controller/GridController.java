@@ -205,7 +205,7 @@ public class GridController {
             if(!(mouseX < 0 || mouseY < 0 || mouseX > getPaneBounds().getMaxX() || mouseY > getPaneBounds().getMaxY())){
                 this.grid.getCells()[(int)getGridX()][(int)getGridY()].setImg(selectedWallProfile.getImage());
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (Exception e) {
             System.out.println("DON'T DRAW OUTSIDE THE GRID");
         }
     }

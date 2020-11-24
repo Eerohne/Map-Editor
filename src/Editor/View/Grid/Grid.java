@@ -2,6 +2,7 @@ package Editor.View.Grid;
 
 import Editor.Model.WallProfile;
 import javafx.event.EventHandler;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -21,13 +22,13 @@ public class Grid extends Pane{
         
         this.cells = new Cell[width][length];
         
-        this.drawGrid(cellSize, floorProfile);
+        this.drawGrid(cellSize, floorProfile.getImage());
     }
     
-    private void drawGrid(int cellSize, WallProfile floorProfile){
+    private void drawGrid(int cellSize, Image floor){
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < length; y++) {
-                Cell cell = new Cell(cellSize, floorProfile);
+                Cell cell = new Cell(cellSize, floor);
                 cell.setStroke(Color.BLACK);
                 cell.setXPos(x);
                 cell.setYPos(y);
