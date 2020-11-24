@@ -32,11 +32,6 @@ public class WallTab extends Accordion{
             walls.add(pane);
             this.getPanes().add(pane);
         }
-        WallPane mossPane = new WallPane(new WallProfile("Black", "grey_brick_vines.png", 1));
-        
-        walls.add(mossPane);
-        
-        this.getPanes().addAll(mossPane);
     }
 
     public ArrayList<WallPane> getWalls() {

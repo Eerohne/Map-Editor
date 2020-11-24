@@ -58,7 +58,8 @@ public class MapEditor extends Application {
         Tab entities = new Tab("Entities", entityTab);
         
         //Create Wall Tab
-        WallTab wallTab = new WallTab(floor);
+        WallTab wallTab = new WallTab(floor, new WallProfile("Black", "grey_brick_vines.png", 1));
+
         Tab walls = new Tab("Walls", wallTab);
         
         TabPane properties = new TabPane(walls, entities);
