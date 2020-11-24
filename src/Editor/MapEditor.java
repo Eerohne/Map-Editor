@@ -10,6 +10,7 @@ import Editor.Controller.GridController;
 import Editor.Controller.InfoController;
 import Editor.Controller.MenuController;
 import Editor.Controller.ShortcutController;
+import Editor.Controller.WallPropertyPaneController;
 import Editor.Model.WallProfile;
 import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
@@ -80,6 +81,7 @@ public class MapEditor extends Application {
         InfoController ic = new InfoController(info, grid, gc);
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow);
+        WallPropertyPaneController wppc = new WallPropertyPaneController(wallTab, grid);
         
         String pathName = "resources/style/style.css" ;
         File file = new File(pathName);

@@ -28,7 +28,7 @@ import javafx.scene.transform.Translate;
  */
 public class GridController {
     //
-    public static WallProfile selectedWallProfile = new WallProfile("Grey", "grey_brick_vines.png", 1);
+    public static WallProfile selectedWallProfile;
     
     //Objects to be controlled
     Scene scene;

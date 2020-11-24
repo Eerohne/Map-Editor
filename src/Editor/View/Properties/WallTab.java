@@ -8,32 +8,26 @@ package Editor.View.Properties;
 import Editor.Model.WallProfile;
 import java.util.ArrayList;
 import javafx.scene.control.Accordion;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 /**
  *
  * @author A
  */
 public class WallTab extends Accordion{
-    //private ArrayList<TitledPane> entities = new ArrayList<>();
+    private ArrayList<WallPane> walls = new ArrayList<>();
 
     public WallTab() {
-        //TitledPane floorPane = setupWallPane(new WallProfile("Floor", Color.WHITE, 1));
-        //TitledPane blackWallPane = setupWallPane(new WallProfile("Black", Color.BLACK, 1));
-        //this.getPanes().addAll(floorPane, blackWallPane);
+        WallPane floorPane = new WallPane(new WallProfile("Floor", "brick.png", 1, true));
+        WallPane mossPane = new WallPane(new WallProfile("Black", "grey_brick_vines.png", 1));
+        
+        walls.add(floorPane);
+        walls.add(mossPane);
+        
+        this.getPanes().addAll(floorPane, mossPane);
     }
-    
-//    private TitledPane setupWallPane(WallProfile wall){
-//        Label name = new Label("Name : " + wall.getName());
-//        ColorPicker color = new ColorPicker(wall.getColor());
-//        Label mode = new Label("Wall Mode : " + wall.getWallMode());
-//        
-//        VBox floorPane = new VBox(name, color, mode);
-//        
-//        return new TitledPane(wall.getName(), floorPane);
-//    }
+
+    public ArrayList<WallPane> getWalls() {
+        return walls;
+    }
 }

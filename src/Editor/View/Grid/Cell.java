@@ -47,6 +47,10 @@ public class Cell extends Rectangle{
     public int getDefaultSize() {
         return size;
     }
+    
+    public int getFlag(){
+        return wallID;
+    }
 
     public void setDefaultSize(int size) {
         this.size = size;

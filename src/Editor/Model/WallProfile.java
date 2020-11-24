@@ -13,7 +13,6 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 /**
  *
@@ -28,6 +27,7 @@ public class WallProfile {
     private int paletteID;
     private String name;
     
+    public static String[] flagArray = {"Empty", "Wall", "Door"};
     public static Map<Integer, Image> palette = new TreeMap<Integer, Image>();
 
     public WallProfile(String name, String imageName, int wallMode) {
@@ -101,5 +101,35 @@ public class WallProfile {
             }
         }
         return -1;
+    }
+    
+    public static int getWallFlag(String flag){
+        for (int i = 0; i < flagArray.length; i++) {
+            if (flagArray[i].equals(flag)) {
+                return i;
+            }
+        }
+        
+        return -1;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = getWallFlag(flag);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public void setImg(String img){
+        try {
+            palette.put(paletteID, new Image(new FileInputStream(resourceFolder + img), 100, 100, false, false));
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
+        }
+    }
+    
+    public void setImg(Image img){
+        palette.put(paletteID, img);
     }
 }

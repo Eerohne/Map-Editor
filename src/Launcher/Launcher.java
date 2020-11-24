@@ -91,7 +91,7 @@ public class Launcher extends Application{
             } catch (Exception ex) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Launcher Error");
-                alert.setContentText("Editor cannot be oppened. Error Code: " + ex.getMessage());
+                alert.setContentText("Editor cannot be oppened. Error Code: " + ex.toString());
                 alert.showAndWait();
             }
             }
