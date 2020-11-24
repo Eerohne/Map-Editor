@@ -49,7 +49,7 @@ public class GridController {
     
     double zoom = 1.0d;
 
-    Cell hoverCell = new Cell();
+    Cell hoverCell = new Cell(1);
     Info info = new Info();
     
     public GridController(Scene scene, Grid grid) {
@@ -144,14 +144,14 @@ public class GridController {
                 //Translation vecxtor
                 Translate vector = new Translate((mouseX - preMouseX), (mouseY - preMouseY));
                 
-                
-                
                 //Every cell is translating with the vector above
                 for (Cell[] cells : grid.getCells()) {
                     for (Cell cell : cells) {
                         cell.addTranslationVector(vector);
                     }
                 }
+                
+                grid.getSelectionCell().addTranslationVector(vector);
             }
         }
     }
@@ -211,11 +211,13 @@ public class GridController {
     }
     
     private void onHover(Cell hoverCell){
-        this.hoverCell.isSelected(false);
-        
         this.hoverCell = hoverCell;
-        
-        this.hoverCell.isSelected(true);
+        this.highlight();
+    }
+    
+    private void highlight(){
+        grid.getSelectionCell().setX(hoverCell.getX());
+        grid.getSelectionCell().setY(hoverCell.getY());
     }
     
     private void scale(double scaleFactor){
@@ -231,6 +233,8 @@ public class GridController {
                 cell.addScaleMatrix(scale);
             }
         }
+        grid.getSelectionCell().addScaleMatrix(scale);
+        
         grid.setCellSize(grid.getCells()[0][0].getDefaultSize() * grid.getCells()[0][0].getScaleObject().getX());
         zoom = this.getScaleRatio();
     }

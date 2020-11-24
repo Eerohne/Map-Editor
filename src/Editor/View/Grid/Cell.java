@@ -21,6 +21,7 @@ import javafx.scene.transform.Translate;
  * @author A
  */
 public class Cell extends Rectangle{
+    
     private int size;
     
     private ImagePattern texture;
@@ -37,8 +38,9 @@ public class Cell extends Rectangle{
         this.size = defaultSize;
         this.getTransforms().addAll(tVector, sMatrix);
     }
-
-    public Cell() {
+    
+    public Cell(int size){
+        super(size, size);
     }
 
     public void clear(){
@@ -67,14 +69,6 @@ public class Cell extends Rectangle{
     public void setImg(Image img){
         this.wallID = WallProfile.getPaletteID(img);
         this.setImg(wallID);
-    }
-    
-    public void isSelected(boolean isSelected) {
-        if (isSelected) {
-            //this.setFill(selectColor);
-        } else{
-            // super.setFill(cellColor);
-        }
     }
     
     public void setXPos(double value){

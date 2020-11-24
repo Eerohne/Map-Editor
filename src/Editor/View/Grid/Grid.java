@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 
 public class Grid extends Pane{
@@ -13,6 +14,8 @@ public class Grid extends Pane{
     private int width;
     private int length;
     public Cell[][] cells;
+    private Cell selectionCell;
+
 
     public Grid(int cellSize, int width, int length, WallProfile floorProfile) {
         super();
@@ -20,9 +23,15 @@ public class Grid extends Pane{
         this.length = length;
         this.cellSize = cellSize;
         
+        this.selectionCell = new Cell(cellSize);
+        this.selectionCell.setFill(null);
+        this.selectionCell.setStroke(Color.GREY);
+        this.selectionCell.setStrokeWidth(5);
+        
         this.cells = new Cell[width][length];
         
         this.drawGrid(cellSize, floorProfile.getImage());
+        this.getChildren().add(selectionCell);
     }
     
     private void drawGrid(int cellSize, Image floor){
@@ -70,6 +79,10 @@ public class Grid extends Pane{
 
     public Cell[][] getCells() {
         return cells;
+    }
+
+    public Cell getSelectionCell() {
+        return selectionCell;
     }
 
     public void setCellSize(double scaleFactor) {

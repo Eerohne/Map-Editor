@@ -19,6 +19,7 @@ import javafx.scene.image.Image;
 public class WallProfile {
     public static int wallCounter = 0;
     public static String resourceFolder = "resources/images/textures/";
+    private String imgName;
     
     private boolean isDefault;
     private int flag; //0 : Empty, 1: Full, 2 : Door
@@ -36,6 +37,7 @@ public class WallProfile {
         this.flag = wallMode;
         this.paletteID = wallCounter++;
         this.isDefault = isDefault;
+        this.imgName = imageName;
         
         this.name = name;
         
