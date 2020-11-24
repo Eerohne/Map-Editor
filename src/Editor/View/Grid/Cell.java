@@ -31,16 +31,15 @@ public class Cell extends Rectangle{
     private Scale sMatrix = new Scale(1, 1);
     
     public Cell(int defaultSize, Image img) {
-        super(defaultSize, defaultSize);
+        this(defaultSize);
         this.setImg(img);
         super.setStroke(Color.BLACK);
-        
-        this.size = defaultSize;
-        this.getTransforms().addAll(tVector, sMatrix);
     }
     
     public Cell(int size){
         super(size, size);
+        this.size = size;
+        this.getTransforms().addAll(tVector, sMatrix);
     }
 
     public void clear(){
