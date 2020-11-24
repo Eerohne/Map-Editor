@@ -72,9 +72,6 @@ public class Entity_Player_Base extends Entity_Player{
         if(Input.keyPressed(KeyCode.D))
             dir = dir.add(-Math.sin(Math.toRadians(this.rotation)), Math.cos(Math.toRadians(this.rotation)));
         
-        
-        dir = Game.getCurrentLevel().checkCollision(position, dir, colisionRadius);
-        
         if(Input.keyPressed(KeyCode.LEFT))
             this.rotation -= 100 * Time.deltaTime;
         if(Input.keyPressed(KeyCode.RIGHT))
@@ -82,13 +79,14 @@ public class Entity_Player_Base extends Entity_Player{
         
         if(Input.keyPressed(KeyCode.SHIFT)){
             playerSpeed = runSpeed;
-            headBobFrequency = 20;
+            headBobFrequency = 10*(runSpeed/walkSpeed);
         }else{
             playerSpeed = walkSpeed;
             headBobFrequency = 10;
         }
         
-        dir = dir.multiply(playerSpeed * Time.deltaTime);
+        dir = Game.getCurrentLevel().checkCollision(position, dir, colisionRadius); //gets the final direction vector after colision detection
+        dir = dir.multiply(playerSpeed * Time.deltaTime); //move the player in the calculated direction 
         position = position.add(dir);
         
         //headbob code

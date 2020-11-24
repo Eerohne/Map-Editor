@@ -20,6 +20,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.json.simple.parser.ParseException;
 
@@ -44,7 +45,7 @@ public class Game extends Application{
                 if(isRunning)
                 {
                     Time.update(); //update time
-                    stage.setTitle(Settings.get("gamename") + " -> FPS : " + Integer.toString(Time.fps));
+                    stage.setTitle(Settings.get("g_gamename") + " -> FPS : " + Integer.toString(Time.fps));
                     currentLevel.update(); //update all entities in the level
                 }
                 if(isRendering)
@@ -71,7 +72,7 @@ public class Game extends Application{
         Renderer.setFov(Settings.getFloat("r_fov"));
         
         //load .css style
-        String pathName = Settings.get("stylesheetpath");
+        String pathName = Settings.get("e_stylepath");
         String styleSheet = ResourceLoader.loadStyleFile(pathName);
         if(styleSheet != null)
             scene.getStylesheets().add(ResourceLoader.loadStyleFile(pathName));
@@ -80,7 +81,7 @@ public class Game extends Application{
         Input.init();
         
         //now load the initial level
-        loadLevel(Settings.get("initiallevel"));
+        loadLevel(Settings.get("e_initiallevel"));
     }
     
     public static Level getCurrentLevel()

@@ -6,6 +6,7 @@
 package Engine.Util.RessourceManager;
 
 import Engine.Core.Exceptions.LevelCreationException;
+import Engine.Core.OrderedProperties;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Entity.EntityCreator;
 import Engine.Level.Level;
@@ -39,17 +40,17 @@ public class ResourceLoader
     
     public static String error_imagePath = "";
     
-    public static Properties loadConfigFile()
+    public static OrderedProperties loadConfigFile()
     {
-        Properties prop = new Properties();
+        OrderedProperties prop = new OrderedProperties();
 
         try {
             InputStream in = new FileInputStream("config.cfg"); //the config file is always in the engine root folder
             prop.load(in);
             in.close();
 
-            resourcePath = prop.getProperty("resourcepath"); //right here set the resourcePath
-            error_imagePath = prop.getProperty("error_image");
+            resourcePath = prop.getProperty("e_resourcepath"); //right here set the resourcePath
+            error_imagePath = prop.getProperty("e_error_image");
         }
         catch(IOException e) {
             System.out.println("'config.cfg' file was not found in root folder");
@@ -61,7 +62,7 @@ public class ResourceLoader
     {
         try{
             FileInputStream inputstream = new FileInputStream(resourcePath + path);
-            return new Image(inputstream);
+            return new Image(inputstream, 500, 500, true, false);
         }
         catch(IOException e)
         {

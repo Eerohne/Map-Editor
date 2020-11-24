@@ -68,9 +68,10 @@ public class Launcher extends Application{
                 game.start(engine);
                 launcherStage.close();
             } catch (Exception ex) {
+                System.out.println(ex);
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Launcher Error");
-                alert.setContentText("Engine cannot be oppened");
+                alert.setContentText("OptikEngine cannot be oppened. \nError Code: " + ex.getMessage());
                 alert.showAndWait();
             }
             }

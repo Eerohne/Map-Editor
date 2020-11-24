@@ -10,7 +10,10 @@ package Engine.Window;
 import Engine.Window.Menu.MenuButton;
 import Engine.Window.Menu.PauseMenu;
 import Engine.Core.Game;
+import Engine.Core.Settings;
 import Engine.RaycastRenderer.Renderer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -21,6 +24,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
@@ -31,6 +35,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class WindowManager extends AnchorPane{
@@ -79,10 +84,10 @@ public class WindowManager extends AnchorPane{
         
         //give the render canvas to the renderer
         Renderer.setCanvas(renderCanvas);
-        if(fullscreen){
+        
+        if(fullscreen){ //special case when game loads on fullscreen because the render canvas wants to be a little baby and not resize correctly
             this.setFullScreen(fullscreen); //setting fullscreen at the end when everything is initialised
-            System.out.println("+ " + this.getWidth());
-            resizeWindow((int) this.getWidth(), (int) this.getHeight());
+            resizeWindow((int) Screen.getPrimary().getBounds().getWidth(), (int) Screen.getPrimary().getBounds().getHeight());
         }
         
     }
@@ -136,129 +141,252 @@ public class WindowManager extends AnchorPane{
         pauseMenu = new PauseMenu("main");
         
         //main pause screen
-        VBox mainBox = new VBox();
-        mainBox.setAlignment(Pos.CENTER);
-        mainBox.setSpacing(40);
-        
-        Button resumeButton = new MenuButton("resume game");
-        resumeButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                Game.pauseGame(false);
-            }
-        });
-        resumeButton.setMinWidth(300);
-        resumeButton.setMinHeight(80);
-        
-        Button optionButton = new MenuButton("options");
-        optionButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                pauseMenu.transitionToScreen("option");
-            }
-        });
-        
-        optionButton.setMinWidth(300);
-        optionButton.setMinHeight(80);
-        
-        Button quitButton = new MenuButton("quit game");
-        quitButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                Game.exit();
-            }
-        });
-        quitButton.setMinWidth(300);
-        quitButton.setMinHeight(80);
-        
-        mainBox.getChildren().addAll(resumeButton, optionButton, quitButton);
-        pauseMenu.addScreen("main", mainBox);
-        
-        //option screen
-        VBox optionBox = new VBox();
-        optionBox.setAlignment(Pos.CENTER);
-        optionBox.setSpacing(40);
-        optionBox.setStyle("-fx-background-color: rgba(33, 35, 46, 0.8); -fx-background-radius: 10; -fx-padding: 20;");
-        
-        MenuButton applyButton = new MenuButton("Apply settings"); //defined on top here to allow access from other elements
-        applyButton.setDisable(true);
-        
-        ComboBox screenSizeBox = new ComboBox();
-        screenSizeBox.setPromptText((int)this.getWidth()+" x "+(int)this.getHeight());
-        screenSizeBox.setValue((int)this.getWidth()+" x "+(int)this.getHeight());
-        screenSizeBox.setDisable(isFullscreen);//when created, set disabled based on if the game runs fullscreen
-        screenSizeBox.getItems().addAll(
-            "800 x 600",
-            "1280 x 800",
-            "1600 x 900",
-            "1920 x 1080"
-        );
-        screenSizeBox.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                applyButton.setDisable(false);
-            }
-        });
-        
-        CheckBox fullscreenCheckbox = new CheckBox("fullscreen");
-        fullscreenCheckbox.setSelected(isFullscreen);
-        fullscreenCheckbox.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                screenSizeBox.setDisable(fullscreenCheckbox.isSelected());
-                applyButton.setDisable(false);
-            }
-        });
-        
-        //define what happens when we apply the settings
-        applyButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                if(fullscreenCheckbox.isSelected()){
-                    Game.getWindowManager().setFullScreen(true);
-                }else{
-                    Game.getWindowManager().setFullScreen(false);
-                    
-                    if(screenSizeBox.getValue() == null){
-                        applyButton.valid = false;
-                        System.out.println("null screen size");
-                    }
-                    else
-                    {
-                        applyButton.valid = true;
-                        if(screenSizeBox.getValue().equals("800 x 600"))
-                           Game.getWindowManager().resizeWindow(800, 600);
-                       else if(screenSizeBox.getValue().equals("1280 x 800"))
-                           Game.getWindowManager().resizeWindow(1280, 800);
-                       else if(screenSizeBox.getValue().equals("1600 x 900"))
-                           Game.getWindowManager().resizeWindow(1600, 900);
-                       else if(screenSizeBox.getValue().equals("1920 x 1080"))
-                           Game.getWindowManager().resizeWindow(1920, 1080);
-                       else{ //fail safe in case the screen resolution doesnt exist
-                           Game.getWindowManager().resizeWindow(1280, 800);
-                           screenSizeBox.setValue("1280 x 800");
-                           }
-                    }
-                }
-                applyButton.setDisable(true); //disable the apply button when we save the changes
-                    
-            }
-        });
-        applyButton.setMinWidth(80);
-        applyButton.setMinHeight(30);
-        
-        Button returnButton = new MenuButton("return");
-        returnButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                pauseMenu.transitionToScreen("main");
-            }
-        });
-        returnButton.setMinWidth(80);
-        returnButton.setMinHeight(30);
-        
-        HBox buttonBar = new HBox();
-        buttonBar.setSpacing(30);
-        buttonBar.getChildren().addAll(applyButton, returnButton);
+            VBox mainBox = new VBox();
+            mainBox.setAlignment(Pos.CENTER);
+            mainBox.setSpacing(40);
+            mainBox.setStyle("-fx-background-color: rgba(33, 35, 46, 0.8); -fx-background-radius: 10; -fx-padding: 20;");
 
-        optionBox.getChildren().addAll(screenSizeBox, fullscreenCheckbox, buttonBar);
-        optionBox.setVisible(false);
-        optionBox.setManaged(false);
+            Button resumeButton = new MenuButton("resume game");
+            resumeButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    Game.pauseGame(false);
+                }
+            });
+            resumeButton.setMinWidth(300);
+            resumeButton.setMinHeight(80);
+
+            Button optionButton = new MenuButton("options");
+            optionButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    pauseMenu.transitionToScreen("options");
+                }
+            });
+
+            optionButton.setMinWidth(300);
+            optionButton.setMinHeight(80);
+
+            Button quitButton = new MenuButton("quit game");
+            quitButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    Game.exit();
+                }
+            });
+            quitButton.setMinWidth(300);
+            quitButton.setMinHeight(80);
+
+            mainBox.getChildren().addAll(resumeButton, optionButton, quitButton);
+            pauseMenu.addScreen("main", mainBox);
         
-        pauseMenu.addScreen("option", optionBox);
+        //option selector screen
+            VBox optionSelectBox = new VBox();
+            optionSelectBox.setAlignment(Pos.CENTER);
+            optionSelectBox.setSpacing(40);
+            optionSelectBox.setStyle("-fx-background-color: rgba(33, 35, 46, 0.8); -fx-background-radius: 10; -fx-padding: 20;");
+
+            Button videoSettingsButton = new MenuButton("video settings");
+            videoSettingsButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    pauseMenu.transitionToScreen("video");
+                }
+            });
+            videoSettingsButton.setMinWidth(300);
+            videoSettingsButton.setMinHeight(60);
+            
+            //ANY NEW BUTTONS TO AN OPTION SCREENS COMES HERE!!!
+            Button soundSettingsButton = new MenuButton("sound settings");
+            soundSettingsButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    pauseMenu.transitionToScreen("sound");
+                }
+            });
+            soundSettingsButton.setMinWidth(300);
+            soundSettingsButton.setMinHeight(60);
+            
+            Button returnToMainButton = new MenuButton("return");
+            returnToMainButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    pauseMenu.transitionToScreen("main");
+                }
+            });
+            returnToMainButton.setMinWidth(100);
+            returnToMainButton.setMinHeight(20);
+            
+            optionSelectBox.getChildren().addAll(videoSettingsButton, soundSettingsButton, returnToMainButton);
+            
+            pauseMenu.addScreen("options", optionSelectBox);
+        
+        //video option screen
+            VBox videoOptionBox = new VBox();
+            videoOptionBox.setAlignment(Pos.CENTER);
+            videoOptionBox.setSpacing(40);
+            videoOptionBox.setStyle("-fx-background-color: rgba(33, 35, 46, 0.8); -fx-background-radius: 10; -fx-padding: 20;");
+
+            MenuButton applyVideo = new MenuButton("Apply settings"); //defined on top here to allow access from other elements
+            applyVideo.setDisable(true);
+
+            ComboBox screenSizeBox = new ComboBox();
+            screenSizeBox.setPromptText((int)this.getWidth()+" x "+(int)this.getHeight());
+            screenSizeBox.setValue((int)this.getWidth()+" x "+(int)this.getHeight());
+            screenSizeBox.setDisable(isFullscreen);//when created, set disabled based on if the game runs fullscreen
+            screenSizeBox.getItems().addAll(
+                "800 x 600",
+                "1280 x 800",
+                "1600 x 900",
+                "1920 x 1080"
+            );
+            screenSizeBox.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    applyVideo.setDisable(false);
+                }
+            });
+
+            CheckBox fullscreenCheckbox = new CheckBox("fullscreen");
+            fullscreenCheckbox.setSelected(isFullscreen);
+            fullscreenCheckbox.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    screenSizeBox.setDisable(fullscreenCheckbox.isSelected());
+                    applyVideo.setDisable(false);
+                }
+            });
+
+            //define what happens when we apply the settings
+            applyVideo.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    int newWidth=0, newHeight=0;
+                    if(fullscreenCheckbox.isSelected()){
+                        Game.getWindowManager().setFullScreen(true);
+                        newWidth=(int) Game.getWindowManager().getWidth(); 
+                        newHeight=(int) Game.getWindowManager().getHeight();
+                    }else{
+                        Game.getWindowManager().setFullScreen(false);
+
+                        if(screenSizeBox.getValue() == null){
+                            applyVideo.valid = false;
+                            System.out.println("null screen size");
+                        }
+                        else
+                        {
+                            applyVideo.valid = true;
+                            if(screenSizeBox.getValue().equals("800 x 600")) {
+                                newWidth=800; newHeight=600;
+                            }
+                           else if(screenSizeBox.getValue().equals("1280 x 800")) {
+                               newWidth=1280; newHeight=800;
+                           }
+                           else if(screenSizeBox.getValue().equals("1600 x 900")) {
+                               newWidth=1600; newHeight=900;
+                           }
+                           else if(screenSizeBox.getValue().equals("1920 x 1080")) {
+                               newWidth=1920; newHeight=1080;
+                           }
+                           else{ //fail safe in case the screen resolution doesnt exist
+                               newWidth=1280; newHeight=800;
+                               screenSizeBox.setValue("1280 x 800");
+                               }
+                            Game.getWindowManager().resizeWindow(newWidth, newHeight);
+                        }
+                    }
+                    applyVideo.setDisable(true); //disable the apply button when we save the changes
+
+                    //now save the settings inside the config file
+                    Settings.save("r_window_width", (int)newWidth);
+                    Settings.save("r_window_height", (int)newHeight);
+                    Settings.save("r_window_fullscreen", fullscreenCheckbox.isSelected());
+
+                }
+            });
+            applyVideo.setMinWidth(80);
+            applyVideo.setMinHeight(30);
+
+            Button returnButton = new MenuButton("return");
+            returnButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    pauseMenu.transitionToScreen("options");
+                }
+            });
+            returnButton.setMinWidth(80);
+            returnButton.setMinHeight(30);
+
+            HBox buttonBar = new HBox();
+            buttonBar.setSpacing(30);
+            buttonBar.getChildren().addAll(applyVideo, returnButton);
+
+            videoOptionBox.getChildren().addAll(screenSizeBox, fullscreenCheckbox, buttonBar);
+            videoOptionBox.setVisible(false);
+            videoOptionBox.setManaged(false);
+
+            pauseMenu.addScreen("video", videoOptionBox);
+        //sound option screen
+            VBox soundOptionBox = new VBox();
+            soundOptionBox.setAlignment(Pos.CENTER);
+            soundOptionBox.setSpacing(40);
+            soundOptionBox.setStyle("-fx-background-color: rgba(33, 35, 46, 0.8); -fx-background-radius: 10; -fx-padding: 20;");
+
+            Label masterSoundLabel = new Label("master volume : " + Settings.getFloat("snd_master"));
+            Slider masterSoundSlider = new Slider(0, 1, Settings.getFloat("snd_master"));
+            masterSoundSlider.setMajorTickUnit(0.1f);
+            masterSoundSlider.setBlockIncrement(0.1f);
+            masterSoundSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val) {
+                    //cappuccino.setOpacity(new_val.doubleValue());
+                    masterSoundLabel.setText("master volume : "+String.format("%.1f", new_val));
+                    Settings.save("snd_master", String.format("%.1f", masterSoundSlider.getValue()));
+            }
+            });
+            HBox masterSoundBox = new HBox();
+            masterSoundBox.getChildren().addAll(masterSoundLabel, masterSoundSlider);
+            
+            Label gameSoundLabel = new Label("game volume : " + Settings.getFloat("snd_game"));
+            Slider gameSoundSlider = new Slider(0, 1, Settings.getFloat("snd_game"));
+            gameSoundSlider.setMajorTickUnit(0.1f);
+            gameSoundSlider.setBlockIncrement(0.1f);
+            gameSoundSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val) {
+                    //cappuccino.setOpacity(new_val.doubleValue());
+                    gameSoundLabel.setText("game volume : "+String.format("%.1f", new_val));
+                    Settings.save("snd_game", String.format("%.1f", gameSoundSlider.getValue()));
+            }
+            });
+            HBox gameSoundBox = new HBox();
+            gameSoundBox.getChildren().addAll(gameSoundLabel, gameSoundSlider);
+            
+            Label musicSoundLabel = new Label("music volume : " + Settings.getFloat("snd_music"));
+            Slider musicSoundSlider = new Slider(0, 1, Settings.getFloat("snd_music"));
+            musicSoundSlider.setMajorTickUnit(0.1f);
+            musicSoundSlider.setBlockIncrement(0.1f);
+            musicSoundSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val) {
+                    //cappuccino.setOpacity(new_val.doubleValue());
+                    musicSoundLabel.setText("music volume : "+String.format("%.1f", new_val));
+                    Settings.save("snd_music", String.format("%.1f", musicSoundSlider.getValue()));
+            }
+            });
+            HBox musicSoundBox = new HBox();
+            musicSoundBox.getChildren().addAll(musicSoundLabel, musicSoundSlider);
+
+            Button returnSoundToOptionsButton = new MenuButton("return");
+            returnSoundToOptionsButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    pauseMenu.transitionToScreen("options");
+                }
+            });
+            returnSoundToOptionsButton.setMinWidth(80);
+            returnSoundToOptionsButton.setMinHeight(30);
+
+            HBox soundButtonBar = new HBox();
+            soundButtonBar.setAlignment(Pos.CENTER);
+            soundButtonBar.setSpacing(30);
+            soundButtonBar.getChildren().addAll(returnSoundToOptionsButton);
+
+            soundOptionBox.getChildren().addAll(masterSoundBox, gameSoundBox, musicSoundBox, soundButtonBar);
+            soundOptionBox.setVisible(false);
+            soundOptionBox.setManaged(false);
+
+            pauseMenu.addScreen("sound", soundOptionBox);
+            
         
         //root boxes
         HBox hbox = new HBox();
@@ -267,7 +395,7 @@ public class WindowManager extends AnchorPane{
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(40);
         
-        vbox.getChildren().addAll(mainBox, optionBox); //add here all pause screens
+        vbox.getChildren().addAll(pauseMenu.getScreens()); //add here all pause screens
         hbox.getChildren().addAll(vbox);
         pausePane.getChildren().add(hbox);
         pausePane.setTopAnchor(hbox, 0.0);
@@ -283,12 +411,11 @@ public class WindowManager extends AnchorPane{
     
     public void togglePauseMenu()
     {
-        this.pausePane.setVisible(!this.pausePane.isVisible());
+        this.setPauseMenuVisibility(!this.pausePane.isVisible());
     }
     
     public void setPauseMenuVisibility(boolean visible)
     {
-        System.out.println("open menu -> "+visible);
         if(visible)
             this.pauseMenu.open();
         else
@@ -317,7 +444,6 @@ public class WindowManager extends AnchorPane{
             this.oldHeight = (int) this.getHeight();
             stage.setFullScreen(true);
             this.resizeWindow((int) this.getWidth(), (int) this.getHeight());
-            System.out.println("- "+(int) this.getWidth()+", "+(int) this.getHeight());
         }
         else
         {

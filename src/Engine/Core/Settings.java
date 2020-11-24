@@ -6,9 +6,16 @@
 package Engine.Core;
 
 import Engine.Util.RessourceManager.ResourceLoader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,7 +23,7 @@ import java.util.Properties;
  */
 public class Settings {
     
-    private static Properties properties;
+    private static OrderedProperties properties;
     
     public static void init()
     {
@@ -46,5 +53,16 @@ public class Settings {
     public static boolean getBoolean(String name)
     {
         return Boolean.valueOf(properties.getProperty(name));
+    }
+    
+    public static void save(String key, Object value)
+    {
+        try {
+            properties.setProperty(key, String.valueOf(value));
+            OutputStream out = new FileOutputStream("config.cfg"); //the config file is always in the engine root folder
+            properties.save(out, "e->engine, r->renderer, snd->sound");
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
+        }
     }
 }

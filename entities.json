@@ -1,16 +1,32 @@
 [
   {
-    "player4": {
-      "mp": "159",
-      "DEF": "150",
-      "SPD": "103",
-      "ATK": "100"
+    "item_ball": {
+      "bouncesound": "snd/ballbounce.wav"
     }
   },
   {
-    "player2": {
-      "SPD": "100",
-      "atk": "133"
+    "item_ball": {
+      "bouncesound": "snd/ballbounce.wav"
+    }
+  },
+  {
+    "item_ball": {
+      "bouncesound": "snd/ballbounce.wav"
+    }
+  },
+  {
+    "item_ball": {
+      "bouncesound": "snd/ballbounce.wav"
+    }
+  },
+  {
+    "item_ball": {
+      "bouncesound": "snd/ballbounce.wav"
+    }
+  },
+  {
+    "item_ball": {
+      "bouncesound": "snd/ballbounce.wav"
     }
   }
 ]

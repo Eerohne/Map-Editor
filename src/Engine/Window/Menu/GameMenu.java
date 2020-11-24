@@ -6,7 +6,9 @@
 package Engine.Window.Menu;
 
 import Engine.Util.RessourceManager.ResourceLoader;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -73,6 +75,11 @@ public class GameMenu {
         return screens.get(name);
     }
     
+    public Collection<Pane> getScreens()
+    {
+        return  screens.values();
+    }
+    
     public void removeScreen(String name)
     {
         screens.remove(name);
@@ -89,7 +96,7 @@ public class GameMenu {
             }
             catch(NullPointerException e)
             {
-                System.out.println(e+ " the menu screen " +name+ " doesnt exist");
+                System.out.println(e+ " the menu screen '" +name+ "' doesnt exist");
             }
         }
         
@@ -101,7 +108,7 @@ public class GameMenu {
         }
         catch(NullPointerException e)
         {
-            System.out.println(e+ " the menu screen " +name+ " doesnt exist");
+            System.out.println(e+ " the menu screen '" +name+ "' doesnt exist");
         }
     }
 }
