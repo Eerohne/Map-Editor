@@ -25,7 +25,7 @@ public class Grid extends Pane{
         
         this.selectionCell = new Cell(cellSize);
         this.selectionCell.setFill(null);
-        this.selectionCell.setStroke(Color.GREY);
+        this.selectionCell.setStroke(Color.YELLOW);
         this.selectionCell.setStrokeWidth(5);
         
         this.cells = new Cell[width][length];
