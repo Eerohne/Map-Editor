@@ -38,6 +38,7 @@ public class WallController extends ContentController{
     public WallController(WallPane pane, Grid grid, WallTab wallHierarchy) {
         this.wallPane = pane;
         this.grid = grid;
+        this.wallHierarchy = wallHierarchy;
         this.setupReferences();
         
         nameField.setOnMouseClicked(e -> disableButtons(false));
