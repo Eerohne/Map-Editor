@@ -24,8 +24,8 @@ public class SoundManager {
     public static void init()
     {
         addChannel("master", "snd_master");
-        addChannel("game", "snd_game");
-        addChannel("music", "snd_music");
+        addChannel("game", "snd_game", "master");
+        addChannel("music", "snd_music", "master");
     }
     
     public static void addChannel(String channelName, String configValueName)
@@ -33,9 +33,19 @@ public class SoundManager {
         channels.put(channelName, new SoundChannel(configValueName));
     }
     
+    public static void addChannel(String channelName, String configValueName, String masterNameChannel)
+    {
+        channels.put(channelName, new SoundChannel(configValueName, masterNameChannel));
+    }
+    
+    public static SoundChannel getChannel(String channelName)
+    {
+        return channels.get(channelName);
+    }
+    
     public static void changeChannelVolume(String channelName, Double volume)
     {
-        channels.get(channelName).volume.set(volume);
+        channels.get(channelName).setVolume(volume);
     }
     
     public static MediaPlayer createPlayer(String soundPath, String channelName)

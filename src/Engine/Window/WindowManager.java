@@ -330,9 +330,9 @@ public class WindowManager extends AnchorPane{
             masterSoundSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
-                    //cappuccino.setOpacity(new_val.doubleValue());
                     masterSoundLabel.setText("master volume : "+String.format("%.1f", new_val));
                     Settings.save("snd_master", String.format("%.1f", masterSoundSlider.getValue()));
+                    SoundManager.changeChannelVolume("master", Settings.getDouble("snd_master"));
             }
             });
             HBox masterSoundBox = new HBox();
@@ -345,9 +345,9 @@ public class WindowManager extends AnchorPane{
             gameSoundSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
-                    //cappuccino.setOpacity(new_val.doubleValue());
                     gameSoundLabel.setText("game volume : "+String.format("%.1f", new_val));
                     Settings.save("snd_game", String.format("%.1f", gameSoundSlider.getValue()));
+                    SoundManager.changeChannelVolume("game", Settings.getDouble("snd_game"));
             }
             });
             HBox gameSoundBox = new HBox();
