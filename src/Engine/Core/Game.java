@@ -44,6 +44,7 @@ public class Game extends Application{
         initEngine(stage);
         mediaPlayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "master");
         mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         new AnimationTimer() { //Game main loop
 
             @Override
