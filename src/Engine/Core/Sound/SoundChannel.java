@@ -18,17 +18,18 @@ import javafx.scene.media.MediaPlayer;
 public class SoundChannel {
     public ReadOnlyObjectWrapper<Double> volume;
     private ArrayList<MediaPlayer> players;
+    private boolean temporaryChannel; //should players in this channel be cleared on map load?
     
     //only when a channel is a slave of a master channel
     private String masterChannelName = "";
-    private Double realVolume;
+    private Double realVolume = 1.0;
     
     public SoundChannel(String configValueName)
     {
-        this(configValueName, "");
+        this(configValueName, "", true);
     }
     
-    public SoundChannel(String configValueName, String masterChannelName)
+    public SoundChannel(String configValueName, String masterChannelName, boolean isTemporary)
     {
         if(!configValueName.equals(null))
             volume = new ReadOnlyObjectWrapper<>(Settings.getDouble(configValueName)); 
@@ -45,6 +46,7 @@ public class SoundChannel {
         else
             this.masterChannelName = "";
         
+        this.temporaryChannel = isTemporary;
         players = new ArrayList<>();
     }
     
@@ -54,12 +56,24 @@ public class SoundChannel {
         if(this.masterChannelName.isEmpty())//is not a slave channel
         {
             this.volume.set(volume);
+            System.out.println("self channel : "+this.volume.get());
         }
         else
         {
             Double masterVolume = SoundManager.getChannel(masterChannelName).volume.get();
             this.volume.set(realVolume * masterVolume);
-            //System.out.println("master : "+masterVolume+" slave : " +this.realVolume);
+            System.out.println("from master channel '"+this.masterChannelName+"' : "+this.volume.get());
+        }
+    }
+    
+    public void setPause(boolean isPaused)
+    {
+        for(MediaPlayer p : players)
+        {
+            if(isPaused)
+                p.pause();
+            else
+                p.play();
         }
     }
     
@@ -78,5 +92,17 @@ public class SoundChannel {
                 break;
             }
         }
+    }
+    
+    public boolean isTemporary()
+    {
+        return temporaryChannel;
+    }
+    
+    public void clear()
+    {
+        for(MediaPlayer player : players)
+            player.dispose();
+        players.clear();
     }
 }

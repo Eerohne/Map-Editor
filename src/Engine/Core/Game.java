@@ -42,9 +42,9 @@ public class Game extends Application{
     
     public void start(Stage stage){
         initEngine(stage);
-        mediaPlayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "music");
+        mediaPlayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "music", false);
         mediaPlayer.setAutoPlay(true);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        
         new AnimationTimer() { //Game main loop
 
             @Override
@@ -104,6 +104,7 @@ public class Game extends Application{
             isRunning = true;
             isRendering = true;
             Game.getWindowManager().reloadWindow();
+            SoundManager.clear();
         } 
         catch(LevelCreationException ex) {
             System.out.println(ex);

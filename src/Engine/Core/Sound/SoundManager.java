@@ -35,7 +35,7 @@ public class SoundManager {
     
     public static void addChannel(String channelName, String configValueName, String masterNameChannel)
     {
-        channels.put(channelName, new SoundChannel(configValueName, masterNameChannel));
+        channels.put(channelName, new SoundChannel(configValueName, masterNameChannel, true));
     }
     
     public static SoundChannel getChannel(String channelName)
@@ -45,12 +45,24 @@ public class SoundManager {
     
     public static void changeChannelVolume(String channelName, Double volume)
     {
-        channels.get(channelName).setVolume(volume);
+        try{
+            if(volume != null)
+                channels.get(channelName).setVolume(volume);
+            else
+                System.out.println("NULL VOLUME WAS SENT TO CHANNEL '"+ channelName+ "'");
+        }
+        catch(NullPointerException e)
+        {
+            System.out.println(e);
+        }
     }
     
-    public static MediaPlayer createPlayer(String soundPath, String channelName)
+    public static MediaPlayer createPlayer(String soundPath, String channelName, boolean loop)
     {
         MediaPlayer mediaPlayer = new MediaPlayer(ResourceLoader.loadAudio(soundPath));
+         if(loop)
+             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+         
         addPlayer(channelName, mediaPlayer);
         return mediaPlayer;
     }
@@ -58,6 +70,14 @@ public class SoundManager {
     public static void addPlayer(String channelName, MediaPlayer player)
     {
         channels.get(channelName).addPlayer(player);
+    }
+    
+    public static void clear()
+    {
+        channels.forEach((k, v) -> {
+            if(v.isTemporary())
+                v.clear();
+        });
     }
     
 }

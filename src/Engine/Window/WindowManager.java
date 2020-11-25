@@ -323,6 +323,7 @@ public class WindowManager extends AnchorPane{
             soundOptionBox.setSpacing(40);
             soundOptionBox.setStyle("-fx-background-color: rgba(33, 35, 46, 0.8); -fx-background-radius: 10; -fx-padding: 20;");
 
+            //master slider
             Label masterSoundLabel = new Label("master volume : " + Settings.getFloat("snd_master"));
             Slider masterSoundSlider = new Slider(0, 1, Settings.getFloat("snd_master"));
             masterSoundSlider.setMajorTickUnit(0.1f);
@@ -332,12 +333,15 @@ public class WindowManager extends AnchorPane{
                 Number old_val, Number new_val) {
                     masterSoundLabel.setText("master volume : "+String.format("%.1f", new_val));
                     Settings.save("snd_master", String.format("%.1f", masterSoundSlider.getValue()));
+                    System.out.println("-MASTER-");
+                    System.out.println("value sent : "+Settings.getDouble("snd_master"));
                     SoundManager.changeChannelVolume("master", Settings.getDouble("snd_master"));
             }
             });
             HBox masterSoundBox = new HBox();
             masterSoundBox.getChildren().addAll(masterSoundLabel, masterSoundSlider);
             
+            //game slider
             Label gameSoundLabel = new Label("game volume : " + Settings.getFloat("snd_game"));
             Slider gameSoundSlider = new Slider(0, 1, Settings.getFloat("snd_game"));
             gameSoundSlider.setMajorTickUnit(0.1f);
@@ -353,6 +357,7 @@ public class WindowManager extends AnchorPane{
             HBox gameSoundBox = new HBox();
             gameSoundBox.getChildren().addAll(gameSoundLabel, gameSoundSlider);
             
+            //music slider
             Label musicSoundLabel = new Label("music volume : " + Settings.getFloat("snd_music"));
             Slider musicSoundSlider = new Slider(0, 1, Settings.getFloat("snd_music"));
             musicSoundSlider.setMajorTickUnit(0.1f);
