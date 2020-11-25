@@ -42,7 +42,7 @@ public class Game extends Application{
     
     public void start(Stage stage){
         initEngine(stage);
-        mediaPlayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "master");
+        mediaPlayer = SoundManager.createPlayer("sounds/music/recycle_inc.wav", "music");
         mediaPlayer.setAutoPlay(true);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         new AnimationTimer() { //Game main loop
