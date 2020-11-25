@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -27,7 +28,7 @@ import javafx.scene.shape.Rectangle;
  *
  * @author A
  */
-public class WallPane extends TitledPane{
+public class WallPane extends Pane{
     //Labels Initialization
     private Label nameLbl = new Label("Name : ");
     private Label textureLbl = new Label("Texture : ");
@@ -41,7 +42,6 @@ public class WallPane extends TitledPane{
     ObservableList<String> flags = FXCollections.observableArrayList(Arrays.asList(WallProfile.flagArray));//Observable List of Flags
     
     //Buttons Initialization
-    private Button select;
     private Button cancel;
     private Button save;
     private Button delete;
@@ -59,16 +59,14 @@ public class WallPane extends TitledPane{
         this.reset();
         
         //Buttons
-        this.select = new Button("Select");
         this.cancel = new Button("Cancel");
         this.save = new Button("Save Changes");
-        this.delete = new Button("Delete Profile");
+        this.delete = new Button("Delete");
         
         save.setDisable(true);
         cancel.setDisable(true);
         
-        super.setText(wallProfile.getName());
-        super.setContent(this.setupPane());
+        this.getChildren().add(setupPane());
     }
     
     //Method that sets up the pane in a vertical Box
@@ -93,9 +91,8 @@ public class WallPane extends TitledPane{
         flagBox.setSpacing(10);
         
         //Initialize the Button Section
-        HBox.setHgrow(space, Priority.ALWAYS);
         VBox.setVgrow(space, Priority.ALWAYS);
-        HBox buttons = new HBox(save, cancel, space, select, delete);
+        HBox buttons = new HBox(save, cancel, delete);
         buttons.setPadding(padding);
         buttons.setSpacing(5);
         
@@ -166,14 +163,6 @@ public class WallPane extends TitledPane{
 
     public void setFlags(ObservableList<String> flags) {
         this.flags = flags;
-    }
-
-    public Button getSelect() {
-        return select;
-    }
-
-    public void setSelect(Button select) {
-        this.select = select;
     }
 
     public Button getCancel() {

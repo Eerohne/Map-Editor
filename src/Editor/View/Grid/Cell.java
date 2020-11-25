@@ -66,7 +66,7 @@ public class Cell extends Rectangle{
     }
     
     public void setImg(Image img){
-        this.wallID = WallProfile.getPaletteID(img);
+        this.wallID = WallProfile.getID(img);
         this.setImg(wallID);
     }
     

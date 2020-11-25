@@ -4,21 +4,13 @@ import Editor.Model.WallProfile;
 import Editor.View.Grid.Cell;
 import Editor.View.Grid.Grid;
 import Editor.View.Info;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
@@ -26,7 +18,7 @@ import javafx.scene.transform.Translate;
  *
  * @author A
  */
-public class GridController {
+public class GridController{
     //
     public static WallProfile selectedWallProfile;
     
@@ -203,7 +195,9 @@ public class GridController {
         //Fix Mouse Drag Leak
         try {
             if(!(mouseX < 0 || mouseY < 0 || mouseX > getPaneBounds().getMaxX() || mouseY > getPaneBounds().getMaxY())){
-                this.grid.getCells()[(int)getGridX()][(int)getGridY()].setImg(selectedWallProfile.getImage());
+                Cell c = this.grid.getCells()[(int)getGridX()][(int)getGridY()];
+                c.setImg(selectedWallProfile.getImage());
+                onHover(c);
             }
         } catch (Exception e) {
             System.out.println("DON'T DRAW OUTSIDE THE GRID");

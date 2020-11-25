@@ -37,7 +37,7 @@ import org.json.simple.JSONObject;
  *
  * @author linuo
  */
-public class InfoController {
+public class InfoController{
 
     Info info;
     Grid grid;

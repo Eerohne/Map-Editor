@@ -26,7 +26,7 @@ import org.json.simple.parser.ParseException;
  *
  * @author A
  */
-public class MenuController {
+public class MenuController{
     private Menu file;
     private Menu edit;
     private Menu run;

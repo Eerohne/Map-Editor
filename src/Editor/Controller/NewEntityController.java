@@ -37,7 +37,7 @@ import org.json.simple.parser.ParseException;
  *
  * @author linuo
  */
-public class NewEntityController {
+public class NewEntityController{
     
     EntityModel model = new EntityModel();
     NewEntity view = new NewEntity();

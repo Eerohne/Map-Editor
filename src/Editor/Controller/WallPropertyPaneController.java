@@ -13,7 +13,7 @@ import Editor.View.Properties.WallTab;
  *
  * @author A
  */
-public class WallPropertyPaneController {
+public class WallPropertyPaneController{
     WallTab tab;
     Grid grid;
     

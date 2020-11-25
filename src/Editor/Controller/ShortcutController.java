@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  *
  * @author A
  */
-public class ShortcutController {
+public class ShortcutController{
 
     public ShortcutController(ShortcutBar shortcutBar, Stage owner) {
         shortcutBar.getHelp().setOnAction(e -> {

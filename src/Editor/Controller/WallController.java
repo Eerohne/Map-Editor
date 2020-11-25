@@ -23,12 +23,11 @@ import javafx.scene.shape.Rectangle;
  *
  * @author A
  */
-public class WallController {
+public class WallController{
     WallPane wallPane;
     Grid grid;
     
     //WallPane Component references
-    private Button select;
     private Button cancel;
     private Button save;
     private Button delete;
@@ -48,11 +47,8 @@ public class WallController {
         
         cancel.setOnAction(e -> cancelEvent());
         save.setOnAction(e -> saveEvent());
-        select.setOnAction(e -> {
-            GridController.selectedWallProfile = this.wallPane.getWallProfile();
-        });
         delete.setOnAction(e -> {
-            System.out.println(wallPane.getWallProfile().getPaletteID());
+            System.out.println(wallPane.getWallProfile().getID());
             System.out.println(WallProfile.palette);
             for (Map.Entry<Integer, Image> en : WallProfile.palette.entrySet()) {
                 System.out.println(en.getValue().toString());
@@ -62,7 +58,6 @@ public class WallController {
     }
     
     private void setupReferences(){
-        this.select = wallPane.getSelect();
         this.save = wallPane.getSave();
         this.cancel = wallPane.getCancel();
         this.delete = wallPane.getDelete();
@@ -88,7 +83,7 @@ public class WallController {
         wallPane.getWallProfile().setName(nameField.getText());
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {
-                if(cell.getID() == wallPane.getWallProfile().getPaletteID())
+                if(cell.getID() == wallPane.getWallProfile().getID())
                     cell.setImg(wallPane.getWallProfile().getImage());
             }
         }

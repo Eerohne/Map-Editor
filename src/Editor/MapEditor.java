@@ -9,24 +9,29 @@ import Editor.View.Grid.Grid;
 import Editor.Controller.GridController;
 import Editor.Controller.InfoController;
 import Editor.Controller.MenuController;
+import Editor.Controller.MetaDataController;
 import Editor.Controller.ShortcutController;
 import Editor.Controller.WallPropertyPaneController;
+import Editor.Controller.WallSelectionController;
 import Editor.Model.WallProfile;
 import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Menu.TopMenu;
 import Editor.View.Properties.EntityTab;
+import Editor.View.Properties.WallPane;
 import Editor.View.Properties.WallTab;
 import java.io.File;
 import java.net.MalformedURLException;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -52,18 +57,31 @@ public class MapEditor extends Application {
         Info info = new Info();
         setChildrenClipping(grid);
         
-        
+        //Property Panels Setup
         //Create Entity Tab
         EntityTab entityTab = new EntityTab();
         Tab entities = new Tab("Entities", entityTab);
         
         //Create Wall Tab
-        WallTab wallTab = new WallTab(floor, new WallProfile("Black", "grey_brick_vines.png", 1));
-
+        WallTab wallTab = new WallTab();//floor, new WallProfile("Black", "grey_brick_vines.png", 1)
         Tab walls = new Tab("Walls", wallTab);
         
+        //Property pane
         TabPane properties = new TabPane(walls, entities);
         properties.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        properties.setPrefHeight(750);
+        
+        ScrollPane scrollDataPane = new ScrollPane();
+        Tab data = new Tab("Metadata", scrollDataPane);
+        
+        TabPane metadata = new TabPane(data);
+        metadata.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        MetaDataController.setContent(new WallPane(floor), new WallSelectionController(new WallPane(floor)));
+        
+        Region r = new Region();
+        VBox.setVgrow(r, Priority.ALWAYS);
+        
+        VBox dataSide = new VBox(properties, r, metadata);
         
         //
         BorderPane gridDisplay = new BorderPane();
@@ -73,7 +91,7 @@ public class MapEditor extends Application {
         BorderPane layout = new BorderPane();
         layout.setCenter(gridDisplay);
         layout.setTop(tools);
-        layout.setLeft(properties);
+        layout.setLeft(dataSide);
         
         
         Scene scene = new Scene(layout, 1920, 1080);
@@ -83,6 +101,7 @@ public class MapEditor extends Application {
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow);
         WallPropertyPaneController wppc = new WallPropertyPaneController(wallTab, grid);
+        MetaDataController mdc = new MetaDataController(scrollDataPane);
         
         String pathName = "resources/style/style.css" ;
         File file = new File(pathName);

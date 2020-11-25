@@ -31,6 +31,5 @@ public class NewEntityStage{
         newEntity.setTitle("Add New Entity");
         newEntity.setScene(scene);
         newEntity.show();
-       
     }
 }

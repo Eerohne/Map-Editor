@@ -21,6 +21,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -31,7 +32,7 @@ import org.json.simple.parser.ParseException;
  *
  * @author linuo
  */
-public class ExistingEntityController {
+public class ExistingEntityController{
     EntityModel model = new EntityModel();
     ExistingEntityModification view = new ExistingEntityModification();
     ObservableList<EntityModel> list = FXCollections.observableArrayList();
