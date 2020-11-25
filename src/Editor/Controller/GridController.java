@@ -200,7 +200,7 @@ public class GridController{
                 onHover(c);
             }
         } catch (Exception e) {
-            System.out.println("DON'T DRAW OUTSIDE THE GRID");
+            System.out.println(e);
         }
     }
     

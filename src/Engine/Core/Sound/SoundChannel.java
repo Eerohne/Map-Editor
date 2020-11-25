@@ -7,9 +7,11 @@ package Engine.Core.Sound;
 
 import Engine.Core.Settings;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
 
 /**
  *
@@ -17,7 +19,7 @@ import javafx.scene.media.MediaPlayer;
  */
 public class SoundChannel {
     public ReadOnlyObjectWrapper<Double> volume;
-    private ArrayList<MediaPlayer> players;
+    private HashMap<MediaPlayer, Status> players;
     private boolean temporaryChannel; //should players in this channel be cleared on map load?
     
     //only when a channel is a slave of a master channel
@@ -47,7 +49,7 @@ public class SoundChannel {
             this.masterChannelName = "";
         
         this.temporaryChannel = isTemporary;
-        players = new ArrayList<>();
+        players = new HashMap<>();
     }
     
     public void setVolume(Double volume)
@@ -66,32 +68,36 @@ public class SoundChannel {
         }
     }
     
-    public void setPause(boolean isPaused)
+    public void pause()
     {
-        for(MediaPlayer p : players)
-        {
-            if(isPaused)
-                p.pause();
-            else
-                p.play();
-        }
+        players.forEach((k, v) -> {
+            players.put(k, k.getStatus());
+            k.pause();
+        });
+    }
+    
+    public void play()
+    {
+        players.forEach((k, v) -> {
+            if(v.equals(Status.PLAYING)) //only play if player was previously playing
+                k.play();
+        });
     }
     
     public void addPlayer(MediaPlayer player)
     {
-        players.add(player);
+        players.put(player, player.getStatus());
         player.volumeProperty().bind(this.volume);
     }
     
     public void removePlayer(MediaPlayer player)
     {
-        for(MediaPlayer p : players)
-        {
-            if(p.equals(player)){
-                players.remove(p);
-                break;
+        players.forEach((k, v) -> {
+            if(k.equals(player)){
+                players.remove(v);
+                player.dispose();
             }
-        }
+        });
     }
     
     public boolean isTemporary()
@@ -101,8 +107,9 @@ public class SoundChannel {
     
     public void clear()
     {
-        for(MediaPlayer player : players)
-            player.dispose();
+        players.forEach((k, v) -> {
+            k.dispose();
+        });
         players.clear();
     }
 }
