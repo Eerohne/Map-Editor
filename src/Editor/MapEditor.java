@@ -11,8 +11,7 @@ import Editor.Controller.InfoController;
 import Editor.Controller.MenuController;
 import Editor.Controller.MetaDataController;
 import Editor.Controller.ShortcutController;
-import Editor.Controller.WallPropertyPaneController;
-import Editor.Controller.WallSelectionController;
+import Editor.Controller.WallController;
 import Editor.Model.WallProfile;
 import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
@@ -71,12 +70,17 @@ public class MapEditor extends Application {
         properties.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         properties.setPrefHeight(750);
         
+        
+        
+        //Metadata Pane Setup
         ScrollPane scrollDataPane = new ScrollPane();
         Tab data = new Tab("Metadata", scrollDataPane);
         
+        WallPane floorData = new WallPane(floor);
+        
         TabPane metadata = new TabPane(data);
         metadata.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        MetaDataController.setContent(new WallPane(floor), new WallSelectionController(new WallPane(floor)));
+        MetaDataController.setContent(floorData, new WallController(floorData, grid, wallTab));
         
         Region r = new Region();
         VBox.setVgrow(r, Priority.ALWAYS);
@@ -100,7 +104,6 @@ public class MapEditor extends Application {
         InfoController ic = new InfoController(info, grid, gc);
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow);
-        WallPropertyPaneController wppc = new WallPropertyPaneController(wallTab, grid);
         MetaDataController mdc = new MetaDataController(scrollDataPane);
         
         String pathName = "resources/style/style.css" ;

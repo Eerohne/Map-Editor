@@ -28,12 +28,18 @@ import javafx.scene.layout.VBox;
  * @author A
  */
 public class WallTab extends ScrollPane{
-    private ArrayList<WallPane> walls = new ArrayList<>();
-    
     private VBox list;
     
     public WallTab(){
         list = new VBox(10);
+        
+        this.refresh();
+        
+        this.setContent(list);
+    }
+    
+    public void refresh(){
+        list.getChildren().clear();
         
         for (Map.Entry<Integer, WallProfile> entry : WallProfile.wallMap.entrySet()) {
             HBox item = new HBox(10);
@@ -53,24 +59,8 @@ public class WallTab extends ScrollPane{
             } catch (FileNotFoundException ex) {
                 System.out.println(ex);
             }
-            
-            
-            //Add controllers
+      
             list.getChildren().add(item);
         }
-        
-        this.setContent(list);
-    }
-    
-//    public WallTab(WallProfile... profiles) {
-//        for (WallProfile profile : profiles) {
-//            WallPane pane = new WallPane(profile);
-//            walls.add(pane);
-//            this.getPanes().add(pane);
-//        }
-//    }
-
-    public ArrayList<WallPane> getWalls() {
-        return walls;
     }
 }

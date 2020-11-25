@@ -12,9 +12,8 @@ import javafx.scene.layout.Pane;
  * @author A
  */
 public class ContentController {
-    Pane content;
+    protected Pane content;
             
-    public ContentController(Pane content) {
-        this.content = content;
+    public ContentController() {
     }
 }

@@ -9,23 +9,22 @@ import Editor.Model.WallProfile;
 import Editor.View.Grid.Cell;
 import Editor.View.Grid.Grid;
 import Editor.View.Properties.WallPane;
+import Editor.View.Properties.WallTab;
 import java.util.Map;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
 /**
  *
  * @author A
  */
-public class WallController{
+public class WallController extends ContentController{
     WallPane wallPane;
     Grid grid;
+    WallTab wallHierarchy;
     
     //WallPane Component references
     private Button cancel;
@@ -36,7 +35,7 @@ public class WallController{
     private Rectangle txrPreview;
     private ComboBox flagCombo;
     
-    public WallController(WallPane pane, Grid grid) {
+    public WallController(WallPane pane, Grid grid, WallTab wallHierarchy) {
         this.wallPane = pane;
         this.grid = grid;
         this.setupReferences();
@@ -48,7 +47,7 @@ public class WallController{
         cancel.setOnAction(e -> cancelEvent());
         save.setOnAction(e -> saveEvent());
         delete.setOnAction(e -> {
-            System.out.println(wallPane.getWallProfile().getID());
+            System.out.println(this.wallPane.getWallProfile().getID());
             System.out.println(WallProfile.palette);
             for (Map.Entry<Integer, Image> en : WallProfile.palette.entrySet()) {
                 System.out.println(en.getValue().toString());
@@ -87,7 +86,7 @@ public class WallController{
                     cell.setImg(wallPane.getWallProfile().getImage());
             }
         }
-        
+        wallHierarchy.refresh();
         cancelEvent();
     }
 }
