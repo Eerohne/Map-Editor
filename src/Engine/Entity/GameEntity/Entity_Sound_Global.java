@@ -34,6 +34,9 @@ public class Entity_Sound_Global extends Entity{
     {
         super(propertyMap);
         
+        mediaPlayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "music", true);
+        mediaPlayer.setAutoPlay(true);
+        //mediaPlayer.play();
         //parse property map here
         //this.myVariable = Integer.valueOf((String) propertyMap.get("myvariable"));
     }

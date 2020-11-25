@@ -36,6 +36,11 @@ public class WallHierarchy extends ScrollPane{
     public WallHierarchy(){
         list = new VBox(10);
         list.setMinWidth(500);
+        String cssLayout = "-fx-border-color: red;\n" +
+                   "-fx-border-insets: 5;\n" +
+                   "-fx-border-width: 3;\n" +
+                   "-fx-border-style: dashed;\n";
+        list.setStyle(cssLayout);
         
         this.refresh();
         selected = (HBox)list.getChildren().get(0);
