@@ -18,7 +18,7 @@ import javafx.stage.Stage;
  */
 public class NewEntityStage{
 
-        public NewEntityStage(Stage parent)  {
+    public NewEntityStage(Stage parent)  {
         Stage newEntity = new Stage();
         newEntity.initOwner(parent);
         newEntity.initModality(Modality.WINDOW_MODAL);
