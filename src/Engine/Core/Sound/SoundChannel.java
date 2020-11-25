@@ -59,7 +59,7 @@ public class SoundChannel {
         {
             Double masterVolume = SoundManager.getChannel(masterChannelName).volume.get();
             this.volume.set(realVolume * masterVolume);
-            //System.out.println("master : "+masterVolume+" slave : "+this.realVolume);
+            //System.out.println("master : "+masterVolume+" slave : " +this.realVolume);
         }
     }
     
