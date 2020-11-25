@@ -8,8 +8,8 @@ package Editor.Controller;
 import Editor.Model.WallProfile;
 import Editor.View.Grid.Cell;
 import Editor.View.Grid.Grid;
-import Editor.View.Properties.WallPane;
-import Editor.View.Properties.WallTab;
+import Editor.View.Properties.WallContent;
+import Editor.View.Properties.WallHierarchy;
 import java.util.Map;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -18,13 +18,13 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 
 /**
- *
+ * Controller of the WallContent Class
  * @author A
  */
 public class WallController extends ContentController{
-    WallPane wallPane;
+    WallContent wallPane;
     Grid grid;
-    WallTab wallHierarchy;
+    WallHierarchy wallHierarchy;
     
     //WallPane Component references
     private Button cancel;
@@ -35,7 +35,7 @@ public class WallController extends ContentController{
     private Rectangle txrPreview;
     private ComboBox flagCombo;
     
-    public WallController(WallPane pane, Grid grid, WallTab wallHierarchy) {
+    public WallController(WallContent pane, Grid grid, WallHierarchy wallHierarchy) {
         this.wallPane = pane;
         this.grid = grid;
         this.wallHierarchy = wallHierarchy;

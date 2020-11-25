@@ -17,8 +17,8 @@ import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Menu.TopMenu;
 import Editor.View.Properties.EntityTab;
-import Editor.View.Properties.WallPane;
-import Editor.View.Properties.WallTab;
+import Editor.View.Properties.WallContent;
+import Editor.View.Properties.WallHierarchy;
 import java.io.File;
 import java.net.MalformedURLException;
 import javafx.application.Application;
@@ -40,7 +40,7 @@ import javafx.stage.Stage;
  */
 public class MapEditor extends Application {
     //Default WallProfile
-    WallProfile floor;
+    WallProfile floor = GridController.selectedWallProfile;
     
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {
@@ -62,7 +62,7 @@ public class MapEditor extends Application {
         Tab entities = new Tab("Entities", entityTab);
         
         //Create Wall Tab
-        WallTab wallTab = new WallTab();//floor, new WallProfile("Black", "grey_brick_vines.png", 1)
+        WallHierarchy wallTab = new WallHierarchy();//floor, new WallProfile("Black", "grey_brick_vines.png", 1)
         Tab walls = new Tab("Walls", wallTab);
         
         //Property pane
@@ -76,7 +76,7 @@ public class MapEditor extends Application {
         ScrollPane scrollDataPane = new ScrollPane();
         Tab data = new Tab("Metadata", scrollDataPane);
         
-        WallPane floorData = new WallPane(floor);
+        WallContent floorData = new WallContent(floor);
         
         TabPane metadata = new TabPane(data);
         metadata.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);

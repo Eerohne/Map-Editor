@@ -28,7 +28,7 @@ import javafx.scene.shape.Rectangle;
  *
  * @author A
  */
-public class WallPane extends Pane{
+public class WallContent extends Pane{
     //Labels Initialization
     private Label nameLbl = new Label("Name : ");
     private Label textureLbl = new Label("Texture : ");
@@ -49,7 +49,7 @@ public class WallPane extends Pane{
     //WallProfile Representation
     private WallProfile wallProfile;
     
-    public WallPane(WallProfile wallProfile) {
+    public WallContent(WallProfile wallProfile) {
         this.wallProfile = wallProfile;
         
         //Interactions 
