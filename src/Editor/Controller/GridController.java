@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
@@ -27,7 +26,11 @@ public class GridController{
     Grid grid;
     
     //Colors - to be replacve with a palette
-    Color wallColor = Color.BLACK;
+    
+    String cssLayout = "-fx-border-color: red;\n" +
+                   "-fx-border-insets: 5;\n" +
+                   "-fx-border-width: 3;\n" +
+                   "-fx-border-style: dashed;\n";
     
     //Editing mode
     int mode = 1;
@@ -105,6 +108,9 @@ public class GridController{
             if(event.getButton().equals(MouseButton.PRIMARY))
                 this.placeWall();
         });
+        
+        grid.setOnMouseEntered(e -> {grid.setStyle(cssLayout);});
+        grid.setOnMouseExited(e -> {grid.setStyle(null);});
         
         //Wall Placement when Mouse Dragged
         grid.setOnMouseDragged(new WallPlacerEvent());

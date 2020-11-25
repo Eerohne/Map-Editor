@@ -10,6 +10,7 @@ import Editor.Model.WallProfile;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Map;
+import java.util.TreeMap;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -45,6 +46,7 @@ public class WallHierarchy extends ScrollPane{
     
     public void refresh(){
         list.getChildren().clear();
+       //Map<Integer, WallProfile> reversed = new TreeMap<>(Colle)
         
         for (Map.Entry<Integer, WallProfile> entry : WallProfile.wallMap.entrySet()) {
             HBox item = new HBox(10);
