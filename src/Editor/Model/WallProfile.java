@@ -104,12 +104,9 @@ public class WallProfile {
     public void setImg(String img){
         try {
             palette.put(id, new Image(new FileInputStream(resourceFolder + img), 100, 100, false, false));
+            this.imgName = img;
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
         }
-    }
-    
-    public void setImg(Image img){
-        palette.put(id, img);
     }
 }
