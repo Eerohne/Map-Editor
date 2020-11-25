@@ -5,6 +5,7 @@
  */
 package Engine.Core;
 
+import Engine.Core.Sound.SoundManager;
 import Engine.Core.Exceptions.LevelCreationException;
 import Engine.Entity.GameEntity.Entity_Player;
 import Engine.Util.Input;
@@ -20,6 +21,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.json.simple.parser.ParseException;
@@ -36,8 +38,12 @@ public class Game extends Application{
     public static boolean isRendering = true;
     public static boolean pauseActive = true;
     
+    public static MediaPlayer mediaPlayer;
+    
     public void start(Stage stage){
         initEngine(stage);
+        mediaPlayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "master");
+        mediaPlayer.setAutoPlay(true);
         new AnimationTimer() { //Game main loop
 
             @Override
@@ -79,6 +85,7 @@ public class Game extends Application{
         
         //initialise input
         Input.init();
+        SoundManager.init();
         
         //now load the initial level
         loadLevel(Settings.get("e_initiallevel"));

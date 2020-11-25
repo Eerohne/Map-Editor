@@ -11,6 +11,7 @@ import Engine.Window.Menu.MenuButton;
 import Engine.Window.Menu.PauseMenu;
 import Engine.Core.Game;
 import Engine.Core.Settings;
+import Engine.Core.Sound.SoundManager;
 import Engine.RaycastRenderer.Renderer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -359,9 +360,9 @@ public class WindowManager extends AnchorPane{
             musicSoundSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
-                    //cappuccino.setOpacity(new_val.doubleValue());
                     musicSoundLabel.setText("music volume : "+String.format("%.1f", new_val));
                     Settings.save("snd_music", String.format("%.1f", musicSoundSlider.getValue()));
+                    SoundManager.changeChannelVolume("master", Settings.getDouble("snd_music"));
             }
             });
             HBox musicSoundBox = new HBox();
