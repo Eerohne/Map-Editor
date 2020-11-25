@@ -35,12 +35,7 @@ public class WallHierarchy extends ScrollPane{
     
     public WallHierarchy(){
         list = new VBox(10);
-        list.setMinWidth(500);
-        String cssLayout = "-fx-border-color: red;\n" +
-                   "-fx-border-insets: 5;\n" +
-                   "-fx-border-width: 3;\n" +
-                   "-fx-border-style: dashed;\n";
-        list.setStyle(cssLayout);
+        list.setMinWidth(427);
         
         this.refresh();
         selected = (HBox)list.getChildren().get(0);
@@ -60,14 +55,13 @@ public class WallHierarchy extends ScrollPane{
                 ImageView preview = new ImageView(txr);
                 preview.setFitHeight(32);
                 preview.setFitWidth(32);
-                preview.setOnMouseClicked(e -> {
+                
+                item.setOnMouseClicked(e -> {
+                    select(item);
                     if(e.getButton().equals(MouseButton.PRIMARY)){
                         GridController.selectedWallProfile = entry.getValue();
                     }
                 });
-                
-                item.setFillHeight(true);
-                item.setOnMouseClicked(e -> select(item));
                 item.getChildren().addAll(name, preview);
             } catch (FileNotFoundException ex) {
                 System.out.println(ex);
