@@ -35,7 +35,7 @@ public class WallHierarchy extends ScrollPane{
     
     public WallHierarchy(){
         list = new VBox(10);
-        list.setMaxWidth(Double.MAX_VALUE);
+        list.setMinWidth(500);
         
         this.refresh();
         selected = (HBox)list.getChildren().get(0);
