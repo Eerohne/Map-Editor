@@ -42,8 +42,8 @@ public class Game extends Application{
     
     public void start(Stage stage){
         initEngine(stage);
-        mediaPlayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "music", false);
-        mediaPlayer.setAutoPlay(true);
+        /*mediaPlayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "music", false);
+        mediaPlayer.setAutoPlay(true);*/
         
         new AnimationTimer() { //Game main loop
 

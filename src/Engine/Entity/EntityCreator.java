@@ -50,6 +50,9 @@ public class EntityCreator { //Entity creation is defined in this class
                 if(verifyProperties(propertyMap, "rotation", "walkspeed", "runspeed"))
                     entity = new Entity_Player_Base(propertyMap);
                 break;
+            case "sound_global":
+                    entity = new Entity_Sound_Global(propertyMap);
+                break;
             case "sprite_decor":
                 if(verifyProperties(propertyMap, "texture", "size"))
                     entity = new Entity_Decor(propertyMap);

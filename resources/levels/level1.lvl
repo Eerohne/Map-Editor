@@ -128,6 +128,13 @@
     "texture":"images/sprites/nonexistantsprite.png",
     "size":"0.5"
     "signals": []
+    },
+    {
+    "classname":"sound_global",
+    "name":"music",
+    "active":"TRUE",
+    "position":[1.5,7.0],
+    "signals": []
     }
 ]
 }

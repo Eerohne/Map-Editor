@@ -59,18 +59,20 @@ public class SoundManager {
     
     public static MediaPlayer createPlayer(String soundPath, String channelName, boolean loop)
     {
+        System.out.println("now setting up new player");
         MediaPlayer mediaPlayer = new MediaPlayer(ResourceLoader.loadAudio(soundPath));
-         if(loop){
-             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-         }
-         else
-         {
-             mediaPlayer.setOnEndOfMedia(new Runnable() {
-            @Override
-                public void run() {
-                    //playing = false;
-                }
-            });
+        if(loop){
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        }
+        else
+        {
+            System.out.println("not loop");
+            /*mediaPlayer.setOnEndOfMedia(new Runnable() {
+           @Override
+               public void run() {
+                   SoundManager.getChannel(channelName).removePlayer(mediaPlayer);
+               }
+           });*/
         }
          
         addPlayer(channelName, mediaPlayer);
