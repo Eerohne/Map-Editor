@@ -78,6 +78,12 @@ public class GridController{
                     scale(scaleShift);
                 }
             }
+            else if(zoom < 0.05) {
+                if (event.getDeltaY() > 0) {
+                    scaleShift += 0.05;
+                    scale(scaleShift);
+                }
+            }
             else{
                 if (event.getDeltaY() < 0) {
                     scaleShift -= 0.05;
