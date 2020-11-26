@@ -41,7 +41,7 @@ import javafx.stage.Stage;
 public class MapEditor extends Application {
     //Default WallProfile
     WallProfile floor = GridController.selectedWallProfile;
-    WallProfile t = new WallProfile("Black", "grey_brick_vines.png", 1);
+    WallProfile t = new WallProfile("S K E L E T O N ?", "skeleton.gif", 1);
     
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {

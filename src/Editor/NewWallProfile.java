@@ -60,6 +60,7 @@ public class NewWallProfile {
                 HBox item = new HBox();
                 try {
                     Image txr = new Image(new FileInputStream(filepath + texture), 100, 100, true, true);
+                    //Image txr = new Image(new FileInputStream("resources\\images\\sprites\\skeleton.gif"), 100, 100, true, true);
                     ImageView preview = new ImageView(txr);
                     
                     item.getChildren().add(preview);
