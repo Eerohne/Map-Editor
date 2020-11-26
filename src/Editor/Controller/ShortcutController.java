@@ -9,6 +9,7 @@ import Editor.Model.WallProfile;
 import Editor.NewWallProfile;
 import Editor.View.Help;
 import Editor.View.Menu.ShortcutBar;
+import Editor.View.Properties.WallHierarchy;
 import Engine.Core.Game;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
@@ -19,7 +20,7 @@ import javafx.stage.Stage;
  */
 public class ShortcutController{
 
-    public ShortcutController(ShortcutBar shortcutBar, Stage owner) {
+    public ShortcutController(ShortcutBar shortcutBar, Stage owner, WallHierarchy wallList) {
         shortcutBar.getHelp().setOnAction(e -> {
             new Help(owner);
         });
@@ -39,7 +40,7 @@ public class ShortcutController{
         });
         
         shortcutBar.getWallShort().setOnAction(e -> {
-            new NewWallProfile(owner, WallProfile.resourceFolder);
+            new NewWallProfile(owner, WallProfile.resourceFolder, wallList);
         });
     }
     

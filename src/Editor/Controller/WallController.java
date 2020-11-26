@@ -21,7 +21,7 @@ import javafx.scene.shape.Rectangle;
  * Controller of the WallContent Class
  * @author A
  */
-public class WallController extends ContentController{
+public class WallController {
     WallContent wallContent;
     Grid grid;
     WallHierarchy wallHierarchy;

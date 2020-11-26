@@ -101,13 +101,12 @@ public class MapEditor extends Application {
         layout.setTop(tools);
         layout.setLeft(dataSide);
         
-        
         Scene scene = new Scene(layout, 1920, 1080);
         
         GridController gc = new GridController(scene, grid);
         InfoController ic = new InfoController(info, grid, gc);
         MenuController mc = new MenuController(menu, editorWindow);
-        ShortcutController sc = new ShortcutController(shortcuts, editorWindow);
+        ShortcutController sc = new ShortcutController(shortcuts, editorWindow, wallTab);
         
         String pathName = "resources/style/style.css" ;
         File file = new File(pathName);
