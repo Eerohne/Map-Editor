@@ -105,6 +105,11 @@ public class WallContent extends Pane{
         this.flagCombo.getSelectionModel().select(wallProfile.getFlag());
     }
     
+    public void changeContent(WallProfile newProfile){
+        this.wallProfile = newProfile;
+        this.reset();
+    }
+    
     /*
     Getters And Setters
     */
