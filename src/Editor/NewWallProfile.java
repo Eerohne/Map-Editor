@@ -40,6 +40,8 @@ public class NewWallProfile {
         newWallWindow.initModality(Modality.WINDOW_MODAL);
         
         Scene scene = new Scene(setupBrowser(), 300, 500);
+        newWallWindow.setResizable(false);
+       
         newWallWindow.setTitle("New Wall Profile");
         newWallWindow.setScene(scene);
         newWallWindow.show();
