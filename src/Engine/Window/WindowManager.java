@@ -365,7 +365,7 @@ public class WindowManager extends AnchorPane{
                 Number old_val, Number new_val) {
                     musicSoundLabel.setText("music volume : "+String.format("%.1f", new_val));
                     Settings.save("snd_music", String.format("%.1f", musicSoundSlider.getValue()));
-                    SoundManager.changeChannelVolume("music", Settings.getDouble("snd_music"));
+                     SoundManager.changeChannelVolume("music", Settings.getDouble("snd_music"));
             }
             });
             HBox musicSoundBox = new HBox();
