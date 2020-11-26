@@ -115,7 +115,7 @@
     "active":"TRUE",
     "position":[1.7,1.5],
     "height":"0.45",
-    "texture":"images/sprites/lamppost.png",
+    "texture":"images/sprites/skeleton.gif",
     "size":"1.1"
     "signals": []
     },
