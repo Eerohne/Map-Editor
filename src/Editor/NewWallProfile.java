@@ -12,12 +12,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -36,7 +39,7 @@ public class NewWallProfile {
         newWallWindow.initOwner(parent);
         newWallWindow.initModality(Modality.WINDOW_MODAL);
         
-        Scene scene = new Scene(setupBrowser(), 100, 100);
+        Scene scene = new Scene(setupBrowser(), 300, 500);
         newWallWindow.setTitle("New Wall Profile");
         newWallWindow.setScene(scene);
         newWallWindow.show();
@@ -45,6 +48,7 @@ public class NewWallProfile {
     private BorderPane setupBrowser(){
         BorderPane pane = new BorderPane();
         pane.setCenter(textureView());
+        pane.setBottom(buttonContainer());
         
         return pane;
     }
@@ -77,5 +81,20 @@ public class NewWallProfile {
         }
         
         return new ScrollPane(temp);
+    }
+    
+    private HBox buttonContainer(){
+        HBox buttonBox = new HBox(5);
+        buttonBox.setPadding(new Insets(5));
+        
+        Button next = new Button("Next >");
+        Button cancel = new Button("Cancel");
+        Region space = new Region();
+        
+        HBox.setHgrow(space, Priority.ALWAYS);
+        
+        buttonBox.getChildren().addAll(space, next, cancel);
+        
+        return buttonBox;
     }
 }

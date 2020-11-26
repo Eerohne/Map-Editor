@@ -62,9 +62,6 @@ public class MapEditor extends Application {
         Tab entities = new Tab("Entities", entityTab);
         
         
-        
-        
-        
         //Wall Content Metadata 
         WallContent wallContent = new WallContent(floor);
         
