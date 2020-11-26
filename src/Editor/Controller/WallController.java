@@ -22,7 +22,7 @@ import javafx.scene.shape.Rectangle;
  * @author A
  */
 public class WallController extends ContentController{
-    WallContent wallPane;
+    WallContent wallContent;
     Grid grid;
     WallHierarchy wallHierarchy;
     
@@ -36,7 +36,7 @@ public class WallController extends ContentController{
     private ComboBox flagCombo;
     
     public WallController(WallContent pane, Grid grid, WallHierarchy wallHierarchy) {
-        this.wallPane = pane;
+        this.wallContent = pane;
         this.grid = grid;
         this.wallHierarchy = wallHierarchy;
         this.setupReferences();
@@ -48,7 +48,7 @@ public class WallController extends ContentController{
         cancel.setOnAction(e -> cancelEvent());
         save.setOnAction(e -> saveEvent());
         delete.setOnAction(e -> {
-            System.out.println(this.wallPane.getWallProfile().getID());
+            System.out.println(this.wallContent.getWallProfile().getID());
             System.out.println(WallProfile.palette);
             for (Map.Entry<Integer, Image> en : WallProfile.palette.entrySet()) {
                 System.out.println(en.getValue().toString());
@@ -58,13 +58,13 @@ public class WallController extends ContentController{
     }
     
     private void setupReferences(){
-        this.save = wallPane.getSave();
-        this.cancel = wallPane.getCancel();
-        this.delete = wallPane.getDelete();
+        this.save = wallContent.getSave();
+        this.cancel = wallContent.getCancel();
+        this.delete = wallContent.getDelete();
         
-        this.flagCombo = wallPane.getFlagCombo();
-        this.nameField = wallPane.getNameField();
-        this.txrPreview = wallPane.getTxrPreview();
+        this.flagCombo = wallContent.getFlagCombo();
+        this.nameField = wallContent.getNameField();
+        this.txrPreview = wallContent.getTxrPreview();
     }
     
     private void disableButtons(boolean disable){
@@ -74,17 +74,17 @@ public class WallController extends ContentController{
     
     private void cancelEvent(){
         disableButtons(true);
-        wallPane.reset();
+        wallContent.reset();
     }
     
     private void saveEvent(){
-        wallPane.getWallProfile().setFlag((String)flagCombo.getValue());
-        wallPane.getWallProfile().setImg("grey_brick.png"); //DUMMY
-        wallPane.getWallProfile().setName(nameField.getText());
+        wallContent.getWallProfile().setFlag((String)flagCombo.getValue());
+        wallContent.getWallProfile().setImg("grey_brick.png"); //DUMMY
+        wallContent.getWallProfile().setName(nameField.getText());
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {
-                if(cell.getID() == wallPane.getWallProfile().getID())
-                    cell.setImg(wallPane.getWallProfile().getImage());
+                if(cell.getID() == wallContent.getWallProfile().getID())
+                    cell.setImg(wallContent.getWallProfile().getImage());
             }
         }
         wallHierarchy.refresh();

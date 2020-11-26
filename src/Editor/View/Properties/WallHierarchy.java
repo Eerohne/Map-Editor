@@ -9,6 +9,7 @@ import Editor.Controller.GridController;
 import Editor.Model.WallProfile;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import javafx.geometry.Insets;
@@ -21,8 +22,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -33,8 +32,11 @@ import javafx.scene.paint.Color;
 public class WallHierarchy extends ScrollPane{
     private VBox list;
     private HBox selected;
+    private WallContent display;
     
-    public WallHierarchy(){
+    public WallHierarchy(WallContent display){
+        this.display = display;
+        
         list = new VBox(10);
         list.setMinWidth(427);
         
@@ -46,9 +48,10 @@ public class WallHierarchy extends ScrollPane{
     
     public void refresh(){
         list.getChildren().clear();
-       //Map<Integer, WallProfile> reversed = new TreeMap<>(Colle)
+        Map<Integer, WallProfile> reversed = new TreeMap<>(Collections.reverseOrder());
+        reversed.putAll(WallProfile.wallMap);
         
-        for (Map.Entry<Integer, WallProfile> entry : WallProfile.wallMap.entrySet()) {
+        for (Map.Entry<Integer, WallProfile> entry : reversed.entrySet()) {
             HBox item = new HBox(10);
             item.setPadding(new Insets(25));
             Label name = new Label(entry.getValue().getName() + " : ");
@@ -60,6 +63,9 @@ public class WallHierarchy extends ScrollPane{
                 
                 item.setOnMouseClicked(e -> {
                     select(item);
+                    
+                    display.changeContent(entry.getValue());
+                    
                     if(e.getButton().equals(MouseButton.PRIMARY)){
                         GridController.selectedWallProfile = entry.getValue();
                     }

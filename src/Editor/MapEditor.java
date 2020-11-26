@@ -9,7 +9,6 @@ import Editor.View.Grid.Grid;
 import Editor.Controller.GridController;
 import Editor.Controller.InfoController;
 import Editor.Controller.MenuController;
-import Editor.Controller.MetaDataController;
 import Editor.Controller.ShortcutController;
 import Editor.Controller.WallController;
 import Editor.Model.WallProfile;
@@ -62,8 +61,15 @@ public class MapEditor extends Application {
         EntityTab entityTab = new EntityTab();
         Tab entities = new Tab("Entities", entityTab);
         
+        
+        
+        
+        
+        //Wall Content Metadata 
+        WallContent wallContent = new WallContent(floor);
+        
         //Create Wall Tab
-        WallHierarchy wallTab = new WallHierarchy();//floor, new WallProfile("Black", "grey_brick_vines.png", 1)
+        WallHierarchy wallTab = new WallHierarchy(wallContent);//floor, new WallProfile("Black", "grey_brick_vines.png", 1)
         Tab walls = new Tab("Walls", wallTab);
         
         //Property pane
@@ -72,16 +78,16 @@ public class MapEditor extends Application {
         properties.setPrefHeight(750);
         
         
+        //Metadata pane setup
+        WallController wc = new WallController(wallContent, grid, wallTab);
         
-        //Metadata Pane Setup
-        ScrollPane scrollDataPane = new ScrollPane();
+        
+        
+        ScrollPane scrollDataPane = new ScrollPane(wallContent);
         Tab data = new Tab("Metadata", scrollDataPane);
-        
-        WallContent floorData = new WallContent(floor);
         
         TabPane metadata = new TabPane(data);
         metadata.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        MetaDataController.setContent(floorData, new WallController(floorData, grid, wallTab));
         
         Region r = new Region();
         VBox.setVgrow(r, Priority.ALWAYS);
@@ -105,7 +111,6 @@ public class MapEditor extends Application {
         InfoController ic = new InfoController(info, grid, gc);
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow);
-        MetaDataController mdc = new MetaDataController(scrollDataPane);
         
         String pathName = "resources/style/style.css" ;
         File file = new File(pathName);
