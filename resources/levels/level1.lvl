@@ -88,7 +88,7 @@
                     "name":"OnValueReached",
                     "targetname":"messenger1",
                     "inputname":"printMessage",
-                    "arguments":["the counter  has reached it's target value"]
+                    "arguments":["the counter has reached it's target value"]
                 }
                 ]
     },
