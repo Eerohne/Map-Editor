@@ -78,8 +78,6 @@ public class MapEditor extends Application {
         //Metadata pane setup
         WallController wc = new WallController(wallContent, grid, wallTab);
         
-        
-        
         ScrollPane scrollDataPane = new ScrollPane(wallContent);
         Tab data = new Tab("Metadata", scrollDataPane);
         
@@ -120,6 +118,8 @@ public class MapEditor extends Application {
         editorWindow.setScene(scene);
         editorWindow.setMaximized(true);
         editorWindow.show();
+        
+        new EditorSplashScreen(editorWindow);
     }
     
     
