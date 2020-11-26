@@ -32,6 +32,7 @@ public class Grid extends Pane{
         
         this.drawGrid(cellSize, floorProfile.getImage());
         this.getChildren().add(selectionCell);
+        
     }
     
     private void drawGrid(int cellSize, Image floor){
