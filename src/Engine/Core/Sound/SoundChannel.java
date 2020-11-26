@@ -19,7 +19,7 @@ import javafx.scene.media.MediaPlayer.Status;
  */
 public class SoundChannel {
     public ReadOnlyObjectWrapper<Double> volume;
-    private HashMap<MediaPlayer, Status> players;
+    private HashMap<MediaPlayer, Boolean> players;
     private boolean temporaryChannel; //should players in this channel be cleared on map load?
     
     //only when a channel is a slave of a master channel
@@ -58,20 +58,21 @@ public class SoundChannel {
         if(this.masterChannelName.isEmpty())//is not a slave channel
         {
             this.volume.set(volume);
-            System.out.println("self channel : "+this.volume.get());
         }
         else
         {
             Double masterVolume = SoundManager.getChannel(masterChannelName).volume.get();
             this.volume.set(realVolume * masterVolume);
-            System.out.println("from master channel '"+this.masterChannelName+"' : "+this.volume.get());
         }
     }
     
     public void pause()
     {
         players.forEach((k, v) -> {
-            players.put(k, k.getStatus());
+            if(k.getStatus().equals(Status.PLAYING))
+                players.put(k, true);
+            else
+                players.put(k, false);
             k.pause();
         });
     }
@@ -79,15 +80,17 @@ public class SoundChannel {
     public void play()
     {
         players.forEach((k, v) -> {
-            if(v.equals(Status.PLAYING)) //only play if player was previously playing
+            if(v.equals(true)) //only play if player was previously playing
                 k.play();
         });
     }
     
     public void addPlayer(MediaPlayer player)
     {
-        players.put(player, player.getStatus());
+        //players.put(player.get, true);
+        System.out.println(player.getStatus());
         player.volumeProperty().bind(this.volume);
+        System.out.println(this.volume);
     }
     
     public void removePlayer(MediaPlayer player)

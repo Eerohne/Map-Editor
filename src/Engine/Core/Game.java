@@ -8,6 +8,7 @@ package Engine.Core;
 import Engine.Core.Sound.SoundManager;
 import Engine.Core.Exceptions.LevelCreationException;
 import Engine.Entity.GameEntity.Entity_Player;
+import Engine.Entity.GameEntity.Entity_Sound_Global;
 import Engine.Util.Input;
 import Engine.Window.WindowManager;
 import Engine.Level.Level;
@@ -19,6 +20,7 @@ import java.net.MalformedURLException;
 import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.MediaPlayer;
@@ -42,8 +44,6 @@ public class Game extends Application{
     
     public void start(Stage stage){
         initEngine(stage);
-        /*mediaPlayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "music", false);
-        mediaPlayer.setAutoPlay(true);*/
         
         new AnimationTimer() { //Game main loop
 

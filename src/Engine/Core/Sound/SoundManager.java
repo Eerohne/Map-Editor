@@ -67,12 +67,12 @@ public class SoundManager {
         else
         {
             System.out.println("not loop");
-            /*mediaPlayer.setOnEndOfMedia(new Runnable() {
+            mediaPlayer.setOnEndOfMedia(new Runnable() {
            @Override
                public void run() {
                    SoundManager.getChannel(channelName).removePlayer(mediaPlayer);
                }
-           });*/
+           });
         }
          
         addPlayer(channelName, mediaPlayer);

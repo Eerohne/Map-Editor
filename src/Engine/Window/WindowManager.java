@@ -333,8 +333,6 @@ public class WindowManager extends AnchorPane{
                 Number old_val, Number new_val) {
                     masterSoundLabel.setText("master volume : "+String.format("%.1f", new_val));
                     Settings.save("snd_master", String.format("%.1f", masterSoundSlider.getValue()));
-                    System.out.println("-MASTER-");
-                    System.out.println("value sent : "+Settings.getDouble("snd_master"));
                     SoundManager.changeChannelVolume("master", Settings.getDouble("snd_master"));
             }
             });

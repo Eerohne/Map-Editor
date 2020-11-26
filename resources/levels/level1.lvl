@@ -53,8 +53,8 @@
     "classname":"player_base",
     "name":"player1",
     "active":"TRUE",
-    "position":[2.5,2.5],
-    "rotation":"230",
+    "position":[3.5,6.75],
+    "rotation":"180",
     "walkspeed":"2",
     "runspeed":"1"
     },
@@ -115,8 +115,18 @@
     "active":"TRUE",
     "position":[1.7,1.5],
     "height":"0.45",
-    "texture":"images/sprites/skeleton.gif",
+    "texture":"images/sprites/lamppost.png",
     "size":"1.1"
+    "signals": []
+    },
+    {
+    "classname":"sprite_decor",
+    "name":"skeleton",
+    "active":"TRUE",
+    "position":[2.5,6.7],
+    "height":"0.4",
+    "texture":"images/sprites/skeleton.gif",
+    "size":"0.9"
     "signals": []
     },
     {
@@ -125,7 +135,7 @@
     "active":"TRUE",
     "position":[1.5,7.0],
     "height":"0.5",
-    "texture":"images/sprites/nonexistantsprite.png",
+    "texture":"images/sprites/coin.png",
     "size":"0.5"
     "signals": []
     },

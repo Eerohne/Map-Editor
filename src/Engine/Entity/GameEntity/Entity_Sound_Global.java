@@ -8,6 +8,7 @@ package Engine.Entity.GameEntity;
 import static Engine.Core.Game.mediaPlayer;
 import Engine.Core.Sound.SoundManager;
 import Engine.Entity.AbstractEntity.Entity;
+import Engine.Util.RessourceManager.ResourceLoader;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 import javafx.scene.media.MediaPlayer;
@@ -23,20 +24,22 @@ public class Entity_Sound_Global extends Entity{
     private boolean paused;
     private MediaPlayer mediaplayer;
     
-    public Entity_Sound_Global(String name, Point2D position, int myVariable)
+    public Entity_Sound_Global(String name, Point2D position)
     {
         super(name, position);
-        mediaPlayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "music", false);
+        mediaPlayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "master", true);
         mediaPlayer.setAutoPlay(true);
     }
     
     public Entity_Sound_Global(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
-        
-        mediaPlayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "music", true);
+        System.out.println("entity");
+        mediaPlayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "music", false);
+        //mediaPlayer = new MediaPlayer(ResourceLoader.loadAudio("sounds/music/digital_attack.wav"));
         mediaPlayer.setAutoPlay(true);
         //mediaPlayer.play();
+        //System.out.println(mediaPlayer.getStatus());
         //parse property map here
         //this.myVariable = Integer.valueOf((String) propertyMap.get("myvariable"));
     }
