@@ -44,7 +44,7 @@ public class EditorSplashScreen {
         Region space = new Region();
         VBox.setVgrow(space, Priority.ALWAYS);
         
-        new SplashScreenController(newMap, openMap, closeSS, splashScreenStage);
+        new SplashScreenController(newMap, openMap, closeSS, splashScreenStage, parent);
         
         VBox splashContent = new VBox(optikWelcome, optikName, space, newMap, openMap, closeSS);
         splashContent.setAlignment(Pos.CENTER);
@@ -70,16 +70,16 @@ public class EditorSplashScreen {
 
 class SplashScreenController{
 
-    public SplashScreenController(Button newMap, Button openMap, Button close, Stage s) {
-        newMap.setOnAction(e -> {});
+    public SplashScreenController(Button newMap, Button openMap, Button close, Stage current, Stage parent) {
+        newMap.setOnAction(e -> {new NewMap(parent);});
         
         openMap.setOnAction(e -> {});
         
-        close.setOnAction(e -> {s.close();});
+        close.setOnAction(e -> {current.close();});
         
-        s.focusedProperty().addListener(((observable, pastFoc, isFoc) -> {
+        current.focusedProperty().addListener(((observable, pastFoc, isFoc) -> {
             if(!isFoc)
-                s.close();
+                current.close();
         }));
     }
 }

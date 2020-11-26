@@ -44,7 +44,7 @@ public class MapEditor extends Application {
     
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {
-        floor = new WallProfile("Floor", "white.png", 1);
+        floor = new WallProfile("Floor", "white.png", 0);
         
         //Top Elements
         TopMenu menu = new TopMenu();
