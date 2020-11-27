@@ -40,8 +40,6 @@ public class Game extends Application{
     public static boolean isRendering = true;
     public static boolean pauseActive = true;
     
-    public static MediaPlayer mediaPlayer;
-    
     public void start(Stage stage){
         initEngine(stage);
         

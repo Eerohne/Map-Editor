@@ -5,13 +5,13 @@
  */
 package Engine.Entity.GameEntity;
 
-import static Engine.Core.Game.mediaPlayer;
 import Engine.Core.Sound.SoundManager;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Util.RessourceManager.ResourceLoader;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
 
 /**
  *
@@ -27,21 +27,16 @@ public class Entity_Sound_Global extends Entity{
     public Entity_Sound_Global(String name, Point2D position)
     {
         super(name, position);
-        mediaPlayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "master", true);
-        mediaPlayer.setAutoPlay(true);
+        mediaplayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "master", true);
+        mediaplayer.setAutoPlay(true);
     }
     
     public Entity_Sound_Global(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
         System.out.println("entity");
-        mediaPlayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "music", false);
-        //mediaPlayer = new MediaPlayer(ResourceLoader.loadAudio("sounds/music/digital_attack.wav"));
-        mediaPlayer.setAutoPlay(true);
-        //mediaPlayer.play();
-        //System.out.println(mediaPlayer.getStatus());
-        //parse property map here
-        //this.myVariable = Integer.valueOf((String) propertyMap.get("myvariable"));
+        this.mediaplayer = SoundManager.createPlayer((String) propertyMap.get("audiopath"), "music", Boolean.valueOf((String) propertyMap.get("loop")));
+        mediaplayer.setAutoPlay(Boolean.valueOf((String) propertyMap.get("onstart")));
     }
     
     @Override
@@ -59,10 +54,17 @@ public class Entity_Sound_Global extends Entity{
         switch(signalName) //new signals here
         {
             case "play":
-                this.mediaplayer.play();
+                mediaplayer.play();
                 break;
             case "pause":
                 this.mediaplayer.pause();
+                break;
+            case "toggle":
+                if(this.mediaplayer.getStatus() == Status.PLAYING)
+                    this.mediaplayer.pause();
+                else
+                    this.mediaplayer.play();
+                break;
             default:
                 super.handleSignal(signalName, arguments);
                 

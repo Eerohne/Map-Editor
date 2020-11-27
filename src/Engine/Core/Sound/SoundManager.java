@@ -5,7 +5,6 @@
  */
 package Engine.Core.Sound;
 
-import static Engine.Core.Game.mediaPlayer;
 import Engine.Util.RessourceManager.ResourceLoader;
 import java.util.HashMap;
 import javafx.beans.property.DoubleProperty;

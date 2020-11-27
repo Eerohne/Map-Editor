@@ -89,6 +89,12 @@
                     "targetname":"messenger1",
                     "inputname":"printMessage",
                     "arguments":["the counter has reached it's target value"]
+                },
+                {
+                    "name":"OnValueReached",
+                    "targetname":"music",
+                    "inputname":"play",
+                    "arguments":[]
                 }
                 ]
     },
@@ -144,6 +150,9 @@
     "name":"music",
     "active":"TRUE",
     "position":[1.5,7.0],
+    "onstart":"false",
+    "audiopath":"sounds/music/recycle_inc.wav",
+    "loop":"false",
     "signals": []
     }
 ]

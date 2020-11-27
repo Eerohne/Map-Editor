@@ -87,7 +87,7 @@ public class SoundChannel {
     
     public void addPlayer(MediaPlayer player)
     {
-        //players.put(player.get, true);
+        //players.put(player, true);
         System.out.println(player.getStatus());
         player.volumeProperty().bind(this.volume);
         System.out.println(this.volume);
