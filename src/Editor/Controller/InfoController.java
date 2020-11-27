@@ -5,6 +5,7 @@
  */
 package Editor.Controller;
 
+import Editor.Model.WallProfile;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,6 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import Editor.View.Info;
 import Editor.View.Grid.Grid;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.ObjectInputStream;
@@ -42,7 +45,7 @@ public class InfoController{
     Info info;
     Grid grid;
     GridController gc;
-    String testStr = "123testing testing testing";
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
     
     public InfoController(Info info, Grid grid, GridController gc) {
         this.info = info;
@@ -73,52 +76,33 @@ public class InfoController{
     }
     
     public void save() throws IOException{
+        JSONArray editorSaveArray = new JSONArray();// array for all info to be saved
+        JSONObject gridX = new JSONObject(); // width of grid
+        JSONObject gridY = new JSONObject(); // length of grid
+        JSONObject gridCells = new JSONObject(); // the 2-d array of the map
+        JSONObject paletteObj = new JSONObject(); // palette in wallprofile 
         
-//        System.out.println(Arrays.deepToString(gridRender.getCells()));
-//        System.out.println(gridRender.getxLength());
-//        System.out.println(gridRender.getyLength());
-        JSONArray gridData = new JSONArray();
-        JSONObject gridObj = new JSONObject();
-//        Map<Integer, Integer> gridDimension = new HashMap<>();
-//        gridDimension.put(grid.getxLength(), grid.getyLength());
-        JSONObject gridX = new JSONObject();
-        gridX.put("length", grid.getxLength());
+        gridX.put("grid width", grid.getxLength());
+        gridY.put("grid length", grid.getyLength());
         
-        JSONObject gridY = new JSONObject();
-        gridY.put("width", grid.getyLength());
-        
-        gridObj.put(gridX, gridY);
-        JSONObject gridObj2 = new JSONObject();
-        
-        JSONArray array = new JSONArray();
+        JSONArray cellsArray = new JSONArray();
         for(int i = 0; i < grid.getCells().length; i++){
-            JSONArray array2 = new JSONArray();
+            JSONArray array = new JSONArray();
             for(int j = 0; j < grid.cells[i].length; j++){
-                array2.add(grid.cells[i][j].getId());
+                array.add(grid.cells[i][j].getWallID());
             }
-            array.add(array2);
+            cellsArray.add(array);
         }
-        JSONObject mapObj = new JSONObject();
-        mapObj.put("map", array);
-        gridObj2.put(gridObj, mapObj);
-        JSONObject gridObj3 = new JSONObject();
+        gridCells.put("map", cellsArray);
+        paletteObj.putAll(WallProfile.wallMap);
+        editorSaveArray.add(gridX);
+        editorSaveArray.add(gridY);
+        editorSaveArray.add(gridCells);
+        editorSaveArray.add(paletteObj);
         
-      
-        gridObj3.put("grid", gridObj2);
-        //gridData.add(gridObj4);
-        
-        gridObj3.toString().replaceAll("\\\\", "");
-        gridObj2.toString().replace("\\\\", "");
-        gridObj.toString().replace("\\\\", "");
-        
-         try (FileWriter file = new FileWriter("grid.json")) {
-             
-            file.write(gridObj3.toJSONString());
-            file.flush();
- 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FileWriter writer = new FileWriter("grid.json");
+        gson.toJson(editorSaveArray, writer);
+        writer.close();
         
     }
     

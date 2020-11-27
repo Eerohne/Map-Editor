@@ -7,7 +7,7 @@ package Editor.Controller;
 
 import Editor.Model.EntityModel;
 import Editor.View.Menu.ExistingEntityModification;
-import Editor.View.Menu.ExistingEntityStage;
+import Editor.ExistingEntityStage;
 import Editor.View.Menu.NewEntity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

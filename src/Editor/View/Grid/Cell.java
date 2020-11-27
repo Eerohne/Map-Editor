@@ -53,6 +53,11 @@ public class Cell extends Rectangle{
         return wallID;
     }
 
+    public int getWallID() {
+        return wallID;
+    }
+    
+    
     public void setDefaultSize(int size) {
         this.size = size;
         super.setWidth(this.size);

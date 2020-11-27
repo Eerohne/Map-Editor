@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Editor.View.Menu;
+package Editor;
 
 import Editor.Controller.ExistingEntityController;
 import Editor.Model.EntityModel;
+import Editor.View.Menu.ExistingEntityModification;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javafx.application.Application;
