@@ -66,6 +66,10 @@ public class Cell extends Rectangle{
         this.texture = texture;
         this.setFill(this.texture);
     }
+    public int getWallID() {
+        return wallID;
+    }
+    
     
     public void setDefaultSize(int size) {
         this.size = size;
