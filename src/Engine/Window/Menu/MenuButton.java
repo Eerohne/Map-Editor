@@ -5,6 +5,7 @@
  */
 package Engine.Window.Menu;
 
+import Engine.Core.Sound.SoundManager;
 import Engine.Util.RessourceManager.ResourceLoader;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -19,9 +20,9 @@ import javafx.scene.media.MediaPlayer;
 public class MenuButton extends Button{
     public  boolean valid = true;
     private MediaPlayer mediaPlayer;
-    private static Media mouseEnterSound = ResourceLoader.loadAudio("sounds/ui/button_hover.wav");
-    private static Media mouseClickSound = ResourceLoader.loadAudio("sounds/ui/button_click.wav");
-    private static Media mouseClickInvalideSound = ResourceLoader.loadAudio("sounds/ui/button_click_invalide.wav");
+    private static String mouseEnterSound = "sounds/ui/button_hover.wav";
+    private static String mouseClickSound = "sounds/ui/button_click.wav";
+    private static String mouseClickInvalideSound = "sounds/ui/button_click_invalide.wav";
     
     public MenuButton(String text)
     {
@@ -32,9 +33,7 @@ public class MenuButton extends Button{
         new EventHandler<MouseEvent>() {
           @Override
           public void handle(MouseEvent e) {
-              if(mediaPlayer != null)
-                mediaPlayer.dispose();
-              mediaPlayer = new MediaPlayer(mouseEnterSound);
+              mediaPlayer = SoundManager.createPlayer(mouseEnterSound, "menu", false);
               mediaPlayer.play();
           }
         });
@@ -44,12 +43,10 @@ public class MenuButton extends Button{
         new EventHandler<MouseEvent>() {
           @Override
           public void handle(MouseEvent e) {
-              if(mediaPlayer != null)
-                mediaPlayer.dispose();
               if(valid)
-                mediaPlayer = new MediaPlayer(mouseClickSound);
+                mediaPlayer = SoundManager.createPlayer(mouseClickSound, "menu", false);
               else
-                  mediaPlayer = new MediaPlayer(mouseClickInvalideSound);
+                  mediaPlayer = SoundManager.createPlayer(mouseClickInvalideSound, "menu", false);
               mediaPlayer.play();
           }
         });

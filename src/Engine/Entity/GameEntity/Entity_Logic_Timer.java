@@ -36,7 +36,6 @@ public class Entity_Logic_Timer extends Entity{
             time -= Time.deltaTime;
             if(time <=0)
             {
-                System.out.println("logic_timer logic");
                 fireSignal("OnTimerEnded");
                 time = maxTime;
             }

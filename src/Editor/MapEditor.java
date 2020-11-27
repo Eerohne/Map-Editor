@@ -11,12 +11,15 @@ import Editor.Controller.InfoController;
 import Editor.Controller.MenuController;
 import Editor.Controller.ShortcutController;
 import Editor.Controller.WallController;
+import Editor.Model.MapModel;
+import Editor.Model.Project;
 import Editor.Model.WallProfile;
 import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Menu.TopMenu;
-import Editor.View.Properties.EntityTab;
-import Editor.View.Properties.WallContent;
+import Editor.View.Metadata.DataView;
+import Editor.View.Properties.EntityHierarchy;
+import Editor.View.Metadata.WallContent;
 import Editor.View.Properties.WallHierarchy;
 import java.io.File;
 import java.net.MalformedURLException;
@@ -34,77 +37,47 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
- *
+ * Main class of the Optik Engine Editor
+ * 
  * @author A
  */
 public class MapEditor extends Application {
-    //Default WallProfile
-    WallProfile floor = GridController.selectedWallProfile;
-    WallProfile t = new WallProfile("S K E L E T O N ?", "skeleton.gif", 1);
+    /**
+     * Main Components of Optik Editor GUI.
+     */
+    TopMenu menu; //Classical Menu
+    ShortcutBar shortcuts; //Shortcut Bar for some menu items
+    Info info; //Displays some useful information about the interaction with the Editor
     
+    EntityHierarchy entityHierarchy; //Hierarchy of Entities
+    WallHierarchy wallHierarchy; // Hierarchy of Walls
+    
+    DataView metadataContent; //Content Wrapper to display in metadata tab
+    WallContent wallContent; //Compatible with DataView and delivers WallProfile information
+    
+    Project project; //Base project
+    MapModel currentMap = new MapModel("Map", "", "resources/", 10, 10); //Test Map -- To Be Removed
+    
+    /**
+     * Core method of the Optik Editor. Starts the whole Editor GUI and events.
+     * 
+     * @param editorWindow
+     * @throws MalformedURLException 
+     */
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {
-        floor = new WallProfile("Floor", "white.png", 0);
+        this.metadataContent = new WallContent(currentMap.getGc().getSelectedWallProfile());
+        this.project = new Project(currentMap);
+        project.selectedMap = currentMap;
         
-        //Top Elements
-        TopMenu menu = new TopMenu();
-        ShortcutBar shortcuts = new ShortcutBar();
-        BorderPane tools = new BorderPane(shortcuts, menu, null, null, null);
+        wallContent = new WallContent(currentMap.getDefaultWall());
         
-        //Center Elements
-        Grid grid = new Grid(50, 20, 20, floor);
-        Info info = new Info();
-        setChildrenClipping(grid);
+        Scene scene = new Scene(setupView(metadataContent), 1920, 1080);
         
-        //Property Panels Setup
-        //Create Entity Tab
-        EntityTab entityTab = new EntityTab();
-        Tab entities = new Tab("Entities", entityTab);
-        
-        
-        //Wall Content Metadata 
-        WallContent wallContent = new WallContent(floor);
-        
-        //Create Wall Tab
-        WallHierarchy wallTab = new WallHierarchy(wallContent);//floor, new WallProfile("Black", "grey_brick_vines.png", 1)
-        Tab walls = new Tab("Walls", wallTab);
-        
-        //Property pane
-        TabPane properties = new TabPane(walls, entities);
-        properties.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        properties.setPrefHeight(750);
-        
-        
-        //Metadata pane setup
-        WallController wc = new WallController(wallContent, grid, wallTab);
-        
-        ScrollPane scrollDataPane = new ScrollPane(wallContent);
-        Tab data = new Tab("Metadata", scrollDataPane);
-        
-        TabPane metadata = new TabPane(data);
-        metadata.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        
-        Region r = new Region();
-        VBox.setVgrow(r, Priority.ALWAYS);
-        
-        VBox dataSide = new VBox(properties, r, metadata);
-        
-        //
-        BorderPane gridDisplay = new BorderPane();
-        gridDisplay.setCenter(grid);
-        gridDisplay.setBottom(info);
-        
-        BorderPane layout = new BorderPane();
-        layout.setCenter(gridDisplay);
-        layout.setTop(tools);
-        layout.setLeft(dataSide);
-        
-        Scene scene = new Scene(layout, 1920, 1080);
-        
-        GridController gc = new GridController(scene, grid);
-        InfoController ic = new InfoController(info, grid, gc);
+        WallController wc = new WallController(wallContent, currentMap.getGridView(), wallHierarchy);
+        InfoController ic = new InfoController(info, currentMap);
         MenuController mc = new MenuController(menu, editorWindow);
-        ShortcutController sc = new ShortcutController(shortcuts, editorWindow, wallTab);
+        ShortcutController sc = new ShortcutController(shortcuts, editorWindow, wallHierarchy);
         
         String pathName = "resources/style/style.css" ;
         File file = new File(pathName);
@@ -138,5 +111,91 @@ public class MapEditor extends Application {
             clip.setWidth(newValue.getWidth());
             clip.setHeight(newValue.getHeight());
         });
+    }
+    
+    /**
+     * Sets up the top elements of the GUI.
+     * 
+     * @return A <code>BorderPane</code> containing the <code>TopMenu</code> and <code>ShortcutBar</code>
+     */
+    private BorderPane setupTopElements(){
+        //Top Elements
+        this.menu = new TopMenu();
+        this.shortcuts = new ShortcutBar();
+        
+        return new BorderPane(shortcuts, menu, null, null, null);
+    }
+    
+    /**
+     * 
+     * @return <code></code>
+     */
+    private TabPane setupProperties(){
+        this.entityHierarchy = new EntityHierarchy();
+        this.wallHierarchy = new WallHierarchy(wallContent, currentMap);
+        
+        
+        //Property Tabs Initialization
+        Tab entityTab = new Tab("Entities", entityHierarchy);
+        Tab wallTab = new Tab("Walls", wallHierarchy);
+        
+        //Property Pane Setup
+        TabPane properties = new TabPane(wallTab, entityTab);
+        properties.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        
+        return properties;
+    }
+    
+    /**
+     * 
+     * 
+     * @return <code></code>
+     */
+    private TabPane setupMetadata(DataView metadata){
+        ScrollPane scrollDataPane = new ScrollPane(metadata);
+        Tab data = new Tab("Metadata", scrollDataPane);
+        
+        TabPane  dataTab =  new TabPane(data);
+        dataTab.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        
+        return dataTab;
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    private VBox setupSideElements(DataView data){
+        Region r = new Region();
+        VBox.setVgrow(r, Priority.ALWAYS);
+        
+        return new VBox(setupProperties(), r, setupMetadata(data));
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    private BorderPane setupCenterElements(){
+        this.info = new Info();
+        
+        BorderPane gridDisplay = new BorderPane();
+        gridDisplay.setCenter(project.selectedMap.getGridView());
+        gridDisplay.setBottom(info);
+        
+        return gridDisplay;
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    private BorderPane setupView(DataView metadata){
+        BorderPane layout = new BorderPane();
+        layout.setCenter(setupCenterElements());
+        layout.setTop(setupTopElements());
+        layout.setLeft(setupSideElements(metadata));
+        
+        return layout;
     }
 }

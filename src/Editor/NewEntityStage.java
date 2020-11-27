@@ -6,7 +6,7 @@
 package Editor;
 
 import Editor.Model.EntityModel;
-import Editor.View.Menu.NewEntity;
+import Editor.View.Menu.Entity.NewEntity;
 import Editor.Controller.NewEntityController;
 import javafx.scene.Scene;
 import javafx.stage.Modality;

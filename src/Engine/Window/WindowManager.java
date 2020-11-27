@@ -10,7 +10,7 @@ package Engine.Window;
 import Engine.Window.Menu.MenuButton;
 import Engine.Window.Menu.PauseMenu;
 import Engine.Core.Game;
-import Engine.Core.Settings;
+import Engine.Core.SettingsManager.Settings;
 import Engine.Core.Sound.SoundManager;
 import Engine.RaycastRenderer.Renderer;
 import javafx.beans.value.ChangeListener;
@@ -370,6 +370,22 @@ public class WindowManager extends AnchorPane{
             });
             HBox musicSoundBox = new HBox();
             musicSoundBox.getChildren().addAll(musicSoundLabel, musicSoundSlider);
+            
+            //menu slider
+            Label menuSoundLabel = new Label("menu volume : " + Settings.getFloat("snd_menu"));
+            Slider menuSoundSlider = new Slider(0, 1, Settings.getFloat("snd_menu"));
+            menuSoundSlider.setMajorTickUnit(0.1f);
+            menuSoundSlider.setBlockIncrement(0.1f);
+            menuSoundSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val) {
+                    menuSoundLabel.setText("menu volume : "+String.format("%.1f", new_val));
+                    Settings.save("snd_menu", String.format("%.1f", menuSoundSlider.getValue()));
+                    SoundManager.changeChannelVolume("menu", Settings.getDouble("snd_menu"));
+            }
+            });
+            HBox menuSoundBox = new HBox();
+            menuSoundBox.getChildren().addAll(menuSoundLabel, menuSoundSlider);
 
             Button returnSoundToOptionsButton = new MenuButton("return");
             returnSoundToOptionsButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -385,7 +401,7 @@ public class WindowManager extends AnchorPane{
             soundButtonBar.setSpacing(30);
             soundButtonBar.getChildren().addAll(returnSoundToOptionsButton);
 
-            soundOptionBox.getChildren().addAll(masterSoundBox, gameSoundBox, musicSoundBox, soundButtonBar);
+            soundOptionBox.getChildren().addAll(masterSoundBox, gameSoundBox, musicSoundBox, menuSoundBox, soundButtonBar);
             soundOptionBox.setVisible(false);
             soundOptionBox.setManaged(false);
 

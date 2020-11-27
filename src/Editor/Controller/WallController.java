@@ -8,7 +8,7 @@ package Editor.Controller;
 import Editor.Model.WallProfile;
 import Editor.View.Grid.Cell;
 import Editor.View.Grid.Grid;
-import Editor.View.Properties.WallContent;
+import Editor.View.Metadata.WallContent;
 import Editor.View.Properties.WallHierarchy;
 import java.util.Map;
 import javafx.scene.control.Button;
@@ -48,12 +48,12 @@ public class WallController {
         cancel.setOnAction(e -> cancelEvent());
         save.setOnAction(e -> saveEvent());
         delete.setOnAction(e -> {
-            System.out.println(this.wallContent.getWallProfile().getID());
-            System.out.println(WallProfile.palette);
-            for (Map.Entry<Integer, Image> en : WallProfile.palette.entrySet()) {
-                System.out.println(en.getValue().toString());
-                
-            }
+//            System.out.println(this.wallContent.getWallProfile().getID());
+//            System.out.println(WallProfile.palette);
+//            for (Map.Entry<Integer, Image> en : WallProfile.palette.entrySet()) {
+//                System.out.println(en.getValue().toString());
+//                
+//            }
         });
     }
     
@@ -84,7 +84,7 @@ public class WallController {
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {
                 if(cell.getID() == wallContent.getWallProfile().getID())
-                    cell.setImg(wallContent.getWallProfile().getImage());
+                    wallHierarchy.getMapModel().getGc().setImg(cell, wallContent.getWallProfile().getImage());
             }
         }
         wallHierarchy.refresh();

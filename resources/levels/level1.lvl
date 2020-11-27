@@ -56,7 +56,7 @@
     "position":[3.5,6.75],
     "rotation":"180",
     "walkspeed":"2",
-    "runspeed":"1"
+    "runspeed":"1.0"
     },
     {
     "classname":"logic_timer",
@@ -71,6 +71,12 @@
                         "targetname":"counter1",
                         "inputname":"increment",
                         "arguments":[]
+                    },
+                    {
+                        "name":"OnTimerEnded",
+                        "targetname":"messenger1",
+                        "inputname":"printMessage",
+                        "arguments":["tik"]
                     }
                     ]
     },
@@ -82,13 +88,13 @@
     "minvalue":"0",
     "maxvalue":"3",
     "startingvalue":"0",
-    "canreset":"TRUE",
+    "canreset":"false",
     "signals": [
                 {
                     "name":"OnValueReached",
                     "targetname":"messenger1",
                     "inputname":"printMessage",
-                    "arguments":["the counter has reached it's target value"]
+                    "arguments":["music is now playing"]
                 },
                 {
                     "name":"OnValueReached",
@@ -151,7 +157,7 @@
     "active":"TRUE",
     "position":[1.5,7.0],
     "onstart":"false",
-    "audiopath":"sounds/music/recycle_inc.wav",
+    "audiopath":"sounds/music/digital_attack.wav",
     "loop":"false",
     "signals": []
     }

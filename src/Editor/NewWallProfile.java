@@ -170,7 +170,7 @@ public class NewWallProfile {
         
         this.next.setText("Finish");
         this.next.setOnAction(e -> {
-            GridController.selectedWallProfile = new WallProfile(nameField.getText(), selectedImage, WallProfile.getWallFlag(flagBox.getValue()));
+            wallList.getMapModel().getGc().setSelectedWallProfile(wallList.getMapModel().createWallProfile(nameField.getText(), selectedImage, WallProfile.getWallFlag(flagBox.getValue())));
             stage.close();
             wallList.refresh();
         });

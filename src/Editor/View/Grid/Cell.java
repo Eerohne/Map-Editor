@@ -32,7 +32,8 @@ public class Cell extends Rectangle{
     
     public Cell(int defaultSize, Image img) {
         this(defaultSize);
-        this.setImg(img);
+        this.texture = new ImagePattern(img);
+        this.setFill(texture);
         super.setStroke(Color.BLACK);
     }
     
@@ -52,22 +53,28 @@ public class Cell extends Rectangle{
     public int getID(){
         return wallID;
     }
+    
+    public void setID(int wallId){
+        this.wallID = wallId;
+    }
 
+    public ImagePattern getTexture() {
+        return texture;
+    }
+
+    public void setTexture(ImagePattern texture) {
+        this.texture = texture;
+        this.setFill(this.texture);
+    }
+    public int getWallID() {
+        return wallID;
+    }
+    
+    
     public void setDefaultSize(int size) {
         this.size = size;
         super.setWidth(this.size);
         super.setHeight(this.size);
-    }
-    
-    public void setImg(int paletteID){
-        this.wallID = paletteID;
-        this.texture = new ImagePattern(WallProfile.palette.get(paletteID));
-        this.setFill(texture);
-    }
-    
-    public void setImg(Image img){
-        this.wallID = WallProfile.getID(img);
-        this.setImg(wallID);
     }
     
     public void setXPos(double value){

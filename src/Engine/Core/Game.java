@@ -5,6 +5,7 @@
  */
 package Engine.Core;
 
+import Engine.Core.SettingsManager.Settings;
 import Engine.Core.Sound.SoundManager;
 import Engine.Core.Exceptions.LevelCreationException;
 import Engine.Entity.GameEntity.Entity_Player;

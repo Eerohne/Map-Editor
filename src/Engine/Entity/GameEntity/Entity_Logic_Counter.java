@@ -73,7 +73,6 @@ public class Entity_Logic_Counter extends Entity{
     public void verifyCount()
     {
         if(canCount && (value >= maxValue | value <= minValue)){
-            System.out.println("logic_counter logic");
             fireSignal("OnValueReached");
             if(canReset)
                 reset();

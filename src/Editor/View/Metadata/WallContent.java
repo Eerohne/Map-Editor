@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Editor.View.Properties;
+package Editor.View.Metadata;
 
+import Editor.View.Metadata.DataView;
 import Editor.Controller.WallController;
 import Editor.Model.WallProfile;
 import java.util.Arrays;
@@ -28,7 +29,7 @@ import javafx.scene.shape.Rectangle;
  *
  * @author A
  */
-public class WallContent extends Pane{
+public class WallContent extends DataView{
     //Labels Initialization
     private Label nameLbl = new Label("Name : ");
     private Label textureLbl = new Label("Texture : ");
@@ -41,15 +42,12 @@ public class WallContent extends Pane{
 
     ObservableList<String> flags = FXCollections.observableArrayList(Arrays.asList(WallProfile.flagArray));//Observable List of Flags
     
-    //Buttons Initialization
-    private Button cancel;
-    private Button save;
-    private Button delete;
-    
     //WallProfile Representation
     private WallProfile wallProfile;
     
     public WallContent(WallProfile wallProfile) {
+        super();
+        
         this.wallProfile = wallProfile;
         
         //Interactions 
@@ -57,14 +55,6 @@ public class WallContent extends Pane{
         this.txrPreview = new Rectangle(30, 30);
         this.flagCombo = new ComboBox(flags);
         this.reset();
-        
-        //Buttons
-        this.cancel = new Button("Cancel");
-        this.save = new Button("Save Changes");
-        this.delete = new Button("Delete");
-        
-        save.setDisable(true);
-        cancel.setDisable(true);
         
         this.getChildren().add(setupPane());
     }

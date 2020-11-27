@@ -5,7 +5,7 @@
  */
 package Engine.Core.Sound;
 
-import Engine.Core.Settings;
+import Engine.Core.SettingsManager.Settings;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -58,11 +58,13 @@ public class SoundChannel {
         if(this.masterChannelName.isEmpty())//is not a slave channel
         {
             this.volume.set(volume);
+            System.out.println(volume);
         }
         else
         {
             Double masterVolume = SoundManager.getChannel(masterChannelName).volume.get();
             this.volume.set(realVolume * masterVolume);
+            System.out.println("slave : "+volume);
         }
     }
     

@@ -6,7 +6,7 @@
 package Editor.Controller;
 
 import Editor.NewEntityStage;
-import Editor.View.Menu.ExistingEntityStage;
+import Editor.View.Menu.Entity.ExistingEntityStage;
 import Editor.View.Menu.TopMenu;
 import Engine.Core.Game;
 import java.io.IOException;

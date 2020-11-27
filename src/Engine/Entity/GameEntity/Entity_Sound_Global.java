@@ -34,7 +34,6 @@ public class Entity_Sound_Global extends Entity{
     public Entity_Sound_Global(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
-        System.out.println("entity");
         this.mediaplayer = SoundManager.createPlayer((String) propertyMap.get("audiopath"), "music", Boolean.valueOf((String) propertyMap.get("loop")));
         mediaplayer.setAutoPlay(Boolean.valueOf((String) propertyMap.get("onstart")));
     }

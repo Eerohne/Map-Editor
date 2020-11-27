@@ -19,7 +19,6 @@ import javafx.scene.layout.Region;
 public class ShortcutBar extends HBox{
     private Button wallShort;
     private Button entityShort;
-    private Button playerShort;
     private Button runShort;
     private Button help;
     
@@ -27,7 +26,6 @@ public class ShortcutBar extends HBox{
         wallShort = new Button("Add New Wall");
         //wallShort.setPrefSize(this.getHeight()-10, this.getHeight()-10);
         entityShort = new Button("Create New Entity");
-        playerShort = new Button("Place Player");
         runShort = new Button("Run");
         help = new Button("Help");
     
@@ -39,7 +37,7 @@ public class ShortcutBar extends HBox{
         HBox.setHgrow(space, Priority.ALWAYS);
         
         this.setSpacing(5);
-        this.getChildren().addAll(wallShort, entityShort, playerShort, space, runShort, help);
+        this.getChildren().addAll(wallShort, entityShort, space, runShort, help);
     }
 
     public Button getWallShort() {
@@ -49,11 +47,6 @@ public class ShortcutBar extends HBox{
     public Button getEntityShort() {
         return entityShort;
     }
-
-    public Button getPlayerShort() {
-        return playerShort;
-    }
-
     public Button getRunShort() {
         return runShort;
     }

@@ -25,6 +25,7 @@ public class SoundManager {
         addChannel("master", "snd_master");
         addChannel("game", "snd_game", "master");
         addChannel("music", "snd_music", "master");
+        addChannel("menu", "snd_menu", "master");
     }
     
     public static void addChannel(String channelName, String configValueName)
@@ -58,18 +59,17 @@ public class SoundManager {
     
     public static MediaPlayer createPlayer(String soundPath, String channelName, boolean loop)
     {
-        System.out.println("now setting up new player");
         MediaPlayer mediaPlayer = new MediaPlayer(ResourceLoader.loadAudio(soundPath));
         if(loop){
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         }
         else
         {
-            System.out.println("not loop");
             mediaPlayer.setOnEndOfMedia(new Runnable() {
            @Override
                public void run() {
                    SoundManager.getChannel(channelName).removePlayer(mediaPlayer);
+                   System.out.println("dispose");
                }
            });
         }

@@ -6,7 +6,7 @@
 package Engine.Util.RessourceManager;
 
 import Engine.Core.Exceptions.LevelCreationException;
-import Engine.Core.OrderedProperties;
+import Engine.Core.SettingsManager.OrderedProperties;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Entity.EntityCreator;
 import Engine.Level.Level;
@@ -97,7 +97,7 @@ public class ResourceLoader
         }
         catch(IOException e)
         {
-            System.out.println(e);
+            System.out.println("sound '"+path+"' not found");
         }
         return null;
     }
