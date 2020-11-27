@@ -3,68 +3,73 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Editor.View.Menu;
+package Editor.View.Menu.Entity;
 
 import Editor.Model.EntityModel;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 
 /**
  *
  * @author linuo
  */
 
-public class NewEntity extends GridPane{
+public class ExistingEntityModification extends GridPane{
     
     public TableView table = new TableView();
-    public TableColumn<EntityModel, String> propertyCol = new TableColumn<>("property");
-    public TableColumn<EntityModel, String> valueCol = new TableColumn<>("value");
+    public TableColumn<?, ?> propertyCol = new TableColumn<>("property");
+    public TableColumn<?, ?> valueCol = new TableColumn<>("value");
     public TextField nameText = new TextField();
     public TextField propertyText = new TextField();
     public TextField valueText = new TextField();
+    //public Button nameEdit = new Button("edit the name");
+    public Button switchBtn = new Button("open entity creation window");
     public Button addBtn = new Button("add row");
     public Button deleteBtn = new Button("delete selected row");
-    public Button exportBtn = new Button("export");
-    public Button newEntityBtn = new Button("create new entity");
-    public Button switchBtn = new Button("open entity editting window");
+    public Button removeEntityBtn = new Button("remove entity");
     public ComboBox<String> cb = new ComboBox();
     public VBox vbox = new VBox();
-    
-    
-    public NewEntity(){
+
+    public Button saveEdit = new Button("save modification");
+
+    public ExistingEntityModification() {
         
         table.setEditable(true);
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(10));
-        //this.add(cb, 0, 0);
         this.add(table, 1, 0);
         
+        vbox.setPadding(new Insets(10));
+        vbox.getChildren().add(cb);
         vbox.getChildren().add(nameText);
         vbox.getChildren().add(propertyText);
         vbox.getChildren().add(valueText);
+        vbox.getChildren().add(saveEdit);
         vbox.getChildren().add(addBtn);
         vbox.getChildren().add(deleteBtn);
-        vbox.getChildren().add(exportBtn);
-        vbox.getChildren().add(newEntityBtn);
+        vbox.getChildren().add(removeEntityBtn);
         vbox.getChildren().add(switchBtn);
         
         this.add(vbox, 2, 0);
-        propertyCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("property"));
-        valueCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("value"));
+        propertyCol.setCellValueFactory(new PropertyValueFactory<>("property"));
+        valueCol.setCellValueFactory(new PropertyValueFactory<>("value"));
         table.getColumns().addAll(propertyCol, valueCol);
-        nameText.setPromptText("name of the entity");
-        propertyText.setPromptText("property here");
-        valueText.setPromptText("value here");
-        
+        cb.setPromptText("select an entity");
+        nameText.setPromptText("change name of the entity");
+        propertyText.setPromptText("add or change property here");
+        valueText.setPromptText("add or change value here");
     }
-   
+    
+    
 }

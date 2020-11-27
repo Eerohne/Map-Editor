@@ -7,9 +7,11 @@ import Editor.View.Info;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
@@ -18,54 +20,44 @@ import javafx.scene.transform.Translate;
  * @author A
  */
 public class GridController{
-    //
-    public static WallProfile selectedWallProfile;
-    
     //Objects to be controlled
-    Scene scene;
+   // Scene scene;
     Grid grid;
     
-    //Colors - to be replacve with a palette
-    
-    String cssLayout = "-fx-border-color: red;\n" +
-                   "-fx-border-insets: 5;\n" +
-                   "-fx-border-width: 3;\n" +
-                   "-fx-border-style: dashed;\n";
-    
-    //Editing mode
-    int mode = 1;
-    boolean wallMode = true;
-    
+    private WallProfile selectedWallProfile;
+
     //Grid Panning Vector Variables
     double preMouseX;
     double preMouseY; 
     double mouseX;
     double mouseY;
     
+    private int editingMode; // 0: Editing Disabled | 1: Wall Placement | 2: Entity Placement
+    
     double zoom = 1.0d;
 
     Cell hoverCell = new Cell(1);
     Info info = new Info();
     
-    public GridController(Scene scene, Grid grid) {
-        this.scene = scene;
+    public GridController(Grid grid) {
+        //this.scene = scene;
         this.grid = grid;
         
-        //Scene Events
-        scene.setOnKeyPressed( event -> {
-            if(event.getCode().equals(KeyCode.R)){
-                this.grid.clear();
-            }
-            if(event.getCode().equals(KeyCode.W)){
-                System.out.println("**********\n" 
-                        + "Mouse : (" + mouseX + ", " + mouseY + ")\n"
-                        + "Grid : (" + getGridX() + ", " + getGridY() + ")\n" 
-                        +"cellSize : "+grid.getCellSize()+"\n"
-                        + "MaxY : " + getPaneBounds().getMaxY() + "\n" 
-                        + "Zoom : " + zoom + "\n" 
-                        + grid.cells[0][0].getTransforms() + "\n" );
-            }
-        });
+        //Scene Events -- To Be Removed
+//        scene.setOnKeyPressed( event -> {
+//            if(event.getCode().equals(KeyCode.R)){
+//                this.grid.clear();
+//            }
+//            if(event.getCode().equals(KeyCode.W)){
+//                System.out.println("**********\n" 
+//                        + "Mouse : (" + mouseX + ", " + mouseY + ")\n"
+//                        + "Grid : (" + getGridX() + ", " + getGridY() + ")\n" 
+//                        +"cellSize : "+grid.getCellSize()+"\n"
+//                        + "MaxY : " + getPaneBounds().getMaxY() + "\n" 
+//                        + "Zoom : " + zoom + "\n" 
+//                        + grid.cells[0][0].getTransforms() + "\n" );
+//            }
+//        });
         
         //Grid Events
         
@@ -111,31 +103,25 @@ public class GridController{
         
         //Place Wall on Mouse Pressed
         grid.setOnMousePressed(event -> {
-            if(event.getButton().equals(MouseButton.PRIMARY))
-                this.placeWall();
+            if(event.getButton().equals(MouseButton.PRIMARY)){
+                switch(editingMode){
+                    case 1:
+                        placeWall();
+                        break;
+                    case 2:
+                        placeEntity();
+                        break;
+                    default:
+                        break;
+                }
+            }
         });
         
-        grid.setOnMouseEntered(e -> {grid.setStyle(cssLayout);});
-        grid.setOnMouseExited(e -> {grid.setStyle(null);});
+//        grid.setOnMouseEntered(e -> {grid.setStyle(cssLayout);});
+//        grid.setOnMouseExited(e -> {grid.setStyle(null);});
         
         //Wall Placement when Mouse Dragged
-        grid.setOnMouseDragged(new WallPlacerEvent());
-    }
-    
-    /**
-     * Defines the event necessary to place a wall.
-     */
-    class WallPlacerEvent extends GridEvent{
-
-        @Override
-        public void handle(MouseEvent event) {
-            super.handle(event);
-            
-            //Grid Wall Drawing
-            if(event.getButton().equals(MouseButton.PRIMARY)){
-                placeWall();
-            }  
-        }
+        grid.setOnMouseDragged(new GridEvent());
     }
     
     class GridEvent implements EventHandler<MouseEvent>{
@@ -157,6 +143,12 @@ public class GridController{
                 
                 grid.getSelectionCell().addTranslationVector(vector);
             }
+            
+            //
+            if(event.getButton().equals(MouseButton.PRIMARY)){
+                if(editingMode == 1)
+                    placeWall();
+            }  
         }
     }
     
@@ -177,6 +169,22 @@ public class GridController{
 
     public double getZoom() {
         return zoom;
+    }
+    
+    public int getEditingMode(){
+        return editingMode;
+    }
+    
+    public void setEditingMode(int mode){
+        this.editingMode = mode;
+    }
+    
+    public WallProfile getSelectedWallProfile() {
+        return selectedWallProfile;
+    }
+
+    public void setSelectedWallProfile(WallProfile selectedWallProfile) {
+        this.selectedWallProfile = selectedWallProfile;
     }
     
     private double getGlobalX(){
@@ -208,12 +216,16 @@ public class GridController{
         try {
             if(!(mouseX < 0 || mouseY < 0 || mouseX > getPaneBounds().getMaxX() || mouseY > getPaneBounds().getMaxY())){
                 Cell c = this.grid.getCells()[(int)getGridX()][(int)getGridY()];
-                c.setImg(selectedWallProfile.getImage());
+                this.setImg(c, selectedWallProfile.getImage());
                 onHover(c);
             }
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+    
+    private void placeEntity(){
+        
     }
     
     private void onHover(Cell hoverCell){
@@ -247,6 +259,15 @@ public class GridController{
     
     private double getScaleRatio(){
         return grid.getCells()[0][0].getScaleObject().getX();
+    }
+    
+    public void setImg(Cell cell, Image img){
+        int wallId = selectedWallProfile.getID();
+        this.setImg(cell, wallId);
+    }
+    public void setImg(Cell cell, int paletteID){
+        cell.setID(paletteID);
+        cell.setTexture(new ImagePattern(selectedWallProfile.getImage()));
     }
 }
 

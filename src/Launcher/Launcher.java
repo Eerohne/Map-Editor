@@ -63,17 +63,17 @@ public class Launcher extends Application{
         gameButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 try {
-                Stage engine = new Stage();
-                Game game = new Game();
-                game.start(engine);
-                launcherStage.close();
-            } catch (Exception ex) {
-                System.out.println(ex);
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Launcher Error");
-                alert.setContentText("OptikEngine cannot be oppened. \nError Code: " + ex.getMessage());
-                alert.showAndWait();
-            }
+                    Stage engine = new Stage();
+                    Game game = new Game();
+                    game.start(engine);
+                    launcherStage.close();
+                } catch (Exception ex) {
+                    System.out.println(ex);
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Launcher Error");
+                    alert.setContentText("OptikEngine cannot be oppened. \nError Code: " + ex.getMessage());
+                    alert.showAndWait();
+                }
             }
         });
         
@@ -84,16 +84,16 @@ public class Launcher extends Application{
         editorButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 try {
-                Stage ediorStage = new Stage();
-                MapEditor editor = new MapEditor();
-                editor.start(ediorStage);
-                launcherStage.close();
-            } catch (Exception ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Launcher Error");
-                alert.setContentText("Editor cannot be oppened. Error Code: " + ex.toString());
-                alert.showAndWait();
-            }
+                    Stage ediorStage = new Stage();
+                    MapEditor editor = new MapEditor();
+                    editor.start(ediorStage);
+                    launcherStage.close();
+                } catch (Exception ex) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Launcher Error");
+                    alert.setContentText("Editor cannot be oppened. Error Code: " + ex.toString());
+                    alert.showAndWait();
+                }
             }
         });
         

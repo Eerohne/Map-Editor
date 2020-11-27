@@ -6,9 +6,9 @@
 package Editor.Controller;
 
 import Editor.Model.EntityModel;
-import Editor.View.Menu.ExistingEntityModification;
-import Editor.View.Menu.ExistingEntityStage;
-import Editor.View.Menu.NewEntity;
+import Editor.View.Menu.Entity.ExistingEntityModification;
+import Editor.View.Menu.Entity.ExistingEntityStage;
+import Editor.View.Menu.Entity.NewEntity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.File;

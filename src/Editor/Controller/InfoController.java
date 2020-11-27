@@ -5,29 +5,15 @@
  */
 package Editor.Controller;
 
+import Editor.Model.MapModel;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import Editor.View.Info;
 import Editor.View.Grid.Grid;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.ObjectInputStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
  
@@ -44,10 +30,10 @@ public class InfoController{
     GridController gc;
     String testStr = "123testing testing testing";
     
-    public InfoController(Info info, Grid grid, GridController gc) {
+    public InfoController(Info info, MapModel map) {
         this.info = info;
-        this.grid = grid;
-        this.gc = gc;
+        this.grid = map.getGridView();
+        this.gc = map.getGc();
         
         this.info.setupInfoBar(gc);
         
@@ -70,6 +56,11 @@ public class InfoController{
         info.setZoom(gc.getZoom());
         
         info.reset();
+    }
+    
+    public void setMap(MapModel map){
+        this.grid = map.getGridView();
+        this.gc = map.getGc();
     }
     
     public void save() throws IOException{

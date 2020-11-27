@@ -4,7 +4,6 @@ Default Player
 Info Panel Update
 Setup Events for All buttons
 New Project System
-Fix Scale Corrector
-Load Map
 Help Menu
 Fix Mouse Drag Leak
+Fix Scale Corrector

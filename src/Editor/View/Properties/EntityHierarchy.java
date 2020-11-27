@@ -25,10 +25,10 @@ import javafx.scene.layout.VBox;
  *
  * @author A
  */
-public class EntityTab extends Accordion{
+public class EntityHierarchy extends Accordion{
     private ArrayList<TitledPane> entities = new ArrayList<>();
 
-    public EntityTab() {
+    public EntityHierarchy() {
         ObservableList<EntityModel> testList = FXCollections.observableArrayList();
         testList.addAll(new EntityModel("Type", "Player"), new EntityModel("Name", "Player1"), new EntityModel("HP", "100"));
         EntityModel.entityList.add(testList);

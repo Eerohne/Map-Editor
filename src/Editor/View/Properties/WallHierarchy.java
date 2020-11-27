@@ -5,7 +5,8 @@
  */
 package Editor.View.Properties;
 
-import Editor.Controller.GridController;
+import Editor.View.Metadata.WallContent;
+import Editor.Model.MapModel;
 import Editor.Model.WallProfile;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,10 +33,12 @@ import javafx.scene.paint.Color;
 public class WallHierarchy extends ScrollPane{
     private VBox list;
     private HBox selected;
+    private MapModel map;
     private WallContent display;
     
-    public WallHierarchy(WallContent display){
+    public WallHierarchy(WallContent display, MapModel map){
         this.display = display;
+        this.map = map;
         
         list = new VBox(10);
         list.setMinWidth(427);
@@ -49,14 +52,14 @@ public class WallHierarchy extends ScrollPane{
     public void refresh(){
         list.getChildren().clear();
         Map<Integer, WallProfile> reversed = new TreeMap<>(Collections.reverseOrder());
-        reversed.putAll(WallProfile.wallMap);
+        reversed.putAll(map.getWallMap());
         
         for (Map.Entry<Integer, WallProfile> entry : reversed.entrySet()) {
             HBox item = new HBox(10);
             item.setPadding(new Insets(25));
             Label name = new Label(entry.getValue().getName() + " : ");
             try {
-                Image txr = new Image(new FileInputStream(WallProfile.getTxrURL(entry.getKey())), 100, 100, true, true);
+                Image txr = new Image(new FileInputStream(MapModel.getTxrURL(map, entry.getKey())), 100, 100, true, true);
                 ImageView preview = new ImageView(txr);
                 preview.setFitHeight(32);
                 preview.setFitWidth(32);
@@ -67,7 +70,7 @@ public class WallHierarchy extends ScrollPane{
                     display.changeContent(entry.getValue());
                     
                     if(e.getButton().equals(MouseButton.PRIMARY)){
-                        GridController.selectedWallProfile = entry.getValue();
+                        map.getGc().setSelectedWallProfile(entry.getValue());
                     }
                 });
                 item.getChildren().addAll(name, preview);
@@ -84,5 +87,13 @@ public class WallHierarchy extends ScrollPane{
         this.selected.setBackground(Background.EMPTY);
         this.selected = box;
         this.selected.setBackground(new Background(new BackgroundFill(Color.CADETBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+    }
+    
+    public MapModel getMapModel(){
+        return map;
+    }
+    
+    public void setMapModel(MapModel map){
+        this.map = map;
     }
 }
