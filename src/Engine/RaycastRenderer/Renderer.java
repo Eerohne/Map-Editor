@@ -195,7 +195,7 @@ public class Renderer {
         final Point2D dir = new Point2D(Math.cos(Math.toRadians(camA)), Math.sin(Math.toRadians(camA)));
         TreeMap<Double, SpriteEntity> sprites = new TreeMap(Comparator.reverseOrder());
         
-        spriteEntities.forEach(((s, e) -> {sprites.put(cam.distance(e.getPosition()), e);}));
+        //spriteEntities.forEach(((s, e) -> {sprites.put(cam.distance(e.getPosition()), e);}));
             
         sprites.forEach(((d, e) -> 
         {
