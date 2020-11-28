@@ -8,6 +8,7 @@ package Engine.Entity.GameEntity;
 import Engine.Core.Sound.SoundManager;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Util.RessourceManager.ResourceLoader;
+import Engine.Util.Time;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 import javafx.scene.media.MediaPlayer;
@@ -17,35 +18,38 @@ import javafx.scene.media.MediaPlayer.Status;
  *
  * @author child
  */
-public class Entity_Sound_Global extends Entity{
+public abstract class Entity_Sound extends Entity{
     
     //variables here
-    private double volume;
-    private boolean paused;
-    private MediaPlayer mediaplayer;
+    protected MediaPlayer mediaplayer;
+    protected String audioPath;
+    protected String channel;
+    protected boolean onStart;
+    protected boolean loop;
+    protected boolean onlyOnce;
     
-    public Entity_Sound_Global(String name, Point2D position)
+    private float time;
+    
+    public Entity_Sound(String name, Point2D position)
     {
         super(name, position);
-        mediaplayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "master", true);
+        mediaplayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "master", true, true);
         mediaplayer.setAutoPlay(true);
     }
     
-    public Entity_Sound_Global(HashMap<String, Object> propertyMap)
+    public Entity_Sound(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
-        this.mediaplayer = SoundManager.createPlayer((String) propertyMap.get("audiopath"), "music", Boolean.valueOf((String) propertyMap.get("loop")));
-        mediaplayer.setAutoPlay(Boolean.valueOf((String) propertyMap.get("onstart")));
+        this.audioPath = (String) propertyMap.get("audiopath");
+        this.channel = (String) propertyMap.get("channel");
+        this.loop = Boolean.parseBoolean((String) propertyMap.get("loop"));
+        this.onStart = Boolean.parseBoolean((String) propertyMap.get("onstart"));
     }
     
-    @Override
-    public void start() {
-        //start logic here
-    }
-
-    @Override
-    public void update() {
-        //update logic here
+    public void destroy()
+    {
+        SoundManager.getChannel(channel).removePlayer(mediaplayer);
+        super.destroy();
     }
     
     @Override

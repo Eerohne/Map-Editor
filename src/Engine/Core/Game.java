@@ -9,7 +9,7 @@ import Engine.Core.SettingsManager.Settings;
 import Engine.Core.Sound.SoundManager;
 import Engine.Core.Exceptions.LevelCreationException;
 import Engine.Entity.GameEntity.Entity_Player;
-import Engine.Entity.GameEntity.Entity_Sound_Global;
+import Engine.Entity.GameEntity.Entity_Sound;
 import Engine.Util.Input;
 import Engine.Window.WindowManager;
 import Engine.Level.Level;
@@ -48,12 +48,12 @@ public class Game extends Application{
 
             @Override
             public void handle(long l) {
-                if(isRunning)
-                {
+                //if(isRunning)
+                //{
                     Time.update(); //update time
                     stage.setTitle(Settings.get("g_gamename") + " -> FPS : " + Integer.toString(Time.fps));
                     currentLevel.update(); //update all entities in the level
-                }
+                //}
                 if(isRendering)
                     Renderer.render();
             }
@@ -99,11 +99,11 @@ public class Game extends Application{
     public static void loadLevel(String path)
     {
         try {
+            Game.getWindowManager().reloadWindow();
+            SoundManager.clear();
             currentLevel = ResourceLoader.loadLevel(path);
             isRunning = true;
             isRendering = true;
-            Game.getWindowManager().reloadWindow();
-            SoundManager.clear();
         } 
         catch(LevelCreationException ex) {
             System.out.println(ex);

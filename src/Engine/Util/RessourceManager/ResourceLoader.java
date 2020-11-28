@@ -126,7 +126,6 @@ public class ResourceLoader
                 Iterator<Long> collumsIterator = collumsData.iterator();
                 int col = 0;
                 while (collumsIterator.hasNext()) {
-                    //System.out.println(collumsIterator.next().intValue());
                     gridArray[row][col] = collumsIterator.next().intValue();
                     col++;
                 }

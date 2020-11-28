@@ -53,8 +53,8 @@
     "classname":"player_base",
     "name":"player1",
     "active":"TRUE",
-    "position":[3.5,6.75],
-    "rotation":"180",
+    "position":[1.55,2.8],
+    "rotation":"270",
     "walkspeed":"2",
     "runspeed":"1.0"
     },
@@ -63,7 +63,7 @@
     "name":"timer1",
     "active":"TRUE",
     "position":[1.0,1.0],
-    "maxtime":"1",
+    "maxtime":"2",
     "onstart":"TRUE"
     "signals": [
                     {
@@ -86,16 +86,10 @@
     "active":"TRUE",
     "position":[0.0,0.0],
     "minvalue":"0",
-    "maxvalue":"3",
+    "maxvalue":"1",
     "startingvalue":"0",
-    "canreset":"false",
+    "canreset":"true",
     "signals": [
-                {
-                    "name":"OnValueReached",
-                    "targetname":"messenger1",
-                    "inputname":"printMessage",
-                    "arguments":["music is now playing"]
-                },
                 {
                     "name":"OnValueReached",
                     "targetname":"music",
@@ -128,37 +122,70 @@
     "position":[1.7,1.5],
     "height":"0.45",
     "texture":"images/sprites/lamppost.png",
-    "size":"1.1"
+    "size":"1.1",
     "signals": []
     },
     {
     "classname":"sprite_decor",
     "name":"skeleton",
     "active":"TRUE",
-    "position":[2.5,6.7],
+    "position":[1.7,6.7],
     "height":"0.4",
     "texture":"images/sprites/skeleton.gif",
-    "size":"0.9"
+    "size":"0.9",
     "signals": []
     },
     {
     "classname":"sprite_decor",
-    "name":"errordecor",
+    "name":"radio",
     "active":"TRUE",
     "position":[1.5,7.0],
     "height":"0.5",
-    "texture":"images/sprites/coin.png",
-    "size":"0.5"
+    "texture":"images/sprites/radio.gif",
+    "size":"0.5",
     "signals": []
     },
     {
-    "classname":"sound_global",
+    "classname":"sprite_decor",
+    "name":"discoball",
+    "active":"TRUE",
+    "position":[1.7,7.0],
+    "height":"1.0",
+    "texture":"images/sprites/discoball.gif",
+    "size":"0.5",
+    "signals": []
+    },
+    {
+    "classname":"sprite_decor",
+    "name":"skeleton2",
+    "active":"TRUE",
+    "position":[1.6,7.3],
+    "height":"0.4",
+    "texture":"images/sprites/skeleton.gif",
+    "size":"0.9",
+    "signals": []
+    },
+    {
+    "classname":"sound_point",
     "name":"music",
     "active":"TRUE",
     "position":[1.5,7.0],
     "audiopath":"sounds/music/digital_attack.wav",
-    "onstart":"false",
+    "channel":"game",
+    "onstart":"true",
     "loop":"false",
+    "range":"3.0",
+    "signals": []
+    },
+    {
+    "classname":"sound_ambient",
+    "name":"music2",
+    "active":"TRUE",
+    "position":[1.5,7.0],
+    "audiopath":"sounds/music/recycle_inc.wav",
+    "channel":"music",
+    "onstart":"false",
+    "loop":"true",
     "signals": []
     }
 ]

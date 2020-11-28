@@ -33,7 +33,7 @@ public class MenuButton extends Button{
         new EventHandler<MouseEvent>() {
           @Override
           public void handle(MouseEvent e) {
-              mediaPlayer = SoundManager.createPlayer(mouseEnterSound, "menu", false);
+              mediaPlayer = SoundManager.createPlayer(mouseEnterSound, "menu", false, true);
               mediaPlayer.play();
           }
         });
@@ -44,9 +44,9 @@ public class MenuButton extends Button{
           @Override
           public void handle(MouseEvent e) {
               if(valid)
-                mediaPlayer = SoundManager.createPlayer(mouseClickSound, "menu", false);
+                mediaPlayer = SoundManager.createPlayer(mouseClickSound, "menu", false, true);
               else
-                  mediaPlayer = SoundManager.createPlayer(mouseClickInvalideSound, "menu", false);
+                  mediaPlayer = SoundManager.createPlayer(mouseClickInvalideSound, "menu", false, true);
               mediaPlayer.play();
           }
         });

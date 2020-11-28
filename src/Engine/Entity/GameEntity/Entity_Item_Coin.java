@@ -26,7 +26,7 @@ public class Entity_Item_Coin extends SpriteEntity{
     @Override
     public void update()
     {
-        System.out.println("Coin : " + this.name);
+        //update
     }
     
     public void collect()

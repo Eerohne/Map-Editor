@@ -36,7 +36,7 @@ public class PauseMenu extends GameMenu{
         super.open();
         if(mediaPlayer != null)
           mediaPlayer.dispose();
-          mediaPlayer = SoundManager.createPlayer(menuOpen, "menu", false);
+          mediaPlayer = SoundManager.createPlayer(menuOpen, "menu", false, true);
           mediaPlayer.play();
     }
     
@@ -46,7 +46,7 @@ public class PauseMenu extends GameMenu{
         super.close();
         if(mediaPlayer != null)
           mediaPlayer.dispose();
-          mediaPlayer = SoundManager.createPlayer(menuClose, "menu", false);
+          mediaPlayer = SoundManager.createPlayer(menuClose, "menu", false, true);
           mediaPlayer.play();
     }
     

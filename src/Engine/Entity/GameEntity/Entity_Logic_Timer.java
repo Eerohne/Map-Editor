@@ -56,9 +56,6 @@ public class Entity_Logic_Timer extends Entity{
             case "reset":
                 this.time = maxTime;
                 break;
-            case "printMessage":
-                System.out.println("message called in the timer, success!!!");
-                break;
             default:
                 super.handleSignal(signalName, arguments);
                 

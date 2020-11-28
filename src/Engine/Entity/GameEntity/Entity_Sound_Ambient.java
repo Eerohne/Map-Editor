@@ -5,36 +5,43 @@
  */
 package Engine.Entity.GameEntity;
 
-import Engine.Entity.AbstractEntity.SpriteEntity;
+import Engine.Core.Sound.SoundManager;
+import Engine.Entity.AbstractEntity.Entity;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
 
 /**
  *
  * @author child
  */
-public class Entity_Decor extends SpriteEntity{
+public class Entity_Sound_Ambient extends Entity_Sound{
     
-    public Entity_Decor(String name, Point2D position, Color color, String texture, float size)
+    //variables here
+    private int myVariable;
+    
+    public Entity_Sound_Ambient(String name, Point2D position, int myVariable)
     {
-        super(name, position, texture, size);
+        super(name, position);
+        this.myVariable = myVariable;
     }
     
-    public Entity_Decor(HashMap<String, Object> propertyMap)
+    public Entity_Sound_Ambient(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
+        
+        //parse property map here
+        this.mediaplayer = SoundManager.createPlayer(this.audioPath, this.channel, this.loop, false);
+        mediaplayer.setAutoPlay(this.onStart);
     }
     
     @Override
     public void start() {
-        //Sprite Entity start method
-        super.start();
+        //start logic here
     }
 
     @Override
     public void update() {
-        //update
+        //update logic here
     }
     
     @Override
