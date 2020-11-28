@@ -7,10 +7,12 @@ package Engine.Level;
 
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Entity.GameEntity.Entity_Player;
+import Engine.Util.RessourceManager.ResourceLoader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 //Merouane Issad
@@ -47,6 +49,21 @@ public class Level {
         {
             System.out.println("palette entry "+index+" does not exist");
             return Color.RED;
+        }
+        //return null;
+    }
+    
+    public Image getCellTexture(int x, int y)
+    {
+        int index = getCellValue(x, y);
+        try{
+        getPaletteEntry(index);
+        return getPaletteEntry(index).getTexture();
+        }
+        catch(NullPointerException e)
+        {
+            System.out.println("palette entry "+index+" does not exist");
+            return ResourceLoader.loadImage(ResourceLoader.error_imagePath);
         }
         //return null;
     }

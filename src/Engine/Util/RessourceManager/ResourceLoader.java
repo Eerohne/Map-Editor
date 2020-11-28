@@ -40,6 +40,8 @@ public class ResourceLoader
     
     public static String error_imagePath = "";
     
+    public static String error_texturePath = "";
+    
     public static OrderedProperties loadConfigFile()
     {
         OrderedProperties prop = new OrderedProperties();
@@ -51,6 +53,7 @@ public class ResourceLoader
 
             resourcePath = prop.getProperty("e_resourcepath"); //right here set the resourcePath
             error_imagePath = prop.getProperty("e_error_image");
+            error_texturePath = prop.getProperty("e_error_texture");
         }
         catch(IOException e) {
             System.out.println("'config.cfg' file was not found in root folder");
