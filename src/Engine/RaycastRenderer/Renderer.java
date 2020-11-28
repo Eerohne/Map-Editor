@@ -12,6 +12,7 @@ import Engine.Level.Level;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.TreeMap;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
@@ -26,8 +27,8 @@ import javafx.scene.paint.Color;
 
 /*  TODO FEATURES:
 *   Render Level        +
-*   Render Entities     started
-*   Render Textures     -
+*   Render Entities     +
+*   Render Textures     started
 *   Game Minimap        -
 */
 public class Renderer {
@@ -195,10 +196,14 @@ public class Renderer {
         final Point2D dir = new Point2D(Math.cos(Math.toRadians(camA)), Math.sin(Math.toRadians(camA)));
         TreeMap<Double, SpriteEntity> sprites = new TreeMap(Comparator.reverseOrder());
         
-        //spriteEntities.forEach(((s, e) -> {sprites.put(cam.distance(e.getPosition()), e);}));
-            
-        sprites.forEach(((d, e) -> 
+        for(String name: spriteEntities.keySet()){
+            SpriteEntity entity = spriteEntities.get(name);
+            sprites.put(cam.distance(entity.getPosition()), entity);
+        }
+        
+        for(Double d: sprites.keySet())
         {
+            SpriteEntity e = sprites.get(d);
             Point2D ePos = e.getPosition().subtract(cam); //vector from player to entity
             if(dir.angle(ePos)<(0.1+fov/2.0) && ePos.magnitude()<viewD){ //if entity is within the player's fov and within view range
                 
@@ -241,7 +246,7 @@ public class Renderer {
                     }
                 }
             }
-        }));
+        };
         
     }
 
