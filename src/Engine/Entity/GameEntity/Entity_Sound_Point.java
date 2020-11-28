@@ -8,9 +8,11 @@ package Engine.Entity.GameEntity;
 import Engine.Core.Game;
 import Engine.Core.Sound.SoundManager;
 import Engine.Entity.AbstractEntity.Entity;
+import Engine.Util.Input;
 import java.util.HashMap;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
+import javafx.scene.input.KeyCode;
 
 /**
  *
@@ -44,18 +46,23 @@ public class Entity_Sound_Point extends Entity_Sound{
     @Override
     public void start() {
         //start logic here
-        double distance = range - Game.getCurrentLevel().getPlayer().getPosition().distance(this.position);
-        if(distance <=0){
+        double distance = Game.getCurrentLevel().getPlayer().getPosition().distance(this.position)/range;
+        if(distance >= 0 && distance <= range){
             mediaplayer.volumeProperty().set(0);
         }
     }
 
     @Override
     public void update() {
-        double distance = range - Game.getCurrentLevel().getPlayer().getPosition().distance(this.position);
-        if(distance >= 0){
-            double distanceVolume = distance/range;
+        double distance = Game.getCurrentLevel().getPlayer().getPosition().distance(this.position);
+        if(distance >= 0 && distance <= range){
+            double distanceVolume;
+            if(Input.keyPressed(KeyCode.E))
+                distanceVolume = distance/range;
+            else
+                distanceVolume = -(0.6) * Math.log10(distance/range);
             mediaplayer.volumeProperty().set(distanceVolume * volume.get());
+            //System.out.println("distance 'unit' : "+ Game.getCurrentLevel().getPlayer().getPosition().distance(this.position) +" distance : "+ (int)(distance*100) + "% distance volume : " + distanceVolume);
         }
         else
         {
