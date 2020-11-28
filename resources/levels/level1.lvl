@@ -54,7 +54,7 @@
     "name":"player1",
     "active":"TRUE",
     "position":[1.5,2.8],
-    "rotation":"270",
+    "rotation":"90",
     "walkspeed":"2",
     "runspeed":"1.0"
     },

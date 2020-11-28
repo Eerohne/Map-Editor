@@ -28,7 +28,7 @@ public abstract class Entity_Sound extends Entity{
     protected boolean loop;
     protected boolean onlyOnce;
     
-    private float time;
+    protected float time;
     
     public Entity_Sound(String name, Point2D position)
     {
