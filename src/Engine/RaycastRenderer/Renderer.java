@@ -42,9 +42,6 @@ public class Renderer {
     private static float fov=70f; //default field of view (degrees)
     private static double viewD=8.0; //default view distance
     
-    //LINE ADDED BY LOGITHSS
-    public static float heightOffset = 0;
-    
     private Renderer(){}
     
     public static void setPlayer(Entity_Player player){Renderer.player = player;}
@@ -203,8 +200,9 @@ public class Renderer {
         }
         
         //draw entities
-        for(SpriteEntity e: sprites)
+        while(!sprites.isEmpty())
         {
+            SpriteEntity e = sprites.poll();
             Point2D ePos = e.getPosition().subtract(cam); //vector from player to entity
             if(dir.angle(ePos)<(0.1+fov/2.0) && ePos.magnitude()<viewD){ //if entity is within the player's fov and within view range
                 
@@ -232,6 +230,7 @@ public class Renderer {
                 if(!hidden){
                     double relX =screenPos-(width/2.0), relY = (screenHeight-height)/2.0; //coordinates of the top left corner of the image
                     relY -= (e.getHeight()-0.5)*screenHeight/dist; //height offsett
+                    relY -= (Game.getCurrentLevel().getPlayer().getHeight()-0.5);
                     gc.drawImage(sprite, relX, relY, width, height );
 
                     //draw walls that are in front of the entity
@@ -241,7 +240,6 @@ public class Renderer {
                         double pDist = cam.distance(hPoints.get(i));
                         double eDist = cam.distance(e.getPosition());
                         if(pDist<eDist){
-                            double rayA = dir.angle(hPoints.get(i));
                             drawWallLine(i, pDist, hPoints.get(i).getColor());
                         }
                     }
@@ -257,9 +255,7 @@ public class Renderer {
         double maxHeight = screenHeight;
         double height = (maxHeight/(distance +.25));
         double lineTop = ((screenHeight-height)/2.0);
-        
-        //LINE ADDED BY LOGITHSS
-        lineTop += -(heightOffset);
+        lineTop -= (Game.getCurrentLevel().getPlayer().getHeight()-0.5);
         
         gc.setFill(color);
         gc.fillRect(x, lineTop, 1, height);
