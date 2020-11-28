@@ -12,8 +12,7 @@ import Engine.Level.Level;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.TreeMap;
+import java.util.PriorityQueue;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -28,7 +27,7 @@ import javafx.scene.paint.Color;
 /*  TODO FEATURES:
 *   Render Level        +
 *   Render Entities     +
-*   Render Textures     started
+*   Render Textures     -
 *   Game Minimap        -
 */
 public class Renderer {
@@ -42,9 +41,6 @@ public class Renderer {
     private static Entity_Player player;
     private static float fov=70f; //default field of view (degrees)
     private static double viewD=8.0; //default view distance
-    
-    //LINE ADDED BY LOGITHSS
-    public static float heightOffset = 0;
     
     private Renderer(){}
     
@@ -190,20 +186,23 @@ public class Renderer {
         }
         return hPoints;
     }
+    
     private static void renderEntities(ArrayList<HitPoint> hPoints){
         Point2D cam = player.getPosition();
         float camA = player.getRotation();
         final Point2D dir = new Point2D(Math.cos(Math.toRadians(camA)), Math.sin(Math.toRadians(camA)));
-        TreeMap<Double, SpriteEntity> sprites = new TreeMap(Comparator.reverseOrder());
+        PriorityQueue<SpriteEntity> sprites = new PriorityQueue(new EntityDistanceComparator());
         
+        //sort entities by distance to player
         for(String name: spriteEntities.keySet()){
             SpriteEntity entity = spriteEntities.get(name);
-            sprites.put(cam.distance(entity.getPosition()), entity);
+            sprites.offer(entity);
         }
         
-        for(Double d: sprites.keySet())
+        //draw entities
+        while(!sprites.isEmpty())
         {
-            SpriteEntity e = sprites.get(d);
+            SpriteEntity e = sprites.poll();
             Point2D ePos = e.getPosition().subtract(cam); //vector from player to entity
             if(dir.angle(ePos)<(0.1+fov/2.0) && ePos.magnitude()<viewD){ //if entity is within the player's fov and within view range
                 
@@ -230,7 +229,8 @@ public class Renderer {
                 }
                 if(!hidden){
                     double relX =screenPos-(width/2.0), relY = (screenHeight-height)/2.0; //coordinates of the top left corner of the image
-                    relY -= (e.getHeight()-0.5)*screenHeight/dist;
+                    relY -= (e.getHeight()-0.5)*screenHeight/dist; //height offsett
+                    relY -= (Game.getCurrentLevel().getPlayer().getHeight()-0.5);
                     gc.drawImage(sprite, relX, relY, width, height );
 
                     //draw walls that are in front of the entity
@@ -240,13 +240,13 @@ public class Renderer {
                         double pDist = cam.distance(hPoints.get(i));
                         double eDist = cam.distance(e.getPosition());
                         if(pDist<eDist){
-                            double rayA = dir.angle(hPoints.get(i));
                             drawWallLine(i, pDist, hPoints.get(i).getColor());
                         }
                     }
+                    
                 }
             }
-        };
+        }
         
     }
 
@@ -255,14 +255,27 @@ public class Renderer {
         double maxHeight = screenHeight;
         double height = (maxHeight/(distance +.25));
         double lineTop = ((screenHeight-height)/2.0);
-        
-        //LINE ADDED BY LOGITHSS
-        lineTop += -(heightOffset);
+        lineTop -= (Game.getCurrentLevel().getPlayer().getHeight()-0.5);
         
         gc.setFill(color);
         gc.fillRect(x, lineTop, 1, height);
     }
 
+    static class EntityDistanceComparator implements Comparator<SpriteEntity>{
+
+        @Override
+        public int compare(SpriteEntity o1, SpriteEntity o2) {
+            Point2D cam = Game.getCurrentLevel().getPlayer().getPosition();
+            double d1 = cam.distance(o1.getPosition());
+            double d2 = cam.distance(o2.getPosition());
+            
+            if(d1<d2) return 1;
+            if(d1>d2) return -1;
+            return 0;
+        }
+
+    }
+    
 }
 class HitPoint extends Point2D{
     final private Color color;
