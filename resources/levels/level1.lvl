@@ -156,8 +156,8 @@
     "name":"music",
     "active":"TRUE",
     "position":[1.5,7.0],
-    "onstart":"false",
     "audiopath":"sounds/music/digital_attack.wav",
+    "onstart":"false",
     "loop":"false",
     "signals": []
     }

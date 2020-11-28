@@ -84,7 +84,7 @@ public class InfoController{
             cellsArray.add(array);
         }
         gridCells.put("map", cellsArray);
-        paletteObj.putAll(WallProfile.wallMap);
+        //paletteObj.putAll(WallProfile.wallMap);
         editorSaveArray.add(gridX);
         editorSaveArray.add(gridY);
         editorSaveArray.add(gridCells);
