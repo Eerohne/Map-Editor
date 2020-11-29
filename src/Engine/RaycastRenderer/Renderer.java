@@ -43,6 +43,7 @@ public class Renderer {
     private static Entity_Player player;
     private static float fov=70f; //default field of view (degrees)
     private static double viewD=8.0; //default view distance
+    private static int res = 1;
     
     private Renderer(){}
     
@@ -181,7 +182,7 @@ public class Renderer {
             }
             rayA += (fov/screenWidth);
         }
-        for(int i=0;i<screenWidth;i+=5){
+        for(int i=0;i<screenWidth;i+=res){
             drawWallLine(i, hPoints.get(i));
         }
         
@@ -272,17 +273,17 @@ public class Renderer {
         
         
         //method 1
-        if(false){
+        if(true){
             for(int i = 0; i<texture.getHeight(); i++){
                 gc.setFill(reader.getColor(tx, i));
-                gc.fillRect(r, lineTop, 1*5, vIncr);
+                gc.fillRect(r, lineTop, res, vIncr*2);
                 lineTop+=vIncr;
             }
         }
         //method 2
-        if(true){
+        if(false){
             WritableImage slice = new WritableImage(reader, tx, 0, 1, (int)texture.getHeight());
-            gc.drawImage(slice, r, lineTop, 1*5, height);
+            gc.drawImage(slice, r, lineTop, res, height);
         }
         
     }

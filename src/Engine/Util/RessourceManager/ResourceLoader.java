@@ -65,7 +65,7 @@ public class ResourceLoader
     {
         try{
             FileInputStream inputstream = new FileInputStream(resourcePath + path);
-            return new Image(inputstream, 500, 500, true, false);
+            return new Image(inputstream, 100, 100, true, false);
         }
         catch(IOException e)
         {
