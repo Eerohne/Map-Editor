@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -36,6 +37,7 @@ public class Game extends Application{
     private static Stage gameStage;
     private static WindowManager windowManager;
     private static Level currentLevel;
+    private static AnimationTimer timer;
     //flags
     public static boolean isRunning = true;
     public static boolean isRendering = true;
@@ -44,7 +46,7 @@ public class Game extends Application{
     public void start(Stage stage){
         initEngine(stage);
         
-        new AnimationTimer() { //Game main loop
+        timer = new AnimationTimer() { //Game main loop
 
             @Override
             public void handle(long l) {
@@ -57,7 +59,9 @@ public class Game extends Application{
                 if(isRendering)
                     Renderer.render();
             }
-        }.start();
+        };
+        
+        timer.start();
         
         stage.show();
     }
@@ -141,6 +145,7 @@ public class Game extends Application{
     {
         System.out.println("game exit");
         gameStage.close();
+        timer.stop();
     }
 
     public static void main(String[] args) {

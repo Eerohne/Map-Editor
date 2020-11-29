@@ -55,7 +55,7 @@ public class Entity_Sound_Point extends Entity_Sound{
     @Override
     public void update() {
         this.time += Time.deltaTime;
-        mediaplayer.setBalance(Math.sin(time));
+        //mediaplayer.setBalance(Math.sin(time));
         
         //System.out.println(Game.getCurrentLevel().getPlayer().getPosition().angle(0, 1));
         
