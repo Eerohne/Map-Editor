@@ -269,14 +269,23 @@ public class Renderer {
         }
         double vIncr = height/texture.getHeight();
         
-        for(int i = 0; i<texture.getHeight(); i++){
-            Color c = reader.getColor(tx, i);
-            c.deriveColor(0, 0, 0, 1.0);
-            gc.setFill(c);
-            gc.fillRect(r, lineTop, 1, vIncr);
-            lineTop+=vIncr;
+        
+        //method 1
+        if(true){
+            for(int i = 0; i<texture.getHeight(); i++){
+                Color c = reader.getColor(tx, i);
+                c = c.deriveColor(1.0, 1.0, 1.0, 1.0);
+                gc.setFill(c);
+                gc.fillRect(r, lineTop, 1, vIncr);
+                lineTop+=vIncr;
+            }
         }
-
+        //method 2
+        if(false){
+            WritableImage slice = new WritableImage(reader, tx, 0, 1, (int)texture.getHeight());
+            gc.drawImage(slice, r, lineTop, 1, height);
+        }
+        
     }
 
     static class EntityDistanceComparator implements Comparator<SpriteEntity>{
