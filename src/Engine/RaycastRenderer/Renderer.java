@@ -171,19 +171,20 @@ public class Renderer {
             double hLength = cam.distance(rH);
             double vLength = cam.distance(rV);
             if(rH.equals(rV)){
-                drawWallLine(r, h);
                 hPoints.add(h);
             }
             else if(hLength<vLength){
-                drawWallLine(r, h);
                 hPoints.add(h);
             }
             else{
-                drawWallLine(r, v);
                 hPoints.add(v);
             }
             rayA += (fov/screenWidth);
         }
+        for(int i=0;i<screenWidth;i+=5){
+            drawWallLine(i, hPoints.get(i));
+        }
+        
         return hPoints;
     }
     
@@ -271,19 +272,17 @@ public class Renderer {
         
         
         //method 1
-        if(true){
+        if(false){
             for(int i = 0; i<texture.getHeight(); i++){
-                Color c = reader.getColor(tx, i);
-                c = c.deriveColor(1.0, 1.0, 1.0, 1.0);
-                gc.setFill(c);
-                gc.fillRect(r, lineTop, 1, vIncr);
+                gc.setFill(reader.getColor(tx, i));
+                gc.fillRect(r, lineTop, 1*5, vIncr);
                 lineTop+=vIncr;
             }
         }
         //method 2
-        if(false){
+        if(true){
             WritableImage slice = new WritableImage(reader, tx, 0, 1, (int)texture.getHeight());
-            gc.drawImage(slice, r, lineTop, 1, height);
+            gc.drawImage(slice, r, lineTop, 1*5, height);
         }
         
     }
