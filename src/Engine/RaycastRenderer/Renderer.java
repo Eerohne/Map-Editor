@@ -16,7 +16,10 @@ import java.util.PriorityQueue;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 /**
@@ -27,7 +30,8 @@ import javafx.scene.paint.Color;
 /*  TODO FEATURES:
 *   Render Level        +
 *   Render Entities     +
-*   Render Textures     -
+*   Render Textures     +
+*   Render Floor/Ceil   -
 *   Game Minimap        -
 */
 public class Renderer {
@@ -41,6 +45,7 @@ public class Renderer {
     private static Entity_Player player;
     private static float fov=70f; //default field of view (degrees)
     private static double viewD=8.0; //default view distance
+    private static int res = 1;
     
     private Renderer(){}
     
@@ -61,6 +66,7 @@ public class Renderer {
     
     public static void setFov(float angdeg){fov = angdeg;} // set the field of view
     public static void setViewDistance(double dist){viewD = dist;} // set the view distance
+    public static void setResolution(int resolution){res = resolution;};
     
     public static void resize(){
         screenWidth = frame.getWidth();
@@ -70,7 +76,7 @@ public class Renderer {
     //renders one frame
     public static void render(){
         //change colors here
-        gc.clearRect(0, 0, screenWidth, screenHeight);
+        //gc.clearRect(0, 0, screenWidth, screenHeight);
         //ceiling
         gc.setFill(Color.LIGHTBLUE);
         gc.fillRect(0, 0, screenWidth, screenHeight);
@@ -96,6 +102,7 @@ public class Renderer {
         
         float rayA = camA - fov/2f*(float)(1.0-1.0/screenWidth);
         
+        //creates all the hit points
         for(int r=0; r<screenWidth;r++){
             while (rayA<0 || rayA>=360) {                
                 if(rayA < 0)  rayA+=360;
@@ -127,15 +134,15 @@ public class Renderer {
                 rV = new Point2D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
             }
             
-            Color v = Color.TRANSPARENT;
+            HitPoint v = HitPoint.ZERO;
             for(int i=0;i<viewD;i++){
                 int x = (int)Math.floor(rV.getX());
                 int y = (int)Math.floor(rV.getY());
                 if(x>=level.width || y>= level.height || x<0 || y<0)break;
-                if(level.isWall(x-1, y) && !rightward){v=level.getCellColor(x-1, y);break;}
-                if(level.isWall(x, y)){v=level.getCellColor(x, y);break;}
+                if(level.isWall(x-1, y) && !rightward){v = new HitPoint(rV,'v', x-1, y);break;}
+                if(level.isWall(x, y)){v = new HitPoint(rV,'v', x, y);break;}
                 rV = rV.add(stepX, stepY);
-                if(i+1.0==viewD){v=Color.WHITESMOKE;rV = cam.add(viewD*Math.cos(Math.toRadians(rayA)), viewD*Math.sin(Math.toRadians(rayA)));}
+                //if(i+1.0==viewD){rV = cam.add(viewD*Math.cos(Math.toRadians(rayA)), viewD*Math.sin(Math.toRadians(rayA)));}
             }
             
             //intersects with horizontal
@@ -155,35 +162,35 @@ public class Renderer {
                 rH = new Point2D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
             }
             
-            Color h = Color.TRANSPARENT;
+            HitPoint h = HitPoint.ZERO;
             for(int i=0;i<viewD;i++){
                 int x = (int)Math.floor(rH.getX());
                 int y = (int)Math.floor(rH.getY());
                 if(x>=level.width || y>= level.height || x<0 || y<0)break;
-                if(level.isWall(x, y-1) && !upward){h = level.getCellColor(x, y-1);break;}
-                if(level.isWall(x, y)){h = level.getCellColor(x, y);break;}
+                if(level.isWall(x, y-1) && !upward){h = new HitPoint(rH,'h', x, y-1);break;}
+                if(level.isWall(x, y)){h = new HitPoint(rH,'h', x, y);break;}
                 rH = rH.add(stepX, stepY);
-                if(i+1.0==viewD){h = Color.WHITESMOKE;rH = cam.add(viewD*Math.cos(Math.toRadians(rayA)), viewD*Math.sin(Math.toRadians(rayA)));}
+                //if(i+1.0==viewD){rH = cam.add(viewD*Math.cos(Math.toRadians(rayA)), viewD*Math.sin(Math.toRadians(rayA)));}
             }
             
             double hLength = cam.distance(rH);
             double vLength = cam.distance(rV);
             if(rH.equals(rV)){
-                drawWallLine(r, viewD*Math.cos(Math.toRadians(rayA-camA)), h);
-                hPoints.add(new HitPoint(rH, h));
+                hPoints.add(h);
             }
             else if(hLength<vLength){
-                double dist = hLength*Math.cos(Math.toRadians(rayA-camA));
-                drawWallLine(r, dist, h);
-                hPoints.add(new HitPoint(rH, h));
+                hPoints.add(h);
             }
             else{
-                double dist = vLength*Math.cos(Math.toRadians(rayA-camA));
-                drawWallLine(r, dist, v.darker());
-                hPoints.add(new HitPoint(rV, v.darker()));
+                hPoints.add(v);
             }
             rayA += (fov/screenWidth);
         }
+        //draw the wall
+        for(int i=0;i<screenWidth;i+=res){
+            drawWallLine(i, hPoints.get(i));
+        }
+        
         return hPoints;
     }
     
@@ -240,7 +247,7 @@ public class Renderer {
                         double pDist = cam.distance(hPoints.get(i));
                         double eDist = cam.distance(e.getPosition());
                         if(pDist<eDist){
-                            drawWallLine(i, pDist, hPoints.get(i).getColor());
+                            drawWallLine(i, hPoints.get(i));
                         }
                     }
                     
@@ -251,18 +258,28 @@ public class Renderer {
     }
 
     //draws the line representing a slice of a wall
-    private static void drawWallLine(int x, double distance, Color color){
-        double maxHeight = screenHeight;
-        double height = (maxHeight/(distance +.25));
-        double lineTop = ((screenHeight-height)/2.0);
-        lineTop -= (Game.getCurrentLevel().getPlayer().getHeight()-0.5);
+    private static void drawWallLine(int r, HitPoint hPoint){
+        Point2D toWall = hPoint.subtract(player.getPosition());
+        Point2D dir = new Point2D(Math.cos(Math.toRadians(player.getRotation())), Math.sin(Math.toRadians(player.getRotation())));
         
-        gc.setFill(color);
-        gc.fillRect(x, lineTop, 1, height);
+        double distance = toWall.magnitude();
+        distance = distance*Math.cos(Math.toRadians(dir.angle(toWall)))+.25;
+        double height = screenHeight/distance;
+        double lineTop = ((screenHeight-height)/2.0);
+        lineTop -= (player.getHeight()-0.5);
+        
+        Image texture = Game.getCurrentLevel().getCellTexture(hPoint.getXIndex(), hPoint.getYIndex());
+        
+        int tx = 0;
+        switch(hPoint.getType()){
+            case('h'): tx = (int)(texture.getWidth()*(1-hPoint.getX()+(int)hPoint.getX())); break;
+            case('v'): tx = (int)(texture.getWidth()*(1-hPoint.getY()+(int)hPoint.getY())); break;
+        }
+        
+        gc.drawImage(texture, tx, 0, 1, texture.getHeight(), r, lineTop, res, height);
     }
 
     static class EntityDistanceComparator implements Comparator<SpriteEntity>{
-
         @Override
         public int compare(SpriteEntity o1, SpriteEntity o2) {
             Point2D cam = Game.getCurrentLevel().getPlayer().getPosition();
@@ -273,15 +290,20 @@ public class Renderer {
             if(d1>d2) return -1;
             return 0;
         }
-
     }
     
 }
 class HitPoint extends Point2D{
-    final private Color color;
-    protected HitPoint(Point2D point, Color color){
+    final private int xIn, yIn;
+    final private char type;
+    protected HitPoint(Point2D point, char type, int xIndex, int yIndex){
         super(point.getX(), point.getY());
-        this.color = color;
+        this.type = type;
+        this.xIn = xIndex; this.yIn = yIndex;
     }
-    protected Color getColor(){return this.color;}
+    final static public HitPoint ZERO = new HitPoint(Point2D.ZERO, '0', -1, -1);
+    
+    public int getXIndex() {return xIn;}
+    public int getYIndex() {return yIn;}
+    public char getType() {return type;}
 }

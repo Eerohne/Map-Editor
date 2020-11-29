@@ -57,7 +57,6 @@ public class Entity_Sound_Point extends Entity_Sound{
 
     @Override
     public void update() {
-        this.time += Time.deltaTime;
         
         Point2D vectorPlayer = player.getPosition().subtract(this.position);
         //vectorPlayer = vectorPlayer.multiply(-1);
@@ -95,6 +94,8 @@ public class Entity_Sound_Point extends Entity_Sound{
         {
             mediaplayer.volumeProperty().set(0);
         }
+        
+        this.mediaplayer.setAudioSpectrumNumBands(1000);
     }
     
     @Override

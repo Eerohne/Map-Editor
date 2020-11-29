@@ -23,11 +23,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.media.MediaPlayer;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
-import org.json.simple.parser.ParseException;
 
 //Merouane Issad
 //for now, discard any code written here, it's only test nonsense

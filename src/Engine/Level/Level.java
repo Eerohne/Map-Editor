@@ -34,8 +34,14 @@ public class Level {
     
     public boolean isWall(int x, int y)
     {
-        int index = getCellValue(x, y);
-        return getPaletteEntry(index).getFlag() == 1;
+        try{
+            int index = getCellValue(x, y);
+            return getPaletteEntry(index).getFlag() == 1;
+        }
+        catch(NullPointerException e)
+        {
+            return true;
+        }
     }
     
     public Color getCellColor(int x, int y)
@@ -57,12 +63,12 @@ public class Level {
     {
         int index = getCellValue(x, y);
         try{
-        getPaletteEntry(index);
-        return getPaletteEntry(index).getTexture();
+            getPaletteEntry(index);
+            return getPaletteEntry(index).getTexture();
         }
         catch(NullPointerException e)
         {
-            System.out.println("palette entry "+index+" does not exist");
+            //System.out.println("palette entry "+index+" does not exist");
             return ResourceLoader.loadImage(ResourceLoader.error_imagePath);
         }
         //return null;
