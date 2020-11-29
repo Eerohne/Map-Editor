@@ -29,7 +29,8 @@ import javafx.scene.paint.Color;
 /*  TODO FEATURES:
 *   Render Level        +
 *   Render Entities     +
-*   Render Textures     -
+*   Render Textures     +
+*   Render Floor/Ceil   -
 *   Game Minimap        -
 */
 public class Renderer {
@@ -64,6 +65,7 @@ public class Renderer {
     
     public static void setFov(float angdeg){fov = angdeg;} // set the field of view
     public static void setViewDistance(double dist){viewD = dist;} // set the view distance
+    public static void setResolution(int resolution){res = resolution;};
     
     public static void resize(){
         screenWidth = frame.getWidth();
@@ -99,6 +101,7 @@ public class Renderer {
         
         float rayA = camA - fov/2f*(float)(1.0-1.0/screenWidth);
         
+        //creates all the hit points
         for(int r=0; r<screenWidth;r++){
             while (rayA<0 || rayA>=360) {                
                 if(rayA < 0)  rayA+=360;
@@ -182,6 +185,7 @@ public class Renderer {
             }
             rayA += (fov/screenWidth);
         }
+        //draw the wall
         for(int i=0;i<screenWidth;i+=res){
             drawWallLine(i, hPoints.get(i));
         }
@@ -256,6 +260,7 @@ public class Renderer {
     private static void drawWallLine(int r, HitPoint hPoint){
         Point2D toWall = hPoint.subtract(player.getPosition());
         Point2D dir = new Point2D(Math.cos(Math.toRadians(player.getRotation())), Math.sin(Math.toRadians(player.getRotation())));
+        
         double distance = toWall.magnitude();
         distance = distance*Math.cos(Math.toRadians(dir.angle(toWall)))+.25;
         double height = screenHeight/distance;
@@ -288,14 +293,14 @@ public class Renderer {
     
 }
 class HitPoint extends Point2D{
-    private int xIn, yIn;
-    private char type;
+    final private int xIn, yIn;
+    final private char type;
     protected HitPoint(Point2D point, char type, int xIndex, int yIndex){
         super(point.getX(), point.getY());
         this.type = type;
         this.xIn = xIndex; this.yIn = yIndex;
     }
-    static public HitPoint ZERO = new HitPoint(Point2D.ZERO, '0', -1, -1);
+    final static public HitPoint ZERO = new HitPoint(Point2D.ZERO, '0', -1, -1);
     
     public int getXIndex() {return xIn;}
     public int getYIndex() {return yIn;}
