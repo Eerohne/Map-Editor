@@ -263,29 +263,14 @@ public class Renderer {
         lineTop -= (player.getHeight()-0.5);
         
         Image texture = Game.getCurrentLevel().getCellTexture(hPoint.getXIndex(), hPoint.getYIndex());
-        PixelReader reader = texture.getPixelReader();
+        
         int tx = 0;
         switch(hPoint.getType()){
-            case('h'): tx = (int)(texture.getWidth()*(hPoint.getX()-(int)hPoint.getX())); break;
-            case('v'): tx = (int)(texture.getWidth()*(hPoint.getY()-(int)hPoint.getY())); break;
-        }
-        double vIncr = height/texture.getHeight();
-        
-        
-        //method 1
-        if(true){
-            for(int i = 0; i<texture.getHeight(); i++){
-                gc.setFill(reader.getColor(tx, i));
-                gc.fillRect(r, lineTop, res, vIncr*2);
-                lineTop+=vIncr;
-            }
-        }
-        //method 2
-        if(false){
-            WritableImage slice = new WritableImage(reader, tx, 0, 1, (int)texture.getHeight());
-            gc.drawImage(slice, r, lineTop, res, height);
+            case('h'): tx = (int)(texture.getWidth()*(1-hPoint.getX()+(int)hPoint.getX())); break;
+            case('v'): tx = (int)(texture.getWidth()*(1-hPoint.getY()+(int)hPoint.getY())); break;
         }
         
+        gc.drawImage(texture, tx, 0, 1, texture.getHeight(), r, lineTop, res, height);
     }
 
     static class EntityDistanceComparator implements Comparator<SpriteEntity>{
