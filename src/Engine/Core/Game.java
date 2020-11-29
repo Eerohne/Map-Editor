@@ -41,10 +41,12 @@ public class Game extends Application{
     public static boolean isRendering = true;
     public static boolean pauseActive = true;
     
+    private static AnimationTimer anim;
+    
     public void start(Stage stage){
         initEngine(stage);
         
-        new AnimationTimer() { //Game main loop
+        anim = new AnimationTimer() { //Game main loop
 
             @Override
             public void handle(long l) {
@@ -57,7 +59,8 @@ public class Game extends Application{
                 if(isRendering)
                     Renderer.render();
             }
-        }.start();
+        };
+        anim.start();
         
         stage.show();
     }
@@ -140,7 +143,10 @@ public class Game extends Application{
     public static void exit()
     {
         System.out.println("game exit");
+        anim.stop();
+        SoundManager.clear();
         gameStage.close();
+        System.gc();
     }
 
     public static void main(String[] args) {

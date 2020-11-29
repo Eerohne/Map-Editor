@@ -25,6 +25,8 @@ public class Entity_Sound_Point extends Entity_Sound{
     private SimpleDoubleProperty volume;
     private float range;
     
+    private Entity_Player player;
+    
     public Entity_Sound_Point(String name, Point2D position, int myVariable)
     {
         super(name, position);
@@ -45,6 +47,7 @@ public class Entity_Sound_Point extends Entity_Sound{
     
     @Override
     public void start() {
+        player = Game.getCurrentLevel().getPlayer();
         //start logic here
         double distance = Game.getCurrentLevel().getPlayer().getPosition().distance(this.position)/range;
         if(distance >= 0 && distance <= range){
@@ -55,11 +58,30 @@ public class Entity_Sound_Point extends Entity_Sound{
     @Override
     public void update() {
         this.time += Time.deltaTime;
-        mediaplayer.setBalance(Math.sin(time));
         
+        Point2D vectorPlayer = player.getPosition().subtract(this.position);
+        //vectorPlayer = vectorPlayer.multiply(-1);
+        Point2D front = new Point2D(Math.cos(Math.toRadians(player.getRotation())), Math.sin(Math.toRadians(player.getRotation())));
+        Point2D right = new Point2D(Math.sin(Math.toRadians(player.getRotation())), -Math.cos(Math.toRadians(player.getRotation())));
+        Point2D left = new Point2D(-Math.sin(Math.toRadians(player.getRotation())), Math.cos(Math.toRadians(player.getRotation())));
+        double frontAngle = vectorPlayer.angle(front);
+        double rightAngle = vectorPlayer.angle(right);
+        double leftAngle = vectorPlayer.angle(left);
+        double dot = vectorPlayer.dotProduct(Math.sin(Math.toRadians(player.getRotation())), -Math.sin(Math.toRadians(player.getRotation())));
+        /*System.out.println("vector p to s : "+vectorPlayer);
+        System.out.println("angle between p and s : "+(angle));
+        System.out.println("dot between p and s : "+(dot));
+        System.out.println("final balance : "+Math.sin(Math.toRadians(angle+180)));*/
+        
+        double d = ((this.getPosition().getX() - player.getPosition().getX())*(front.getY()-player.getPosition().getY())) - ((this.getPosition().getY() - player.getPosition().getY()) * (front.getX() - player.getPosition().getX()) );
+        //System.out.println("d : "+d);
+        if(rightAngle < leftAngle)
+            mediaplayer.setBalance(-Math.sin(Math.toRadians(frontAngle+180)));
+        else
+            mediaplayer.setBalance(Math.sin(Math.toRadians(frontAngle+180)));
         //System.out.println(Game.getCurrentLevel().getPlayer().getPosition().angle(0, 1));
         
-        double distance = Game.getCurrentLevel().getPlayer().getPosition().distance(this.position);
+        double distance = player.getPosition().distance(this.position);
         if(distance >= 0 && distance <= range){
             double distanceVolume;
             if(Input.keyPressed(KeyCode.E))

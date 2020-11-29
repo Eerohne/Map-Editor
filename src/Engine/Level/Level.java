@@ -23,7 +23,7 @@ public class Level {
     private Map<Integer, PaletteEntry> palette; //Look-up table
     private Map<String, Entity> entities; //Entities stored by their name
     
-    private Entity playerEntity;
+    private Entity_Player playerEntity;
     //flags
     private boolean firstUpdate = true;
     
@@ -177,7 +177,7 @@ public class Level {
     {
         entities.put(entity.getName(), entity);
         if(entity instanceof Entity_Player) //store player in a global variable for easy access
-            playerEntity = entity;
+            playerEntity = (Entity_Player)entity;
         if(!firstUpdate)
             entity.start();
     }
@@ -208,7 +208,7 @@ public class Level {
         firstUpdate = false;
     }
     
-    public Entity getPlayer()
+    public Entity_Player getPlayer()
     {
         return playerEntity;
     }
