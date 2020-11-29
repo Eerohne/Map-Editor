@@ -16,6 +16,7 @@ import java.util.PriorityQueue;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
@@ -73,7 +74,7 @@ public class Renderer {
     //renders one frame
     public static void render(){
         //change colors here
-        gc.clearRect(0, 0, screenWidth, screenHeight);
+        //gc.clearRect(0, 0, screenWidth, screenHeight);
         //ceiling
         gc.setFill(Color.LIGHTBLUE);
         gc.fillRect(0, 0, screenWidth, screenHeight);

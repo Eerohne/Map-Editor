@@ -29,7 +29,7 @@ public class Time {
             fps = fpsCounter;
             fpsCounter = 0;
             lastFrameTime = getTime();
-            //System.out.println("FPS : " + fps);
+            System.out.println("FPS : " + fps);
         }
         fpsCounter++;
     }
