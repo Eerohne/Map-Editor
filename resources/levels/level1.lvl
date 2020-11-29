@@ -143,7 +143,7 @@
     "classname":"sprite_decor",
     "name":"discoball",
     "active":"TRUE",
-    "position":[1.6,7.0],
+    "position":[1.7,7.0],
     "height":"1.0",
     "texture":"images/sprites/discoball.gif",
     "size":"0.5",
