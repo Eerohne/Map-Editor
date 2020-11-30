@@ -38,7 +38,8 @@ public class MapProfile extends Profile{
         this.mainMap = false;
         
         this.wallMap  = new TreeMap<>();
-        this.defaultWall = this.createWallProfile("Floor", "white.png", 1);
+        this.defaultWall = new WallProfile();
+        this.wallMap.put(defaultWall.getID(), defaultWall);
         
         this.gridView = new Grid(50, gridWidth, gridLength, defaultWall);
         setChildrenClipping(gridView);

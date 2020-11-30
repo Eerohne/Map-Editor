@@ -28,10 +28,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -71,7 +69,7 @@ public class MapEditor extends Application {
                 
         Scene scene = new Scene(setupView(metadataContent), 1920, 1080);
         
-        WallController wc = new WallController((WallContent)metadataContent, currentMap.getGridView(), wallHierarchy);
+        WallController wc = new WallController(editorWindow, (WallContent)metadataContent, currentMap.getGridView(), wallHierarchy);
         InfoController ic = new InfoController(info, currentMap);
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow, wallHierarchy);

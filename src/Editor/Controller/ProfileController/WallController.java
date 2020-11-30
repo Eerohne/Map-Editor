@@ -10,12 +10,15 @@ import Editor.View.Grid.Cell;
 import Editor.View.Grid.Grid;
 import Editor.View.Metadata.WallContent;
 import Editor.View.Hierarchy.WallHierarchy;
+import java.io.File;
 import java.util.Map;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * Controller of the WallContent Class
@@ -23,6 +26,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class WallController extends MetadataController {
     Grid grid;
+    String newImage;
     
     //WallPane Component references
     private Button cancel;
@@ -33,13 +37,23 @@ public class WallController extends MetadataController {
     private Rectangle txrPreview;
     private ComboBox flagCombo;
     
-    public WallController(WallContent content, Grid grid, WallHierarchy hierarchy) {
+    public WallController(Stage stage, WallContent content, Grid grid, WallHierarchy hierarchy) {
         super(content, hierarchy);
         this.grid = grid;
         this.setupReferences(content);
         
         nameField.setOnMouseClicked(e -> disableButtons(false));
-        txrPreview.setOnMouseClicked(e -> disableButtons(false));
+        txrPreview.setOnMouseClicked(e -> {
+            disableButtons(false);
+            FileChooser fileChooser = new FileChooser();
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Textures", "*.png", "*.jpg");
+            fileChooser.getExtensionFilters().add(extFilter);
+            fileChooser.setTitle("Choose A Wall Texture");
+            fileChooser.setInitialDirectory(new File(WallProfile.resourceFolder));
+            File textureFile = fileChooser.showOpenDialog(stage);
+            
+            this.newImage = textureFile.getName();
+        });
         flagCombo.setOnAction(e -> disableButtons(false));
     }
     
@@ -52,7 +66,7 @@ public class WallController extends MetadataController {
     @Override
     protected void saveAction(){
         ((WallContent)content).getWallProfile().setFlag((String)flagCombo.getValue());
-        ((WallContent)content).getWallProfile().setImg("grey_brick.png"); //DUMMY
+        ((WallContent)content).getWallProfile().setImg(newImage); //DUMMY
         ((WallContent)content).getWallProfile().setName(nameField.getText());
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {

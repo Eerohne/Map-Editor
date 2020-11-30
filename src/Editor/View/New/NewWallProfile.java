@@ -5,40 +5,19 @@
  */
 package Editor.View.New;
 
-import Editor.Controller.GridController;
 import Editor.Model.Profile.WallProfile;
 import Editor.View.Hierarchy.WallHierarchy;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  *
@@ -47,7 +26,6 @@ import javafx.stage.StageStyle;
 public class NewWallProfile extends NewObject{
     private String filepath;
     private String selectedImage;
-    private HBox selectedOption = new HBox();
     
     WallHierarchy wallList;
     
@@ -60,7 +38,7 @@ public class NewWallProfile extends NewObject{
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Textures", "*.png", "*.jpg");
         fileChooser.getExtensionFilters().add(extFilter);
         fileChooser.setTitle("Choose A Wall Texture");
-        fileChooser.setInitialDirectory(new File(filepath));
+        fileChooser.setInitialDirectory(new File(this.filepath));
         File textureFile = fileChooser.showOpenDialog(parent);
         
         this.selectedImage = textureFile.getName();
