@@ -63,89 +63,14 @@ public class NewWallProfile extends NewObject{
         fileChooser.setInitialDirectory(new File(filepath));
         File textureFile = fileChooser.showOpenDialog(parent);
         
-        //frame.setCenter(textureView());
+        this.selectedImage = textureFile.getName();
+        
+        frame.setCenter(optionView(newWindow));
         
         newWindow.show();
     }
-//    
-//    private BorderPane setupScene(Node center){
-//        BorderPane pane = new BorderPane();
-//        pane.setCenter(center);
-//        pane.setBottom(buttonBar);
-//        
-//        return pane;
-//    }
     
-    private ScrollPane textureView(){
-        VBox temp = new VBox();
-        
-        File resourceDir = new File(filepath);
-        String textures[] = resourceDir.list();
-        
-        for (String texture : textures) {
-            if(texture.endsWith(".png") || texture.endsWith(".jpg") || texture.endsWith(".jpeg")){
-                HBox item = new HBox();
-                try {
-                    Image txr = new Image(new FileInputStream(filepath + texture), 100, 100, true, true);
-                    ImageView preview = new ImageView(txr);
-                    
-                    item.getChildren().add(preview);
-                } catch (Exception ex) {
-                    System.out.println(ex);
-                }
-                
-                Label txrName = new Label(texture);
-                item.getChildren().add(txrName);
-                item.setOnMouseClicked(e -> {
-                    select(item);
-                });
-                item.setSpacing(10);
-                item.setPadding(new Insets(25));
-                item.setMinWidth(586);
-                
-                temp.getChildren().add(item);
-            }
-        }
-        
-        System.out.println((HBox) temp.getChildren().get(0));
-        //select((HBox) temp.getChildren().get(0));
-        return new ScrollPane(temp);
-    }
-    
-//    private HBox buttonContainer(Stage stage){
-//        HBox buttonBox = new HBox(5);
-//        buttonBox.setPadding(new Insets(5));
-//        
-//        this.next = new Button("Next >");
-//        this.next.setOnAction(e -> {
-//            optionView(stage);
-//        });
-//        this.cancel = new Button("Cancel");
-//        this.cancel.setOnAction(e -> {
-//            stage.close();
-//        });
-//        Region space = new Region();
-//        
-//        next.setDisable(true);
-//        
-//        HBox.setHgrow(space, Priority.ALWAYS);
-//        
-//        buttonBox.getChildren().addAll(space, next, cancel);
-//        
-//        return buttonBox;
-//    }
-    
-    private void select(HBox box){
-        this.selectedOption.setBackground(Background.EMPTY);
-        this.selectedOption = box;
-        this.selectedOption.setBackground(new Background(new BackgroundFill(Color.CADETBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-        
-        this.selectedImage = ((Label)box.getChildren().get(1)).getText();
-        
-        this.next.setDisable(false);
-    }
-    
-    private void optionView(Stage stage){
+    private VBox optionView(Stage stage){
         Label name = new Label("Name : ");
         Label flag = new Label("Flag : ");
         
@@ -164,13 +89,14 @@ public class NewWallProfile extends NewObject{
         
         view.getChildren().addAll(nameContainer, flagContainer);
         
-        this.next.setText("Finish");
-        this.next.setOnAction(e -> {
+        this.next.setDisable(true);
+        this.finish.setDisable(false);
+        this.finish.setOnAction(e -> {
             wallList.getMapModel().getGc().setSelectedWallProfile(wallList.getMapModel().createWallProfile(nameField.getText(), selectedImage, WallProfile.getWallFlag(flagBox.getValue())));
             stage.close();
             wallList.refresh();
         });
         
-        frame.setCenter(view);
+        return view;
     }
 }

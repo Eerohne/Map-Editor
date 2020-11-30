@@ -5,8 +5,12 @@
  */
 package Editor.Model.Profile;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
 /**
@@ -17,7 +21,9 @@ public class WallProfile extends Profile{
     public static String resourceFolder = "resources/images/textures/";//To displace
     public static String[] flagArray = {"Empty", "Wall"};
     
+    private final boolean isDelete;
     private String imgName;
+    private Image deleteImg;
     private Image img;
     private int flag; //0 : Empty, 1: Full
     private int id;
@@ -26,8 +32,19 @@ public class WallProfile extends Profile{
         super(name);
         this.flag = flag;
         this.imgName = imageName;
+        this.isDelete = false;
         
         this.setImg(imageName);
+    }
+    
+    public WallProfile(){
+        super("Remove Wall");
+        this.isDelete = true;
+        this.flag = 0;
+        this.id = 0;
+        this.imgName = "(•_•) ( •_•)>⌐■-■ (⌐■_■)";
+        
+        this.setDeleteImg();
     }
 
     public int getFlag() {
@@ -68,6 +85,18 @@ public class WallProfile extends Profile{
         this.setImgName(imgName);
         try {
             this.img = new Image(new FileInputStream(resourceFolder + imgName), 100, 100, false, false);
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    private void setDeleteImg() {
+        try {
+            this.deleteImg = new Image(new FileInputStream("resources/dev/delete.png"), 100, 100, false, false);
+            BufferedImage bimg = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
+            Graphics2D g = bimg.createGraphics();
+            g.setPaint(Color.WHITE);
+            this.img = SwingFXUtils.toFXImage(bimg, null);
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
         }
