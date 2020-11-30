@@ -23,7 +23,11 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.media.MediaPlayer;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.json.simple.parser.ParseException;
 
 //Merouane Issad
 //for now, discard any code written here, it's only test nonsense
@@ -57,7 +61,6 @@ public class Game extends Application{
             }
         };
         anim.start();
-        
         stage.show();
     }
     
@@ -65,6 +68,7 @@ public class Game extends Application{
     {
         //load config.cgf file
         Settings.init(); 
+        stage.getIcons().add(ResourceLoader.loadImage(Settings.get("e_iconpath" )));
         
         //next initialise the window and stage
         windowManager = new WindowManager(stage, Settings.getInt("r_window_width"), Settings.getInt("r_window_height"), Settings.getBoolean("r_window_fullscreen"));
