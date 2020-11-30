@@ -7,6 +7,7 @@ package Editor.View.Hierarchy;
 
 import Editor.View.Metadata.WallContent;
 import Editor.Model.Profile.MapProfile;
+import Editor.Model.Profile.Profile;
 import Editor.Model.Profile.WallProfile;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -59,15 +60,21 @@ public class WallHierarchy extends Hierarchy{
             item.setPadding(new Insets(25));
             Label name = new Label(entry.getValue().getName() + " : ");
             try {
-                Image txr = new Image(new FileInputStream(MapProfile.getTxrURL(map, entry.getKey())), 100, 100, true, true);
+                Image txr;
+                if(entry.getValue().isDelete())
+                    txr = entry.getValue().getDeleteImage();
+                else
+                    txr = new Image(new FileInputStream(MapProfile.getTxrURL(map, entry.getKey())), 100, 100, true, true);
                 ImageView preview = new ImageView(txr);
                 preview.setFitHeight(32);
                 preview.setFitWidth(32);
                 
                 item.setOnMouseClicked(e -> {
                     select(item);
-                    
-                    display.changeContent(entry.getValue());
+                    WallProfile wp = entry.getValue();
+//                    System.out.println(entry.getKey());
+//                    System.out.println(entry.getValue());
+                    display.changeContent(wp);
                     
                     if(e.getButton().equals(MouseButton.PRIMARY)){
                         map.getGc().setSelectedWallProfile(entry.getValue());

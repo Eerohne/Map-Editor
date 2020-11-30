@@ -101,4 +101,17 @@ public class WallProfile extends Profile{
             System.out.println(ex);
         }
     }
+    
+    public boolean isDelete(){
+        return isDelete;
+    }
+    
+    public Image getDeleteImage(){
+        return deleteImg;
+    }
+
+    @Override
+    public String toString() {
+        return "WallProfile{" + "isDelete=" + isDelete + ", imgName=" + imgName + ", flag=" + flag + ", id=" + id + '}';
+    }
 }
