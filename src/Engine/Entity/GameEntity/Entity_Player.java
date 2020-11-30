@@ -37,7 +37,7 @@ public abstract class Entity_Player extends Entity{
     }
 
     public float getRotation() {
-        return rotation;
+        return rotation; 
     }
 
     public void setRotation(float rotation) {
