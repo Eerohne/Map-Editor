@@ -63,7 +63,8 @@ public class MapEditor extends Application {
      */
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {
-        this.metadataContent = new WallContent(currentMap.getDefaultWall());
+        this.wallContent = new WallContent(currentMap.getDefaultWall());
+        this.metadataContent = wallContent;
         this.project = new ProjectProfile("Test", "C:/", currentMap);
         project.selectedMap = currentMap;
                 

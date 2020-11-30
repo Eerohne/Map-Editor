@@ -96,6 +96,7 @@ public class WallProfile extends Profile{
             BufferedImage bimg = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
             Graphics2D g = bimg.createGraphics();
             g.setPaint(Color.WHITE);
+            g.fillRect(0, 0, bimg.getWidth(), bimg.getHeight());
             this.img = SwingFXUtils.toFXImage(bimg, null);
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
