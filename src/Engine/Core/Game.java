@@ -69,6 +69,7 @@ public class Game extends Application{
     {
         //load config.cgf file
         Settings.init(); 
+        stage.getIcons().add(ResourceLoader.loadImage(Settings.get("e_iconpath" )));
         
         //next initialise the window and stage
         windowManager = new WindowManager(stage, Settings.getInt("r_window_width"), Settings.getInt("r_window_height"), Settings.getBoolean("r_window_fullscreen"));

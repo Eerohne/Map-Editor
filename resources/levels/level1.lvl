@@ -12,7 +12,7 @@
             [3,0,0,0,2],
             [1,0,0,0,1],
             [2,3,2,0,2],
-            [1,2,1,2,1]
+            [1,2,1,5,1]
             ],
     "palette": [
         {
@@ -44,6 +44,12 @@
                 "color":[0.0, 0.0, 1.0],
                 "texture":"images/sprites/error_sprite.png",
                 "flag":"1"
+               },
+               {
+                "id":"5",
+                "color":[0.0, 0.0, 1.0],
+                "texture":"images/textures/door.png",
+                "flag":"1"
                }
                ]
 },
@@ -53,10 +59,13 @@
     "classname":"player_base",
     "name":"player1",
     "active":"TRUE",
-    "position":[1.5,2.8],
+    "position":[3.0, 7.0],
     "rotation":"90",
-    "walkspeed":"2",
-    "runspeed":"1.0"
+    "walkspeed":"2.0",
+    "runspeed":"3.0",
+    "rotationspeed":"10",
+    "zfrequency":"1",
+    "zrange":"50"
     },
     {
     "classname":"logic_timer",
@@ -110,9 +119,9 @@
     "name":"coin",
     "active":"TRUE",
     "position":[1.5,1.5],
-    "height":"0.4",
-    "texture":"images/sprites/coin.png",
-    "size":"0.2"
+    "height":"0.5",
+    "texture":"images/sprites/icon.png",
+    "size":"0.5"
     "signals": []
     },
     {
@@ -173,13 +182,49 @@
     "audiopath":"sounds/music/digital_attack.wav",
     "channel":"game",
     "onstart":"true",
-    "loop":"false",
+    "loop":"true",
+    "range":"3.0",
+    "signals": []
+    },
+    {
+    "classname":"sound_point",
+    "name":"music2",
+    "active":"TRUE",
+    "position":[3.5,8.5],
+    "audiopath":"sounds/music/recycle_inc.wav",
+    "channel":"game",
+    "onstart":"true",
+    "loop":"true",
+    "range":"3.0",
+    "signals": []
+    },
+    {
+    "classname":"sound_point",
+    "name":"music3",
+    "active":"TRUE",
+    "position":[1.0, 1.0],
+    "audiopath":"sounds/music/digital_attack.wav",
+    "channel":"game",
+    "onstart":"true",
+    "loop":"true",
+    "range":"3.0",
+    "signals": []
+    },
+    {
+    "classname":"sound_point",
+    "name":"music4",
+    "active":"TRUE",
+    "position":[3.5,3.5],
+    "audiopath":"sounds/music/recycle_inc.wav",
+    "channel":"game",
+    "onstart":"false",
+    "loop":"true",
     "range":"3.0",
     "signals": []
     },
     {
     "classname":"sound_ambient",
-    "name":"music2",
+    "name":"music5",
     "active":"TRUE",
     "position":[1.5,7.0],
     "audiopath":"sounds/music/recycle_inc.wav",
