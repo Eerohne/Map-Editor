@@ -21,8 +21,8 @@ import javafx.scene.shape.Rectangle;
 public class MapProfile extends Profile{
     private int wallCounter = 1;
     
-    private String resourcePath;
-    private String mapLocation;
+    //private String resourcePath;
+    //private String mapLocation;
     
     private Grid gridView;
     private GridController gc;
@@ -33,10 +33,8 @@ public class MapProfile extends Profile{
     private Map<Integer, WallProfile> wallMap;
     
 
-    public MapProfile(String name, String mapLocation, String resourcePath, int gridWidth, int gridLength) {
+    public MapProfile(String name, int gridWidth, int gridLength) {
         super(name);
-        this.mapLocation = mapLocation;
-        this.resourcePath = resourcePath;
         this.mainMap = false;
         
         this.wallMap  = new TreeMap<>();
@@ -100,8 +98,6 @@ public class MapProfile extends Profile{
     public int hashCode() {
         int hash = 5;
         hash = 41 * hash + Objects.hashCode(this.name);
-        hash = 41 * hash + Objects.hashCode(this.resourcePath);
-        hash = 41 * hash + Objects.hashCode(this.mapLocation);
         hash = 41 * hash + Objects.hashCode(this.gridView);
         hash = 41 * hash + Objects.hashCode(this.gc);
         hash = 41 * hash + Objects.hashCode(this.defaultWall);
@@ -121,12 +117,6 @@ public class MapProfile extends Profile{
         }
         final MapProfile other = (MapProfile) obj;
         if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        if (!Objects.equals(this.resourcePath, other.resourcePath)) {
-            return false;
-        }
-        if (!Objects.equals(this.mapLocation, other.mapLocation)) {
             return false;
         }
         if (!Objects.equals(this.gridView, other.gridView)) {
@@ -149,21 +139,13 @@ public class MapProfile extends Profile{
         this.name = name;
     }
 
-    public String getResourcePath() {
-        return resourcePath;
-    }
-
-    public void setResourcePath(String resourcePath) {
-        this.resourcePath = resourcePath;
-    }
-
-    public String getMapLocation() {
-        return mapLocation;
-    }
-
-    public void setMapLocation(String mapLocation) {
-        this.mapLocation = mapLocation;
-    }
+//    public String getMapLocation() {
+//        return mapLocation;
+//    }
+//
+//    public void setMapLocation(String mapLocation) {
+//        this.mapLocation = mapLocation;
+//    }
 
     public Grid getGridView() {
         return gridView;

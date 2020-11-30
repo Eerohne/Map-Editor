@@ -1,6 +1,6 @@
 Entity Placement System
 Entity Creation and Modification System (New Entity Display)
-Default Player
+Default PlayerInfo Panel Update
 Info Panel Update
 Setup Events for All buttons
 New Project System

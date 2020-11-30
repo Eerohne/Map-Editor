@@ -6,7 +6,7 @@
 package Editor.Controller;
 
 import Editor.Model.Profile.WallProfile;
-import Editor.NewWallProfile;
+import Editor.View.New.NewWallProfile;
 import Editor.View.Help;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Hierarchy.WallHierarchy;

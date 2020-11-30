@@ -54,8 +54,8 @@ public class MapEditor extends Application {
     DataView metadataContent; //Content Wrapper to display in metadata tab
     WallContent wallContent; //Compatible with DataView and delivers WallProfile information
     
-    ProjectProfile project; //Base project
-    MapProfile currentMap = new MapProfile("Map", "", "resources/", 10, 10); //Test Map -- To Be Removed
+    static ProjectProfile project; //Base project
+    MapProfile currentMap = new MapProfile("Map", 10, 10); //Test Map -- To Be Removed
     
     /**
      * Core method of the Optik Editor. Starts the whole Editor GUI and events.
@@ -65,8 +65,8 @@ public class MapEditor extends Application {
      */
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {
-        this.metadataContent = new WallContent(currentMap.getGc().getSelectedWallProfile());
-        this.project = new ProjectProfile("Test", currentMap);
+        this.metadataContent = new WallContent(currentMap.getDefaultWall());
+        this.project = new ProjectProfile("Test", "C:/", currentMap);
         project.selectedMap = currentMap;
                 
         Scene scene = new Scene(setupView(metadataContent), 1920, 1080);
@@ -195,5 +195,10 @@ public class MapEditor extends Application {
         layout.setLeft(setupSideElements(metadata));
         
         return layout;
+    }
+    
+    public static void setProject(ProjectProfile proj){
+        project = proj;
+        //Add refresh code
     }
 }

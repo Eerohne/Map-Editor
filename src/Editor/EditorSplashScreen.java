@@ -5,6 +5,8 @@
  */
 package Editor;
 
+import Editor.View.New.NewMap;
+import Editor.View.New.NewProject;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -37,16 +39,16 @@ public class EditorSplashScreen {
         optikName.setFont(Font.font("Fantasy", FontWeight.EXTRA_BOLD, 50));
         //optikTitle.set
         
-        Button newMap = setupButton("New Map");
-        Button openMap = setupButton("Open Map");
+        Button newProject = setupButton("New Project");
+        Button openProject = setupButton("Open Project");
         Button closeSS = setupButton("Close");
         
         Region space = new Region();
         VBox.setVgrow(space, Priority.ALWAYS);
         
-        new SplashScreenController(newMap, openMap, closeSS, splashScreenStage, parent);
+        new SplashScreenController(newProject, openProject, closeSS, splashScreenStage, parent);
         
-        VBox splashContent = new VBox(optikWelcome, optikName, space, newMap, openMap, closeSS);
+        VBox splashContent = new VBox(optikWelcome, optikName, space, newProject, openProject, closeSS);
         splashContent.setAlignment(Pos.CENTER);
         
         splashContent.setSpacing(10);
@@ -70,10 +72,10 @@ public class EditorSplashScreen {
 
 class SplashScreenController{
 
-    public SplashScreenController(Button newMap, Button openMap, Button close, Stage current, Stage parent) {
-        newMap.setOnAction(e -> {new NewMap(parent);});
+    public SplashScreenController(Button newP, Button openP, Button close, Stage current, Stage parent) {
+        newP.setOnAction(e -> {new NewProject(parent);});
         
-        openMap.setOnAction(e -> {});
+        openP.setOnAction(e -> {});
         
         close.setOnAction(e -> {current.close();});
         

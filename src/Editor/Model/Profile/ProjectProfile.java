@@ -13,6 +13,7 @@ import java.util.LinkedList;
  */
 public class ProjectProfile extends Profile{
     private LinkedList<MapProfile> maps;
+    private String path;
     private int mainMapID = 0;
     
     public MapProfile selectedMap;
@@ -22,11 +23,10 @@ public class ProjectProfile extends Profile{
         maps  = new LinkedList<>();
     }
     
-    public ProjectProfile(String name, MapProfile... map){
+    public ProjectProfile(String name, String path, MapProfile map){
         this(name);
-        for (MapProfile m : map) {
-            maps.add(m);
-        }
+        this.path = path;
+        maps.add(map);
     }
 
     public LinkedList<MapProfile> getMaps() {
