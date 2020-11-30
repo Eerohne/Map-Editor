@@ -61,7 +61,6 @@ public class Game extends Application{
             }
         };
         anim.start();
-        
         stage.show();
     }
     
