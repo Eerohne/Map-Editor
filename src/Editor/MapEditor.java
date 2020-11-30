@@ -70,10 +70,11 @@ public class MapEditor extends Application {
         
         Scene scene = new Scene(setupView(metadataContent), 1920, 1080);
         
-        WallController WC = new WallController(editorWindow, wallHierarchy);
+//        WallController wc = new WallController(editorWindow, wallHierarchy);
         InfoController ic = new InfoController(info, currentMap);
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow, wallHierarchy);
+        //wallContent.setWallController(wc);
         
         String pathName = "resources/style/style.css" ;
         File file = new File(pathName);

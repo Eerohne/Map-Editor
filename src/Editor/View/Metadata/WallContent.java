@@ -40,6 +40,7 @@ public class WallContent extends DataView{
     private Rectangle txrPreview;
     private ComboBox flagCombo;
     
+    WallController wc;
     
     ObservableList<String> flags = FXCollections.observableArrayList(Arrays.asList(WallProfile.flagArray));//Observable List of Flags
     
@@ -89,6 +90,9 @@ public class WallContent extends DataView{
         this.txrPreview.setFill(new ImagePattern(((WallProfile)profile).getImage()));
         this.flagCombo.getSelectionModel().select(((WallProfile)profile).getFlag());
         
+//        if(wc != null){
+//            wc.refresh();
+//        }
     }
     
     /*
@@ -153,5 +157,9 @@ public class WallContent extends DataView{
 
     public WallProfile getWallProfile() {
         return (WallProfile)profile;
+    }
+    
+    public void setWallController(WallController wc){
+        this.wc = wc;
     }
 }

@@ -5,9 +5,15 @@
  */
 package Editor.View.Menu;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -19,15 +25,32 @@ import javafx.scene.layout.Region;
 public class ShortcutBar extends HBox{
     private Button wallShort;
     private Button entityShort;
+    private Button mapShort;
     private Button runShort;
     private Button help;
     
     public ShortcutBar() {
-        wallShort = new Button("Add New Wall");
-        //wallShort.setPrefSize(this.getHeight()-10, this.getHeight()-10);
-        entityShort = new Button("Create New Entity");
+        ImageView addWall;
+        ImageView addEntity;
+        ImageView addMap;
+        try {
+            addWall = new ImageView(new Image(new FileInputStream("resources/dev/brickicon.png"), 100, 100, true, true));
+            addEntity = new ImageView(new Image(new FileInputStream("resources/dev/skeleton_icon.gif"), 100, 100, true, true));
+            addMap = new ImageView(new Image(new FileInputStream("resources/dev/map.png"), 100, 100, true, true));
+
+            wallShort = new Button();
+            wallShort.setGraphic(addWall);
+            mapShort = new Button();
+            mapShort.setGraphic(addMap);
+            entityShort = new Button();
+            entityShort.setGraphic(addEntity);
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
+        }
+        
+        
         runShort = new Button("Run");
-        help = new Button("Help");
+        help = new Button("?");
     
         Insets insets = new Insets(5);
         
@@ -37,7 +60,7 @@ public class ShortcutBar extends HBox{
         HBox.setHgrow(space, Priority.ALWAYS);
         
         this.setSpacing(5);
-        this.getChildren().addAll(wallShort, entityShort, space, runShort, help);
+        this.getChildren().addAll(wallShort, entityShort, mapShort, space, runShort, help);
     }
 
     public Button getWallShort() {

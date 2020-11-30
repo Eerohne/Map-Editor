@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 public class WallController extends MetadataController {
     Grid grid;
     String newImage;
-    
+    Stage stage;
     //WallPane Component references
     
     private TextField nameField;
@@ -38,6 +38,7 @@ public class WallController extends MetadataController {
         super(hierarchy.getWallContent(), hierarchy);
         this.grid = hierarchy.getMapModel().getGridView();
         this.setupReferences((WallContent)content);
+        this.stage = stage;
         
         if(((WallContent)content).getWallProfile().isDelete()){
             super.delete.setDisable(true);
@@ -48,25 +49,22 @@ public class WallController extends MetadataController {
             super.delete.setDisable(false);
             nameField.setDisable(false);
             flagCombo.setDisable(false);
+            
+            nameField.setOnMouseClicked(e -> disableButtons(false));
+            txrPreview.setOnMouseClicked(e -> {
+                    disableButtons(false);
+                    FileChooser fileChooser = new FileChooser();
+                    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Textures", "*.png", "*.jpg");
+                    fileChooser.getExtensionFilters().add(extFilter);
+                    fileChooser.setTitle("Choose A Wall Texture");
+                    fileChooser.setInitialDirectory(new File(WallProfile.resourceFolder));
+                    File textureFile = fileChooser.showOpenDialog(stage);
+                    this.newImage = textureFile.getName();
+            });
+            flagCombo.setOnAction(e -> {
+                    disableButtons(false);
+            });
         }
-        
-        nameField.setOnMouseClicked(e -> disableButtons(false));
-        txrPreview.setOnMouseClicked(e -> {
-            if(!((WallContent)content).getWallProfile().isDelete()){
-                disableButtons(false);
-                FileChooser fileChooser = new FileChooser();
-                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Textures", "*.png", "*.jpg");
-                fileChooser.getExtensionFilters().add(extFilter);
-                fileChooser.setTitle("Choose A Wall Texture");
-                fileChooser.setInitialDirectory(new File(WallProfile.resourceFolder));
-                File textureFile = fileChooser.showOpenDialog(stage);
-                this.newImage = textureFile.getName();
-            }
-        });
-        flagCombo.setOnAction(e -> {
-            if(!((WallContent)content).getWallProfile().isDelete())
-                disableButtons(false);
-        });
     }
     
     private void setupReferences(WallContent content){
@@ -86,5 +84,9 @@ public class WallController extends MetadataController {
                     ((WallHierarchy)hierarchy).getMapModel().getGc().setImg(cell, ((WallContent)content).getWallProfile().getImage());
             }
         }
+    }
+    
+    public void refresh(){
+        
     }
 }
