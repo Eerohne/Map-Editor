@@ -28,7 +28,7 @@ public abstract class MetadataController {
         
         cancel.setOnAction(e -> cancelEvent());
         save.setOnAction(e -> saveEvent());
-         delete.setOnAction(e -> {
+        delete.setOnAction(e -> {
 //            System.out.println(this.wallContent.getWallProfile().getID());
 //            System.out.println(WallProfile.palette);
 //            for (Map.Entry<Integer, Image> en : WallProfile.palette.entrySet()) {

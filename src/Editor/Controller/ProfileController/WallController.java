@@ -29,32 +29,40 @@ public class WallController extends MetadataController {
     String newImage;
     
     //WallPane Component references
-    private Button cancel;
-    private Button save;
-    private Button delete;
     
     private TextField nameField;
     private Rectangle txrPreview;
     private ComboBox flagCombo;
     
-    public WallController(Stage stage, WallContent content, Grid grid, WallHierarchy hierarchy) {
-        super(content, hierarchy);
-        this.grid = grid;
-        this.setupReferences(content);
+    public WallController(Stage stage, WallHierarchy hierarchy) {
+        super(hierarchy.getWallContent(), hierarchy);
+        this.grid = hierarchy.getMapModel().getGridView();
+        this.setupReferences((WallContent)content);
         
-        nameField.setOnMouseClicked(e -> disableButtons(false));
-        txrPreview.setOnMouseClicked(e -> {
-            disableButtons(false);
-            FileChooser fileChooser = new FileChooser();
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Textures", "*.png", "*.jpg");
-            fileChooser.getExtensionFilters().add(extFilter);
-            fileChooser.setTitle("Choose A Wall Texture");
-            fileChooser.setInitialDirectory(new File(WallProfile.resourceFolder));
-            File textureFile = fileChooser.showOpenDialog(stage);
+        if(((WallContent)content).getWallProfile().isDelete()){
+            super.delete.setDisable(true);
+            nameField.setDisable(true);
+            flagCombo.setDisable(true);
+        }
+        else{
+            super.delete.setDisable(false);
+            nameField.setDisable(false);
+            flagCombo.setDisable(false);
             
-            this.newImage = textureFile.getName();
-        });
-        flagCombo.setOnAction(e -> disableButtons(false));
+            nameField.setOnMouseClicked(e -> disableButtons(false));
+            txrPreview.setOnMouseClicked(e -> {
+                disableButtons(false);
+                FileChooser fileChooser = new FileChooser();
+                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Textures", "*.png", "*.jpg");
+                fileChooser.getExtensionFilters().add(extFilter);
+                fileChooser.setTitle("Choose A Wall Texture");
+                fileChooser.setInitialDirectory(new File(WallProfile.resourceFolder));
+                File textureFile = fileChooser.showOpenDialog(stage);
+
+                this.newImage = textureFile.getName();
+            });
+            flagCombo.setOnAction(e -> disableButtons(false));
+        }
     }
     
     private void setupReferences(WallContent content){

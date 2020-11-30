@@ -5,8 +5,10 @@
  */
 package Editor.View.Metadata;
 
+import Editor.Controller.ProfileController.WallController;
 import Editor.Model.Profile.Profile;
 import Editor.Model.Profile.WallProfile;
+import Editor.View.Hierarchy.WallHierarchy;
 import java.util.Arrays;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +23,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 /**
  *
@@ -36,10 +39,11 @@ public class WallContent extends DataView{
     private TextField nameField;
     private Rectangle txrPreview;
     private ComboBox flagCombo;
-
+    
+    
     ObservableList<String> flags = FXCollections.observableArrayList(Arrays.asList(WallProfile.flagArray));//Observable List of Flags
     
-    public WallContent(WallProfile wallProfile) {
+    public WallContent(WallProfile wallProfile, WallHierarchy hierarchy) {
         super(wallProfile);
         
         //Interactions 
@@ -84,6 +88,7 @@ public class WallContent extends DataView{
         this.nameField.setText(profile.getName());
         this.txrPreview.setFill(new ImagePattern(((WallProfile)profile).getImage()));
         this.flagCombo.getSelectionModel().select(((WallProfile)profile).getFlag());
+        
     }
     
     /*
