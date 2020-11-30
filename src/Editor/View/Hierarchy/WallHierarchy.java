@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Editor.View.Properties;
+package Editor.View.Hierarchy;
 
 import Editor.View.Metadata.WallContent;
 import Editor.Model.Profile.MapProfile;
@@ -30,7 +30,7 @@ import javafx.scene.paint.Color;
  * Pane that displays the whole list of created WallProfiles.
  * @author A
  */
-public class WallHierarchy extends ScrollPane{
+public class WallHierarchy extends Hierarchy{
     private VBox list;
     private HBox selected;
     private MapProfile map;

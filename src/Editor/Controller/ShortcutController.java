@@ -9,7 +9,7 @@ import Editor.Model.Profile.WallProfile;
 import Editor.NewWallProfile;
 import Editor.View.Help;
 import Editor.View.Menu.ShortcutBar;
-import Editor.View.Properties.WallHierarchy;
+import Editor.View.Hierarchy.WallHierarchy;
 import Engine.Core.Game;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;

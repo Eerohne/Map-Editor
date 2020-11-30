@@ -8,7 +8,7 @@ package Editor;
 import Editor.Controller.InfoController;
 import Editor.Controller.MenuController;
 import Editor.Controller.ShortcutController;
-import Editor.Controller.WallController;
+import Editor.Controller.ProfileController.WallController;
 import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.Profile;
 import Editor.Model.Profile.ProjectProfile;
@@ -16,10 +16,10 @@ import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Menu.TopMenu;
 import Editor.View.Metadata.DataView;
-import Editor.View.Properties.EntityHierarchy;
+import Editor.View.Hierarchy.EntityHierarchy;
 import Editor.View.Metadata.WallContent;
-import Editor.View.Properties.MapHierarchy;
-import Editor.View.Properties.WallHierarchy;
+import Editor.View.Hierarchy.MapHierarchy;
+import Editor.View.Hierarchy.WallHierarchy;
 import java.io.File;
 import java.net.MalformedURLException;
 import javafx.application.Application;
@@ -68,12 +68,10 @@ public class MapEditor extends Application {
         this.metadataContent = new WallContent(currentMap.getGc().getSelectedWallProfile());
         this.project = new ProjectProfile("Test", currentMap);
         project.selectedMap = currentMap;
-        
-        wallContent = new WallContent(currentMap.getDefaultWall());
-        
+                
         Scene scene = new Scene(setupView(metadataContent), 1920, 1080);
         
-        WallController wc = new WallController(wallContent, currentMap.getGridView(), wallHierarchy);
+        WallController wc = new WallController((WallContent)metadataContent, currentMap.getGridView(), wallHierarchy);
         InfoController ic = new InfoController(info, currentMap);
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow, wallHierarchy);
@@ -100,16 +98,6 @@ public class MapEditor extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-    }
-    
-    private static void setChildrenClipping(Pane pane) {
-        Rectangle clip = new Rectangle();
-        pane.setClip(clip);    
-        
-        pane.layoutBoundsProperty().addListener((observable, oldValue, newValue) -> {
-            clip.setWidth(newValue.getWidth());
-            clip.setHeight(newValue.getHeight());
-        });
     }
     
     /**
