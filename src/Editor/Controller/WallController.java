@@ -5,7 +5,7 @@
  */
 package Editor.Controller;
 
-import Editor.Model.WallProfile;
+import Editor.Model.Profile.WallProfile;
 import Editor.View.Grid.Cell;
 import Editor.View.Grid.Grid;
 import Editor.View.Metadata.WallContent;

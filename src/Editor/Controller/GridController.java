@@ -1,6 +1,6 @@
 package Editor.Controller;
 
-import Editor.Model.WallProfile;
+import Editor.Model.Profile.WallProfile;
 import Editor.View.Grid.Cell;
 import Editor.View.Grid.Grid;
 import Editor.View.Info;
@@ -21,7 +21,6 @@ import javafx.scene.transform.Translate;
  */
 public class GridController{
     //Objects to be controlled
-   // Scene scene;
     Grid grid;
     
     private WallProfile selectedWallProfile;
@@ -32,7 +31,7 @@ public class GridController{
     double mouseX;
     double mouseY;
     
-    private int editingMode; // 0: Editing Disabled | 1: Wall Placement | 2: Entity Placement
+    private int editingMode = 1; // 0: Editing Disabled | 1: Wall Placement | 2: Entity Placement
     
     double zoom = 1.0d;
 
@@ -42,22 +41,6 @@ public class GridController{
     public GridController(Grid grid) {
         //this.scene = scene;
         this.grid = grid;
-        
-        //Scene Events -- To Be Removed
-//        scene.setOnKeyPressed( event -> {
-//            if(event.getCode().equals(KeyCode.R)){
-//                this.grid.clear();
-//            }
-//            if(event.getCode().equals(KeyCode.W)){
-//                System.out.println("**********\n" 
-//                        + "Mouse : (" + mouseX + ", " + mouseY + ")\n"
-//                        + "Grid : (" + getGridX() + ", " + getGridY() + ")\n" 
-//                        +"cellSize : "+grid.getCellSize()+"\n"
-//                        + "MaxY : " + getPaneBounds().getMaxY() + "\n" 
-//                        + "Zoom : " + zoom + "\n" 
-//                        + grid.cells[0][0].getTransforms() + "\n" );
-//            }
-//        });
         
         //Grid Events
         

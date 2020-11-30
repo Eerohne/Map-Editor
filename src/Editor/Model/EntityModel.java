@@ -27,8 +27,6 @@ public class EntityModel {
 
     public EntityModel() {
     }
-    
-    
 
     public String getProperty() {
         return property.get();

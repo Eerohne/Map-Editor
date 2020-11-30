@@ -5,7 +5,7 @@
  */
 package Editor.Controller;
 
-import Editor.Model.WallProfile;
+import Editor.Model.Profile.WallProfile;
 import Editor.NewWallProfile;
 import Editor.View.Help;
 import Editor.View.Menu.ShortcutBar;

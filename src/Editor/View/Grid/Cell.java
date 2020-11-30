@@ -6,7 +6,7 @@
 package Editor.View.Grid;
 
 import Editor.MapEditor;
-import Editor.Model.WallProfile;
+import Editor.Model.Profile.WallProfile;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;

@@ -5,7 +5,7 @@
  */
 package Editor.Controller;
 
-import Editor.Model.MapModel;
+import Editor.Model.Profile.MapProfile;
 import java.io.FileNotFoundException;
 import Editor.View.Info;
 import Editor.View.Grid.Grid;
@@ -32,7 +32,7 @@ public class InfoController{
     GridController gc;
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     
-    public InfoController(Info info, MapModel map) {
+    public InfoController(Info info, MapProfile map) {
         this.info = info;
         this.grid = map.getGridView();
         this.gc = map.getGc();
@@ -60,7 +60,7 @@ public class InfoController{
         info.reset();
     }
     
-    public void setMap(MapModel map){
+    public void setMap(MapProfile map){
         this.grid = map.getGridView();
         this.gc = map.getGc();
     }

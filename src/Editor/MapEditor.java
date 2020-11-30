@@ -5,21 +5,20 @@
  */
 package Editor;
 
-import Editor.View.Grid.Grid;
-import Editor.Controller.GridController;
 import Editor.Controller.InfoController;
 import Editor.Controller.MenuController;
 import Editor.Controller.ShortcutController;
 import Editor.Controller.WallController;
-import Editor.Model.MapModel;
-import Editor.Model.Project;
-import Editor.Model.WallProfile;
+import Editor.Model.Profile.MapProfile;
+import Editor.Model.Profile.Profile;
+import Editor.Model.Profile.ProjectProfile;
 import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Menu.TopMenu;
 import Editor.View.Metadata.DataView;
 import Editor.View.Properties.EntityHierarchy;
 import Editor.View.Metadata.WallContent;
+import Editor.View.Properties.MapHierarchy;
 import Editor.View.Properties.WallHierarchy;
 import java.io.File;
 import java.net.MalformedURLException;
@@ -31,7 +30,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -51,12 +49,13 @@ public class MapEditor extends Application {
     
     EntityHierarchy entityHierarchy; //Hierarchy of Entities
     WallHierarchy wallHierarchy; // Hierarchy of Walls
+    MapHierarchy mapHierarchy; //Hierarchy of Maps
     
     DataView metadataContent; //Content Wrapper to display in metadata tab
     WallContent wallContent; //Compatible with DataView and delivers WallProfile information
     
-    Project project; //Base project
-    MapModel currentMap = new MapModel("Map", "", "resources/", 10, 10); //Test Map -- To Be Removed
+    ProjectProfile project; //Base project
+    MapProfile currentMap = new MapProfile("Map", "", "resources/", 10, 10); //Test Map -- To Be Removed
     
     /**
      * Core method of the Optik Editor. Starts the whole Editor GUI and events.
@@ -67,7 +66,7 @@ public class MapEditor extends Application {
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {
         this.metadataContent = new WallContent(currentMap.getGc().getSelectedWallProfile());
-        this.project = new Project(currentMap);
+        this.project = new ProjectProfile("Test", currentMap);
         project.selectedMap = currentMap;
         
         wallContent = new WallContent(currentMap.getDefaultWall());
@@ -133,15 +132,29 @@ public class MapEditor extends Application {
     private TabPane setupProperties(){
         this.entityHierarchy = new EntityHierarchy();
         this.wallHierarchy = new WallHierarchy(wallContent, currentMap);
+        this.mapHierarchy = new MapHierarchy(project, new DataView(project) {
+            @Override
+            protected VBox setupPane() {
+                return null;
+            }
+
+            @Override
+            public void reset() {
+                System.out.println(1000);
+            }
+        });
         
         
         //Property Tabs Initialization
         Tab entityTab = new Tab("Entities", entityHierarchy);
         Tab wallTab = new Tab("Walls", wallHierarchy);
+        Tab mapTab = new Tab("Maps", mapHierarchy);
         
         //Property Pane Setup
-        TabPane properties = new TabPane(wallTab, entityTab);
+        TabPane properties = new TabPane(wallTab, entityTab, mapTab);
         properties.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        
+        VBox.setVgrow(properties, Priority.ALWAYS);
         
         return properties;
     }
@@ -166,10 +179,7 @@ public class MapEditor extends Application {
      * @return 
      */
     private VBox setupSideElements(DataView data){
-        Region r = new Region();
-        VBox.setVgrow(r, Priority.ALWAYS);
-        
-        return new VBox(setupProperties(), r, setupMetadata(data));
+        return new VBox(setupProperties(), setupMetadata(data));
     }
     
     /**

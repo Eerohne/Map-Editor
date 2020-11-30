@@ -3,17 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Editor.Model;
+package Editor.Model.Profile;
 
 import Editor.Controller.GridController;
-import static Editor.Model.WallProfile.resourceFolder;
 import Editor.View.Grid.Grid;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
@@ -22,10 +18,9 @@ import javafx.scene.shape.Rectangle;
  * 
  * @author A
  */
-public class MapModel {
+public class MapProfile extends Profile{
     private int wallCounter = 1;
     
-    private String name;
     private String resourcePath;
     private String mapLocation;
     
@@ -33,13 +28,16 @@ public class MapModel {
     private GridController gc;
     private WallProfile defaultWall;
         
+    private boolean mainMap;
+    
     private Map<Integer, WallProfile> wallMap;
     
 
-    public MapModel(String name, String mapLocation, String resourcePath, int gridWidth, int gridLength) {
-        this.name = name;
+    public MapProfile(String name, String mapLocation, String resourcePath, int gridWidth, int gridLength) {
+        super(name);
         this.mapLocation = mapLocation;
         this.resourcePath = resourcePath;
+        this.mainMap = false;
         
         this.wallMap  = new TreeMap<>();
         this.defaultWall = this.createWallProfile("Floor", "white.png", 1);
@@ -72,7 +70,7 @@ public class MapModel {
         return wall;
     }
     
-    public static String getTxrURL(MapModel map, int id){
+    public static String getTxrURL(MapProfile map, int id){
         for (Map.Entry<Integer, WallProfile> entry : map.wallMap.entrySet()) {
             if(entry.getKey() == id){
                 return WallProfile.resourceFolder + entry.getValue().getImageName();
@@ -121,7 +119,7 @@ public class MapModel {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final MapModel other = (MapModel) obj;
+        final MapProfile other = (MapProfile) obj;
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
@@ -193,5 +191,13 @@ public class MapModel {
 
     public Map<Integer, WallProfile> getWallMap() {
         return wallMap;
+    }
+
+    public boolean isMainMap() {
+        return mainMap;
+    }
+
+    public void setMainMap(boolean mainMap) {
+        this.mainMap = mainMap;
     }
 }

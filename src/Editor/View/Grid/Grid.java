@@ -1,6 +1,6 @@
 package Editor.View.Grid;
 
-import Editor.Model.WallProfile;
+import Editor.Model.Profile.WallProfile;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -14,7 +14,7 @@ public class Grid extends Pane{
     private int length;
     public Cell[][] cells;
     private Cell selectionCell;
-
+    
     public Grid() {
     }
     

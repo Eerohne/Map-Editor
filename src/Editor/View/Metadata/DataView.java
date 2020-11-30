@@ -5,25 +5,82 @@
  */
 package Editor.View.Metadata;
 
+import Editor.Model.Profile.Profile;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 /**
  *
  * @author A
  */
-public class DataView extends Pane{
+public abstract class DataView extends Pane{
     //Data Interaction Controls
     protected Button save;
     protected Button cancel;
     protected Button delete;
 
-    public DataView() {
+    protected Profile profile;
+    
+    public DataView(Profile profile) {
+        this.profile = profile;
+        
         this.cancel = new Button("Cancel");
         this.save = new Button("Save Changes");
         this.delete = new Button("Delete");
         
         this.save.setDisable(true);
         this.cancel.setDisable(true);
+    }
+    
+    protected abstract VBox setupPane();
+    
+    public void changeContent(Profile content){
+        this.profile = content;
+        this.reset();
+    }
+
+    public abstract void reset();
+    
+    protected HBox getButtonBox(Insets padding){
+        HBox buttons = new HBox(save, cancel, delete);
+        buttons.setPadding(padding);
+        buttons.setSpacing(5);
+        
+        return buttons;
+    }
+    
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+    
+     public Button getCancel() {
+        return cancel;
+    }
+
+    public void setCancel(Button cancel) {
+        this.cancel = cancel;
+    }
+
+    public Button getSave() {
+        return save;
+    }
+
+    public void setSave(Button save) {
+        this.save = save;
+    }
+
+    public Button getDelete() {
+        return delete;
+    }
+
+    public void setDelete(Button delete) {
+        this.delete = delete;
     }
 }

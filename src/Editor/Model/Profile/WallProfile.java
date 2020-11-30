@@ -3,38 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Editor.Model;
+package Editor.Model.Profile;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.scene.image.Image;
 
 /**
  *
  * @author A
  */
-public class WallProfile {
-    public static String resourceFolder = "resources/images/textures/";
+public class WallProfile extends Profile{
+    public static String resourceFolder = "resources/images/textures/";//To displace
     public static String[] flagArray = {"Empty", "Wall"};
     
     private String imgName;
-    private String wallName;
     private Image img;
     private int flag; //0 : Empty, 1: Full
     private int id;
     
-    //public Map<Integer,Image> palette;
-    //public Map<Integer, WallProfile> wallMap;
-    
     public WallProfile(int id, String name, String imageName, int flag){
+        super(name);
         this.flag = flag;
         this.imgName = imageName;
-        
-        this.wallName = name;
         
         this.setImg(imageName);
     }
@@ -45,10 +36,6 @@ public class WallProfile {
 
     public Image getImage() {
         return this.img;
-    }
-
-    public String getName() {
-        return wallName;
     }
     
     public int getID(){
@@ -71,10 +58,6 @@ public class WallProfile {
 
     public void setFlag(String flag) {
         this.flag = getWallFlag(flag);
-    }
-
-    public void setName(String name) {
-        this.wallName = name;
     }
 
     private void setImgName(String imgName) {

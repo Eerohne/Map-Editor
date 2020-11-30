@@ -6,8 +6,8 @@
 package Editor.View.Properties;
 
 import Editor.View.Metadata.WallContent;
-import Editor.Model.MapModel;
-import Editor.Model.WallProfile;
+import Editor.Model.Profile.MapProfile;
+import Editor.Model.Profile.WallProfile;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Collections;
@@ -33,10 +33,10 @@ import javafx.scene.paint.Color;
 public class WallHierarchy extends ScrollPane{
     private VBox list;
     private HBox selected;
-    private MapModel map;
+    private MapProfile map;
     private WallContent display;
     
-    public WallHierarchy(WallContent display, MapModel map){
+    public WallHierarchy(WallContent display, MapProfile map){
         this.display = display;
         this.map = map;
         
@@ -59,7 +59,7 @@ public class WallHierarchy extends ScrollPane{
             item.setPadding(new Insets(25));
             Label name = new Label(entry.getValue().getName() + " : ");
             try {
-                Image txr = new Image(new FileInputStream(MapModel.getTxrURL(map, entry.getKey())), 100, 100, true, true);
+                Image txr = new Image(new FileInputStream(MapProfile.getTxrURL(map, entry.getKey())), 100, 100, true, true);
                 ImageView preview = new ImageView(txr);
                 preview.setFitHeight(32);
                 preview.setFitWidth(32);
@@ -89,11 +89,11 @@ public class WallHierarchy extends ScrollPane{
         this.selected.setBackground(new Background(new BackgroundFill(Color.CADETBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
     }
     
-    public MapModel getMapModel(){
+    public MapProfile getMapModel(){
         return map;
     }
     
-    public void setMapModel(MapModel map){
+    public void setMapModel(MapProfile map){
         this.map = map;
     }
 }
