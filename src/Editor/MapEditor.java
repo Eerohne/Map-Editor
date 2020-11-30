@@ -5,6 +5,7 @@
  */
 package Editor;
 
+import Commons.SettingsManager.Settings;
 import Editor.Controller.InfoController;
 import Editor.Controller.MenuController;
 import Editor.Controller.ShortcutController;
@@ -65,7 +66,7 @@ public class MapEditor extends Application {
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {
         this.metadataContent = wallContent;
-        this.project = new ProjectProfile("Test", "C:/", currentMap);
+        this.project = new ProjectProfile("Test", currentMap);
         project.selectedMap = currentMap;
         
         Scene scene = new Scene(setupView(metadataContent), 1920, 1080);
@@ -99,6 +100,17 @@ public class MapEditor extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
+    private void initialize(){
+        String projectName = Settings.get("ed_proj");
+        
+        if (ProjectProfile.openProject(projectName)) {
+            
+        } else{
+            project = null;
+        }
+    }
+    
     
     /**
      * Sets up the top elements of the GUI.

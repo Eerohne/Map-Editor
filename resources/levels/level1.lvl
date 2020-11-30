@@ -30,7 +30,7 @@
                {
                 "id":"2",
                 "color":[1.0, 0.6, 0.0],
-                "texture":"images/textures/grey_brick.png",
+                "texture":"images/textures/skeleton.gif",
                 "flag":"1"
                },
                {
@@ -101,8 +101,8 @@
     "signals": [
                 {
                     "name":"OnValueReached",
-                    "targetname":"music",
-                    "inputname":"play",
+                    "targetname":"player1",
+                    "inputname":"disable",
                     "arguments":[]
                 }
                 ]

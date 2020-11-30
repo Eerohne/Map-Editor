@@ -92,7 +92,7 @@ public class WallProfile extends Profile{
 
     private void setDeleteImg() {
         try {
-            this.deleteImg = new Image(new FileInputStream("resources/dev/delete.png"), 100, 100, false, false);
+            this.deleteImg = new Image(new FileInputStream("dev/editor/delete.png"), 100, 100, false, false);
             BufferedImage bimg = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
             Graphics2D g = bimg.createGraphics();
             g.setPaint(Color.WHITE);

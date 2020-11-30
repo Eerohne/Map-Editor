@@ -7,6 +7,7 @@ package Editor.Model.Profile;
 
 import Editor.Controller.GridController;
 import Editor.View.Grid.Grid;
+import java.io.File;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -46,6 +47,12 @@ public class MapProfile extends Profile{
         
         this.gc = new GridController(gridView);
         gc.setSelectedWallProfile(defaultWall);
+    }
+    
+    public MapProfile(File mapFile){
+        super(mapFile.getName().substring(0, mapFile.getName().lastIndexOf(".")));
+        
+        //Implement Load Function
     }
     
     private static void setChildrenClipping(Pane pane) {
@@ -94,7 +101,16 @@ public class MapProfile extends Profile{
 //    
 //    
     
-
+    public void save(){
+        //Save Method To Be Implemented
+    }
+    
+    
+    
+    
+/************************************
+ * Getters/Setters And Equals 
+*************************************/    
     @Override
     public int hashCode() {
         int hash = 5;

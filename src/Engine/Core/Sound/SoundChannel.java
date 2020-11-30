@@ -5,7 +5,7 @@
  */
 package Engine.Core.Sound;
 
-import Engine.Core.SettingsManager.Settings;
+import Commons.SettingsManager.Settings;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.beans.property.ReadOnlyObjectWrapper;

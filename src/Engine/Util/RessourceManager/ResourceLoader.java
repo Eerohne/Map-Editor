@@ -6,7 +6,7 @@
 package Engine.Util.RessourceManager;
 
 import Engine.Core.Exceptions.LevelCreationException;
-import Engine.Core.SettingsManager.OrderedProperties;
+import Commons.SettingsManager.OrderedProperties;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Entity.EntityCreator;
 import Engine.Level.Level;

@@ -72,8 +72,6 @@ public class WallHierarchy extends Hierarchy{
                 item.setOnMouseClicked(e -> {
                     select(item);
                     WallProfile wp = entry.getValue();
-//                    System.out.println(entry.getKey());
-//                    System.out.println(entry.getValue());
                     display.changeContent(wp);
                     
                     if(e.getButton().equals(MouseButton.PRIMARY)){

@@ -10,7 +10,7 @@ package Engine.Window;
 import Engine.Window.Menu.MenuButton;
 import Engine.Window.Menu.PauseMenu;
 import Engine.Core.Game;
-import Engine.Core.SettingsManager.Settings;
+import Commons.SettingsManager.Settings;
 import Engine.Core.Sound.SoundManager;
 import Engine.RaycastRenderer.Renderer;
 import javafx.beans.value.ChangeListener;

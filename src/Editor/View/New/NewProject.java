@@ -30,7 +30,7 @@ public class NewProject extends NewObject{
     private NewMap newMap = new NewMap();
     
     private TextField nameField;
-    private TextField projLoc;
+   // private TextField projLoc;
     
     public NewProject(Stage owner){
         super(owner, "New Project");
@@ -50,28 +50,26 @@ public class NewProject extends NewObject{
         
         
         Label nameLabel = new Label("Project Name : ");
-        Label pathLabel = new Label("Project Location : ");
         
         nameField = new TextField("New Project");
-        projLoc = new TextField("C:/");
+//        
+//        Button browser = new Button("Browse Folders");
+//        DirectoryChooser directoryChooser = new DirectoryChooser();
+//        directoryChooser.setTitle("Search Project Location");
         
-        Button browser = new Button("Browse Folders");
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Search Project Location");
-        
-        browser.setOnAction(e -> {
-            File chosenDirectory = directoryChooser.showDialog(newWindow);
-            String path = chosenDirectory.getAbsolutePath();
-            
-            if(path != null)
-                projLoc.setText(path);
-        });
+//        browser.setOnAction(e -> {
+//            File chosenDirectory = directoryChooser.showDialog(newWindow);
+//            String path = chosenDirectory.getAbsolutePath();
+//            
+//            if(path != null)
+//                projLoc.setText(path);
+//        });
         
         pane.add(nameLabel, 1, 1);
-        pane.add(pathLabel, 1, 2);
+//        pane.add(pathLabel, 1, 2);
         pane.add(nameField, 2, 1);
-        pane.add(projLoc, 2, 2);
-        pane.add(browser, 3, 2);
+//        pane.add(projLoc, 2, 2);
+//        pane.add(browser, 3, 2);
         
         return pane;
     }
@@ -84,9 +82,9 @@ public class NewProject extends NewObject{
         return nameField;
     }
 
-    public TextField getProjLoc() {
-        return projLoc;
-    }
+//    public TextField getProjLoc() {
+//        return projLoc;
+//    }
 }
 
 class NewProjectController{
@@ -111,7 +109,7 @@ class NewProjectController{
         np.getFinish().setOnAction(e -> {
             MapProfile map = new MapProfile(nm.getMapNameField().getText(), Integer.parseInt(nm.getGridWidth().getText()), Integer.parseInt(nm.getGridLength().getText()));
             map.setMainMap(true);
-            MapEditor.setProject(new ProjectProfile(np.getNameField().getText(), np.getProjLoc().getText(), map));
+            MapEditor.setProject(new ProjectProfile(np.getNameField().getText(), map));
             np.getCancel().fire();
         });
     }

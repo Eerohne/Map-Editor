@@ -33,25 +33,23 @@ public class ShortcutBar extends HBox{
         ImageView addWall;
         ImageView addEntity;
         ImageView addMap;
+        ImageView runImage;
+        ImageView helpImage;
         try {
-            addWall = new ImageView(new Image(new FileInputStream("resources/dev/brickicon.png"), 100, 100, true, true));
-            addEntity = new ImageView(new Image(new FileInputStream("resources/dev/skeleton_icon.gif"), 100, 100, true, true));
-            addMap = new ImageView(new Image(new FileInputStream("resources/dev/map.png"), 100, 100, true, true));
-
-            wallShort = new Button();
-            wallShort.setGraphic(addWall);
-            mapShort = new Button();
-            mapShort.setGraphic(addMap);
-            entityShort = new Button();
-            entityShort.setGraphic(addEntity);
+            addWall = new ImageView(new Image(new FileInputStream("dev/editor/brickicon.png"), 32, 32, true, true));
+            addEntity = new ImageView(new Image(new FileInputStream("dev/editor/skeleton_icon.gif"), 32, 32, true, true));
+            addMap = new ImageView(new Image(new FileInputStream("dev/editor/map.png"), 32, 32, true, true));
+            runImage = new ImageView(new Image(new FileInputStream("dev/editor/playicon.png"), 32, 32, true, true));
+            helpImage = new ImageView(new Image(new FileInputStream("dev/editor/helpicon.png"), 32, 32, true, true));
+            
+            wallShort = new Button("", addWall);
+            mapShort = new Button("", addMap);
+            entityShort = new Button("", addEntity);
+            runShort = new Button("", runImage);
+            help = new Button("", helpImage);
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
         }
-        
-        
-        runShort = new Button("Run");
-        help = new Button("?");
-    
         Insets insets = new Insets(5);
         
         this.setPadding(insets);

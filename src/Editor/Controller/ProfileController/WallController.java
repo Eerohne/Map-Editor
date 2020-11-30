@@ -39,7 +39,6 @@ public class WallController extends MetadataController {
         this.grid = hierarchy.getMapModel().getGridView();
         this.setupReferences((WallContent)content);
         this.stage = stage;
-        
         if(((WallContent)content).getWallProfile().isDelete()){
             super.delete.setDisable(true);
             nameField.setDisable(true);
