@@ -5,9 +5,8 @@
  */
 package Editor.View.Metadata;
 
-import Editor.View.Metadata.DataView;
-import Editor.Controller.WallController;
-import Editor.Model.WallProfile;
+import Editor.Model.Profile.Profile;
+import Editor.Model.Profile.WallProfile;
 import java.util.Arrays;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,9 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -42,13 +39,8 @@ public class WallContent extends DataView{
 
     ObservableList<String> flags = FXCollections.observableArrayList(Arrays.asList(WallProfile.flagArray));//Observable List of Flags
     
-    //WallProfile Representation
-    private WallProfile wallProfile;
-    
     public WallContent(WallProfile wallProfile) {
-        super();
-        
-        this.wallProfile = wallProfile;
+        super(wallProfile);
         
         //Interactions 
         this.nameField = new TextField(wallProfile.getName());
@@ -60,7 +52,8 @@ public class WallContent extends DataView{
     }
     
     //Method that sets up the pane in a vertical Box
-    private VBox setupPane(){
+    @Override
+    protected VBox setupPane(){
         Insets padding = new Insets(10); // Padding
         Region space = new Region(); //GUI Gap
 
@@ -82,22 +75,15 @@ public class WallContent extends DataView{
         
         //Initialize the Button Section
         VBox.setVgrow(space, Priority.ALWAYS);
-        HBox buttons = new HBox(save, cancel, delete);
-        buttons.setPadding(padding);
-        buttons.setSpacing(5);
         
-        return new VBox(nameBox, txrBox, flagBox, space, buttons);
+        return new VBox(nameBox, txrBox, flagBox, space, super.getButtonBox(padding));
     }
 
+    @Override
     public final void reset(){
-        this.nameField.setText(wallProfile.getName());
-        this.txrPreview.setFill(new ImagePattern(wallProfile.getImage()));
-        this.flagCombo.getSelectionModel().select(wallProfile.getFlag());
-    }
-    
-    public void changeContent(WallProfile newProfile){
-        this.wallProfile = newProfile;
-        this.reset();
+        this.nameField.setText(profile.getName());
+        this.txrPreview.setFill(new ImagePattern(((WallProfile)profile).getImage()));
+        this.flagCombo.getSelectionModel().select(((WallProfile)profile).getFlag());
     }
     
     /*
@@ -160,35 +146,7 @@ public class WallContent extends DataView{
         this.flags = flags;
     }
 
-    public Button getCancel() {
-        return cancel;
-    }
-
-    public void setCancel(Button cancel) {
-        this.cancel = cancel;
-    }
-
-    public Button getSave() {
-        return save;
-    }
-
-    public void setSave(Button save) {
-        this.save = save;
-    }
-
-    public Button getDelete() {
-        return delete;
-    }
-
-    public void setDelete(Button delete) {
-        this.delete = delete;
-    }
-
     public WallProfile getWallProfile() {
-        return wallProfile;
-    }
-
-    public void setWallProfile(WallProfile wallProfile) {
-        this.wallProfile = wallProfile;
+        return (WallProfile)profile;
     }
 }

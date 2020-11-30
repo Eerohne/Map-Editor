@@ -6,7 +6,7 @@
 package Editor;
 
 import Editor.Controller.GridController;
-import Editor.Model.WallProfile;
+import Editor.Model.Profile.WallProfile;
 import Editor.View.Properties.WallHierarchy;
 import java.io.File;
 import java.io.FileInputStream;
