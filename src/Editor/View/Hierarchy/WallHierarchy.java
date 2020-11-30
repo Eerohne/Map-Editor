@@ -26,6 +26,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 /**
  * Pane that displays the whole list of created WallProfiles.
@@ -43,7 +44,6 @@ public class WallHierarchy extends Hierarchy{
         
         list = new VBox(10);
         list.setMinWidth(427);
-        
         this.refresh();
         selected = (HBox)list.getChildren().get(0);
 
@@ -102,5 +102,9 @@ public class WallHierarchy extends Hierarchy{
     
     public void setMapModel(MapProfile map){
         this.map = map;
+    }
+    
+    public WallContent getWallContent(){
+        return display;
     }
 }

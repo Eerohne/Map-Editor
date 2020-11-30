@@ -15,6 +15,5 @@ public class Hierarchy extends ScrollPane{
     
     
     public void refresh(){
-        
     }
 }

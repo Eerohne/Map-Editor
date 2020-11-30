@@ -30,6 +30,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -63,14 +64,13 @@ public class MapEditor extends Application {
      */
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {
-        this.wallContent = new WallContent(currentMap.getDefaultWall());
         this.metadataContent = wallContent;
         this.project = new ProjectProfile("Test", "C:/", currentMap);
         project.selectedMap = currentMap;
-                
+        
         Scene scene = new Scene(setupView(metadataContent), 1920, 1080);
         
-        WallController wc = new WallController(editorWindow, (WallContent)metadataContent, currentMap.getGridView(), wallHierarchy);
+        WallController WC = new WallController(editorWindow, wallHierarchy);
         InfoController ic = new InfoController(info, currentMap);
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow, wallHierarchy);
