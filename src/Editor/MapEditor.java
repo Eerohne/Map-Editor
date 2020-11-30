@@ -201,4 +201,8 @@ public class MapEditor extends Application {
         project = proj;
         //Add refresh code
     }
+    
+    public static ProjectProfile getProject(){
+        return project;
+    }
 }

@@ -5,6 +5,8 @@
  */
 package Editor.View.New;
 
+import Editor.MapEditor;
+import Editor.Model.Profile.MapProfile;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -41,6 +43,9 @@ public class NewMap extends NewObject{
         gridLength = new TextField();
         mapNameField = new TextField();
         
+        next.setDisable(true);
+        finish.setDisable(false);
+        
         frame.setCenter(init());
         
         newWindow.show();
@@ -75,5 +80,15 @@ public class NewMap extends NewObject{
 
     public TextField getMapNameField() {
         return mapNameField;
+    }
+}
+
+class NewMapController{
+
+    public NewMapController(NewMap nm) {
+        nm.getFinish().setOnAction(e -> {
+            MapProfile map = new MapProfile(nm.getMapNameField().getText(), Integer.parseInt(nm.getGridWidth().getText()), Integer.parseInt(nm.getGridLength().getText()));
+            MapEditor.getProject().addMap(map);
+        });
     }
 }

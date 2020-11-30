@@ -35,6 +35,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -43,42 +44,37 @@ import javafx.stage.StageStyle;
  *
  * @author A
  */
-public class NewWallProfile {
+public class NewWallProfile extends NewObject{
     private String filepath;
     private String selectedImage;
     private HBox selectedOption = new HBox();
-    private HBox buttonBar;
     
     WallHierarchy wallList;
     
-    Button next;
-    Button cancel;
-    
     public NewWallProfile(Stage parent, String filepath, WallHierarchy wallList) {
+        super(parent, "New Wall Profile");
         this.filepath = filepath;
         this.wallList = wallList;
         
-        Stage newWallWindow = new Stage();
-        newWallWindow.initOwner(parent);
-        newWallWindow.initModality(Modality.WINDOW_MODAL);
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Textures", "*.png", "*.jpg");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setTitle("Choose A Wall Texture");
+        fileChooser.setInitialDirectory(new File(filepath));
+        File textureFile = fileChooser.showOpenDialog(parent);
         
-        buttonBar = buttonContainer(newWallWindow);
+        //frame.setCenter(textureView());
         
-        Scene scene = new Scene(setupScene(textureView()), 600, 500);
-        newWallWindow.setResizable(false);
-        newWallWindow.initStyle(StageStyle.UTILITY);
-        newWallWindow.setTitle("New Wall Profile");
-        newWallWindow.setScene(scene);
-        newWallWindow.show();
+        newWindow.show();
     }
-    
-    private BorderPane setupScene(Node center){
-        BorderPane pane = new BorderPane();
-        pane.setCenter(center);
-        pane.setBottom(buttonBar);
-        
-        return pane;
-    }
+//    
+//    private BorderPane setupScene(Node center){
+//        BorderPane pane = new BorderPane();
+//        pane.setCenter(center);
+//        pane.setBottom(buttonBar);
+//        
+//        return pane;
+//    }
     
     private ScrollPane textureView(){
         VBox temp = new VBox();
@@ -116,28 +112,28 @@ public class NewWallProfile {
         return new ScrollPane(temp);
     }
     
-    private HBox buttonContainer(Stage stage){
-        HBox buttonBox = new HBox(5);
-        buttonBox.setPadding(new Insets(5));
-        
-        this.next = new Button("Next >");
-        this.next.setOnAction(e -> {
-            optionView(stage);
-        });
-        this.cancel = new Button("Cancel");
-        this.cancel.setOnAction(e -> {
-            stage.close();
-        });
-        Region space = new Region();
-        
-        next.setDisable(true);
-        
-        HBox.setHgrow(space, Priority.ALWAYS);
-        
-        buttonBox.getChildren().addAll(space, next, cancel);
-        
-        return buttonBox;
-    }
+//    private HBox buttonContainer(Stage stage){
+//        HBox buttonBox = new HBox(5);
+//        buttonBox.setPadding(new Insets(5));
+//        
+//        this.next = new Button("Next >");
+//        this.next.setOnAction(e -> {
+//            optionView(stage);
+//        });
+//        this.cancel = new Button("Cancel");
+//        this.cancel.setOnAction(e -> {
+//            stage.close();
+//        });
+//        Region space = new Region();
+//        
+//        next.setDisable(true);
+//        
+//        HBox.setHgrow(space, Priority.ALWAYS);
+//        
+//        buttonBox.getChildren().addAll(space, next, cancel);
+//        
+//        return buttonBox;
+//    }
     
     private void select(HBox box){
         this.selectedOption.setBackground(Background.EMPTY);
@@ -175,7 +171,6 @@ public class NewWallProfile {
             wallList.refresh();
         });
         
-        Scene finishScene = new Scene(setupScene(view), 600, 500);
-        stage.setScene(finishScene);
+        frame.setCenter(view);
     }
 }

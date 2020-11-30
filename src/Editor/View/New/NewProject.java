@@ -109,7 +109,9 @@ class NewProjectController{
         });
         
         np.getFinish().setOnAction(e -> {
-            MapEditor.setProject(new ProjectProfile(np.getNameField().getText(), np.getProjLoc().getText(), new MapProfile(nm.getMapNameField().getText(), Integer.parseInt(nm.getGridWidth().getText()), Integer.parseInt(nm.getGridLength().getText()))));
+            MapProfile map = new MapProfile(nm.getMapNameField().getText(), Integer.parseInt(nm.getGridWidth().getText()), Integer.parseInt(nm.getGridLength().getText()));
+            map.setMainMap(true);
+            MapEditor.setProject(new ProjectProfile(np.getNameField().getText(), np.getProjLoc().getText(), map));
             np.getCancel().fire();
         });
     }

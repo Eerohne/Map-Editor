@@ -37,6 +37,11 @@ public class ProjectProfile extends Profile{
         this.maps = maps;
     }
 
+    public void addMap(MapProfile map){
+        this.maps.add(map);
+        
+    }
+    
     public MapProfile getMainMap() {
         return maps.get(mainMapID);
     }
