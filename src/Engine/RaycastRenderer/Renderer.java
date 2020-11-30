@@ -6,6 +6,7 @@
 package Engine.RaycastRenderer;
 
 import Engine.Core.Game;
+import Engine.Entity.AbstractEntity.Entity;
 import Engine.Entity.AbstractEntity.SpriteEntity;
 import Engine.Entity.GameEntity.Entity_Player;
 import Engine.Level.Level;
@@ -18,8 +19,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 /**
@@ -31,7 +30,7 @@ import javafx.scene.paint.Color;
 *   Render Level        +
 *   Render Entities     +
 *   Render Textures     +
-*   Render Floor/Ceil   -
+*   Render Floor/Ceil   -started
 *   Game Minimap        -
 */
 public class Renderer {
@@ -43,6 +42,7 @@ public class Renderer {
     private static double screenWidth = frame.getWidth(), screenHeight = frame.getHeight();
     
     private static Entity_Player player;
+    private static Entity env;
     private static float fov=70f; //default field of view (degrees)
     private static double viewD=8.0; //default view distance
     private static int res = 1;
@@ -50,6 +50,7 @@ public class Renderer {
     private Renderer(){}
     
     public static void setPlayer(Entity_Player player){Renderer.player = player;}
+    public static void setEnvironment(Entity env){Renderer.env=env;};
     
     public static void setCanvas(Canvas canvas){
         frame = canvas;
@@ -66,7 +67,7 @@ public class Renderer {
     
     public static void setFov(float angdeg){fov = angdeg;} // set the field of view
     public static void setViewDistance(double dist){viewD = dist;} // set the view distance
-    public static void setResolution(int resolution){res = resolution;};
+    public static void setResolution(int resolution){res = resolution;}
     
     public static void resize(){
         screenWidth = frame.getWidth();
@@ -84,9 +85,15 @@ public class Renderer {
         gc.setFill(Color.GREEN);
         gc.fillRect(0, screenHeight/2.0, screenWidth, screenHeight/2.0);
         
+        renderFloorCeiling();
         ArrayList<HitPoint> hPoints = renderLevel();
         
         renderEntities(hPoints);
+    }
+    
+    //renders floor/ceiling
+    private static void renderFloorCeiling(){
+        
     }
     
     //renders level
@@ -194,6 +201,7 @@ public class Renderer {
         return hPoints;
     }
     
+    //renders entities
     private static void renderEntities(ArrayList<HitPoint> hPoints){
         Point2D cam = player.getPosition();
         float camA = player.getRotation();
@@ -237,7 +245,7 @@ public class Renderer {
                 if(!hidden){
                     double relX =screenPos-(width/2.0), relY = (screenHeight-height)/2.0; //coordinates of the top left corner of the image
                     relY -= (e.getHeight()-0.5)*screenHeight/dist; //height offsett
-                    relY -= (Game.getCurrentLevel().getPlayer().getHeight()-0.5);
+                    relY -= (player.getHeight()-0.5);
                     gc.drawImage(sprite, relX, relY, width, height );
 
                     //draw walls that are in front of the entity
@@ -263,7 +271,7 @@ public class Renderer {
         Point2D dir = new Point2D(Math.cos(Math.toRadians(player.getRotation())), Math.sin(Math.toRadians(player.getRotation())));
         
         double distance = toWall.magnitude();
-        distance = distance*Math.cos(Math.toRadians(dir.angle(toWall)))+.25;
+        distance = distance*Math.cos(Math.toRadians(dir.angle(toWall)));
         double height = screenHeight/distance;
         double lineTop = ((screenHeight-height)/2.0);
         lineTop -= (player.getHeight()-0.5);
@@ -282,7 +290,7 @@ public class Renderer {
     static class EntityDistanceComparator implements Comparator<SpriteEntity>{
         @Override
         public int compare(SpriteEntity o1, SpriteEntity o2) {
-            Point2D cam = Game.getCurrentLevel().getPlayer().getPosition();
+            Point2D cam = player.getPosition();
             double d1 = cam.distance(o1.getPosition());
             double d2 = cam.distance(o2.getPosition());
             
