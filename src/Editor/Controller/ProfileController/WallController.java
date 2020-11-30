@@ -48,9 +48,11 @@ public class WallController extends MetadataController {
             super.delete.setDisable(false);
             nameField.setDisable(false);
             flagCombo.setDisable(false);
-            
-            nameField.setOnMouseClicked(e -> disableButtons(false));
-            txrPreview.setOnMouseClicked(e -> {
+        }
+        
+        nameField.setOnMouseClicked(e -> disableButtons(false));
+        txrPreview.setOnMouseClicked(e -> {
+            if(!((WallContent)content).getWallProfile().isDelete()){
                 disableButtons(false);
                 FileChooser fileChooser = new FileChooser();
                 FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Textures", "*.png", "*.jpg");
@@ -58,11 +60,13 @@ public class WallController extends MetadataController {
                 fileChooser.setTitle("Choose A Wall Texture");
                 fileChooser.setInitialDirectory(new File(WallProfile.resourceFolder));
                 File textureFile = fileChooser.showOpenDialog(stage);
-
                 this.newImage = textureFile.getName();
-            });
-            flagCombo.setOnAction(e -> disableButtons(false));
-        }
+            }
+        });
+        flagCombo.setOnAction(e -> {
+            if(!((WallContent)content).getWallProfile().isDelete())
+                disableButtons(false);
+        });
     }
     
     private void setupReferences(WallContent content){
