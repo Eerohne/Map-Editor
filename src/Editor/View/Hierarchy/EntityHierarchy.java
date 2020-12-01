@@ -6,6 +6,8 @@
 package Editor.View.Hierarchy;
 
 import Editor.Model.EntityModel;
+import Editor.Model.Profile.EntityProfile;
+import Editor.View.Metadata.DataView;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,27 +27,20 @@ import javafx.scene.layout.VBox;
  *
  * @author A
  */
-public class EntityHierarchy extends Accordion{
-    private ArrayList<TitledPane> entities = new ArrayList<>();
-
+public class EntityHierarchy extends Hierarchy{
+    private EntityProfile profile;
+    
     public EntityHierarchy() {
-        ObservableList<EntityModel> testList = FXCollections.observableArrayList();
-        testList.addAll(new EntityModel("Type", "Player"), new EntityModel("Name", "Player1"), new EntityModel("HP", "100"));
-        EntityModel.entityList.add(testList);
-        
-        
-        for (ObservableList<EntityModel> entity : EntityModel.entityList) {
-            TableColumn<EntityModel, String> property = new TableColumn<>("Property");
-            property.setCellValueFactory(new PropertyValueFactory<>("property"));
-            
-            TableColumn<EntityModel, String> value = new TableColumn<>("Value");
-            value.setCellValueFactory(new PropertyValueFactory<>("value"));
-            
-            TableView entityTable = new TableView(entity);
-            entityTable.getColumns().addAll(property, value);
-            
-            TitledPane entityPane = new TitledPane("Entity Test", entityTable);
-            this.getPanes().add(entityPane);
-        }
+        super(null);
     }
+
+    @Override
+    public void refresh() {
+        //TODO
+    }
+
+    public void setEntityProfile(EntityProfile profile) {
+        this.profile = profile;
+    }
+    
 }

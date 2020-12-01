@@ -10,9 +10,11 @@ import Editor.Controller.InfoController;
 import Editor.Controller.MenuController;
 import Editor.Controller.ShortcutController;
 import Editor.Controller.ProfileController.WallController;
+import Editor.Model.Profile.EntityProfile;
 import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.Profile;
 import Editor.Model.Profile.ProjectProfile;
+import Editor.View.Grid.Grid;
 import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Menu.TopMenu;
@@ -21,6 +23,8 @@ import Editor.View.Hierarchy.EntityHierarchy;
 import Editor.View.Metadata.WallContent;
 import Editor.View.Hierarchy.MapHierarchy;
 import Editor.View.Hierarchy.WallHierarchy;
+import Editor.View.Metadata.EntityContent;
+import Editor.View.Metadata.MapContent;
 import java.io.File;
 import java.net.MalformedURLException;
 import javafx.application.Application;
@@ -53,9 +57,14 @@ public class MapEditor extends Application {
     
     DataView metadataContent; //Content Wrapper to display in metadata tab
     WallContent wallContent; //Compatible with DataView and delivers WallProfile information
+    MapContent mapContent;
+    EntityContent entityContent;
+    
+    Grid grid;
+    BorderPane gridDisplay;
     
     static ProjectProfile project; //Base project
-    MapProfile currentMap = new MapProfile("Map", 10, 10); //Test Map -- To Be Removed
+//    MapProfile currentMap = new MapProfile("Map", 10, 10); //Test Map -- To Be Removed
     
     /**
      * Core method of the Optik Editor. Starts the whole Editor GUI and events.
@@ -65,19 +74,27 @@ public class MapEditor extends Application {
      */
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {
+        this.entityHierarchy = new EntityHierarchy();
+        this.wallHierarchy = new WallHierarchy();
+        this.mapHierarchy = new MapHierarchy();
+        this.grid = new Grid();
+        this.gridDisplay = new BorderPane();
+        this.info = new Info();
         this.metadataContent = wallContent;
-        this.project = new ProjectProfile("Test", currentMap);
-        project.selectedMap = currentMap;
         
-        Scene scene = new Scene(setupView(metadataContent), 1920, 1080);
+        
+        BorderPane view = setupView(metadataContent);
+  //      project = new ProjectProfile("Test", currentMap);
+        
+        Scene scene = new Scene(view, 1920, 1080);
         
 //        WallController wc = new WallController(editorWindow, wallHierarchy);
-        InfoController ic = new InfoController(info, currentMap);
+ //       InfoController ic = new InfoController(info, currentMap);
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow, wallHierarchy);
         //wallContent.setWallController(wc);
         
-        String pathName = "resources/style/style.css" ;
+        String pathName = "dev/editor/style/style.css" ;
         File file = new File(pathName);
         if (file.exists()) {
             scene.getStylesheets().add(file.toURI().toURL().toExternalForm());
@@ -106,8 +123,6 @@ public class MapEditor extends Application {
         
         if (ProjectProfile.openProject(projectName)) {
             
-        } else{
-            project = null;
         }
     }
     
@@ -130,21 +145,6 @@ public class MapEditor extends Application {
      * @return <code></code>
      */
     private TabPane setupProperties(){
-        this.entityHierarchy = new EntityHierarchy();
-        this.wallHierarchy = new WallHierarchy(wallContent, currentMap);
-        this.mapHierarchy = new MapHierarchy(project, new DataView(project) {
-            @Override
-            protected VBox setupPane() {
-                return null;
-            }
-
-            @Override
-            public void reset() {
-                System.out.println(1000);
-            }
-        });
-        
-        
         //Property Tabs Initialization
         Tab entityTab = new Tab("Entities", entityHierarchy);
         Tab wallTab = new Tab("Walls", wallHierarchy);
@@ -187,10 +187,7 @@ public class MapEditor extends Application {
      * @return 
      */
     private BorderPane setupCenterElements(){
-        this.info = new Info();
-        
-        BorderPane gridDisplay = new BorderPane();
-        gridDisplay.setCenter(project.selectedMap.getGridView());
+        gridDisplay.setCenter(grid);
         gridDisplay.setBottom(info);
         
         return gridDisplay;

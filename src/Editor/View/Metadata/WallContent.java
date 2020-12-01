@@ -40,11 +40,9 @@ public class WallContent extends DataView{
     private Rectangle txrPreview;
     private ComboBox flagCombo;
     
-    WallController wc;
-    
     ObservableList<String> flags = FXCollections.observableArrayList(Arrays.asList(WallProfile.flagArray));//Observable List of Flags
     
-    public WallContent(WallProfile wallProfile, WallHierarchy hierarchy) {
+    public WallContent(WallProfile wallProfile) {
         super(wallProfile);
         
         //Interactions 
@@ -157,9 +155,5 @@ public class WallContent extends DataView{
 
     public WallProfile getWallProfile() {
         return (WallProfile)profile;
-    }
-    
-    public void setWallController(WallController wc){
-        this.wc = wc;
     }
 }
