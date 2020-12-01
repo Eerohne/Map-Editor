@@ -6,8 +6,8 @@
 package Engine.RaycastRenderer;
 
 import Engine.Core.Game;
-import Engine.Entity.AbstractEntity.Entity;
 import Engine.Entity.AbstractEntity.SpriteEntity;
+import Engine.Entity.GameEntity.Entity_Environment;
 import Engine.Entity.GameEntity.Entity_Player;
 import Engine.Level.Level;
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class Renderer {
     private static double screenWidth = frame.getWidth(), screenHeight = frame.getHeight();
     
     private static Entity_Player player;
-    private static Entity env;
+    private static Entity_Environment env;
     private static float fov=70f; //default field of view (degrees)
     private static double viewD=8.0; //default view distance
     private static int res = 1;
@@ -50,7 +50,7 @@ public class Renderer {
     private Renderer(){}
     
     public static void setPlayer(Entity_Player player){Renderer.player = player;}
-    public static void setEnvironment(Entity env){Renderer.env=env;};
+    public static void setEnvironment(Entity_Environment env){Renderer.env=env;};
     
     public static void setCanvas(Canvas canvas){
         frame = canvas;
@@ -58,8 +58,6 @@ public class Renderer {
         screenWidth = canvas.getWidth();
         screenHeight = canvas.getHeight();
     }
-    
-    
     
     public static void setEntityList(HashMap<String, SpriteEntity> list){spriteEntities = list;}
     public static void addEntity(SpriteEntity spriteEntity){spriteEntities.put(spriteEntity.getName(), spriteEntity);}
@@ -93,7 +91,12 @@ public class Renderer {
     
     //renders floor/ceiling
     private static void renderFloorCeiling(){
-        
+        for(int y=0;y<screenHeight;y++){
+            int p = y-(int)(screenHeight/2);
+            double posZ = player.getHeight()*screenHeight;
+            double dist = posZ/p;
+            
+        }
     }
     
     //renders level
