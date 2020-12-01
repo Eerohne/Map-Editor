@@ -87,10 +87,6 @@ public class WallContent extends DataView{
         this.nameField.setText(profile.getName());
         this.txrPreview.setFill(new ImagePattern(((WallProfile)profile).getImage()));
         this.flagCombo.getSelectionModel().select(((WallProfile)profile).getFlag());
-        
-//        if(wc != null){
-//            wc.refresh();
-//        }
     }
     
     /*

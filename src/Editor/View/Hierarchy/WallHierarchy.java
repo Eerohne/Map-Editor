@@ -5,6 +5,8 @@
  */
 package Editor.View.Hierarchy;
 
+import Editor.Controller.ProfileController.WallController;
+import Editor.MapEditor;
 import Editor.View.Metadata.WallContent;
 import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.Profile;
@@ -34,10 +36,11 @@ import javafx.stage.Stage;
  */
 public class WallHierarchy extends Hierarchy{
     private MapProfile map;
-    private WallContent display;
+    private Stage stage;
 
-    public WallHierarchy() {
+    public WallHierarchy(Stage stage) {
         super(null);
+        this.stage = stage;
     }
     
     public WallHierarchy(WallContent display, MapProfile map){
@@ -71,7 +74,9 @@ public class WallHierarchy extends Hierarchy{
                 item.setOnMouseClicked(e -> {
                     select(item);
                     WallProfile wp = entry.getValue();
-                    display.changeContent(wp);
+                    WallContent wallContent = new WallContent(wp);
+                    WallController wc = new WallController(wallContent, map, stage);
+                    MapEditor.setDataView(wallContent);
                     
                     if(e.getButton().equals(MouseButton.PRIMARY)){
                         map.getGc().setSelectedWallProfile(entry.getValue());
@@ -94,9 +99,5 @@ public class WallHierarchy extends Hierarchy{
     public void setMapProfile(MapProfile map){
         this.map = map;
         this.refresh();
-    }
-    
-    public WallContent getWallContent(){
-        return display;
     }
 }
