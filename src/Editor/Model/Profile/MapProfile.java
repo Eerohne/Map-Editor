@@ -31,14 +31,13 @@ public class MapProfile extends Profile{
         
     private boolean mainMap;
     
-    private Map<Integer, WallProfile> wallMap;
+    private Map<Integer, WallProfile> wallMap = new TreeMap<>();
     
 
     public MapProfile(String name, int gridWidth, int gridLength) {
         super(name);
         this.mainMap = false;
         
-        this.wallMap  = new TreeMap<>();
         this.defaultWall = new WallProfile();
         this.wallMap.put(defaultWall.getID(), defaultWall);
         
@@ -52,6 +51,8 @@ public class MapProfile extends Profile{
     public MapProfile(File mapFile){
         super(mapFile.getName().substring(0, mapFile.getName().lastIndexOf(".")));
         
+        this.defaultWall = new WallProfile();
+        this.wallMap.put(defaultWall.getID(), defaultWall);
         //Implement Load Function
     }
     
