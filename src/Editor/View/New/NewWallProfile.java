@@ -70,7 +70,7 @@ public class NewWallProfile extends NewObject{
         this.next.setDisable(true);
         this.finish.setDisable(false);
         this.finish.setOnAction(e -> {
-            wallList.getMapModel().createWallProfile(nameField.getText(), selectedImage, WallProfile.getWallFlag(flagBox.getValue()));
+            wallList.getMapProfile().createWallProfile(nameField.getText(), selectedImage, WallProfile.getWallFlag(flagBox.getValue()));
             stage.close();
             wallList.refresh();
         });

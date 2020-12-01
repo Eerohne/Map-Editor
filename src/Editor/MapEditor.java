@@ -10,9 +10,11 @@ import Editor.Controller.InfoController;
 import Editor.Controller.MenuController;
 import Editor.Controller.ShortcutController;
 import Editor.Controller.ProfileController.WallController;
+import Editor.Model.Profile.EntityProfile;
 import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.Profile;
 import Editor.Model.Profile.ProjectProfile;
+import Editor.View.Grid.Grid;
 import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Menu.TopMenu;
@@ -21,6 +23,8 @@ import Editor.View.Hierarchy.EntityHierarchy;
 import Editor.View.Metadata.WallContent;
 import Editor.View.Hierarchy.MapHierarchy;
 import Editor.View.Hierarchy.WallHierarchy;
+import Editor.View.Metadata.EntityContent;
+import Editor.View.Metadata.MapContent;
 import java.io.File;
 import java.net.MalformedURLException;
 import javafx.application.Application;
@@ -55,7 +59,7 @@ public class MapEditor extends Application {
     WallContent wallContent; //Compatible with DataView and delivers WallProfile information
     
     static ProjectProfile project; //Base project
-    MapProfile currentMap = new MapProfile("Map", 10, 10); //Test Map -- To Be Removed
+//    MapProfile currentMap = new MapProfile("Map", 10, 10); //Test Map -- To Be Removed
     
     /**
      * Core method of the Optik Editor. Starts the whole Editor GUI and events.
@@ -66,13 +70,12 @@ public class MapEditor extends Application {
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {
         this.metadataContent = wallContent;
-        this.project = new ProjectProfile("Test", currentMap);
-        project.selectedMap = currentMap;
+  //      project = new ProjectProfile("Test", currentMap);
         
         Scene scene = new Scene(setupView(metadataContent), 1920, 1080);
         
 //        WallController wc = new WallController(editorWindow, wallHierarchy);
-        InfoController ic = new InfoController(info, currentMap);
+ //       InfoController ic = new InfoController(info, currentMap);
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow, wallHierarchy);
         //wallContent.setWallController(wc);
@@ -131,18 +134,8 @@ public class MapEditor extends Application {
      */
     private TabPane setupProperties(){
         this.entityHierarchy = new EntityHierarchy();
-        this.wallHierarchy = new WallHierarchy(wallContent, currentMap);
-        this.mapHierarchy = new MapHierarchy(project, new DataView(project) {
-            @Override
-            protected VBox setupPane() {
-                return null;
-            }
-
-            @Override
-            public void reset() {
-                System.out.println(1000);
-            }
-        });
+        this.wallHierarchy = new WallHierarchy();
+        this.mapHierarchy = new MapHierarchy();
         
         
         //Property Tabs Initialization
@@ -190,7 +183,7 @@ public class MapEditor extends Application {
         this.info = new Info();
         
         BorderPane gridDisplay = new BorderPane();
-        gridDisplay.setCenter(project.selectedMap.getGridView());
+        gridDisplay.setCenter(new Grid());
         gridDisplay.setBottom(info);
         
         return gridDisplay;

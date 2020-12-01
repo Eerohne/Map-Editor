@@ -23,36 +23,41 @@ import javafx.scene.paint.Color;
  *
  * @author A
  */
-public class MapHierarchy extends ScrollPane{
-    ProjectProfile p;
-    VBox mapList;
+public class MapHierarchy extends Hierarchy{
+    ProjectProfile project;
     HBox selected;
     DataView display;
 
-    public MapHierarchy(ProjectProfile p, DataView display) {
-        this.p = p;
-        mapList = new VBox(10);
-        this.display = display;
+    public MapHierarchy() {
+        super(null);
     }
     
-    public void refresh(){
-        mapList.getChildren().clear();
+    public MapHierarchy(ProjectProfile p, DataView display) {
+        super(display);
+        this.project = p;
         
-        for (MapProfile map : p.getMaps()) {
+        this.refresh();
+    }
+    
+    @Override
+    public void refresh(){
+        list.getChildren().clear();
+        
+        for (MapProfile map : project.getMaps()) {
             HBox item = new HBox(10);
             item.setPadding(new Insets(25));
             Label mapName = new Label(map.getName());
             
             item.setOnMouseClicked(e -> {
-                select(item);
-                p.setSelectedMap(map);
+                super.select(item);
+                project.setSelectedMap(map);
             });
         }
     }
-    
-    private void select(HBox box){
-        this.selected.setBackground(Background.EMPTY);
-        this.selected = box;
-        this.selected.setBackground(new Background(new BackgroundFill(Color.CADETBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+
+    public void setProject(ProjectProfile project) {
+        this.project = project;
+        this.refresh();
     }
+    
 }

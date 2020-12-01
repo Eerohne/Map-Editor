@@ -36,7 +36,7 @@ public class WallController extends MetadataController {
     
     public WallController(Stage stage, WallHierarchy hierarchy) {
         super(hierarchy.getWallContent(), hierarchy);
-        this.grid = hierarchy.getMapModel().getGridView();
+        this.grid = hierarchy.getMapProfile().getGridView();
         this.setupReferences((WallContent)content);
         this.stage = stage;
         if(((WallContent)content).getWallProfile().isDelete()){
@@ -80,7 +80,7 @@ public class WallController extends MetadataController {
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {
                 if(cell.getID() == ((WallContent)content).getWallProfile().getID())
-                    ((WallHierarchy)hierarchy).getMapModel().getGc().setImg(cell, ((WallContent)content).getWallProfile().getImage());
+                    ((WallHierarchy)hierarchy).getMapProfile().getGc().setImg(cell, ((WallContent)content).getWallProfile().getImage());
             }
         }
     }

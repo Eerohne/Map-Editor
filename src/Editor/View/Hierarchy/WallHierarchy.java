@@ -33,23 +33,22 @@ import javafx.stage.Stage;
  * @author A
  */
 public class WallHierarchy extends Hierarchy{
-    private VBox list;
-    private HBox selected;
     private MapProfile map;
     private WallContent display;
-    
-    public WallHierarchy(WallContent display, MapProfile map){
-        this.display = display;
-        this.map = map;
-        
-        list = new VBox(10);
-        list.setMinWidth(427);
-        this.refresh();
-        selected = (HBox)list.getChildren().get(0);
 
-        this.setContent(list);
+    public WallHierarchy() {
+        super(null);
     }
     
+    public WallHierarchy(WallContent display, MapProfile map){
+        super(display);
+        this.map = map;
+        
+        this.refresh();
+        selected = (HBox)list.getChildren().get(0);
+    }
+    
+    @Override
     public void refresh(){
         list.getChildren().clear();
         Map<Integer, WallProfile> reversed = new TreeMap<>(Collections.reverseOrder());
@@ -88,18 +87,13 @@ public class WallHierarchy extends Hierarchy{
         }
     }
     
-    private void select(HBox box){
-        this.selected.setBackground(Background.EMPTY);
-        this.selected = box;
-        this.selected.setBackground(new Background(new BackgroundFill(Color.CADETBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-    }
-    
-    public MapProfile getMapModel(){
+    public MapProfile getMapProfile(){
         return map;
     }
     
-    public void setMapModel(MapProfile map){
+    public void setMapProfile(MapProfile map){
         this.map = map;
+        this.refresh();
     }
     
     public WallContent getWallContent(){

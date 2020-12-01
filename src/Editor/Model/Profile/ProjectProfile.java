@@ -6,11 +6,8 @@
 package Editor.Model.Profile;
 
 import Editor.MapEditor;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,8 +15,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 /**
@@ -31,10 +26,14 @@ public class ProjectProfile extends Profile{
     private int mainMapID = 0;
     
     public MapProfile selectedMap;
-    
-    public ProjectProfile(String name, MapProfile map){
+
+    public ProjectProfile(String name) {
         super(name);
         this.maps = new LinkedList<>();
+    }
+    
+    public ProjectProfile(String name, MapProfile map){
+        this(name);
         
         map.save();
         maps.add(map);
@@ -46,21 +45,12 @@ public class ProjectProfile extends Profile{
         File projFile = new File(projectName);
         
         if(projFile.exists()){
-            MapEditor.getProject().loadProject(projectName);
+            ProjectProfile p = new ProjectProfile(projectName);
+            p.loadProject(projectName);
+            MapEditor.setProject(p);
             return true;
         } else
             return false;
-    }
-    
-    public boolean initializeProject(){
-        File rootFile = new File(name);
-        boolean success = rootFile.mkdir();
-        
-        if(success){
-            return setupDirectories();
-        } else{
-            return false;
-        }
     }
     
     public boolean loadProject(String projName){
@@ -81,7 +71,7 @@ public class ProjectProfile extends Profile{
                 String next = configReader.next();
                 
                 if(next.startsWith("last_map="))
-                    this.getMapByName(next.replace("last_map=", ""));
+                    this.selectedMap = this.getMapByName(next.replace("last_map=", ""));
             }
             
             return true;
@@ -92,26 +82,34 @@ public class ProjectProfile extends Profile{
         
     }
     
+    public boolean initializeProject(){
+        File rootFile = new File(name);
+        boolean success = rootFile.mkdir();
+        
+        if(success){
+            return setupDirectories();
+        } else{
+            return false;
+        }
+    }
+    
     private boolean setupDirectories(){
         boolean success;
         
-        File textures = new File(name + "/resources/images/textures");
+        File textures = new File(name + "/resources/images");
         success = textures.mkdirs();
 
-        File sprites = new File(name + "/resources/images/sprites");
-        success = sprites.mkdir();
+        File sprites = new File(name + "/resources/dev/sprites");
+        success = sprites.mkdirs();
 
         File levels = new File(name + "/resources/levels");
         success = levels.mkdirs();
 
-        File music = new File(name + "/resources/sounds/music");
+        File music = new File(name + "/resources/sounds");
         success = music.mkdirs();
         
-        File ui = new File(name + "/resources/sounds/ui");
+        File ui = new File(name + "/resources/dev/ui");
         success = ui.mkdirs();
-        
-        File fx = new File(name + "/resources/sounds/fx");
-        success = fx.mkdirs();
         
         try {
             File errorSprite = new File("dev/engine/error_sprite.png");
