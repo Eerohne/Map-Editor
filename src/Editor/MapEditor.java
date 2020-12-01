@@ -84,8 +84,9 @@ public class MapEditor extends Application {
         
         
         BorderPane view = setupView(metadataContent);
-  //      project = new ProjectProfile("Test", currentMap);
-        
+//       project = new ProjectProfile("Test", new MapProfile("map", 10, 10));
+        initialize();
+  
         Scene scene = new Scene(view, 1920, 1080);
         
 //        WallController wc = new WallController(editorWindow, wallHierarchy);
@@ -119,10 +120,16 @@ public class MapEditor extends Application {
     }
     
     private void initialize(){
-        String projectName = Settings.get("ed_proj");
-        
-        if (ProjectProfile.openProject(projectName)) {
+        try {
+            String projectName = Settings.get("ed_proj");
             
+            if (ProjectProfile.openProject(projectName)) {
+                wallHierarchy.setMapProfile(project.getSelectedMap());
+                mapHierarchy.setProject(project);
+                //EntityHierarchy
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
     
