@@ -30,7 +30,7 @@
                {
                 "id":"2",
                 "color":[1.0, 0.6, 0.0],
-                "texture":"images/textures/skeleton.gif",
+                "texture":"images/textures/grey_brick.png",
                 "flag":"1"
                },
                {
