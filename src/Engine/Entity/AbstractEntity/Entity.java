@@ -78,6 +78,7 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
                 break;
             case "disable":
                 this.active = false;
+                break;
             default:
                 System.out.println("signal '"+signalName+"' was not found in entity '"+this.name+"'");
                 
