@@ -7,6 +7,7 @@ public class Time {
     public static int fps = 0; //Frames Per Seconds, how much game loops were completed every second
     public static float timeScale = 1f; //change the speed of time, bigger is faster. 
                                         //This will probaly never be used in our games, but it's here in case we need slow-motion or something
+    public static float timePassed = 0; //time in seconds that passed
     
     //Ignore
     private static double lastTime = 0;
@@ -20,6 +21,8 @@ public class Time {
             deltaTime = 0;
         lastTime = getTime();
         
+        
+        timePassed += deltaTime;
         CalculateFrameRate();
     }
     
@@ -38,4 +41,6 @@ public class Time {
     {
         return System.currentTimeMillis();
     }
+    
+    
 }

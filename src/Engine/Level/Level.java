@@ -68,10 +68,8 @@ public class Level {
         }
         catch(NullPointerException e)
         {
-            //System.out.println("palette entry "+index+" does not exist");
-            return ResourceLoader.loadImage(ResourceLoader.error_imagePath);
+            return ResourceLoader.error_image;
         }
-        //return null;
     }
     
     //LevelData code
@@ -89,8 +87,8 @@ public class Level {
         }
         catch(ArrayIndexOutOfBoundsException e)
         {
+            return 0;
         }
-        return 0;
     }
     
     public Point2D checkCollision(Point2D position, Point2D dir, float radius)

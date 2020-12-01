@@ -24,7 +24,7 @@
                {
                 "id":"1",
                 "color":[0.0, 1.0, 0.5],
-                "texture":"images/textures/grey_brick.png",
+                "texture":"images/textures/grey_bric.png",
                 "flag":"1"
                },
                {
@@ -88,6 +88,14 @@
     "height":"1.2",
     "texture":"images/sprites/lamppost.png",
     "size":"3.0",
+    "signals": []
+    },
+    {
+    "classname":"ui_text",
+    "name":"text1",
+    "active":"TRUE",
+    "position":[7.0,4.5],
+    "text":"UI!!!",
     "signals": []
     },
     

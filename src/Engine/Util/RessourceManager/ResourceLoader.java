@@ -39,6 +39,7 @@ public class ResourceLoader
     public static String resourcePath = "";
     
     public static String error_imagePath = "";
+    public static Image error_image;
     
     public static String error_texturePath = "";
     
@@ -53,6 +54,7 @@ public class ResourceLoader
 
             resourcePath = prop.getProperty("e_resourcepath"); //right here set the resourcePath
             error_imagePath = prop.getProperty("e_error_image");
+            error_image = loadImage(error_imagePath);
             error_texturePath = prop.getProperty("e_error_texture");
         }
         catch(IOException e) {
@@ -69,9 +71,8 @@ public class ResourceLoader
         }
         catch(IOException e)
         {
-            System.out.println(e);
             if(error_imagePath != null)
-                return loadImage(error_imagePath);
+                return error_image;
             else
                 System.out.println("error sprite is undefined or inexistant");
         }
