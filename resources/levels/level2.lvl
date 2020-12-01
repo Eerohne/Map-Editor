@@ -24,13 +24,13 @@
                {
                 "id":"1",
                 "color":[0.0, 1.0, 0.5],
-                "texture":"images/textures/grey_brick_vines.png",
+                "texture":"images/textures/grey_brick.png",
                 "flag":"1"
                },
                {
                 "id":"2",
                 "color":[1.0, 0.6, 0.0],
-                "texture":"images/textures/grey_brick.png",
+                "texture":"images/textures/grey_brick_vines.png",
                 "flag":"1"
                },
                {
@@ -59,8 +59,8 @@
     "classname":"player_base",
     "name":"player1",
     "active":"TRUE",
-    "position":[1.5, 5.0],
-    "rotation":"90",
+    "position":[2.0, 3.2],
+    "rotation":"45",
     "walkspeed":"2.0",
     "runspeed":"3.0",
     "rotationspeed":"10",
@@ -78,8 +78,18 @@
     "fog_far_distance":"5",
     "has_sky":"TRUE",
     "skycolor":[1.0, 0.6, 0.0],
-    "wallheight":"1.0",
-    }
+    "wallheight":"1.0"
+    },
+    {
+    "classname":"sprite_decor",
+    "name":"lamppost",
+    "active":"TRUE",
+    "position":[7.0,4.5],
+    "height":"1.2",
+    "texture":"images/sprites/lamppost.png",
+    "size":"3.0",
+    "signals": []
+    },
     
 ]
 }
