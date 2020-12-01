@@ -14,6 +14,7 @@ import Editor.Model.Profile.EntityProfile;
 import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.Profile;
 import Editor.Model.Profile.ProjectProfile;
+import Editor.Model.Profile.WallProfile;
 import Editor.View.Grid.Grid;
 import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
@@ -55,7 +56,7 @@ public class MapEditor extends Application {
     WallHierarchy wallHierarchy; // Hierarchy of Walls
     MapHierarchy mapHierarchy; //Hierarchy of Maps
     
-    DataView metadataContent; //Content Wrapper to display in metadata tab
+    static DataView metadataContent; //Content Wrapper to display in metadata tab
     WallContent wallContent; //Compatible with DataView and delivers WallProfile information
     MapContent mapContent;
     EntityContent entityContent;
@@ -75,12 +76,12 @@ public class MapEditor extends Application {
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {
         this.entityHierarchy = new EntityHierarchy();
-        this.wallHierarchy = new WallHierarchy();
+        this.wallHierarchy = new WallHierarchy(editorWindow);
         this.mapHierarchy = new MapHierarchy();
         this.grid = new Grid();
         this.gridDisplay = new BorderPane();
         this.info = new Info();
-        this.metadataContent = wallContent;
+        this.metadataContent = new WallContent(new WallProfile());
         
         
         BorderPane view = setupView(metadataContent);
@@ -224,5 +225,14 @@ public class MapEditor extends Application {
     
     public static ProjectProfile getProject(){
         return project;
+    }
+    
+    public static DataView getDataView(){
+        return metadataContent;
+    }
+    
+    public static void setDataView(DataView view){
+        metadataContent = view;
+        view.reset();
     }
 }

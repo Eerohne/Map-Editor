@@ -5,6 +5,7 @@
  */
 package Editor.Controller.ProfileController;
 
+import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.WallProfile;
 import Editor.View.Grid.Cell;
 import Editor.View.Grid.Grid;
@@ -26,6 +27,7 @@ import javafx.stage.Stage;
  */
 public class WallController extends MetadataController {
     Grid grid;
+    MapProfile map;
     String newImage;
     Stage stage;
     //WallPane Component references
@@ -34,9 +36,10 @@ public class WallController extends MetadataController {
     private Rectangle txrPreview;
     private ComboBox flagCombo;
     
-    public WallController(Stage stage, WallHierarchy hierarchy) {
-        super(hierarchy.getWallContent(), hierarchy);
-        this.grid = hierarchy.getMapProfile().getGridView();
+    public WallController(WallContent content, MapProfile map, Stage stage) {
+        super(content);
+        this.grid = map.getGridView();
+        this.map = map;
         this.setupReferences((WallContent)content);
         this.stage = stage;
         if(((WallContent)content).getWallProfile().isDelete()){
@@ -80,7 +83,7 @@ public class WallController extends MetadataController {
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {
                 if(cell.getID() == ((WallContent)content).getWallProfile().getID())
-                    ((WallHierarchy)hierarchy).getMapProfile().getGc().setImg(cell, ((WallContent)content).getWallProfile().getImage());
+                    this.map.getGc().setImg(cell, ((WallContent)content).getWallProfile().getImage());
             }
         }
     }

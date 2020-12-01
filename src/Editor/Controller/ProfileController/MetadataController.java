@@ -15,13 +15,12 @@ import javafx.scene.control.Button;
  */
 public abstract class MetadataController {
     protected DataView content;
-    protected Hierarchy hierarchy;
     
     protected Button cancel;
     protected Button save;
     protected Button delete;
 
-    public MetadataController(DataView content, Hierarchy hierarchy) {
+    public MetadataController(DataView content) {
         this.save = content.getSave();
         this.cancel = content.getCancel();
         this.delete = content.getDelete();
@@ -38,7 +37,6 @@ public abstract class MetadataController {
         });
         
         this.content = content;
-        this.hierarchy = hierarchy;
     }
     
     protected void disableButtons(boolean disable){
@@ -53,7 +51,7 @@ public abstract class MetadataController {
     
     private void saveEvent(){
         saveAction();
-        hierarchy.refresh();
+//        hierarchy.refresh();
         cancelEvent();
     }
     
