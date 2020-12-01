@@ -24,6 +24,7 @@ public class Entity_Logic_Timer extends Entity{
         super(propertyMap);
         this.maxTime = Float.parseFloat((String) propertyMap.get("maxtime"));
         this.counting = Boolean.parseBoolean((String) propertyMap.get("onstart"));
+        this.time = maxTime;
     }
     
     @Override

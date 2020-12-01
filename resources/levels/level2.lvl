@@ -1,0 +1,95 @@
+{
+"grid":{
+    "width":"12",
+    "height":"10",
+    "data": [ 
+            [1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,0,0,2,1,0,0,0,0,0,0,1],
+            [1,0,0,0,1,0,1,0,1,0,0,1],
+            [1,0,0,0,1,0,0,0,0,0,0,1],
+            [1,0,2,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,1,0,0,0,0,0,0,1],
+            [1,0,0,0,1,0,0,0,0,0,0,1],
+            [1,0,0,0,1,0,1,0,1,0,0,1],
+            [1,0,0,3,1,0,0,0,0,0,0,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1]
+            ],
+    "palette": [
+        {
+                "id":"0",
+                "color":[1.0, 1.0, 1.0],
+                "texture":"images/textures/brick.png",
+                "flag":"0"
+               },
+               {
+                "id":"1",
+                "color":[0.0, 1.0, 0.5],
+                "texture":"images/textures/grey_brick.png",
+                "flag":"1"
+               },
+               {
+                "id":"2",
+                "color":[1.0, 0.6, 0.0],
+                "texture":"images/textures/grey_brick_vines.png",
+                "flag":"1"
+               },
+               {
+                "id":"3",
+                "color":[0.0, 0.0, 1.0],
+                "texture":"images/textures/dev1.png",
+                "flag":"1"
+               },
+               {
+                "id":"4",
+                "color":[0.0, 0.0, 1.0],
+                "texture":"images/sprites/error_sprite.png",
+                "flag":"1"
+               },
+               {
+                "id":"5",
+                "color":[0.0, 0.0, 1.0],
+                "texture":"images/textures/door.png",
+                "flag":"1"
+               }
+               ]
+},
+
+"entities": [
+    {
+    "classname":"player_base",
+    "name":"player1",
+    "active":"TRUE",
+    "position":[2.0, 3.2],
+    "rotation":"45",
+    "walkspeed":"2.0",
+    "runspeed":"3.0",
+    "rotationspeed":"10",
+    "zfrequency":"1",
+    "zrange":"50"
+    },
+    {
+    "classname":"environment",
+    "name":"env",
+    "active":"TRUE",
+    "position":[0.0, 0.0],
+    "foggy":"TRUE",
+    "fogcolor":[1.0, 0.6, 0.0],
+    "fog_near_distance":"1",
+    "fog_far_distance":"5",
+    "has_sky":"TRUE",
+    "skycolor":[1.0, 0.6, 0.0],
+    "wallheight":"1.0"
+    },
+    {
+    "classname":"sprite_decor",
+    "name":"lamppost",
+    "active":"TRUE",
+    "position":[7.0,4.5],
+    "height":"1.2",
+    "texture":"images/sprites/lamppost.png",
+    "size":"3.0",
+    "signals": []
+    },
+    
+]
+}
