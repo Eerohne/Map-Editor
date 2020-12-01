@@ -85,7 +85,7 @@ public class WallHierarchy extends Hierarchy{
             list.setFillWidth(true);
             list.getChildren().add(item);
         }
-    }
+     }
     
     public MapProfile getMapProfile(){
         return map;

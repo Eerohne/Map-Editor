@@ -22,7 +22,7 @@ import javafx.scene.paint.Color;
 public abstract class Hierarchy extends ScrollPane{
     protected DataView content;
     protected VBox list;
-    protected HBox selected;
+    protected static HBox selected = new HBox();
 
     public Hierarchy(DataView content) {
         this.content = content;

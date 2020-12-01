@@ -47,11 +47,14 @@ public class MapHierarchy extends Hierarchy{
             HBox item = new HBox(10);
             item.setPadding(new Insets(25));
             Label mapName = new Label(map.getName());
-            
+            item.getChildren().add(mapName);
             item.setOnMouseClicked(e -> {
                 super.select(item);
                 project.setSelectedMap(map);
             });
+            
+            list.setFillWidth(true);
+            list.getChildren().add(item);
         }
     }
 
