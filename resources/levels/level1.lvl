@@ -101,16 +101,10 @@
     "signals": [
                 {
                     "name":"OnValueReached",
-                    "targetname":"player1",
-                    "inputname":"disable",
-                    "arguments":[]
-                },
-                {
-                        "name":"OnValueReached",
-                        "targetname":"messenger1",
-                        "inputname":"printMessage",
-                        "arguments":["value reached"]
-                    }
+                    "targetname":"messenger1",
+                    "inputname":"printMessage",
+                    "arguments":["value reached"]
+                }
                 ]
     },
     {
