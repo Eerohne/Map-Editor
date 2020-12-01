@@ -6,6 +6,7 @@
 package Engine.Entity.GameEntity;
 
 import Engine.Entity.AbstractEntity.Entity;
+import Engine.RaycastRenderer.Renderer;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -52,13 +53,13 @@ public class Entity_Environment extends Entity{
         
         //walls
         this.wallHeight = Float.valueOf((String) propertyMap.get("wallheight"));
-        
-        this.active = false; //this entity never gets updated
     }
     
     @Override
     public void start() {
         //start logic here
+        Renderer.setEnvironment(this);
+        this.active = false; //this entity never gets updated
     }
 
     @Override
