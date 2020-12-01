@@ -57,6 +57,11 @@ public class MapEditor extends Application {
     
     DataView metadataContent; //Content Wrapper to display in metadata tab
     WallContent wallContent; //Compatible with DataView and delivers WallProfile information
+    MapContent mapContent;
+    EntityContent entityContent;
+    
+    Grid grid;
+    BorderPane gridDisplay;
     
     static ProjectProfile project; //Base project
 //    MapProfile currentMap = new MapProfile("Map", 10, 10); //Test Map -- To Be Removed
@@ -69,10 +74,19 @@ public class MapEditor extends Application {
      */
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {
+        this.entityHierarchy = new EntityHierarchy();
+        this.wallHierarchy = new WallHierarchy();
+        this.mapHierarchy = new MapHierarchy();
+        this.grid = new Grid();
+        this.gridDisplay = new BorderPane();
+        this.info = new Info();
         this.metadataContent = wallContent;
+        
+        
+        BorderPane view = setupView(metadataContent);
   //      project = new ProjectProfile("Test", currentMap);
         
-        Scene scene = new Scene(setupView(metadataContent), 1920, 1080);
+        Scene scene = new Scene(view, 1920, 1080);
         
 //        WallController wc = new WallController(editorWindow, wallHierarchy);
  //       InfoController ic = new InfoController(info, currentMap);
@@ -80,7 +94,7 @@ public class MapEditor extends Application {
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow, wallHierarchy);
         //wallContent.setWallController(wc);
         
-        String pathName = "resources/style/style.css" ;
+        String pathName = "dev/editor/style/style.css" ;
         File file = new File(pathName);
         if (file.exists()) {
             scene.getStylesheets().add(file.toURI().toURL().toExternalForm());
@@ -109,8 +123,6 @@ public class MapEditor extends Application {
         
         if (ProjectProfile.openProject(projectName)) {
             
-        } else{
-            project = null;
         }
     }
     
@@ -133,11 +145,6 @@ public class MapEditor extends Application {
      * @return <code></code>
      */
     private TabPane setupProperties(){
-        this.entityHierarchy = new EntityHierarchy();
-        this.wallHierarchy = new WallHierarchy();
-        this.mapHierarchy = new MapHierarchy();
-        
-        
         //Property Tabs Initialization
         Tab entityTab = new Tab("Entities", entityHierarchy);
         Tab wallTab = new Tab("Walls", wallHierarchy);
@@ -180,10 +187,7 @@ public class MapEditor extends Application {
      * @return 
      */
     private BorderPane setupCenterElements(){
-        this.info = new Info();
-        
-        BorderPane gridDisplay = new BorderPane();
-        gridDisplay.setCenter(new Grid());
+        gridDisplay.setCenter(grid);
         gridDisplay.setBottom(info);
         
         return gridDisplay;
