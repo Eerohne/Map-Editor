@@ -24,7 +24,7 @@
                {
                 "id":"1",
                 "color":[0.0, 1.0, 0.5],
-                "texture":"images/textures/grey_bric.png",
+                "texture":"images/textures/grey_brick.png",
                 "flag":"1"
                },
                {
