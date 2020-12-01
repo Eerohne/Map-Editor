@@ -128,6 +128,8 @@ public class MapEditor extends Application {
             if (ProjectProfile.openProject(projectName)) {
                 wallHierarchy.setMapProfile(project.getSelectedMap());
                 mapHierarchy.setProject(project);
+                this.grid = project.getSelectedMap().getGridView();
+                gridDisplay.setCenter(grid);
                 //EntityHierarchy
             }
         } catch (Exception e) {

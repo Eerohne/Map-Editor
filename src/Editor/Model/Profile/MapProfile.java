@@ -49,10 +49,8 @@ public class MapProfile extends Profile{
     }
     
     public MapProfile(File mapFile){
-        super(mapFile.getName().substring(0, mapFile.getName().lastIndexOf(".")));
+        this(mapFile.getName().substring(0, mapFile.getName().lastIndexOf(".")), 10, 10);
         
-        this.defaultWall = new WallProfile();
-        this.wallMap.put(defaultWall.getID(), defaultWall);
         //Implement Load Function
     }
     
