@@ -54,9 +54,9 @@ public class EntityCreator { //Entity creation is defined in this class
                 if(verifyProperties(propertyMap, "rotation", "walkspeed", "runspeed"))
                     entity = new Entity_Player_Base(propertyMap);
                 break;
-            case "player_rotating":
+            case "player_idle":
                 if(verifyProperties(propertyMap, "rotation", "rotationspeed"))
-                    entity = new Entity_Player_Rotating(propertyMap);
+                    entity = new Entity_Player_Idle(propertyMap);
                 break;
             case "sound_ambient":
                 if(verifyProperties(propertyMap, "audiopath", "channel", "onstart", "loop"))

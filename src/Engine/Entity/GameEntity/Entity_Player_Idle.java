@@ -14,14 +14,14 @@ import javafx.geometry.Point2D;
  *
  * @author child
  */
-public class Entity_Player_Rotating extends Entity_Player{
+public class Entity_Player_Idle extends Entity_Player{
     
     private float rotationSpeed;
     private float headBobTime = 0;
     private float headBobFrequency;
     private float headBobRange;
     
-    public Entity_Player_Rotating(HashMap<String, Object> propertyMap)
+    public Entity_Player_Idle(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
         

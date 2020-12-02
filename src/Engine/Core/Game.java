@@ -56,20 +56,21 @@ public class Game extends Application{
 
             @Override
             public void handle(long l) {
-                if(isRunning)
-                {
+                if(isRunning) {
                     Time.update(); //update time
                     stage.setTitle(Settings.get("g_gamename") + " -> FPS : " + Integer.toString(Time.fps));
                     currentLevel.update(); //update all entities in the level
-                    
-                    /*try {
-                        new Robot().mouseMove(150, 200);
-                    } catch (AWTException ex) {
-                        Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                    }*/
                 }
                 if(isRendering)
                     Renderer.render();
+                
+                if(!isPaused && gameStage.isFocused()) { //put the cursor position in the middle of the window when not in pause menu and window is focused
+                    try {
+                        new Robot().mouseMove((int)(gameStage.getX() + gameStage.getWidth()/2), (int)(gameStage.getY() + gameStage.getHeight()/2));
+                    } catch (AWTException ex) {
+                        Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                    }
+                }
             }
         };
         anim.start();
@@ -86,7 +87,7 @@ public class Game extends Application{
         //next initialise the window and stage
         windowManager = new WindowManager(stage, Settings.getInt("r_window_width"), Settings.getInt("r_window_height"), Settings.getBoolean("r_window_fullscreen"));
         scene = new Scene(windowManager, windowManager.getWidth(), windowManager.getHeight()); //set windows inside the scene
-        scene.setCursor(Cursor.NONE);
+        scene.setCursor(Cursor.NONE);//when in game, hide the cursor
         stage.setScene(scene);
         stage.setResizable(false);
         gameStage = stage;
