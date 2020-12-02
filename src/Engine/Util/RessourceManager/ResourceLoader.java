@@ -178,7 +178,11 @@ public class ResourceLoader
         } catch (IOException e) {
             throw new LevelCreationException("invalid or inexistant level path '"+resourcePath + path+"'");
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new LevelCreationException("level file '"+resourcePath + path+"' contains a json format error : \n"+ e.getMessage());
+        } catch(NumberFormatException e) {
+            throw new LevelCreationException("level file '"+resourcePath + path+"' contains a parse error : \n"+ e.getMessage());
+        } catch(ClassCastException e) {
+            throw new LevelCreationException("level file '"+resourcePath + path+"' contains a property error : \n"+ e.getMessage());
         }
         
         return level;

@@ -13,6 +13,8 @@ import Engine.Core.Game;
 import Commons.SettingsManager.Settings;
 import Engine.Core.Sound.SoundManager;
 import Engine.RaycastRenderer.Renderer;
+import java.awt.Color;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -36,6 +38,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -46,8 +49,10 @@ public class WindowManager extends AnchorPane{
     private AnchorPane pausePane; //third layer, built only once at game start, hidden and visible on user request (Example : button press)
     private PauseMenu pauseMenu; //menu controller
     
-    private int oldWidth, oldHeight;
+    private int oldWidth, oldHeight; //only exists to reset the screen resolution when exiting fullscreen
     private boolean isFullscreen;
+    
+    private AnchorPane errorScreen;
         
     public WindowManager(Stage stage, int width, int height, boolean fullscreen)
     {
@@ -150,7 +155,7 @@ public class WindowManager extends AnchorPane{
             Button resumeButton = new MenuButton("resume game");
             resumeButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
-                    Game.pauseGame(false);
+                    Game.togglePause();
                 }
             });
             resumeButton.setMinWidth(300);
@@ -409,19 +414,59 @@ public class WindowManager extends AnchorPane{
             
         
         //root boxes
-        HBox hbox = new HBox();
-        hbox.setAlignment(Pos.CENTER);
+        HBox rootMenuHBox = new HBox();
+        rootMenuHBox.setAlignment(Pos.CENTER);
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(40);
         
         vbox.getChildren().addAll(pauseMenu.getScreens()); //add here all pause screens
-        hbox.getChildren().addAll(vbox);
-        pausePane.getChildren().add(hbox);
-        pausePane.setTopAnchor(hbox, 0.0);
-        pausePane.setBottomAnchor(hbox, 0.0);
-        pausePane.setRightAnchor(hbox, 0.0);
-        pausePane.setLeftAnchor(hbox, 0.0);
+        rootMenuHBox.getChildren().addAll(vbox);
+        
+    //no level found screen
+        errorScreen = new AnchorPane();
+        errorScreen.setVisible(false);
+        //levelNotFoundScreen.setAlignment(Pos.CENTER);
+        errorScreen.setMouseTransparent(true);
+        
+        HBox labelBox = new HBox();
+        labelBox.setAlignment(Pos.CENTER);
+        
+        Label errorLabel = new Label("-Warning : Engine level Error!-");
+        errorLabel.setWrapText(true);
+        errorLabel.setMaxWidth(this.getWidth());
+        errorLabel.setTextAlignment(TextAlignment.CENTER);
+        Game.errorMessage.addListener((observer, oldValue, newValue) -> errorLabel.setText(newValue));
+        errorLabel.setFont(Font.font("Cambria", 30));
+        errorLabel.setStyle("-fx-text-fill: rgba(255, 0, 0, 255);");
+        
+        labelBox.getChildren().add(errorLabel);
+        
+        Pane blackPane = new Pane();
+        blackPane.setStyle("-fx-background-color: rgba(0, 0, 0, 1.0);");
+        
+        errorScreen.getChildren().addAll(blackPane, labelBox);
+        
+        errorScreen.setTopAnchor(blackPane, 0.0);
+        errorScreen.setBottomAnchor(blackPane, 0.0);
+        errorScreen.setRightAnchor(blackPane, 0.0);
+        errorScreen.setLeftAnchor(blackPane, 0.0);
+        
+        errorScreen.setTopAnchor(labelBox, 0.0);
+        errorScreen.setBottomAnchor(labelBox, 0.0);
+        errorScreen.setRightAnchor(labelBox, 0.0);
+        errorScreen.setLeftAnchor(labelBox, 0.0);
+                
+        pausePane.getChildren().addAll(errorScreen, rootMenuHBox);
+        pausePane.setTopAnchor(rootMenuHBox, 0.0);
+        pausePane.setBottomAnchor(rootMenuHBox, 0.0);
+        pausePane.setRightAnchor(rootMenuHBox, 0.0);
+        pausePane.setLeftAnchor(rootMenuHBox, 0.0);
+        
+        pausePane.setTopAnchor(errorScreen, 0.0);
+        pausePane.setBottomAnchor(errorScreen, 0.0);
+        pausePane.setRightAnchor(errorScreen, 0.0);
+        pausePane.setLeftAnchor(errorScreen, 0.0);
     }
     
     public void clearPauseMenu()
@@ -429,9 +474,9 @@ public class WindowManager extends AnchorPane{
         this.pausePane.getChildren().clear();
     }
     
-    public void togglePauseMenu()
+    public void setErrorMessageVisibility(boolean visible)
     {
-        this.setPauseMenuVisibility(!this.pausePane.isVisible());
+        errorScreen.setVisible(visible);
     }
     
     public void setPauseMenuVisibility(boolean visible)
@@ -440,6 +485,16 @@ public class WindowManager extends AnchorPane{
             this.pauseMenu.open();
         else
             this.pauseMenu.close();
+    }
+    
+    public void togglePauseMenuVisibility()
+    {
+        this.pauseMenu.toggle();
+    }
+    
+    public boolean getPauseMenuVisibility()
+    {
+        return this.pauseMenu.open;
     }
     
     //window

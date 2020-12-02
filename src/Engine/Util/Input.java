@@ -24,7 +24,7 @@ public class Input {
             public void handle(KeyEvent key) {
                 keyMap.put(key.getCode(), true);
                 if(key.getCode() == KeyCode.ESCAPE)
-                    Game.togglepauseGame();
+                    Game.togglePause();
                 if(key.getCode() == KeyCode.Q){
                     Game.reloadCurrentLevel();
                 }

@@ -17,11 +17,15 @@ import Engine.RaycastRenderer.Renderer;
 import Engine.Util.RessourceManager.ResourceLoader;
 import static Engine.Util.RessourceManager.ResourceLoader.loadLevel;
 import Engine.Util.Time;
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.net.MalformedURLException;
 import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.MediaPlayer;
@@ -39,7 +43,9 @@ public class Game extends Application{
     //flags
     public static boolean isRunning = true;
     public static boolean isRendering = true;
-    public static boolean pauseActive = true;
+    public static boolean isPaused = false;
+    
+    public static SimpleStringProperty errorMessage = new SimpleStringProperty();
     
     private static AnimationTimer anim;
     
@@ -50,12 +56,18 @@ public class Game extends Application{
 
             @Override
             public void handle(long l) {
-                //if(isRunning)
-                //{
+                if(isRunning)
+                {
                     Time.update(); //update time
                     stage.setTitle(Settings.get("g_gamename") + " -> FPS : " + Integer.toString(Time.fps));
                     currentLevel.update(); //update all entities in the level
-                //}
+                    
+                    /*try {
+                        new Robot().mouseMove(150, 200);
+                    } catch (AWTException ex) {
+                        Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                    }*/
+                }
                 if(isRendering)
                     Renderer.render();
             }
@@ -66,6 +78,7 @@ public class Game extends Application{
     
     private static void initEngine(Stage stage)
     {
+        errorMessage.set("Engine error");
         //load config.cgf file
         Settings.init(); 
         stage.getIcons().add(ResourceLoader.loadImage(Settings.get("e_iconpath" )));
@@ -73,6 +86,7 @@ public class Game extends Application{
         //next initialise the window and stage
         windowManager = new WindowManager(stage, Settings.getInt("r_window_width"), Settings.getInt("r_window_height"), Settings.getBoolean("r_window_fullscreen"));
         scene = new Scene(windowManager, windowManager.getWidth(), windowManager.getHeight()); //set windows inside the scene
+        scene.setCursor(Cursor.NONE);
         stage.setScene(scene);
         stage.setResizable(false);
         gameStage = stage;
@@ -107,21 +121,26 @@ public class Game extends Application{
             currentLevel = ResourceLoader.loadLevel(path);
             isRunning = true;
             isRendering = true;
+            getWindowManager().setErrorMessageVisibility(false);
         } 
         catch(LevelCreationException ex) {
-            System.out.println(ex);
-            if(currentLevel == null){
-                isRunning = false;
-                isRendering = false;
-            }
+            currentLevel = null;
+            isRunning = false;
+            isRendering = false;
+            errorMessage.set("- "+ex.getMessage()+" -");
+            getWindowManager().setErrorMessageVisibility(true);
+        }
+        finally {
+            if(getWindowManager().getPauseMenuVisibility())
+                getWindowManager().setPauseMenuVisibility(false);
         }
     }
     
     public static void reloadCurrentLevel()
     {
-        if(currentLevel != null)
-            loadLevel(currentLevel.path);
-            //loadLevel(Settings.get("initiallevel"));
+        //if(currentLevel != null)
+            //loadLevel(currentLevel.path);
+        loadLevel("levels/level2.lvl");
     }
     
     public static WindowManager getWindowManager()
@@ -129,15 +148,23 @@ public class Game extends Application{
         return windowManager;
     }
     
-    public static void pauseGame(boolean state) //true -> pause, false -> play
+    public static void setPause(boolean pause)
     {
-        isRunning = !state;
-        windowManager.setPauseMenuVisibility(state);
+        isPaused = pause;
+        windowManager.setPauseMenuVisibility(pause);
+        if(isPaused)
+            scene.setCursor(Cursor.DEFAULT);
+        else
+            scene.setCursor(Cursor.NONE);
     }
-    
-    public static void togglepauseGame()
+    public static void togglePause()
     {
-        pauseGame(isRunning);
+        isPaused = !isPaused;
+        if(isPaused)
+            scene.setCursor(Cursor.DEFAULT);
+        else
+            scene.setCursor(Cursor.NONE);
+        windowManager.setPauseMenuVisibility(isPaused);
     }
     
     public static void exit()

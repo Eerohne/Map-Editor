@@ -63,7 +63,7 @@
     "rotation":"45",
     "walkspeed":"2.0",
     "runspeed":"3.0",
-    "rotationspeed":"10",
+    "rotationspeed":"0",
     "zfrequency":"1",
     "zrange":"50"
     },
@@ -93,7 +93,7 @@
     {
     "classname":"ui_text",
     "name":"text1",
-    "active":"TRUE",
+    "active":"false",
     "position":[7.0,4.5],
     "text":"UI!!!",
     "signals": []
