@@ -64,6 +64,8 @@ public class MapEditor extends Application {
     Grid grid;
     BorderPane gridDisplay;
     
+    static ScrollPane dataPane;
+    
     static ProjectProfile project; //Base project
 //    MapProfile currentMap = new MapProfile("Map", 10, 10); //Test Map -- To Be Removed
     
@@ -81,12 +83,11 @@ public class MapEditor extends Application {
         this.grid = new Grid();
         this.gridDisplay = new BorderPane();
         this.info = new Info();
-        this.metadataContent = new WallContent(new WallProfile());
         
         
         BorderPane view = setupView(metadataContent);
 //        project = new ProjectProfile("Test", new MapProfile("map", 10, 10));
-        initialize();
+        initialize(editorWindow);
   
         Scene scene = new Scene(view, 1920, 1080);
         
@@ -120,7 +121,7 @@ public class MapEditor extends Application {
         launch(args);
     }
     
-    private void initialize(){
+    private void initialize(Stage stage){
         try {
             Settings.init();
             String projectName = Settings.get("ed_proj");
@@ -131,6 +132,8 @@ public class MapEditor extends Application {
                 mapHierarchy.setProject(project);
                 this.grid = project.getSelectedMap().getGridView();
                 gridDisplay.setCenter(grid);
+                setDataView(new WallContent(project.getMainMap().getDefaultWall()));
+                new WallController((WallContent)metadataContent, project.getSelectedMap(), stage);
                 //EntityHierarchy
             }
         } catch (Exception e) {
@@ -177,10 +180,10 @@ public class MapEditor extends Application {
      * @return <code></code>
      */
     private TabPane setupMetadata(DataView metadata){
-        ScrollPane scrollDataPane = new ScrollPane(metadata);
-        Tab data = new Tab("Metadata", scrollDataPane);
+        dataPane = new ScrollPane(metadata);
+        Tab data = new Tab("Metadata", dataPane);
         
-        TabPane  dataTab =  new TabPane(data);
+        TabPane dataTab =  new TabPane(data);
         dataTab.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         
         return dataTab;
@@ -233,6 +236,11 @@ public class MapEditor extends Application {
     
     public static void setDataView(DataView view){
         metadataContent = view;
-        view.reset();
+        refreshDataView();
+    }
+    
+    private static void refreshDataView(){
+        dataPane.setContent(metadataContent);
+        metadataContent.reset();
     }
 }
