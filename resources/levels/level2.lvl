@@ -98,6 +98,23 @@
     "text":"UI!!!",
     "signals": []
     },
-    
+    {
+    "classname":"logic_counter",
+    "name":"counter1",
+    "active":"TRUE",
+    "position":[0.0,0.0],
+    "minvalue":"0",
+    "maxvalue":"2",
+    "startingvalue":"0",
+    "canreset":"true",
+    "signals": [
+                {
+                    "name":"OnValueReached",
+                    "targetname":"messenger1",
+                    "inputname":"printMessage",
+                    "arguments":["value reached"]
+                }
+                ]
+    }
 ]
 }

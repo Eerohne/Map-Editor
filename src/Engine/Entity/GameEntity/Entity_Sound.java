@@ -10,9 +10,15 @@ import Engine.Entity.AbstractEntity.Entity;
 import Engine.Util.RessourceManager.ResourceLoader;
 import Engine.Util.Time;
 import java.util.HashMap;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
+import javafx.util.Duration;
 
 /**
  *
@@ -24,32 +30,65 @@ public abstract class Entity_Sound extends Entity{
     protected MediaPlayer mediaplayer;
     protected String audioPath;
     protected String channel;
+    protected double initialVolume;
     protected boolean onStart;
     protected boolean loop;
     protected boolean onlyOnce;
     
-    protected float time;
+    protected SimpleDoubleProperty channelVolume;
+    protected SimpleDoubleProperty playerVolume;
     
-    public Entity_Sound(String name, Point2D position)
-    {
-        super(name, position);
-        mediaplayer = SoundManager.createPlayer("sounds/music/digital_attack.wav", "master", true, true);
-        mediaplayer.setAutoPlay(true);
-    }
+    protected float time;
     
     public Entity_Sound(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
         this.audioPath = (String) propertyMap.get("audiopath");
         this.channel = (String) propertyMap.get("channel");
-        this.loop = Boolean.parseBoolean((String) propertyMap.get("loop"));
+        this.initialVolume = Double.parseDouble((String) propertyMap.get("volume"));
         this.onStart = Boolean.parseBoolean((String) propertyMap.get("onstart"));
+        this.loop = Boolean.parseBoolean((String) propertyMap.get("loop"));
+        this.onlyOnce = Boolean.parseBoolean((String) propertyMap.get("onlyonce"));
+        
+        mediaplayer = SoundManager.createPlayer(this.audioPath, this.channel, this.loop, this.onlyOnce);
+        mediaplayer.volumeProperty().unbind();
+        mediaplayer.setAutoPlay(this.onStart);
+        channelVolume = new SimpleDoubleProperty();
+        channelVolume.bind(SoundManager.getChannel(this.channel).volume);
+        
+        channelVolume = new SimpleDoubleProperty();
+        channelVolume.bind(SoundManager.getChannel(this.channel).volume);
+        playerVolume = new SimpleDoubleProperty();
+        playerVolume.set(this.initialVolume);
+        
     }
     
     public void destroy()
     {
         SoundManager.getChannel(channel).removePlayer(mediaplayer);
         super.destroy();
+    }
+    
+    public void fadeOut()
+    {
+        final Timeline timeline = new Timeline();
+        //timeline.setCycleCount(Timeline.INDEFINITE);
+        final KeyValue kv = new KeyValue(playerVolume, 0,
+         Interpolator.EASE_BOTH);
+        final KeyFrame kf = new KeyFrame(Duration.millis(500), kv);
+        timeline.getKeyFrames().add(kf);
+        timeline.play();
+    }
+    
+    public void fadeIn()
+    {
+        final Timeline timeline = new Timeline();
+        //timeline.setCycleCount(Timeline.INDEFINITE);
+        final KeyValue kv = new KeyValue(playerVolume, this.initialVolume,
+         Interpolator.EASE_BOTH);
+        final KeyFrame kf = new KeyFrame(Duration.millis(500), kv);
+        timeline.getKeyFrames().add(kf);
+        timeline.play();
     }
     
     @Override
@@ -67,6 +106,11 @@ public abstract class Entity_Sound extends Entity{
                     this.mediaplayer.pause();
                 else
                     this.mediaplayer.play();
+            case "fadeout":
+                fadeOut();
+                break;
+            case "fadein":
+                fadeIn();
                 break;
             default:
                 super.handleSignal(signalName, arguments);

@@ -71,7 +71,7 @@ public class SoundChannel {
     public void addPlayer(MediaPlayer player)
     {
         players.add(player);
-        player.volumeProperty().bind(this.volume);
+        //player.volumeProperty().bind(this.volume);
     }
     
     public void removePlayer(MediaPlayer player)

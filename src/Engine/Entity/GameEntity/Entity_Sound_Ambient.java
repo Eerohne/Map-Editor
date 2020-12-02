@@ -19,19 +19,9 @@ public class Entity_Sound_Ambient extends Entity_Sound{
     //variables here
     private int myVariable;
     
-    public Entity_Sound_Ambient(String name, Point2D position, int myVariable)
-    {
-        super(name, position);
-        this.myVariable = myVariable;
-    }
-    
     public Entity_Sound_Ambient(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
-        
-        //parse property map here
-        this.mediaplayer = SoundManager.createPlayer(this.audioPath, this.channel, this.loop, false);
-        mediaplayer.setAutoPlay(this.onStart);
     }
     
     @Override
@@ -41,7 +31,7 @@ public class Entity_Sound_Ambient extends Entity_Sound{
 
     @Override
     public void update() {
-        //update logic here
+        mediaplayer.volumeProperty().set(playerVolume.get() * channelVolume.get());
     }
     
     @Override

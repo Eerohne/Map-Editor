@@ -107,6 +107,8 @@ public class Game extends Application{
         
         //now load the initial level
         loadLevel(Settings.get("e_initiallevel"));
+        
+        
     }
     
     public static Level getCurrentLevel()
@@ -132,8 +134,10 @@ public class Game extends Application{
             getWindowManager().setErrorMessageVisibility(true);
         }
         finally {
-            if(getWindowManager().getPauseMenuVisibility())
+            if(getWindowManager().getPauseMenuVisibility()){
                 getWindowManager().setPauseMenuVisibility(false);
+                Game.setPause(false);
+            }
         }
     }
     
