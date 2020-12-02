@@ -6,7 +6,9 @@
 package Editor.Model.Profile;
 
 import Editor.Controller.GridController;
+import Editor.MapEditor;
 import Editor.View.Grid.Grid;
+import Editor.View.Metadata.WallContent;
 import java.io.File;
 import java.util.Map;
 import java.util.Objects;
