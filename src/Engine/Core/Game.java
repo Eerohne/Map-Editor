@@ -141,7 +141,7 @@ public class Game extends Application{
     {
         //if(currentLevel != null)
             //loadLevel(currentLevel.path);
-        loadLevel("levels/level2.lvl");
+        loadLevel("levels/level1.lvl");
     }
     
     public static WindowManager getWindowManager()
