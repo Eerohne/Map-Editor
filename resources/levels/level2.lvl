@@ -90,6 +90,14 @@
     "size":"3.0",
     "signals": []
     },
+    {
+    "classname":"ui_text",
+    "name":"text1",
+    "active":"TRUE",
+    "position":[7.0,4.5],
+    "text":"UI!!!",
+    "signals": []
+    },
     
 ]
 }
