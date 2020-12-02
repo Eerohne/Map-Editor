@@ -6,15 +6,10 @@
 package Editor;
 
 import Commons.SettingsManager.Settings;
-import Editor.Controller.InfoController;
 import Editor.Controller.MenuController;
 import Editor.Controller.ShortcutController;
 import Editor.Controller.ProfileController.WallController;
-import Editor.Model.Profile.EntityProfile;
-import Editor.Model.Profile.MapProfile;
-import Editor.Model.Profile.Profile;
 import Editor.Model.Profile.ProjectProfile;
-import Editor.Model.Profile.WallProfile;
 import Editor.View.Grid.Grid;
 import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
@@ -36,7 +31,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
