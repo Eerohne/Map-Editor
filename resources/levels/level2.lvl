@@ -79,42 +79,6 @@
     "has_sky":"TRUE",
     "skycolor":[1.0, 0.6, 0.0],
     "wallheight":"1.0"
-    },
-    {
-    "classname":"sprite_decor",
-    "name":"lamppost",
-    "active":"TRUE",
-    "position":[7.0,4.5],
-    "height":"1.2",
-    "texture":"images/sprites/lamppost.png",
-    "size":"3.0",
-    "signals": []
-    },
-    {
-    "classname":"ui_text",
-    "name":"text1",
-    "active":"false",
-    "position":[7.0,4.5],
-    "text":"UI!!!",
-    "signals": []
-    },
-    {
-    "classname":"logic_counter",
-    "name":"counter1",
-    "active":"TRUE",
-    "position":[0.0,0.0],
-    "minvalue":"0",
-    "maxvalue":"2",
-    "startingvalue":"0",
-    "canreset":"true",
-    "signals": [
-                {
-                    "name":"OnValueReached",
-                    "targetname":"messenger1",
-                    "inputname":"printMessage",
-                    "arguments":["value reached"]
-                }
-                ]
     }
 ]
 }

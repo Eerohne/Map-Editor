@@ -24,6 +24,10 @@ public class MenuButton extends Button{
     private static String mouseClickSound = "sounds/ui/button_click.wav";
     private static String mouseClickInvalideSound = "sounds/ui/button_click_invalide.wav";
     
+    public static Media mouseEnterMedia= ResourceLoader.loadAudio(mouseEnterSound);
+    public static Media mouseClickMedia= ResourceLoader.loadAudio(mouseClickSound);
+    public static Media mouseInvalideMedia= ResourceLoader.loadAudio(mouseClickInvalideSound);
+    
     public MenuButton(String text)
     {
         super(text);
@@ -33,7 +37,7 @@ public class MenuButton extends Button{
         new EventHandler<MouseEvent>() {
           @Override
           public void handle(MouseEvent e) {
-              mediaPlayer = SoundManager.createPlayer(mouseEnterSound, "menu", false, true);
+              mediaPlayer = SoundManager.createPlayer(mouseEnterMedia, "menu", false, true);
               mediaPlayer.play();
           }
         });
@@ -44,9 +48,9 @@ public class MenuButton extends Button{
           @Override
           public void handle(MouseEvent e) {
               if(valid)
-                mediaPlayer = SoundManager.createPlayer(mouseClickSound, "menu", false, true);
+                mediaPlayer = SoundManager.createPlayer(mouseClickMedia, "menu", false, true);
               else
-                  mediaPlayer = SoundManager.createPlayer(mouseClickInvalideSound, "menu", false, true);
+                  mediaPlayer = SoundManager.createPlayer(mouseInvalideMedia, "menu", false, true);
               mediaPlayer.play();
           }
         });

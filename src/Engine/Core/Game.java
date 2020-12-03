@@ -94,6 +94,7 @@ public class Game extends Application{
         
         //temporary very ugly code to set the view position
         Renderer.setFov(Settings.getFloat("r_fov"));
+        Renderer.setResolution(1);
         
         //load .css style
         String pathName = Settings.get("e_stylepath");
@@ -104,6 +105,7 @@ public class Game extends Application{
         //initialise input
         Input.init();
         SoundManager.init();
+        Time.init();
         
         //now load the initial level
         loadLevel(Settings.get("e_initiallevel"));

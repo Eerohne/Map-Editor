@@ -11,6 +11,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 /**
@@ -60,6 +61,35 @@ public class SoundManager {
     public static MediaPlayer createPlayer(String soundPath, String channelName, boolean loop, boolean onlyOnce)
     {
         MediaPlayer mediaPlayer = new MediaPlayer(ResourceLoader.loadAudio(soundPath));
+        if(loop){
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        }
+        else if(!onlyOnce)
+        {
+            mediaPlayer.setOnEndOfMedia(new Runnable() {
+           @Override
+               public void run() {
+                   mediaPlayer.stop();
+               }
+           });
+        }
+        else
+        {
+            mediaPlayer.setOnEndOfMedia(new Runnable() {
+           @Override
+               public void run() {
+                   mediaPlayer.dispose();
+               }
+           });
+        }
+         
+        addPlayer(channelName, mediaPlayer);
+        return mediaPlayer;
+    }
+    
+    public static MediaPlayer createPlayer(Media soundMedia, String channelName, boolean loop, boolean onlyOnce)
+    {
+        MediaPlayer mediaPlayer = new MediaPlayer(soundMedia);
         if(loop){
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         }
