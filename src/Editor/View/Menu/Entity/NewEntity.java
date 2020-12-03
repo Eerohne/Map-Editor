@@ -25,8 +25,10 @@ import javafx.scene.layout.VBox;
 public class NewEntity extends GridPane{
     
     public TableView table = new TableView();
+    
     public TableColumn<EntityModel, String> propertyCol = new TableColumn<>("property");
     public TableColumn<EntityModel, String> valueCol = new TableColumn<>("value");
+    
     public TextField nameText = new TextField();
     public TextField propertyText = new TextField();
     public TextField valueText = new TextField();
@@ -35,6 +37,8 @@ public class NewEntity extends GridPane{
     public Button exportBtn = new Button("export");
     public Button newEntityBtn = new Button("create new entity");
     public Button switchBtn = new Button("open entity editting window");
+    public Button signalBtn = new Button("create signal");
+    public Button test = new Button("test");
     public ComboBox<String> cb = new ComboBox();
     public VBox vbox = new VBox();
     
@@ -48,18 +52,23 @@ public class NewEntity extends GridPane{
         //this.add(cb, 0, 0);
         this.add(table, 1, 0);
         
+        
+        
         vbox.getChildren().add(nameText);
         vbox.getChildren().add(propertyText);
         vbox.getChildren().add(valueText);
         vbox.getChildren().add(addBtn);
         vbox.getChildren().add(deleteBtn);
+        vbox.getChildren().add(signalBtn);
         vbox.getChildren().add(exportBtn);
         vbox.getChildren().add(newEntityBtn);
         vbox.getChildren().add(switchBtn);
+        vbox.getChildren().add(test);
         
         this.add(vbox, 2, 0);
         propertyCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("property"));
         valueCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("value"));
+        
         table.getColumns().addAll(propertyCol, valueCol);
         nameText.setPromptText("name of the entity");
         propertyText.setPromptText("property here");

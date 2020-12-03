@@ -6,9 +6,12 @@
 package Editor.Controller;
 
 import Editor.Model.EntityModel;
+import Editor.Model.SignalModel;
 import Editor.View.Menu.Entity.ExistingEntityModification;
 import Editor.View.Menu.Entity.ExistingEntityStage;
 import Editor.View.Menu.Entity.NewEntity;
+import Editor.View.Menu.Entity.SignalStage;
+import Editor.View.Menu.Entity.SignalView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.File;
@@ -42,6 +45,11 @@ public class NewEntityController{
     EntityModel model = new EntityModel();
     NewEntity view = new NewEntity();
     ExistingEntityModification eem = new ExistingEntityModification();
+    
+    JSONObject signalObj = new JSONObject();
+    SignalModel smodel = new SignalModel();
+    SignalView sview = new SignalView();
+    //SignalController scontroller = new SignalController(smodel, sview);
     
     ObservableList<EntityModel> list = FXCollections.observableArrayList();
     ObservableList<String> nameList = FXCollections.observableArrayList();
@@ -88,12 +96,17 @@ public class NewEntityController{
                 newEntity();
             }
         }; 
-        
+        test();
+        signalWindow();
         switchWindow();
         view.addBtn.setOnAction(handler);
         view.deleteBtn.setOnAction(deleteHandler);
         view.exportBtn.setOnAction(exportHandler);
         view.newEntityBtn.setOnAction(newEntityHandler);
+    }
+    
+    public NewEntityController(JSONObject signal){
+        this.signalObj = signal;
     }
     
     public void delete(){
@@ -146,6 +159,7 @@ public class NewEntityController{
                 obj.put(view.nameText.getText(), o2);
                 existingArray.add(obj);
                 
+                
                 FileWriter writer2 = new FileWriter(newFile);
                 gson.toJson(existingArray, writer);
                 writer.close();
@@ -176,6 +190,26 @@ public class NewEntityController{
                 Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+    }
+    
+    private void signalWindow(){
+        view.signalBtn.setOnAction((event) -> {
+            Stage stage = new Stage();
+            new SignalStage(stage);
+        });
+    }
+
+    public void setSignalObj(JSONObject obj) {
+        this.signalObj = obj;
+    }
+    
+    
+    
+    private void test(){
+        view.test.setOnAction((event) -> {
+            System.out.println(signalObj);
+        });
+        
     }
     
     
