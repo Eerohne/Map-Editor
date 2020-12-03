@@ -9,7 +9,19 @@ import Editor.Model.EntityModel;
 import Editor.Model.SignalModel;
 import Editor.View.Menu.Entity.NewEntity;
 import Editor.View.Menu.Entity.SignalView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -20,6 +32,7 @@ public class SignalController {
     SignalView view = new SignalView();
     JSONObject signal = new JSONObject();
     NewEntityController nec = new NewEntityController(signal);
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
     
     String name;
     String targetname;
@@ -40,18 +53,55 @@ public class SignalController {
     
     
     // save the signal to a file, then try to retrieve it from entity creation class
-    public JSONObject saveSignal(){
+    public void saveSignal(){
         view.saveSignal.setOnAction((event) -> {
-            model.setName(view.nameTf.getText());
-            model.setTargetname(view.targetNameTf.getText());
-            model.setInputname(view.inputNameTf.getText());
-            model.setArguments(view.arguementTf.getText().split(","));
+            JSONArray signalArray = new JSONArray();
+            JSONParser parser = new JSONParser();
+            try {
+                FileReader reader =  new FileReader("signals.json");
+                File file = new File("signals.json");
+                
+                
+                if(file.length() == 0){
+                    model.setName(view.nameTf.getText());
+                    model.setTargetname(view.targetNameTf.getText());
+                    model.setInputname(view.inputNameTf.getText());
+                    model.setArguments(view.arguementTf.getText().split(","));
+
+                    signalArray.add(model);
+                    FileWriter writer = new FileWriter("signals.json", true);
+                    gson.toJson(signalArray, writer);
+                    writer.close();
+                }
+                else{
+                    JSONArray existingSignals = (JSONArray) parser.parse(reader);
+                    
+                    FileWriter writer1 = new FileWriter("signals.json");
+                    model.setName(view.nameTf.getText());
+                    model.setTargetname(view.targetNameTf.getText());
+                    model.setInputname(view.inputNameTf.getText());
+                    model.setArguments(view.arguementTf.getText().split(","));
+
+                    signalArray.add(model);
+                    existingSignals.addAll(signalArray);
+                    FileWriter writer = new FileWriter("signals.json", true);
+                    gson.toJson(existingSignals, writer);
+                    writer.close();
+                    
+                    
+                }
             
-            signal.put("signal", model);
-            nec.setSignalObj(signal);
-            System.out.println(signal);
+            //signal.put("signal", model);
+            
+            
+               
+                
+            } catch (IOException ex) {
+                Logger.getLogger(SignalController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(SignalController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
-        return signal;
     }
     
     public void clear(){

@@ -10,5 +10,74 @@
       "qwe412": "qwe123",
       "qwe412wed": "qwe123dqwe"
     }
+  },
+  {
+    "player12": {
+      "123": "123"
+    },
+    "signal": {
+      "signal": {
+        "targetname": "qxw",
+        "name": "ws",
+        "arguments": [
+          "ecC"
+        ],
+        "inputname": "xc"
+      }
+    }
+  },
+  {
+    "12s": {
+      "1s": "swq",
+      "signal": {
+        "signal": {
+          "targetname": "qxw",
+          "name": "ws",
+          "arguments": [
+            "ecC"
+          ],
+          "inputname": "xc"
+        }
+      }
+    }
+  },
+  {
+    "23e": {
+      "23e2": "3e",
+      "signal": [
+        {
+          "targetname": "123",
+          "name": "123",
+          "arguments": [
+            "123123"
+          ],
+          "inputname": "123"
+        }
+      ]
+    }
+  },
+  {
+    "SignalTest": {
+      "1": "1",
+      "signal": [
+        {
+          "targetname": "1",
+          "name": "1",
+          "arguments": [
+            "1"
+          ],
+          "inputname": "11"
+        },
+        {
+          "targetname": "13",
+          "name": "123",
+          "arguments": [
+            "1",
+            "i"
+          ],
+          "inputname": "114"
+        }
+      ]
+    }
   }
 ]

@@ -38,7 +38,7 @@ public class NewEntity extends GridPane{
     public Button newEntityBtn = new Button("create new entity");
     public Button switchBtn = new Button("open entity editting window");
     public Button signalBtn = new Button("create signal");
-    public Button test = new Button("test");
+    public Button viewSignal = new Button("view signals");
     public ComboBox<String> cb = new ComboBox();
     public VBox vbox = new VBox();
     
@@ -63,7 +63,7 @@ public class NewEntity extends GridPane{
         vbox.getChildren().add(exportBtn);
         vbox.getChildren().add(newEntityBtn);
         vbox.getChildren().add(switchBtn);
-        vbox.getChildren().add(test);
+        vbox.getChildren().add(viewSignal);
         
         this.add(vbox, 2, 0);
         propertyCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("property"));
