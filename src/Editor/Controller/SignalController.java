@@ -47,12 +47,6 @@ public class SignalController {
         clear();
     }
     
-    public SignalController(JSONObject signal){
-        this.signal = signal;
-    }
-    
-    
-    // save the signal to a file, then try to retrieve it from entity creation class
     public void saveSignal(){
         view.saveSignal.setOnAction((event) -> {
             JSONArray signalArray = new JSONArray();
@@ -84,17 +78,10 @@ public class SignalController {
 
                     signalArray.add(model);
                     existingSignals.addAll(signalArray);
-                    FileWriter writer = new FileWriter("signals.json", true);
+                    FileWriter writer = new FileWriter("signals.json");
                     gson.toJson(existingSignals, writer);
-                    writer.close();
-                    
-                    
+                    writer.close();   
                 }
-            
-            //signal.put("signal", model);
-            
-            
-               
                 
             } catch (IOException ex) {
                 Logger.getLogger(SignalController.class.getName()).log(Level.SEVERE, null, ex);
@@ -106,14 +93,12 @@ public class SignalController {
     
     public void clear(){
         view.clearSignal.setOnAction((event) -> {
-            System.out.println(signal);
+            view.nameTf.clear();
+            view.targetNameTf.clear();
+            view.arguementTf.clear();
+            view.inputNameTf.clear();
         });
     }
-
-    public JSONObject getSignal() {
-        return signal;
-    }
-    
     
     
     

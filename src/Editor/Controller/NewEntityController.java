@@ -6,12 +6,12 @@
 package Editor.Controller;
 
 import Editor.Model.EntityModel;
-import Editor.Model.SignalModel;
 import Editor.View.Menu.Entity.ExistingEntityModification;
 import Editor.View.Menu.Entity.ExistingEntityStage;
 import Editor.View.Menu.Entity.NewEntity;
 import Editor.View.Menu.Entity.SignalStage;
-import Editor.View.Menu.Entity.SignalView;
+import Editor.View.Menu.Entity.SignalViewer;
+import Editor.View.Menu.Entity.SignalViewerStage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.File;
@@ -48,9 +48,6 @@ public class NewEntityController{
     ExistingEntityModification eem = new ExistingEntityModification();
     
     JSONObject signalObj = new JSONObject();
-    SignalModel smodel = new SignalModel();
-    SignalView sview = new SignalView();
-    //SignalController scontroller = new SignalController(smodel, sview);
     
     ObservableList<EntityModel> list = FXCollections.observableArrayList();
     ObservableList<String> nameList = FXCollections.observableArrayList();
@@ -142,9 +139,25 @@ public class NewEntityController{
             o.putAll(data);
             JSONObject o1 = new JSONObject();
             o1.put(view.nameText.getText(), data);
-            array.add(o1);
-            gson.toJson(array, writer);
-            writer.close();
+            File signalFile = new File("signals.json");
+            if(signalFile.length() != 0){
+                try {
+                    FileReader signalReader = new FileReader(signalFile);
+                    JSONArray signalObj = (JSONArray) parser.parse(signalReader);
+                    o1.put("signal", signalObj);   
+                    array.add(o1);
+                    gson.toJson(array, writer);
+                    writer.close();
+                    FileWriter writer3 = new FileWriter("signals.json");
+                } catch (ParseException ex) {
+                    Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            else{
+                array.add(o1);
+                gson.toJson(array, writer);
+                writer.close();
+            }
         }
         else{
             try {
@@ -171,6 +184,8 @@ public class NewEntityController{
                 else{
                     existingArray.add(obj);
                 }
+                
+                // new File writer initialized to clear all content of the associated file
                 
                 FileWriter writer3 = new FileWriter(signalFile);
                 FileWriter writer2 = new FileWriter(newFile);
@@ -220,16 +235,9 @@ public class NewEntityController{
     
     private void viewSignal(){
         view.viewSignal.setOnAction((event) -> {
+            Stage stage = new Stage();
             try {
-                FileReader reader = new FileReader("signals.json");
-                JSONParser parser = new JSONParser();
-                JSONObject currentSignal = (JSONObject) parser.parse(reader);
-                System.out.println(currentSignal);
-                
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+                new SignalViewerStage(stage);
             } catch (ParseException ex) {
                 Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
             }
