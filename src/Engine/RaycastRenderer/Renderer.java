@@ -19,6 +19,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 /**
@@ -93,7 +94,31 @@ public class Renderer {
     
     //renders floor/ceiling
     private static void renderFloorCeiling(){
+        WritableImage im = new WritableImage((int)screenWidth, (int)screenHeight);
         
+        for (double y = -screenHeight/2 ; y < screenHeight/2 ; y++){
+            for (double x = -screenWidth/2 ; x < screenWidth/2 ; x++)
+            {
+               double horizon = 20; //adjust if needed
+               double fov = 200; 
+
+               double px = x;
+               double py = fov; 
+               double pz = y + horizon;      
+
+               //projection 
+               double sx = px / pz;
+               double sy = py / pz; 
+
+               double scaling = 100; //adjust if needed, depends of texture size
+               Image texture = Game.getCurrentLevel().getPaletteEntry(0).getTexture();
+               //Color color = get2DTexture(sx * scaling, sy * scaling);
+               Color color = texture.getPixelReader().getColor((int)(sx*scaling), (int)(sx*scaling));
+               //put (color) at (x, y) on screen
+               im.getPixelWriter().setColor((int)x,(int) y, color);
+            }
+        }
+        gc.drawImage(im, 0, 0);
     }
     
     //renders level
