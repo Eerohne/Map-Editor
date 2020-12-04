@@ -94,6 +94,7 @@ public class Game extends Application{
         
         //temporary very ugly code to set the view position
         Renderer.setFov(Settings.getFloat("r_fov"));
+        Renderer.setResolution(1);
         
         //load .css style
         String pathName = Settings.get("e_stylepath");
@@ -104,9 +105,12 @@ public class Game extends Application{
         //initialise input
         Input.init();
         SoundManager.init();
+        Time.init();
         
         //now load the initial level
         loadLevel(Settings.get("e_initiallevel"));
+        
+        
     }
     
     public static Level getCurrentLevel()
@@ -132,8 +136,10 @@ public class Game extends Application{
             getWindowManager().setErrorMessageVisibility(true);
         }
         finally {
-            if(getWindowManager().getPauseMenuVisibility())
+            if(getWindowManager().getPauseMenuVisibility()){
                 getWindowManager().setPauseMenuVisibility(false);
+                Game.setPause(false);
+            }
         }
     }
     
@@ -141,7 +147,7 @@ public class Game extends Application{
     {
         //if(currentLevel != null)
             //loadLevel(currentLevel.path);
-        loadLevel("levels/level2.lvl");
+        loadLevel("levels/level1.lvl");
     }
     
     public static WindowManager getWindowManager()

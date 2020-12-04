@@ -1,6 +1,12 @@
 package Engine.Util;
 
 //Merouane Issad
+
+import Engine.Core.Game;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
+
 public class Time {
     public static double deltaTime; //time passed between now and the last frame. ALWAYS use this inside time calculations, 
                                     //continuous mouvement or any behavior that spans more than one frame
@@ -8,12 +14,22 @@ public class Time {
     public static float timeScale = 1f; //change the speed of time, bigger is faster. 
                                         //This will probaly never be used in our games, but it's here in case we need slow-motion or something
     public static float timePassed = 0; //time in seconds that passed
+    private static Label fpsLabel;
     
     //Ignore
     private static double lastTime = 0;
     private static int fpsCounter;
     private static long lastFrameTime = getTime();
     
+    public static void init()
+    {
+        fpsLabel = new Label();
+        fpsLabel.setFont(Font.font("Cambria", 20));
+        AnchorPane pane = Game.getWindowManager().getPauseMenu();
+        pane.getChildren().add(fpsLabel);
+        pane.setTopAnchor(fpsLabel, 0.0);
+        pane.setRightAnchor(fpsLabel, 2.0);
+    }
     public static void update()
     {
         deltaTime = ((getTime() - lastTime)/1000) * timeScale; //calculate time passed from the last time update
@@ -32,7 +48,8 @@ public class Time {
             fps = fpsCounter;
             fpsCounter = 0;
             lastFrameTime = getTime();
-            System.out.println("FPS : " + fps);
+            fpsLabel.setText("fps : "+fps);
+            System.out.println(fps);
         }
         fpsCounter++;
     }

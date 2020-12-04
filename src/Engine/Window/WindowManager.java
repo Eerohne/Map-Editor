@@ -469,6 +469,10 @@ public class WindowManager extends AnchorPane{
         pausePane.setLeftAnchor(errorScreen, 0.0);
     }
     
+    public AnchorPane getPauseMenu(){
+        return this.pausePane;
+    }
+    
     public void clearPauseMenu()
     {
         this.pausePane.getChildren().clear();

@@ -35,6 +35,10 @@ public class EntityCreator { //Entity creation is defined in this class
                 if(verifyProperties(propertyMap, "foggy", "fogcolor", "fog_near_distance", "fog_far_distance", "has_sky", "skycolor", "wallheight"))
                     entity = new Entity_Environment(propertyMap);
                 break;
+            case "game_leveload":
+                if(verifyProperties(propertyMap, "levelpath"))
+                    entity = new Entity_Game_Levelload(propertyMap);
+                break;
             case "item_coin":
                 if(verifyProperties(propertyMap, "scorepoint"))
                     entity = new Entity_Item_Coin(propertyMap);
@@ -59,11 +63,11 @@ public class EntityCreator { //Entity creation is defined in this class
                     entity = new Entity_Player_Idle(propertyMap);
                 break;
             case "sound_ambient":
-                if(verifyProperties(propertyMap, "audiopath", "channel", "onstart", "loop"))
+                if(verifyProperties(propertyMap, "audiopath", "channel", "volume", "onstart", "loop", "onlyonce"))
                     entity = new Entity_Sound_Ambient(propertyMap);
                 break;
             case "sound_point":
-                if(verifyProperties(propertyMap, "audiopath", "channel", "onstart", "loop", "range"))
+                if(verifyProperties(propertyMap, "audiopath", "channel", "volume", "onstart", "loop", "onlyonce", "range"))
                     entity = new Entity_Sound_Point(propertyMap);
                 break;
             case "sprite_decor":
