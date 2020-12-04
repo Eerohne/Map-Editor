@@ -49,7 +49,7 @@ public class Time {
             fpsCounter = 0;
             lastFrameTime = getTime();
             fpsLabel.setText("fps : "+fps);
-            System.out.println(fps);
+            //System.out.println(fps);
         }
         fpsCounter++;
     }

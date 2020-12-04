@@ -63,9 +63,9 @@
     "rotation":"90",
     "walkspeed":"2.0",
     "runspeed":"3.0",
-    "rotationspeed":"10",
+    "rotationspeed":"20",
     "zfrequency":"1",
-    "zrange":"50"
+    "zrange":"-50"
     },
     {
     "classname":"logic_timer",
@@ -166,9 +166,9 @@
     "position":[1.7,7.0],
     "audiopath":"sounds/music/digital_attack.wav",
     "channel":"music",
-    "volume":"0.2",
-    "onstart":"false",
-    "loop":"false",
+    "volume":"1.0",
+    "onstart":"true",
+    "loop":"true",
     "onlyonce":"false",
     "signals": []
     },
@@ -180,7 +180,7 @@
     "audiopath":"sounds/music/recycle_inc.wav",
     "channel":"game",
     "volume":"1.0",
-    "onstart":"true",
+    "onstart":"false",
     "loop":"true",
     "onlyonce":"false",
     "range":"3",

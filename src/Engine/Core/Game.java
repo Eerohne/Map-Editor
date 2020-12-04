@@ -24,13 +24,18 @@ import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.json.simple.parser.ParseException;
 
 //Merouane Issad
@@ -41,7 +46,7 @@ public class Game extends Application{
     private static WindowManager windowManager;
     private static Level currentLevel;
     //flags
-    public static boolean isRunning = true;
+    public static boolean isRunning = false;
     public static boolean isRendering = true;
     public static boolean isPaused = false;
     
@@ -51,7 +56,6 @@ public class Game extends Application{
     
     public void start(Stage stage){
         initEngine(stage);
-        
         anim = new AnimationTimer() { //Game main loop
 
             @Override
@@ -92,7 +96,28 @@ public class Game extends Application{
         stage.setResizable(false);
         gameStage = stage;
         
-        //temporary very ugly code to set the view position
+        stage.setOnCloseRequest( //set game close behavior, closing all requiered modules
+                event -> {
+                    System.out.println("game exit");
+                    anim.stop();
+                    SoundManager.clear();
+                    gameStage.close();
+                    System.gc();}
+        );
+        
+        scene.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if(isRunning){
+                    Game.windowManager.resizeWindow((int)stage.getWidth(), (int)stage.getHeight());
+                }
+            }
+        });
+
+        
+        stage.show();
+        
+        //temporary very ugly code to set the renderer
         Renderer.setFov(Settings.getFloat("r_fov"));
         Renderer.setResolution(1);
         
@@ -176,11 +201,12 @@ public class Game extends Application{
     
     public static void exit()
     {
-        System.out.println("game exit");
-        anim.stop();
-        SoundManager.clear();
-        gameStage.close();
-        System.gc();
+        gameStage.fireEvent(
+                        new WindowEvent(
+                                gameStage,
+                                WindowEvent.WINDOW_CLOSE_REQUEST
+                        )
+                );
     }
 
     public static void main(String[] args) {
