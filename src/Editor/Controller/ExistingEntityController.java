@@ -144,6 +144,7 @@ public class ExistingEntityController{
                 int index = view.cb.getItems().indexOf(name);
                 JSONArray entitiesArray = (JSONArray) parser.parse(reader);
                 
+                //edit the key for the entity json object
                 JSONObject entity = (JSONObject) entitiesArray.get(index);
                 JSONObject currentEntity = (JSONObject) entity.get(key);
                 JSONObject updatedEntity = new JSONObject();
@@ -154,6 +155,7 @@ public class ExistingEntityController{
                 gson.toJson(entitiesArray, writer);
                 writer.close();
                 
+                view.cb.getItems().set(index, view.nameText.getText());
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
