@@ -88,7 +88,7 @@ public class Entity_Player_Base extends Entity_Player{
             }
         }
         
-            //dir = Game.getCurrentLevel().checkCollision(position, dir, colisionRadius); //gets the final direction vector after colision detection
+            dir = Game.getCurrentLevel().checkCollision(position, dir, colisionRadius); //gets the final direction vector after colision detection
             dir = dir.multiply(playerSpeed * Time.deltaTime); //move the player in the calculated direction 
             position = position.add(dir);
 

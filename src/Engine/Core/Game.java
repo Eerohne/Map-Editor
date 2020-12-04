@@ -48,7 +48,7 @@ public class Game extends Application{
     //flags
     public static boolean isRunning = false;
     public static boolean isRendering = true;
-    public static boolean isPaused = true;
+    public static boolean isPaused = false;
     
     public static SimpleStringProperty errorMessage = new SimpleStringProperty();
     

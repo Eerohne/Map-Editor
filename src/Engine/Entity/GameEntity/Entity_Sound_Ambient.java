@@ -32,7 +32,6 @@ public class Entity_Sound_Ambient extends Entity_Sound{
     @Override
     public void update() {
         mediaplayer.volumeProperty().set(playerVolume.get() * channelVolume.get());
-        System.out.println(playerVolume.get() * channelVolume.get());
     }
     
     @Override
