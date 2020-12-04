@@ -17,7 +17,6 @@ import java.util.PriorityQueue;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
@@ -44,9 +43,8 @@ public class Renderer {
     private static Entity_Player player;
     private static Entity_Environment env;
     private static float fov=70f; //default field of view (degrees)
-    private static double viewD=8.0; //default view distance
+    private static double viewD=32.0; //default view distance
     private static int res = 1;
-    
     private Renderer(){}
     
     public static void setPlayer(Entity_Player player){Renderer.player = player;}
@@ -74,29 +72,45 @@ public class Renderer {
     
     //renders one frame
     public static void render(){
-        //change colors here
-        //gc.clearRect(0, 0, screenWidth, screenHeight);
-        //ceiling
-        gc.setFill(Color.LIGHTBLUE);
-        gc.fillRect(0, 0, screenWidth, screenHeight);
         //floor
         gc.setFill(Color.GREEN);
         gc.fillRect(0, screenHeight/2.0, screenWidth, screenHeight/2.0);
         
         renderFloorCeiling();
-        ArrayList<HitPoint> hPoints = renderLevel();
+        //ArrayList<HitPoint> hPoints = renderLevel();
         
-        renderEntities(hPoints);
+        //renderEntities(hPoints);
     }
     
     //renders floor/ceiling
     private static void renderFloorCeiling(){
-        for(int y=0;y<screenHeight;y++){
-            int p = y-(int)(screenHeight/2);
-            double posZ = player.getHeight()*screenHeight;
-            double dist = posZ/p;
-            
+        Level level = Game.getCurrentLevel();
+        Point2D cam = player.getPosition();
+        float camA = player.getRotation();
+        
+        final double tileX, tileY; //player grid position
+        tileX = Math.floor(cam.getX());
+        tileY = Math.floor(cam.getY());
+        
+        float rayA = camA - fov/2f;
+        
+        double y = 0.0;
+        if(env.hasSky()){
+            //y = (int)(screenHeight/2.0);
+            gc.setFill(env.getSkyColor());
+            gc.fillRect(0, 0, screenWidth, screenHeight/2.0);
         }
+        
+        while (y<screenHeight) {            
+            double dist = -(1.0/(2*(y/screenHeight)-0.5));
+            if(Math.abs(dist%1)==0){
+                gc.setFill(Color.BLACK);
+                gc.fillRect(0, y, screenWidth, 1);
+            }
+            y++;
+        }
+        
+        
     }
     
     //renders level
@@ -113,7 +127,7 @@ public class Renderer {
         float rayA = camA - fov/2f*(float)(1.0-1.0/screenWidth);
         
         //creates all the hit points
-        for(int r=0; r<screenWidth;r++){
+        for(int r=0; r<screenWidth;r+=res){
             while (rayA<0 || rayA>=360) {                
                 if(rayA < 0)  rayA+=360;
                 if(rayA >=360)rayA-=360;
@@ -152,7 +166,10 @@ public class Renderer {
                 if(level.isWall(x-1, y) && !rightward){v = new HitPoint(rV,'v', x-1, y);break;}
                 if(level.isWall(x, y)){v = new HitPoint(rV,'v', x, y);break;}
                 rV = rV.add(stepX, stepY);
-                //if(i+1.0==viewD){rV = cam.add(viewD*Math.cos(Math.toRadians(rayA)), viewD*Math.sin(Math.toRadians(rayA)));}
+                if(i+1.0==viewD){
+                    rV = cam.add(viewD*Math.cos(Math.toRadians(rayA)), viewD*Math.sin(Math.toRadians(rayA)));
+                    v = new HitPoint(rV, 'f', -1, -1);
+                }
             }
             
             //intersects with horizontal
@@ -180,7 +197,10 @@ public class Renderer {
                 if(level.isWall(x, y-1) && !upward){h = new HitPoint(rH,'h', x, y-1);break;}
                 if(level.isWall(x, y)){h = new HitPoint(rH,'h', x, y);break;}
                 rH = rH.add(stepX, stepY);
-                //if(i+1.0==viewD){rH = cam.add(viewD*Math.cos(Math.toRadians(rayA)), viewD*Math.sin(Math.toRadians(rayA)));}
+                if(i+1.0==viewD){
+                    rH = cam.add(viewD*Math.cos(Math.toRadians(rayA)), viewD*Math.sin(Math.toRadians(rayA)));
+                    h = new HitPoint(rH, 'f', -1, -1);
+                }
             }
             
             double hLength = cam.distance(rH);
@@ -194,16 +214,30 @@ public class Renderer {
             else{
                 hPoints.add(v);
             }
-            rayA += (fov/screenWidth);
+            rayA += res*(fov/screenWidth);
         }
         //draw the wall
-        for(int i=0;i<screenWidth;i+=res){
+        for(int i=0;i<(screenWidth/res);i++){
             drawWallLine(i, hPoints.get(i));
         }
         
         return hPoints;
     }
     
+    private static ArrayList<HitPoint> renderLevel2(){
+        ArrayList<HitPoint> hPoints = new ArrayList((int) screenWidth);
+        Level level = Game.getCurrentLevel();
+        Point2D cam = player.getPosition();
+        float camA = player.getRotation();
+        
+        final double tileX, tileY; //player grid position
+        tileX = Math.floor(cam.getX());
+        tileY = Math.floor(cam.getY());
+        
+        double sideDistX, sideDistY;
+        
+        return hPoints;
+    }
     //renders entities
     private static void renderEntities(ArrayList<HitPoint> hPoints){
         Point2D cam = player.getPosition();
@@ -213,8 +247,7 @@ public class Renderer {
         
         //sort entities by distance to player
         for(String name: spriteEntities.keySet()){
-            SpriteEntity entity = spriteEntities.get(name);
-            sprites.offer(entity);
+            sprites.offer(spriteEntities.get(name));
         }
         
         //draw entities
@@ -232,27 +265,28 @@ public class Renderer {
                 
                 Image sprite = e.getTexture();
                 double dist = ePos.magnitude() +.25;
-                double screenPos = screenWidth*fovLeft.angle(ePos)/fov;
                 double scale = (e.getSize()*screenHeight/sprite.getHeight())/dist;
                 double height = scale*sprite.getHeight();
                 double width = scale*sprite.getWidth();
-                
+                double screenPos = screenWidth*fovLeft.angle(ePos)/fov-(width/2.0);
                 
                 boolean hidden = true; //if the entity is completely obscured by a wall
-                for(int i = (int)(screenPos-(width/2.0)); i<(screenPos+(width/2.0)) && i<screenWidth; i++){
+                for(int i = (int)(screenPos); i<(screenPos+width) && i<hPoints.size(); i++){
+                    if(e.getSize()>env.getWallHeight()){hidden = false; break;}
+                    
                     if(i<0){i=0;}
                     double pDist = cam.distance(hPoints.get(i));
                     double eDist = cam.distance(e.getPosition());
                     if(eDist<pDist){hidden = false;break;}
                 }
                 if(!hidden){
-                    double relX =screenPos-(width/2.0), relY = (screenHeight-height)/2.0; //coordinates of the top left corner of the image
+                    double relX =screenPos, relY = (screenHeight-height)/2.0; //coordinates of the top left corner of the image
                     relY -= (e.getHeight()-0.5)*screenHeight/dist; //height offsett
                     relY -= (player.getHeight()-0.5);
                     gc.drawImage(sprite, relX, relY, width, height );
 
                     //draw walls that are in front of the entity
-                    for(int i = (int)(screenPos-(width/2.0)); i<(screenPos+(width/2.0)) && i<screenWidth; i++)
+                    for(int i = (int)(screenPos); i<(screenPos+width) && i<screenWidth; i++)
                     {
                         if(i<0){i=0;}
                         double pDist = cam.distance(hPoints.get(i));
@@ -273,21 +307,25 @@ public class Renderer {
         Point2D toWall = hPoint.subtract(player.getPosition());
         Point2D dir = new Point2D(Math.cos(Math.toRadians(player.getRotation())), Math.sin(Math.toRadians(player.getRotation())));
         
+        int x = r*res;
         double distance = toWall.magnitude();
         distance = distance*Math.cos(Math.toRadians(dir.angle(toWall)));
         double height = screenHeight/distance;
-        double lineTop = ((screenHeight-height)/2.0);
-        lineTop -= (player.getHeight()-0.5);
+        double lineBottom = ((screenHeight-height)/2.0)+height;
         
-        Image texture = Game.getCurrentLevel().getCellTexture(hPoint.getXIndex(), hPoint.getYIndex());
-        
-        int tx = 0;
-        switch(hPoint.getType()){
-            case('h'): tx = (int)(texture.getWidth()*(1-hPoint.getX()+(int)hPoint.getX())); break;
-            case('v'): tx = (int)(texture.getWidth()*(1-hPoint.getY()+(int)hPoint.getY())); break;
+        if(hPoint.getType()=='f'){
+            gc.setFill(env.getFogColor());
+            gc.fillRect(x, lineBottom, res, -height*env.getWallHeight());
+        }else{
+            Image texture = Game.getCurrentLevel().getCellTexture(hPoint.getXIndex(), hPoint.getYIndex());
+            int tx = 0;
+            switch(hPoint.getType()){
+                case('h'): tx = (int)(texture.getWidth()*(1-hPoint.getX()%1)); break;
+                case('v'): tx = (int)(texture.getWidth()*(1-hPoint.getY()%1)); break;
+            }
+            
+            gc.drawImage(texture, tx, texture.getHeight(), 1, -texture.getHeight(), x, lineBottom, res, -height*env.getWallHeight());
         }
-        
-        gc.drawImage(texture, tx, 0, 1, texture.getHeight(), r, lineTop, res, height);
     }
 
     static class EntityDistanceComparator implements Comparator<SpriteEntity>{
