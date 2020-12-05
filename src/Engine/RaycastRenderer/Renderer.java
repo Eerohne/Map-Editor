@@ -18,7 +18,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 /**
  *
@@ -50,13 +49,6 @@ public class Renderer {
     public static void setPlayer(Entity_Player player){Renderer.player = player;}
     public static void setEnvironment(Entity_Environment env){Renderer.env=env;};
     
-    public static void setCanvas(Canvas canvas){
-        frame = canvas;
-        gc = canvas.getGraphicsContext2D();
-        screenWidth = canvas.getWidth();
-        screenHeight = canvas.getHeight();
-    }
-    
     public static void setEntityList(HashMap<String, SpriteEntity> list){spriteEntities = list;}
     public static void addEntity(SpriteEntity spriteEntity){spriteEntities.put(spriteEntity.getName(), spriteEntity);}
     public static void removeEntity(String name){spriteEntities.remove(name);}
@@ -65,6 +57,12 @@ public class Renderer {
     public static void setViewDistance(double dist){viewD = dist;} // set the view distance
     public static void setResolution(int resolution){res = resolution;}
     
+    public static void setCanvas(Canvas canvas){
+        frame = canvas;
+        gc = canvas.getGraphicsContext2D();
+        screenWidth = canvas.getWidth();
+        screenHeight = canvas.getHeight();
+    }
     public static void resize(){
         screenWidth = frame.getWidth();
         screenHeight = frame.getHeight();
@@ -74,7 +72,7 @@ public class Renderer {
     public static void render(){
         
         renderFloorCeiling();
-        ArrayList<HitPoint> hPoints = renderLevel();
+        //ArrayList<HitPoint> hPoints = renderLevel();
         //renderEntities(hPoints);
     }
     
@@ -139,22 +137,17 @@ public class Renderer {
         Point2D cam = player.getPosition();
         float camA = player.getRotation();
         
-        double sin = Math.sin(camA);
-        double cos = Math.cos(camA);
-        
-        Point2D perpDir = new Point2D(-sin, cos);
-        Point2D rayPos = player.getPosition().add(cos, sin);
-        Point2D rayLeft = rayPos.subtract(perpDir.multiply(Math.tan(fov/2.0)));
-        Point2D perpStep = perpDir.multiply(res*2*rayLeft.distance(rayPos)/screenWidth);
-        
         final double tileX, tileY; //player grid position
         tileX = Math.floor(cam.getX());
         tileY = Math.floor(cam.getY());
         
-        float rayA = camA - fov/2f*(float)(1.0-1.0/screenWidth);
+        double left = Math.tan(Math.toRadians(fov/2.0));
+        //float rayA = camA - fov/2f*(float)(1.0-1.0/screenWidth);
         
         //creates all the hit points
-        for(int r=0; r<(screenWidth);r+=res){
+        for(int r=0; r<screenWidth;r+=res){
+            
+            double rayA = Math.toDegrees(Math.atan( (2.0*Math.tan(Math.toRadians(fov))*(r/screenWidth)-0.5) ));
             while (rayA<0 || rayA>=360) {                
                 if(rayA < 0)  rayA+=360;
                 if(rayA >=360)rayA-=360;
@@ -241,7 +234,6 @@ public class Renderer {
             else{
                 hPoints.add(v);
             }
-            rayA += res*(fov/screenWidth);
         }
         //draw the wall
         for(int i=0;i<(screenWidth/res);i++){
