@@ -251,20 +251,6 @@ public class Renderer {
         return hPoints;
     }
     
-    private static ArrayList<HitPoint> renderLevel2(){
-        ArrayList<HitPoint> hPoints = new ArrayList((int) screenWidth);
-        Level level = Game.getCurrentLevel();
-        Point2D cam = player.getPosition();
-        float camA = player.getRotation();
-        
-        final double tileX, tileY; //player grid position
-        tileX = Math.floor(cam.getX());
-        tileY = Math.floor(cam.getY());
-        
-        double sideDistX, sideDistY;
-        
-        return hPoints;
-    }
     //renders entities
     private static void renderEntities(ArrayList<HitPoint> hPoints){
         Point2D cam = player.getPosition();
