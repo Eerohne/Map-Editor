@@ -4,15 +4,11 @@
  * and open the template in the editor.
  */
 package Editor.Controller;
-import Editor.Controller.NewEntityController;
-import Editor.Model.EntityModel;
 import Editor.Model.SignalModel;
-import Editor.View.Menu.Entity.NewEntity;
 import Editor.View.Menu.Entity.SignalView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
