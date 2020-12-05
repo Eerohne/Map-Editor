@@ -96,15 +96,15 @@ public class Renderer {
     private static void renderFloorCeiling(){
         WritableImage im = new WritableImage((int)screenWidth, (int)screenHeight);
         
-        for (double y = -screenHeight/2 ; y < screenHeight/2 ; y++){
-            for (double x = -screenWidth/2 ; x < screenWidth/2 ; x++)
+        for (double y = 0; y < 300 ; y++){
+            for (double x = 0 ; x < 300 ; x++)
             {
                double horizon = 20; //adjust if needed
                double fov = 200; 
 
                double px = x;
                double py = fov; 
-               double pz = y + horizon;      
+               double pz = y + horizon;
 
                //projection 
                double sx = px / pz;
