@@ -1,7 +1,10 @@
 package Editor.Controller;
 
+import Editor.Model.Profile.EntityProfile;
+import Editor.Model.Profile.Profile;
 import Editor.Model.Profile.WallProfile;
 import Editor.View.Grid.Cell;
+import Editor.View.Grid.EntityDot;
 import Editor.View.Grid.Grid;
 import Editor.View.Info;
 import javafx.event.EventHandler;
@@ -11,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
@@ -23,7 +27,7 @@ public class GridController{
     //Objects to be controlled
     Grid grid;
     
-    private WallProfile selectedWallProfile;
+    private Profile selectedProfile;
 
     //Grid Panning Vector Variables
     double preMouseX;
@@ -31,11 +35,12 @@ public class GridController{
     double mouseX;
     double mouseY;
     
-    private int editingMode = 1; // 0: Editing Disabled | 1: Wall Placement | 2: Entity Placement
+    private int editingMode = 2; // 0: Editing Disabled | 1: Wall Placement | 2: Entity Placement
     
     double zoom = 1.0d;
 
     Cell hoverCell = new Cell(1);
+    EntityDot dot = new EntityDot(0, Color.BLACK, -10, -10, 1);
     Info info = new Info();
     
     public GridController(Grid grid) {
@@ -124,6 +129,10 @@ public class GridController{
                     }
                 }
                 
+                for (EntityDot entity : grid.getEntities()) {
+                    entity.addTranslationVector(vector);
+                }
+                
                 grid.getSelectionCell().addTranslationVector(vector);
             }
             
@@ -163,11 +172,20 @@ public class GridController{
     }
     
     public WallProfile getSelectedWallProfile() {
-        return selectedWallProfile;
+        return (WallProfile)selectedProfile;
     }
 
     public void setSelectedWallProfile(WallProfile selectedWallProfile) {
-        this.selectedWallProfile = selectedWallProfile;
+        this.selectedProfile = selectedWallProfile;
+    }
+    
+    public EntityProfile getSelectedEntityProfile() {
+        this.selectedProfile  = new EntityProfile("Test", 1);//To remove
+        return (EntityProfile)selectedProfile;
+    }
+
+    public void setSelectedEntityProfile(EntityProfile selectedEntityProfile) {
+        this.selectedProfile = selectedEntityProfile;
     }
     
     private double getGlobalX(){
@@ -196,10 +214,12 @@ public class GridController{
     
     private void placeWall(){
         //Fix Mouse Drag Leak
+        WallProfile wp = (WallProfile)selectedProfile;
+        
         try {
             if(!(mouseX < 0 || mouseY < 0 || mouseX > getPaneBounds().getMaxX() || mouseY > getPaneBounds().getMaxY())){
                 Cell c = this.grid.getCells()[(int)getGridX()][(int)getGridY()];
-                this.setImg(c, selectedWallProfile.getImage());
+                this.setImg(c, wp.getImage());
                 onHover(c);
             }
         } catch (Exception e) {
@@ -208,7 +228,16 @@ public class GridController{
     }
     
     private void placeEntity(){
-        
+        try {
+            if(!(mouseX < 0 || mouseY < 0 || mouseX > getPaneBounds().getMaxX() || mouseY > getPaneBounds().getMaxY())){
+                EntityDot ed = new EntityDot(getSelectedEntityProfile(), mouseX, mouseY, 10 * dot.getScaleObject().getX());
+                //ed.setScaleObject(dot.getScaleObject());
+                grid.getEntities().add(ed);
+                grid.getChildren().add(ed);
+            }
+        } catch(Exception e){
+            System.out.println("Entity : " + e);
+        }
     }
     
     private void onHover(Cell hoverCell){
@@ -234,6 +263,13 @@ public class GridController{
                 cell.addScaleMatrix(scale);
             }
         }
+        
+        this.dot.addScaleMatrix(scale);
+        for (EntityDot entity : grid.getEntities()) {
+            entity.addScaleMatrix(scale);
+        }
+        
+        grid.setEntityDotSize(10 * zoom);
         grid.getSelectionCell().addScaleMatrix(scale);
         
         grid.setCellSize(grid.getCells()[0][0].getDefaultSize() * grid.getCells()[0][0].getScaleObject().getX());
@@ -245,12 +281,13 @@ public class GridController{
     }
     
     public void setImg(Cell cell, Image img){
-        int wallId = selectedWallProfile.getID();
+        WallProfile wp = (WallProfile)selectedProfile;
+        int wallId = wp.getID();
         this.setImg(cell, wallId);
     }
     public void setImg(Cell cell, int paletteID){
         cell.setID(paletteID);
-        cell.setTexture(new ImagePattern(selectedWallProfile.getImage()));
+        cell.setTexture(new ImagePattern(((WallProfile)selectedProfile).getImage()));
     }
 }
 

@@ -1,6 +1,7 @@
 package Editor.View.Grid;
 
 import Editor.Model.Profile.WallProfile;
+import java.util.LinkedList;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -12,17 +13,22 @@ public class Grid extends Pane{
     private double cellSize;
     private int width;
     private int length;
+    private double entityDotSize;
     public Cell[][] cells;
     private Cell selectionCell;
+    
+    public LinkedList<EntityDot> entities;
     
     public Grid() {
     }
     
-    public Grid(int cellSize, int width, int length, WallProfile floorProfile) {
+    public Grid(int cellSize, double entityDotSize, int width, int length, WallProfile floorProfile) {
         super();
         this.width = width;
         this.length = length;
         this.cellSize = cellSize;
+        
+        this.entityDotSize = entityDotSize;
         
         this.selectionCell = new Cell(cellSize);
         this.selectionCell.setFill(null);
@@ -30,6 +36,7 @@ public class Grid extends Pane{
         this.selectionCell.setStrokeWidth(5);
         
         this.cells = new Cell[width][length];
+        this.entities = new LinkedList<>();
         
         this.drawGrid(cellSize, floorProfile.getImage());
         this.getChildren().add(selectionCell);
@@ -58,7 +65,7 @@ public class Grid extends Pane{
             }
         }
     }
-    
+        
     public void setMouseDragEvent(EventHandler<MouseEvent> event){
         this.setOnMouseDragged(event);
     }
@@ -83,10 +90,22 @@ public class Grid extends Pane{
         return cells;
     }
 
+    public LinkedList<EntityDot> getEntities() {
+        return entities;
+    }
+    
     public Cell getSelectionCell() {
         return selectionCell;
     }
+    
+    public double getEntityDotSize(){
+        return entityDotSize;
+    }
 
+    public void setEntityDotSize(double size){
+        this.entityDotSize = size;
+    }
+    
     public void setCellSize(double scaleFactor) {
         this.cellSize = scaleFactor;//cells[0][0].getDefaultSize()*cells[0][0].getScaleObject().getX();
     }
