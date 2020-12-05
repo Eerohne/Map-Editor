@@ -45,7 +45,7 @@ public class Renderer {
     private static Entity_Player player;
     private static Entity env;
     private static float fov=70f; //default field of view (degrees)
-    private static double viewD=8.0; //default view distance
+    private static double viewD=5.0; //default view distance
     private static int res = 1;
     
     private Renderer(){}

@@ -119,7 +119,7 @@ public class Game extends Application{
         
         //temporary very ugly code to set the renderer
         Renderer.setFov(Settings.getFloat("r_fov"));
-        Renderer.setResolution(1);
+        Renderer.setResolution(3);
         
         //load .css style
         String pathName = Settings.get("e_stylepath");

@@ -47,19 +47,36 @@
     }
   },
   {
-    "entity4": {
-      "12": "23",
-      "23": "43",
-      "54": "45"
-    }
-  },
-  {
     "entity5": {
       "1": "2",
       "123": "345",
       "102": "4503",
       "1024": "45035",
       "asasd": "asdasd"
+    }
+  },
+  {
+    "soccer_ball": {
+      "bouncefactor": "2",
+      "radius": "5",
+      "signal": [
+        {
+          "targetname": "messenger1",
+          "name": "OnBounce",
+          "arguments": [
+            "\"i have been bounced\""
+          ],
+          "inputname": "printMessage"
+        },
+        {
+          "targetname": "messenger1",
+          "name": "OnBounce",
+          "arguments": [
+            "\"i have been bounced\""
+          ],
+          "inputname": "printMessage"
+        }
+      ]
     }
   }
 ]
