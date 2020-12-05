@@ -6,9 +6,7 @@
 package Editor.Model.Profile;
 
 import Editor.Controller.GridController;
-import Editor.MapEditor;
 import Editor.View.Grid.Grid;
-import Editor.View.Metadata.WallContent;
 import java.io.File;
 import java.util.Map;
 import java.util.Objects;
@@ -71,8 +69,9 @@ public class MapProfile extends Profile{
 //    }
     
     public WallProfile createWallProfile(String name, String imgName, int flag){
-        WallProfile wall = new WallProfile(wallCounter++, name, imgName, flag);
+        WallProfile wall = new WallProfile(wallCounter, name, imgName, flag);
         this.wallMap.put(wallCounter, wall);
+        wallCounter++;
         this.gc.setSelectedWallProfile(wall);
         return wall;
     }

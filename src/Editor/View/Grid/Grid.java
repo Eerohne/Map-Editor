@@ -43,7 +43,7 @@ public class Grid extends Pane{
                 cell.setStroke(Color.BLACK);
                 cell.setXPos(x);
                 cell.setYPos(y);
-                
+                cell.setID(0);
                 cells[x][y] = cell;
                 this.getChildren().add(cell);
             }
