@@ -1,8 +1,65 @@
 [
   {
-    "player": {
-      "gg": "3",
-      "speed": "6"
+    "entity": {
+      "wqwd": "qwdqwdqwd",
+      "1": "2",
+      "ad": "ds",
+      "asd": "asd123",
+      "d": "a",
+      "asd13": "asd12345",
+      "signal": [
+        {
+          "targetname": "1",
+          "name": "signal1",
+          "arguments": [
+            "1",
+            "3",
+            "4",
+            "54",
+            "56",
+            "67",
+            "78",
+            "8",
+            "56",
+            "4",
+            "f",
+            "g",
+            "g",
+            "c",
+            "dsa",
+            "sad",
+            "ds"
+          ],
+          "inputname": "1"
+        },
+        {
+          "targetname": "njhadshd",
+          "name": "signal2",
+          "arguments": [
+            "d",
+            "fg",
+            "g",
+            "asd"
+          ],
+          "inputname": "eknlfddf"
+        }
+      ]
+    }
+  },
+  {
+    "entity4": {
+      "12": "23",
+      "23": "43",
+      "54": "45"
+    }
+  },
+  {
+    "entity5": {
+      "1": "2",
+      "123": "345",
+      "102": "4503",
+      "1024": "45035",
+      "asasd": "asdasd"
     }
   }
 ]

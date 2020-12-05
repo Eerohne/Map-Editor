@@ -29,7 +29,7 @@ public class Info extends HBox{
     
     public Button save;
     public Button load;
-
+    
     private double mouseX;
     private double mouseY;
     private double zoom;

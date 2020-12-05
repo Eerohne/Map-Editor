@@ -63,9 +63,9 @@
     "rotation":"90",
     "walkspeed":"2.0",
     "runspeed":"3.0",
-    "rotationspeed":"10",
+    "rotationspeed":"20",
     "zfrequency":"1",
-    "zrange":"50"
+    "zrange":"-50"
     },
     {
     "classname":"logic_timer",
@@ -77,41 +77,26 @@
     "signals": [
                     {
                         "name":"OnTimerEnded",
-                        "targetname":"counter1",
-                        "inputname":"increment",
+                        "targetname":"aaa",
+                        "inputname":"fadein",
                         "arguments":[]
-                    },
-                    {
-                        "name":"OnTimerEnded",
-                        "targetname":"messenger1",
-                        "inputname":"printMessage",
-                        "arguments":["tik"]
                     }
                     ]
     },
-    {
-    "classname":"logic_counter",
-    "name":"counter1",
-    "active":"TRUE",
-    "position":[0.0,0.0],
-    "minvalue":"0",
-    "maxvalue":"2",
-    "startingvalue":"1",
-    "canreset":"true",
-    "signals": [
-                {
-                    "name":"OnValueReached",
-                    "targetname":"messenger1",
-                    "inputname":"printMessage",
-                    "arguments":["value reached"]
-                }
-                ]
-    },
+   
     {
     "classname":"logic_messenger",
     "name":"messenger1",
     "active":"TRUE",
     "position":[0.0,0.0],
+    "signals": []
+    },
+    {
+    "classname":"game_leveload",
+    "name":"levelloader1",
+    "active":"TRUE",
+    "position":[0.0,0.0],
+    "levelpath":"levels/level2.lvl",
     "signals": []
     },
     {
@@ -175,15 +160,16 @@
     "signals": []
     },
     {
-    "classname":"sound_point",
+    "classname":"sound_ambient",
     "name":"music",
     "active":"TRUE",
     "position":[1.7,7.0],
     "audiopath":"sounds/music/digital_attack.wav",
-    "channel":"game",
+    "channel":"music",
+    "volume":"1.0",
     "onstart":"true",
     "loop":"true",
-    "range":"3.0",
+    "onlyonce":"false",
     "signals": []
     },
     {
@@ -193,44 +179,11 @@
     "position":[3.5,8.5],
     "audiopath":"sounds/music/recycle_inc.wav",
     "channel":"game",
-    "onstart":"true",
-    "loop":"true",
-    "range":"3.0",
-    "signals": []
-    },
-    {
-    "classname":"sound_point",
-    "name":"music3",
-    "active":"TRUE",
-    "position":[1.0, 1.0],
-    "audiopath":"sounds/music/digital_attack.wav",
-    "channel":"game",
-    "onstart":"true",
-    "loop":"true",
-    "range":"3.0",
-    "signals": []
-    },
-    {
-    "classname":"sound_point",
-    "name":"music4",
-    "active":"TRUE",
-    "position":[3.5,3.5],
-    "audiopath":"sounds/music/recycle_inc.wav",
-    "channel":"game",
+    "volume":"1.0",
     "onstart":"false",
     "loop":"true",
-    "range":"3.0",
-    "signals": []
-    },
-    {
-    "classname":"sound_ambient",
-    "name":"music5",
-    "active":"TRUE",
-    "position":[1.5,7.0],
-    "audiopath":"sounds/music/recycle_inc.wav",
-    "channel":"music",
-    "onstart":"false",
-    "loop":"true",
+    "onlyonce":"false",
+    "range":"3",
     "signals": []
     }
 ]

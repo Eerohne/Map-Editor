@@ -21,6 +21,7 @@ public class GameMenu {
     private HashMap<String, Pane> screens;
     private String currentScreen;
     private String mainScreen;
+    public boolean open;
     
     
     
@@ -38,6 +39,7 @@ public class GameMenu {
     }
     public void open()
     {         
+        open = true;
         for(Pane p :screens.values())
         {
             p.setVisible(false);
@@ -50,11 +52,20 @@ public class GameMenu {
     }
     public void close()
     {
+        open = false;
         for(Pane p :screens.values())
         {
             p.setVisible(false);
             p.setManaged(false);
         }
+    }
+    
+    public void toggle()
+    {
+        if(this.open)
+            close();
+        else
+            open();
     }
     
     public void addScreen(String name, Pane screen)

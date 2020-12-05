@@ -182,9 +182,8 @@ public class Level {
         entities.put(entity.getName(), entity);
         if(entity instanceof Entity_Player){ //store player in a global variable for easy access
             playerEntity = (Entity_Player)entity;
-            System.out.println("player added");
         }
-        if(!firstUpdate)
+        if(!firstUpdate) //right away call the start method of the entity if it has been created mid-game
             entity.start();
     }
     

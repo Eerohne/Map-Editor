@@ -86,7 +86,7 @@ public class MapEditor extends Application {
         Scene scene = new Scene(view, 1920, 1080);
         
 //        WallController wc = new WallController(editorWindow, wallHierarchy);
- //       InfoController ic = new InfoController(info, currentMap);
+//        InfoController ic = new InfoController(info, currentMap);
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow, wallHierarchy);
         //wallContent.setWallController(wc);

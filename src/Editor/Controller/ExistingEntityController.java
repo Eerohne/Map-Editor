@@ -5,8 +5,11 @@
  */
 package Editor.Controller;
 import Editor.Model.EntityModel;
+import Editor.Model.SignalModel;
 import Editor.View.New.NewEntityStage;
 import Editor.View.Menu.Entity.ExistingEntityModification;
+import Editor.View.Menu.Entity.SignalEditorStage;
+import Editor.View.Menu.Entity.SignalEditorView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.FileNotFoundException;
@@ -21,7 +24,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -49,13 +51,17 @@ public class ExistingEntityController{
         } catch (ParseException ex) {
             Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        launchSignalEditor();
         comboBoxHandler();
         editEntity();
         removeEntity();
         deleteRow();
         switchWindow();
-        addRow();        
+        addRow();   
+        editName();
     }
+
     
     private void allEntities() throws ParseException{
         JSONParser parser = new JSONParser();
@@ -77,6 +83,20 @@ public class ExistingEntityController{
         }
     }
     
+    private void launchSignalEditor(){
+        view.signalBtn.setOnAction((event) -> {
+            try {
+                Stage stage = new Stage();
+                new SignalEditorStage(stage);
+            } catch (IOException ex) {
+                Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
+
+    
     private void comboBoxHandler(){
         view.cb.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -85,7 +105,7 @@ public class ExistingEntityController{
                 try(FileReader reader = new FileReader("entities.json")){
             
                     JSONArray entitiesArray = (JSONArray) parser.parse(reader);
-                    
+                    list.clear();
                     for(int i = 0; i < entitiesArray.size(); i++){
                         JSONObject entity = (JSONObject) entitiesArray.get(i);
                         String str = entity.keySet().toString();
@@ -97,16 +117,55 @@ public class ExistingEntityController{
                                 ObservableList<String> valuelist = FXCollections.observableArrayList(obj1.values());
                                 for(int j = 0; j < keylist.size(); j++){
                                     list.add(new EntityModel(keylist.get(j), valuelist.get(j)));
-                                    templist = list;
-                                    view.table.getItems().setAll(templist);
+                                    view.table.getItems().setAll(list);
                                 }
-                                templist.clear();
                             }
                         }
                     }
+                    
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException | ParseException ex) {
+                    Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
+    
+    private void editName(){
+        view.editName.setOnAction((event) -> {
+            
+            FileReader reader = null;
+            try {
+                reader = new FileReader("entities.json");
+                JSONParser parser = new JSONParser();
+                String name = view.cb.getValue();
+                String key = name.substring(1, name.length()-1);
+                int index = view.cb.getItems().indexOf(name);
+                JSONArray entitiesArray = (JSONArray) parser.parse(reader);
+                
+                //edit the key for the entity json object
+                JSONObject entity = (JSONObject) entitiesArray.get(index);
+                JSONObject currentEntity = (JSONObject) entity.get(key);
+                JSONObject updatedEntity = new JSONObject();
+                updatedEntity.put(view.nameText.getText(), currentEntity);
+                entitiesArray.set(index, updatedEntity);
+                
+                FileWriter writer = new FileWriter("entities.json");
+                gson.toJson(entitiesArray, writer);
+                writer.close();
+                
+                view.cb.getItems().set(index, view.nameText.getText());
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    reader.close();
+                } catch (IOException ex) {
                     Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -126,50 +185,33 @@ public class ExistingEntityController{
                 String key = name.substring(1, name.length()-1);
                 int index = view.cb.getItems().indexOf(name);
                 
-                if(!view.nameText.equals("")){
-                    String newName = view.nameText.getText();
-                    JSONObject CurrentObj = new JSONObject();
-                    CurrentObj = (JSONObject)entitiesArray.get(index);
-                    JSONObject childObj = new JSONObject();
-                    childObj = (JSONObject) CurrentObj.get(key);
-                    //System.out.println(childObj);
-                    JSONObject editedObj = new JSONObject();
-                    editedObj.put(newName, childObj);
-                    entitiesArray.set(index, editedObj);
-                    FileWriter writer = new FileWriter("entities.json");
-                    gson.toJson(entitiesArray, writer);
-                    writer.close();
-                }
-                
                 if(selectedIndex >= 0){
                     view.table.getItems().set(selectedIndex, model);
                     
-                    
                     for(int i = 0; i < entitiesArray.size(); i++){
-                        JSONObject entity = new JSONObject();
-                        entity = (JSONObject) entitiesArray.get(i);
-                        
+                        JSONObject entity = (JSONObject) entitiesArray.get(i);
                         if(entity.keySet().toString().equals(name)){
-                            JSONObject obj = (JSONObject) entity.get(key);
-                            
-                            ArrayList objKeys = new ArrayList(obj.keySet());
-                            String objKey = (String) objKeys.get(selectedIndex);
-                            obj.remove(objKey);
-                            obj.put(view.propertyText.getText(),view.valueText.getText());
-                            JSONObject obj2 = new JSONObject();
-                            obj2.put(key, obj);
-                            entitiesArray.remove(index);
-                            entitiesArray.add(obj2);
+                            JSONObject currentEntity = (JSONObject) entity.get(key);
+                            List currentEntityKeys = new ArrayList(currentEntity.keySet());
+                            String currentKey = (String) currentEntityKeys.get(selectedIndex);
+                            currentEntity.remove(currentKey);
+                            currentEntity.put(view.propertyText.getText(), view.valueText.getText());
+                            JSONObject updatedEntity = new JSONObject();
+                            updatedEntity.put(key, currentEntity);
+                            entitiesArray.set(index, updatedEntity);
                             
                             FileWriter writer = new FileWriter("entities.json");
                             gson.toJson(entitiesArray, writer);
                             writer.close();
+                            
                         }
                     }
                 }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException | ParseException ex) {
+            } catch (IOException ex) {
+                Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
                 Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 try {
@@ -178,6 +220,7 @@ public class ExistingEntityController{
                     Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+          
             });
     }
     
@@ -255,7 +298,7 @@ public class ExistingEntityController{
            });
     }
     
-    private void addRow(){ // seems to be adding property and value in a random order
+    private void addRow(){ 
         view.addBtn.setOnAction((event) -> {
             FileReader reader = null;
             try {
@@ -269,37 +312,43 @@ public class ExistingEntityController{
                 int selectedIndex = view.table.getSelectionModel().getSelectedIndex();
                 int index = view.cb.getItems().indexOf(name);
                 
-                // getting the entity we will be working on from the array 
-                JSONObject CurrentObj = new JSONObject();
-                CurrentObj = (JSONObject)entitiesArray.get(index);
-                // access property and value inside the selected entity and work with them
-                JSONObject childObj = new JSONObject();
-                childObj = (JSONObject) CurrentObj.get(key);
-                    
-                List keyList = new ArrayList(childObj.keySet());
-                String keyToAdd = property;
-                String valueToAdd = value;
-                childObj.put(keyToAdd, valueToAdd);
+                //getting the json object that will be added a property
+                JSONObject entity = (JSONObject) entitiesArray.get(index);
+                JSONObject currentEntity = (JSONObject) entity.get(key);
+                JSONObject updatedEntity = new JSONObject();
+                currentEntity.put(property, value);
+                updatedEntity.put(key, currentEntity);
+                entitiesArray.set(index, updatedEntity);
                 
-                ObservableList<String> keylist = FXCollections.observableArrayList(childObj.keySet());
-                ObservableList<String> valuelist = FXCollections.observableArrayList(childObj.values());
-                
-                    
-                for(int j = 0; j < keylist.size(); j++){
-                    list.add(new EntityModel(keylist.get(j), valuelist.get(j)));
-                    view.table.getItems().setAll(list);
-                }
-                list.clear();
-                    
                 FileWriter writer = new FileWriter("entities.json");
                 gson.toJson(entitiesArray, writer);
                 writer.close();
                 
+                //display the newly added property and its value to table
+                List keyList = new ArrayList(currentEntity.keySet());
+                List values = new ArrayList(currentEntity.values());
+                list.clear();
+                for(int i = 0; i < keyList.size(); i++){
+                    if(!keyList.get(i).equals("signal")){
+                        ObservableList<String> propertyList = FXCollections.observableArrayList();
+                        propertyList.add(keyList.get(i).toString());
+                        ObservableList<String> valueList = FXCollections.observableArrayList();
+                        valueList.add(values.get(i).toString()); 
+                        
+                        for(int j = 0; j < propertyList.size(); j++){
+                            list.add(new EntityModel(propertyList.get(j), valueList.get(j)));
+                        }
+                    }
+                }
+                view.table.getItems().setAll(list);
+                
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException | ParseException ex) {
+            } catch (IOException ex) {
                 Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
-            } 
+            } catch (ParseException ex) {
+                Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
     
