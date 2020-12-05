@@ -72,42 +72,61 @@ public class Renderer {
     
     //renders one frame
     public static void render(){
-        //floor
-        gc.setFill(Color.GREEN);
-        gc.fillRect(0, screenHeight/2.0, screenWidth, screenHeight/2.0);
         
         renderFloorCeiling();
-        //ArrayList<HitPoint> hPoints = renderLevel();
-        
+        ArrayList<HitPoint> hPoints = renderLevel();
         //renderEntities(hPoints);
     }
     
     //renders floor/ceiling
     private static void renderFloorCeiling(){
         Level level = Game.getCurrentLevel();
-        Point2D cam = player.getPosition();
-        float camA = player.getRotation();
+        double camA = Math.toRadians(player.getRotation());
+        double sin = Math.sin(camA);
+        double cos = Math.cos(camA);
         
-        final double tileX, tileY; //player grid position
-        tileX = Math.floor(cam.getX());
-        tileY = Math.floor(cam.getY());
+        Point2D perpDir = new Point2D(-sin, cos);
         
-        float rayA = camA - fov/2f;
+        double y = 0.0; //y position on the scrren
         
-        double y = 0.0;
-        if(env.hasSky()){
-            //y = (int)(screenHeight/2.0);
+        if(env.hasSky()){ //color the sky and jump to the floor
+            y = (int)(screenHeight/2.0);
             gc.setFill(env.getSkyColor());
             gc.fillRect(0, 0, screenWidth, screenHeight/2.0);
         }
         
-        while (y<screenHeight) {            
-            double dist = -(1.0/(2*(y/screenHeight)-0.5));
-            if(Math.abs(dist%1)==0){
-                gc.setFill(Color.BLACK);
-                gc.fillRect(0, y, screenWidth, 1);
+        while (y<screenHeight) //for every horizontal line of pixels on the screen
+        { 
+            double fdist = Math.abs( 0.5/(( (y/screenHeight) -0.5)) );
+            
+            if(fdist<level.height && fdist<level.width)
+            {
+                Point2D gridPos = player.getPosition().add(fdist*cos, fdist*sin);
+                Point2D gridLeft = gridPos.subtract(perpDir.multiply(fdist*Math.tan(fov/2.0)));
+                Point2D perpStep = perpDir.multiply(res*2*gridLeft.distance(gridPos)/screenWidth);
+
+                gridPos = gridLeft;
+
+                for(int x=0; x<screenWidth; x+=res){
+                    int cx = (int)gridPos.getX(), cy = (int)gridPos.getY();
+                    if(cx<0 ||cy<0 || cx>level.width || cy>level.height)
+                    {
+                    }
+                    else
+                    {
+                        if(!level.isWall(cx, cy))
+                        {
+                        Image texture = level.getCellTexture(cx, cy);
+                        int tx = (int)(texture.getWidth()*(Math.abs(gridPos.getX()%1.0)));
+                        int ty = (int)(texture.getHeight()*(Math.abs(gridPos.getY()%1.0)));
+                        gc.drawImage(texture, tx, ty, 1, 1, x, y, res, res);
+                        }
+                    }
+                    gridPos = gridPos.add(perpStep);
+                }
             }
-            y++;
+            
+            y+=res;
         }
         
         
@@ -120,6 +139,14 @@ public class Renderer {
         Point2D cam = player.getPosition();
         float camA = player.getRotation();
         
+        double sin = Math.sin(camA);
+        double cos = Math.cos(camA);
+        
+        Point2D perpDir = new Point2D(-sin, cos);
+        Point2D rayPos = player.getPosition().add(cos, sin);
+        Point2D rayLeft = rayPos.subtract(perpDir.multiply(Math.tan(fov/2.0)));
+        Point2D perpStep = perpDir.multiply(res*2*rayLeft.distance(rayPos)/screenWidth);
+        
         final double tileX, tileY; //player grid position
         tileX = Math.floor(cam.getX());
         tileY = Math.floor(cam.getY());
@@ -127,7 +154,7 @@ public class Renderer {
         float rayA = camA - fov/2f*(float)(1.0-1.0/screenWidth);
         
         //creates all the hit points
-        for(int r=0; r<screenWidth;r+=res){
+        for(int r=0; r<(screenWidth);r+=res){
             while (rayA<0 || rayA>=360) {                
                 if(rayA < 0)  rayA+=360;
                 if(rayA >=360)rayA-=360;
