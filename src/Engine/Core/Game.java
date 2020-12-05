@@ -119,7 +119,7 @@ public class Game extends Application{
         
         //temporary very ugly code to set the renderer
         Renderer.setFov(Settings.getFloat("r_fov"));
-        Renderer.setResolution(10);
+        Renderer.setResolution(1);
         
         //load .css style
         String pathName = Settings.get("e_stylepath");
@@ -172,7 +172,7 @@ public class Game extends Application{
     {
         //if(currentLevel != null)
             //loadLevel(currentLevel.path);
-        loadLevel("levels/level1.lvl");
+        loadLevel("levels/level2.lvl");
     }
     
     public static WindowManager getWindowManager()
