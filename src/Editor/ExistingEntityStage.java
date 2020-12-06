@@ -32,7 +32,7 @@ public class ExistingEntityStage{
         EntityModel model = new EntityModel();
         ExistingEntityController controller = new ExistingEntityController(model, view);
         existingEntity.setTitle("Edit Existing Entities");
-        Scene scene = new Scene(view, 600, 400);
+        Scene scene = new Scene(view, 500, 500);
         existingEntity.setScene(scene);
         existingEntity.show();
     }

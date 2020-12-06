@@ -1,65 +1,99 @@
-[
-  {
-    "entity": {
-      "wqwd": "qwdqwdqwd",
-      "1": "2",
-      "ad": "ds",
-      "asd": "asd123",
-      "d": "a",
-      "asd13": "asd12345",
+{
+  "entities": [
+    {
+      "classname": "car",
+      "name": "car1",
+      "model": "rav4",
+      "colro": "red",
+      "brand": "toyota",
       "signal": [
         {
-          "targetname": "1",
-          "name": "signal1",
+          "targetname": "12",
+          "name": "singal1",
           "arguments": [
             "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "2",
+            "2",
+            "2",
+            "3",
             "3",
             "4",
-            "54",
-            "56",
-            "67",
-            "78",
-            "8",
-            "56",
             "4",
-            "f",
-            "g",
-            "g",
-            "c",
-            "dsa",
-            "sad",
-            "ds"
+            "5"
           ],
-          "inputname": "1"
+          "inputname": "12"
         },
         {
-          "targetname": "njhadshd",
-          "name": "signal2",
+          "targetname": "s12s",
+          "name": "123",
           "arguments": [
-            "d",
-            "fg",
-            "g",
-            "asd"
+            "e ecew"
           ],
-          "inputname": "eknlfddf"
+          "inputname": "d3d"
         }
       ]
+    },
+    {
+      "classname": "Car",
+      "name": "car2",
+      "signal": [
+        {
+          "targetname": "112",
+          "name": "SIGNAL1",
+          "arguments": [
+            "1",
+            " 2",
+            " 3",
+            " 312"
+          ],
+          "inputname": "11212"
+        },
+        {
+          "targetname": "2",
+          "name": "signal2",
+          "arguments": [
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2"
+          ],
+          "inputname": "2"
+        },
+        {
+          "targetname": "312323d23",
+          "name": "SINAHl",
+          "arguments": [
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1"
+          ],
+          "inputname": "32433223d"
+        }
+      ],
+      "whatever": "pontiac lol"
+    },
+    {
+      "classname": "CLaaa",
+      "name": "`2`12",
+      "proper": "values",
+      "PRO": "VAL",
+      "signal": []
     }
-  },
-  {
-    "entity4": {
-      "12": "23",
-      "23": "43",
-      "54": "45"
-    }
-  },
-  {
-    "entity5": {
-      "1": "2",
-      "123": "345",
-      "102": "4503",
-      "1024": "45035",
-      "asasd": "asdasd"
-    }
-  }
-]
+  ]
+}
