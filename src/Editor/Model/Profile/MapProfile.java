@@ -6,14 +6,13 @@
 package Editor.Model.Profile;
 
 import Editor.Controller.GridController;
-import Editor.MapEditor;
 import Editor.View.Grid.Grid;
-import Editor.View.Metadata.WallContent;
 import java.io.File;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -23,6 +22,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class MapProfile extends Profile{
     private int wallCounter = 1;
+    private int entityCounter = 1;
     
     //private String resourcePath;
     //private String mapLocation;
@@ -34,6 +34,7 @@ public class MapProfile extends Profile{
     private boolean mainMap;
     
     private Map<Integer, WallProfile> wallMap = new TreeMap<>();
+    private Map<Integer, EntityProfile> entityMap = new TreeMap<>();
     
 
     public MapProfile(String name, int gridWidth, int gridLength) {
@@ -43,7 +44,7 @@ public class MapProfile extends Profile{
         this.defaultWall = new WallProfile();
         this.wallMap.put(defaultWall.getID(), defaultWall);
         
-        this.gridView = new Grid(50, gridWidth, gridLength, defaultWall);
+        this.gridView = new Grid(50, 10, gridWidth, gridLength, defaultWall);
         setChildrenClipping(gridView);
         
         this.gc = new GridController(gridView);
@@ -71,10 +72,19 @@ public class MapProfile extends Profile{
 //    }
     
     public WallProfile createWallProfile(String name, String imgName, int flag){
-        WallProfile wall = new WallProfile(wallCounter++, name, imgName, flag);
+        WallProfile wall = new WallProfile(wallCounter, name, imgName, flag);
         this.wallMap.put(wallCounter, wall);
+        wallCounter++;
         this.gc.setSelectedWallProfile(wall);
         return wall;
+    }
+    
+    public EntityProfile createEntityProfile(String name, Color color){
+        EntityProfile entity = new EntityProfile(name, entityCounter);
+        this.entityMap.put(entityCounter, entity);
+        entityCounter++;
+        this.gc.setSelectedEntityProfile(entity);
+        return entity;
     }
     
     public static String getTxrURL(MapProfile map, int id){

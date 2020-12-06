@@ -50,7 +50,6 @@ public class Entity_Environment extends Entity{
                         (double) skyColorArray.get(0),
                         (double) skyColorArray.get(1),
                         (double) skyColorArray.get(2));
-        
         //walls
         this.wallHeight = Float.valueOf((String) propertyMap.get("wallheight"));
     }
@@ -78,13 +77,13 @@ public class Entity_Environment extends Entity{
     
     //fog
     public boolean isFoggy(){ return foggy; }
-    public Color getFogColor(){ return fogColor; }
+    public Color getFogColor(){ return Color.BLUE; }
     public float getFogNearDistance(){ return fogNearDistance; }
     public float getFogFarDistance(){ return fogNearDistance; }
     
     //sky
     public boolean hasSky(){ return hasSky; }
-    public Color getSkyColor(){ return fogColor; }
+    public Color getSkyColor(){ return skyColor; }
     
     //walls
     public float getWallHeight(){ return wallHeight; }
