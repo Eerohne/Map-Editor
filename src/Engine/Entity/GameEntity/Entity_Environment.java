@@ -79,7 +79,7 @@ public class Entity_Environment extends Entity{
     public boolean isFoggy(){ return foggy; }
     public Color getFogColor(){ return Color.BLUE; }
     public float getFogNearDistance(){ return fogNearDistance; }
-    public float getFogFarDistance(){ return fogNearDistance; }
+    public float getFogFarDistance(){ return fogFarDistance; }
     
     //sky
     public boolean hasSky(){ return hasSky; }
