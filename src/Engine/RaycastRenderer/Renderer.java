@@ -8,7 +8,7 @@ package Engine.RaycastRenderer;
 import Engine.Core.Game;
 import Engine.Entity.AbstractEntity.SpriteEntity;
 import Engine.Entity.GameEntity.Entity_Environment;
-import Engine.Entity.GameEntity.Entity_Player;
+import Engine.Entity.AbstractEntity.Entity_Player;
 import Engine.Level.Level;
 import java.util.ArrayList;
 import java.util.Comparator;

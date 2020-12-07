@@ -8,8 +8,8 @@ package Engine.Core;
 import Commons.SettingsManager.Settings;
 import Engine.Core.Sound.SoundManager;
 import Engine.Core.Exceptions.LevelCreationException;
-import Engine.Entity.GameEntity.Entity_Player;
-import Engine.Entity.GameEntity.Entity_Sound;
+import Engine.Entity.AbstractEntity.Entity_Player;
+import Engine.Entity.AbstractEntity.Entity_Sound;
 import Engine.Util.Input;
 import Engine.Window.WindowManager;
 import Engine.Level.Level;
@@ -55,7 +55,13 @@ public class Game extends Application{
     private static AnimationTimer anim;
     
     public void start(Stage stage){
+        try{
         initEngine(stage);
+        }
+        catch(Exception e)
+        {
+            System.out.println("Engine level exception!");
+        }
         anim = new AnimationTimer() { //Game main loop
 
             @Override
@@ -104,7 +110,7 @@ public class Game extends Application{
                     gameStage.close();
                     System.gc();}
         );
-        
+        System.out.println("here");
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -119,7 +125,7 @@ public class Game extends Application{
         
         //temporary very ugly code to set the renderer
         Renderer.setFov(Settings.getFloat("r_fov"));
-        Renderer.setResolution(4);
+        Renderer.setResolution(3);
         
         //load .css style
         String pathName = Settings.get("e_stylepath");
@@ -151,12 +157,14 @@ public class Game extends Application{
             currentLevel = ResourceLoader.loadLevel(path);
             isRunning = true;
             isRendering = true;
+            isPaused=false;
             getWindowManager().setErrorMessageVisibility(false);
         } 
         catch(LevelCreationException ex) {
             currentLevel = null;
             isRunning = false;
             isRendering = false;
+            isPaused=false;
             errorMessage.set("- "+ex.getMessage()+" -");
             getWindowManager().setErrorMessageVisibility(true);
         }

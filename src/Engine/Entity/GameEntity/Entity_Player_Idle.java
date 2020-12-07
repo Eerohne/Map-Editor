@@ -5,6 +5,8 @@
  */
 package Engine.Entity.GameEntity;
 
+import Engine.Entity.AbstractEntity.Entity_Player;
+import Engine.Core.Exceptions.EntityCreationException;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Util.Time;
 import java.util.HashMap;
@@ -21,7 +23,7 @@ public class Entity_Player_Idle extends Entity_Player{
     private float headBobFrequency;
     private float headBobRange;
     
-    public Entity_Player_Idle(HashMap<String, Object> propertyMap)
+    public Entity_Player_Idle(HashMap<String, Object> propertyMap) throws EntityCreationException
     {
         super(propertyMap);
         

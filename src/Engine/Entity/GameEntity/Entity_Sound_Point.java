@@ -5,6 +5,9 @@
  */
 package Engine.Entity.GameEntity;
 
+import Engine.Entity.AbstractEntity.Entity_Player;
+import Engine.Entity.AbstractEntity.Entity_Sound;
+import Engine.Core.Exceptions.EntityCreationException;
 import Engine.Core.Game;
 import Engine.Core.Sound.SoundManager;
 import Engine.Entity.AbstractEntity.Entity;
@@ -26,7 +29,7 @@ public class Entity_Sound_Point extends Entity_Sound{
     
     private Entity_Player player;
     
-    public Entity_Sound_Point(HashMap<String, Object> propertyMap)
+    public Entity_Sound_Point(HashMap<String, Object> propertyMap) throws EntityCreationException
     {
         super(propertyMap);
         

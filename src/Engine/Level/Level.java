@@ -5,8 +5,9 @@
  */
 package Engine.Level;
 
+import Engine.Core.Collision.SphereCollider;
 import Engine.Entity.AbstractEntity.Entity;
-import Engine.Entity.GameEntity.Entity_Player;
+import Engine.Entity.AbstractEntity.Entity_Player;
 import Engine.Util.RessourceManager.ResourceLoader;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,6 +23,8 @@ public class Level {
     private int[][] levelData; //2d array with wall data
     private Map<Integer, PaletteEntry> palette; //Look-up table
     private Map<String, Entity> entities; //Entities stored by their name
+    private Map<String, SphereCollider> colliders; //Entities stored by their name
+    
     
     private Entity_Player playerEntity;
     //flags
@@ -30,6 +33,7 @@ public class Level {
     public Level(){
         palette = new HashMap<Integer, PaletteEntry>();
         entities = new HashMap<String, Entity>();
+        colliders = new HashMap<String, SphereCollider>();
     }
     
     public boolean isWall(int x, int y)
@@ -92,7 +96,7 @@ public class Level {
     }
     
     public Point2D checkCollision(Point2D position, Point2D dir, float radius)
-    {
+    {   
         Point2D newDirection = dir;
         for(int x = -1; x <= 1; x++)
         {
@@ -162,6 +166,14 @@ public class Level {
                 newDirection = newDirection.add(0, (1-y));*/
             newDirection = newDirection.multiply(100);
         }
+        
+        for(SphereCollider col : colliders.values())
+        {
+            System.out.println("col");
+            Point2D collisionVector = col.collide(position, newDirection, radius);
+            if(collisionVector != null)
+                newDirection = collisionVector;
+        }
             
         return newDirection;
     }
@@ -211,6 +223,16 @@ public class Level {
             }
         }
         firstUpdate = false;
+    }
+    
+    public void addCollider(String name, SphereCollider collider)
+    {
+        this.colliders.put(name, collider);
+    }
+    
+    public void removeCollider(String name)
+    {
+        this.colliders.remove(name);
     }
     
     public Entity_Player getPlayer()
