@@ -33,7 +33,7 @@ public class WallProfile extends Profile{
         this.flag = flag;
         this.imgName = imageName;
         this.isDelete = false;
-        
+        this.id = id;
         this.setImg(imageName);
     }
     

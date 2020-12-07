@@ -27,7 +27,7 @@ public class NewEntityStage{
         NewEntity view = new NewEntity();
         NewEntityController nec = new NewEntityController(new EntityModel(), view);
         nec.setData();
-        Scene scene = new Scene(view, 500, 300);
+        Scene scene = new Scene(view, 500, 500);
         newEntity.setTitle("Add New Entity");
         newEntity.setScene(scene);
         newEntity.show();

@@ -12,11 +12,17 @@ import Editor.View.Grid.Grid;
 import Editor.View.Metadata.WallContent;
 import Editor.View.Hierarchy.WallHierarchy;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -28,7 +34,8 @@ import javafx.stage.Stage;
 public class WallController extends MetadataController {
     Grid grid;
     MapProfile map;
-    String newImage;
+    Image newImage;
+    String imgName;
     Stage stage;
     //WallPane Component references
     
@@ -61,7 +68,13 @@ public class WallController extends MetadataController {
                     fileChooser.setTitle("Choose A Wall Texture");
                     fileChooser.setInitialDirectory(new File(WallProfile.resourceFolder));
                     File textureFile = fileChooser.showOpenDialog(stage);
-                    this.newImage = textureFile.getName();
+                try {
+                    this.newImage = new Image(new FileInputStream(textureFile.getAbsoluteFile()), 100, 100, false, false);
+                    this.imgName = textureFile.getName().substring(0, textureFile.getName().lastIndexOf("."));
+                    txrPreview.setFill(new ImagePattern(newImage));
+                } catch (FileNotFoundException ex) {
+                       System.out.println(ex);
+                }
             });
             flagCombo.setOnAction(e -> {
                     disableButtons(false);
@@ -78,7 +91,7 @@ public class WallController extends MetadataController {
     @Override
     protected void saveAction(){
         ((WallContent)content).getWallProfile().setFlag((String)flagCombo.getValue());
-        ((WallContent)content).getWallProfile().setImg(newImage); //DUMMY
+        ((WallContent)content).getWallProfile().setImg(imgName); //DUMMY
         ((WallContent)content).getWallProfile().setName(nameField.getText());
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {

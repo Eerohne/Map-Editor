@@ -51,7 +51,6 @@ public abstract class MetadataController {
     
     private void saveEvent(){
         saveAction();
-//        hierarchy.refresh();
         cancelEvent();
     }
     

@@ -7,8 +7,11 @@ package Editor.Controller;
 
 import Editor.Model.SignalModel;
 import Editor.View.Menu.Entity.SignalEditorView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +32,7 @@ import org.json.simple.parser.ParseException;
 public class SignalEditorController {
     SignalModel model = new SignalModel();
     SignalEditorView view = new SignalEditorView();
-    JSONArray signals = new JSONArray();
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public SignalEditorController(SignalModel model, SignalEditorView view) throws IOException, FileNotFoundException, ParseException {
         
@@ -38,7 +41,10 @@ public class SignalEditorController {
         
         allSignals();
         comboBoxHandler();
-        
+        signalSelectorHandler();
+        saveChanges();
+        clearBtn();
+        deleteSignal();
         
     }
     
@@ -46,105 +52,267 @@ public class SignalEditorController {
     private void allSignals() throws FileNotFoundException, IOException, ParseException{
         JSONParser parser = new JSONParser();
         FileReader reader = new FileReader("entities.json");
-        JSONArray entitiesArray = (JSONArray) parser.parse(reader);
+        JSONObject allEntities = (JSONObject) parser.parse(reader);
+        JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
         
         for(int i = 0; i < entitiesArray.size(); i++){
             JSONObject entity = (JSONObject) entitiesArray.get(i);
-            
-            for(Object keyStr : entity.keySet()){
-                JSONObject signal = (JSONObject) entity.get(keyStr);
-                if(signal.keySet().contains("signal")){
-                    view.cb.getItems().add(entity.keySet().toString());
-                }
+            if(entity.keySet().contains("signal")){
+                view.cb.getItems().add(entity.get("name").toString());
             }
-        
         }
     }
     
+    // getting the entities that have signals
     private void comboBoxHandler(){
         view.cb.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 
-                JSONParser parser = new JSONParser();
-                try(FileReader reader = new FileReader("entities.json")){
-            
-                    JSONArray entitiesArray = (JSONArray) parser.parse(reader);
+                FileReader reader = null;
+                try {
+                    JSONParser parser = new JSONParser();
+                    reader = new FileReader("entities.json");
+                    JSONObject allEntities = (JSONObject) parser.parse(reader);
+                    JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
+                    String name = (String) view.cb.getValue();
+                    //System.out.println(name);
+                    //String key = name.substring(1, name.length()-1);
                     JSONArray signals = new JSONArray();
-                    JSONObject signalEntity = new JSONObject();
-                    for(int i = 1; i < entitiesArray.size(); i++){
-                       
-                        JSONObject entity = (JSONObject) entitiesArray.get(i);
-                        for(Object keyStr : entity.keySet()){
-                            signalEntity = (JSONObject) entity.get(keyStr);
+                    
+                    // getting the entity that has signal 
+                    for(int i = 0; i < entitiesArray.size(); i++){
+                        JSONObject signalEntity = (JSONObject) entitiesArray.get(i);
+                        //System.out.println(signalEntity);
+                        if(signalEntity.values().contains(name)){
                             signals = (JSONArray) signalEntity.get("signal");
-                            view.signalSelector.getItems().clear();
-                            for(int j = 0; j < signals.size(); j++){
-                                view.signalSelector.getItems().add(j);
-                            }
                         }
-                        
                     }
+                    // adding entries to the signal selector
+                    
+                    view.signalSelector.getItems().clear();
+                    for(int j = 0; j < signals.size(); j++){
+                        JSONObject signal = (JSONObject) signals.get(j);
+                        String signalName = (String) signal.get("name");
+                        view.signalSelector.getItems().add(signalName);
+                    }
+                    signals.clear();
+                    
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(SignalViewerController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
-                    Logger.getLogger(SignalViewerController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ParseException ex) {
-                    Logger.getLogger(SignalViewerController.class.getName()).log(Level.SEVERE, null, ex);
-                } 
+                    Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    try {
+                        reader.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
         });
     }
     
+    // display selected signal to the UI
     private void signalSelectorHandler(){
-        
-    }
-    private void combosBoxHandler(){
-        view.cb.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+        view.signalSelector.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                JSONParser parser = new JSONParser();
-                try(FileReader reader = new FileReader("entities.json")){
-            
-                    JSONArray signalsArray = (JSONArray) parser.parse(reader);
+                FileReader reader = null;
+                try {
+                    String name = (String) view.cb.getValue();
+                    String signalName = (String) view.signalSelector.getValue();
+                    int index = view.signalSelector.getItems().indexOf(signalName);
+                    reader = new FileReader("entities.json");
+                    JSONParser parser = new JSONParser();
+                    JSONObject allEntities = (JSONObject) parser.parse(reader);
+                    JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
+                    JSONArray signals = new JSONArray();
                     
-                    for(int i = 0; i < signalsArray.size(); i++){
-                        JSONObject signal = (JSONObject) signalsArray.get(i);
+                    //getting the entitiy that has signals
+                    for(int i = 0; i < entitiesArray.size(); i++){
+                        JSONObject signalEntity = (JSONObject) entitiesArray.get(i);
                         
-                        if(newValue.equals(i)){
-                            view.nameTf.setText((String) signal.get("name"));
-                            view.targetNameTf.setText((String) signal.get("targetname" ));
-                            view.inputNameTf.setText((String) signal.get("inputname"));
-                            List list = new ArrayList();
-                            JSONArray tempArr = (JSONArray) signal.get("arguments");
-                            
-                            String [] arguments = new String[tempArr.size()];
-                            for(int j = 0; j < tempArr.size(); j++){
-                                
-                                list.add(tempArr.get(j));
-                                arguments [j] = (String) list.get(j);
-                            }
-                            System.out.println(Arrays.toString(arguments));
-                            String str = Arrays.toString(arguments);
-                            String argumentStr = str.substring(1, str.length() - 1);
-                            view.arguementTf.setText(argumentStr);
-                           
+                        // getting the signal json array
+                        if(signalEntity.values().contains(name)){
+                            signals = (JSONArray) signalEntity.get("signal");
                         }
                     }
+                    
+                    // getting the one of the signal from the signal array and display it on the UI 
+                    JSONObject signal = (JSONObject) signals.get(index);
+                    view.nameTf.setText(signal.get("name").toString());
+                    view.targetNameTf.setText(signal.get("targetname").toString());
+                    view.inputNameTf.setText(signal.get("inputname").toString());
+                    
+                    List list = new ArrayList();
+                    JSONArray tempArr = (JSONArray) signal.get("arguments");
+                    String [] argumentArr = new String[tempArr.size()];
+                    
+                    for(int j = 0; j < tempArr.size(); j++){
+                        list.add(tempArr.get(j));
+                        argumentArr[j] = (String) list.get(j);
+                    }
+                    
+                    String str = Arrays.toString(argumentArr);
+                    String argumentStr = str.substring(1, str.length() - 1);
+                    view.arguementTf.setText(argumentStr);
+                    
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(SignalViewerController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
-                    Logger.getLogger(SignalViewerController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ParseException ex) {
-                    Logger.getLogger(SignalViewerController.class.getName()).log(Level.SEVERE, null, ex);
-                } 
+                    Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    try {
+                        reader.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
         });
     }
-    private void clear(){
-        view.clearSignal.setOnAction((event) -> {
-            System.out.println(signals.size());
+    
+    private void saveChanges(){
+        view.saveSignal.setOnAction((event) -> {
+            
+            FileReader reader = null;
+            try {
+                String name = (String) view.cb.getValue();
+                JSONParser parser = new JSONParser();
+                reader = new FileReader("entities.json");
+                JSONObject allEntities = (JSONObject) parser.parse(reader);
+                JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
+                int index = view.cb.getItems().indexOf(view.cb.getValue());
+                int signalIndex = view.signalSelector.getItems().indexOf(view.signalSelector.getValue());
+                JSONArray signals = new JSONArray();
+                
+                //getting the entitiy that has signals
+                for(int i = 0; i < entitiesArray.size(); i++){
+                    JSONObject signalEntity = (JSONObject) entitiesArray.get(i);
+                        
+                    // getting the signal json array
+                    if(signalEntity.values().contains(name)){
+                        signals = (JSONArray) signalEntity.get("signal");
+                    }
+                }
+                
+                // replacing the values of signals and put it back into the signals array 
+                JSONObject signal = (JSONObject) signals.get(signalIndex);
+                signal.replace("name", view.nameTf.getText());
+                signal.replace("targetname", view.targetNameTf.getText());
+                signal.replace("inputname", view.inputNameTf.getText());
+                signal.replace("arguments", view.arguementTf.getText().split(","));
+                
+                signals.set(signalIndex, signal);
+                
+                // puuting the signals array back into the json object, json object back into the array
+                for(int j = 0; j < entitiesArray.size(); j++){
+                    JSONObject signalEntity = (JSONObject) entitiesArray.get(j);
+                    
+                    if(signalEntity.values().contains(name)){
+                        signalEntity.put("signal", signals);
+                        entitiesArray.set(index, signalEntity);
+                        allEntities.put("entities", entitiesArray);
+                    }
+                }
+                
+                FileWriter writer = new FileWriter("entities.json");
+                gson.toJson(allEntities, writer);
+                writer.close();
+                
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    reader.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         });
+    }
+    
+    private void deleteSignal(){
+        view.delete.setOnAction((event) -> {
+            FileReader reader = null;
+            try {
+                String name = (String) view.cb.getValue();
+                String key = name.substring(1, name.length()-1);
+                JSONParser parser = new JSONParser();
+                reader = new FileReader("entities.json");
+                JSONObject allEntities = (JSONObject) parser.parse(reader);
+                JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
+                int index = view.cb.getItems().indexOf(view.cb.getValue());
+                int signalIndex = view.signalSelector.getItems().indexOf(view.signalSelector.getValue());
+                JSONArray signals = new JSONArray();
+                
+                //getting the entitiy that has signals
+                for(int i = 0; i < entitiesArray.size(); i++){
+                    JSONObject signalEntity = (JSONObject) entitiesArray.get(i);
+                        
+                    // getting the signal json array and remove the selected signal from the array 
+                    if(signalEntity.values().contains(name)){
+                        signals = (JSONArray) signalEntity.get("signal");
+                    }
+                }
+                signals.remove(signalIndex);
+                
+                // putting the updated signals array back into the json object, then json object back into json array
+                for(int j = 0; j < entitiesArray.size(); j++){
+                    JSONObject signalEntity = (JSONObject) entitiesArray.get(j);
+                    
+                    if(signalEntity.values().contains(name)){
+                        
+                        signalEntity.replace("signal", signals);
+                        entitiesArray.set(j, signalEntity);
+                        allEntities.put("entities", entitiesArray);
+                    }
+                }
+                
+                FileWriter writer = new FileWriter("entities.json");
+                gson.toJson(allEntities, writer);
+                writer.close();
+                
+                view.signalSelector.getItems().remove(signalIndex);
+                clear();
+                
+                
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    reader.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(SignalEditorController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
+   
+    private void clearBtn(){
+        view.clearSignal.setOnAction((event) -> {
+            clear();
+        });
+    }
+    
+    private void clear(){
+        view.nameTf.clear();
+        view.targetNameTf.clear();
+        view.arguementTf.clear();
+        view.inputNameTf.clear();
     }
     
     

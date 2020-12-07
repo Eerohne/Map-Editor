@@ -45,8 +45,9 @@ public class SignalViewerController {
         
         allSignals();
         comboBoxHandler();
-        clear();
+        clearBtn();
         saveEditedSignal();
+        deleteSignal();
     }
     
     private void allSignals() throws ParseException{
@@ -56,8 +57,9 @@ public class SignalViewerController {
             
             JSONArray entitiesArray = (JSONArray) parser.parse(reader);
             for(int i = 0; i < entitiesArray.size(); i++){
+                JSONObject signal = (JSONObject) entitiesArray.get(i);
                 
-                viewer.cb.getItems().add(i);
+                viewer.cb.getItems().add(signal.get("name"));
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
@@ -66,10 +68,42 @@ public class SignalViewerController {
         }
     }
     
+    private void deleteSignal(){
+        viewer.delete.setOnAction((event) -> {
+            FileReader reader = null;
+            try {
+                JSONParser parser = new JSONParser();
+                reader = new FileReader("signals.json");
+                JSONArray signals = (JSONArray) parser.parse(reader);
+                int index = viewer.cb.getItems().indexOf(viewer.cb.getValue());
+                signals.remove(index);
+                
+                FileWriter writer = new FileWriter("signals.json");
+                gson.toJson(signals, writer);
+                writer.close();
+                
+                viewer.cb.getItems().remove(index);
+                clear();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(SignalViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(SignalViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(SignalViewerController.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    reader.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(SignalViewerController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
+    
     private void comboBoxHandler(){
-        viewer.cb.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Integer>() {
+        viewer.cb.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
-            public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 JSONParser parser = new JSONParser();
                 try(FileReader reader = new FileReader("signals.json")){
             
@@ -77,8 +111,9 @@ public class SignalViewerController {
                     
                     for(int i = 0; i < signalsArray.size(); i++){
                         JSONObject signal = (JSONObject) signalsArray.get(i);
+                        System.out.println(signal);
                         
-                        if(newValue.equals(i)){
+                        if(newValue.equals(signal.get("name"))){
                             viewer.nameTf.setText((String) signal.get("name"));
                             viewer.targetNameTf.setText((String) signal.get("targetname" ));
                             viewer.inputNameTf.setText((String) signal.get("inputname"));
@@ -87,7 +122,6 @@ public class SignalViewerController {
                             
                             String [] arguments = new String[tempArr.size()];
                             for(int j = 0; j < tempArr.size(); j++){
-                                
                                 list.add(tempArr.get(j));
                                 arguments [j] = (String) list.get(j);
                             }
@@ -149,13 +183,17 @@ public class SignalViewerController {
         });
     }
     
-    public void clear(){
+    public void clearBtn(){
         viewer.clearSignal.setOnAction((event) -> {
-            viewer.nameTf.clear();
-            viewer.targetNameTf.clear();
-            viewer.arguementTf.clear();
-            viewer.inputNameTf.clear();
+            clear();
         });
+    }
+    
+    private void clear(){
+        viewer.nameTf.clear();
+        viewer.targetNameTf.clear();
+        viewer.arguementTf.clear();
+        viewer.inputNameTf.clear();
     }
     
     

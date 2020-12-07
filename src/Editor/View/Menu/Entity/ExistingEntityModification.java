@@ -8,6 +8,7 @@ package Editor.View.Menu.Entity;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -26,7 +27,7 @@ public class ExistingEntityModification extends GridPane{
     public TableView table = new TableView();
     public TableColumn<?, ?> propertyCol = new TableColumn<>("property");
     public TableColumn<?, ?> valueCol = new TableColumn<>("value");
-    public TextField nameText = new TextField();
+    public Label label = new Label("edit other properties here");
     public TextField propertyText = new TextField();
     public TextField valueText = new TextField();
     //public Button nameEdit = new Button("edit the name");
@@ -39,6 +40,14 @@ public class ExistingEntityModification extends GridPane{
     public Button signalBtn = new Button("edit signal");
     
     public VBox vbox = new VBox();
+    
+    public VBox labelBox = new VBox();
+    public Label classNameLabel = new Label("class name:");
+    public Label name = new Label("name:"); 
+    
+    public VBox tfBox = new VBox();
+    public TextField classNameTf = new TextField();
+    public TextField nameTf = new TextField();
 
     public Button saveEdit = new Button("save modification");
 
@@ -47,13 +56,23 @@ public class ExistingEntityModification extends GridPane{
         table.setEditable(true);
         this.setHgap(10);
         this.setVgap(10);
-        this.add(table, 1, 0);
+        this.add(table, 1, 1);
+        this.add(labelBox, 1, 0);
+        this.add(tfBox, 2, 0);
+        
+        labelBox.getChildren().addAll(classNameLabel, name);
+        labelBox.setPadding(new Insets(16));
+        labelBox.setSpacing(16);
+        
+        tfBox.getChildren().addAll(classNameTf, nameTf);
+        tfBox.setPadding(new Insets(10));
+        tfBox.setSpacing(10);
         
         
         vbox.setPadding(new Insets(5));
         vbox.setSpacing(5);
         vbox.getChildren().add(cb);
-        vbox.getChildren().add(nameText);
+        vbox.getChildren().add(label);
         vbox.getChildren().add(propertyText);
         vbox.getChildren().add(valueText);
         vbox.getChildren().add(saveEdit);
@@ -64,13 +83,12 @@ public class ExistingEntityModification extends GridPane{
         vbox.getChildren().add(signalBtn);
         vbox.getChildren().add(switchBtn);
         
-        this.add(vbox, 2, 0);
+        this.add(vbox, 2, 1);
         propertyCol.setCellValueFactory(new PropertyValueFactory<>("property"));
         valueCol.setCellValueFactory(new PropertyValueFactory<>("value"));
         table.getColumns().addAll(propertyCol, valueCol);
         cb.setPromptText("select an entity");
         
-        nameText.setPromptText("change name of the entity");
         propertyText.setPromptText("add or change property here");
         valueText.setPromptText("add or change value here");
     }

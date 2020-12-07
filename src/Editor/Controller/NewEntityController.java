@@ -10,12 +10,10 @@ import Editor.View.Menu.Entity.ExistingEntityModification;
 import Editor.View.Menu.Entity.ExistingEntityStage;
 import Editor.View.Menu.Entity.NewEntity;
 import Editor.View.Menu.Entity.SignalStage;
-import Editor.View.Menu.Entity.SignalViewer;
 import Editor.View.Menu.Entity.SignalViewerStage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,8 +22,6 @@ import javafx.event.EventHandler;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.stage.Stage;
@@ -121,82 +117,96 @@ public class NewEntityController{
         String value = view.valueText.getText();
         list.add(new EntityModel(property, value));
         view.table.getItems().setAll(list);
+        view.propertyText.clear();
+        view.valueText.clear();
     }
     
     public void export() throws IOException{
       
         Gson gson = new GsonBuilder().setPrettyPrinting().create(); 
         JSONArray array = new JSONArray();
+        JSONObject allEntities = new JSONObject();
         JSONParser parser = new JSONParser();
         File newFile = new File("entities.json");
-        Map<String, String> data = new HashMap<>();
+        JSONObject data = new JSONObject();
         FileWriter writer = new FileWriter("entities.json", true);
+        
+        // create or write to the entities.json if no entities exist
         if(newFile.length() == 0 || !newFile.exists()){
+            data.put("classname", view.classNameTf.getText());
+            data.put("name", view.nameTf.getText());
+            
             for(int i = 0; i < list.size(); i++){
                 data.put(list.get(i).getProperty(), list.get(i).getValue());
             }
-            JSONObject o = new JSONObject();
-            o.putAll(data);
-            JSONObject o1 = new JSONObject();
-            o1.put(view.nameText.getText(), data);
+            
             File signalFile = new File("signals.json");
+            
+            //verify if a signal is created for the current entity 
             if(signalFile.length() != 0){
                 try {
                     FileReader signalReader = new FileReader(signalFile);
                     JSONArray signalObj = (JSONArray) parser.parse(signalReader);
-                    o1.put("signal", signalObj);   
-                    array.add(o1);
-                    gson.toJson(array, writer);
+                    data.put("signal", signalObj);   
+                    array.add(data);
+                    allEntities.put("entities", array);
+                    gson.toJson(allEntities, writer);
                     writer.close();
+                    
                     FileWriter writer3 = new FileWriter("signals.json");
+                    
                 } catch (ParseException ex) {
                     Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             else{
-                array.add(o1);
-                gson.toJson(array, writer);
+                array.add(data);
+                allEntities.put("entities", array);
+                gson.toJson(allEntities, writer);
                 writer.close();
             }
         }
+        
+        //write to entities.json file if file is not empty 
         else{
             try {
                 
                 FileReader reader = new FileReader(newFile);
-                JSONArray existingArray = (JSONArray) new JSONParser().parse(reader);
-
+                JSONObject existingEntities = (JSONObject) new JSONParser().parse(reader);
+                JSONArray existingArray = (JSONArray) existingEntities.get("entities");
+                
+                data.put("classname", view.classNameTf.getText());
+                data.put("name", view.nameTf.getText());
                 for(int i = 0; i < list.size(); i++){
                     data.put(list.get(i).getProperty(), list.get(i).getValue());
                 }
-                JSONObject o2 = new JSONObject();
-                o2.putAll(data);
-                JSONObject obj = new JSONObject();
-                obj.put(view.nameText.getText(), o2);
-                //existingArray.add(obj);
+                
+                
                 File signalFile = new File("signals.json");
                 if(signalFile.length() != 0){
                     FileReader signalReader = new FileReader(signalFile);
                     JSONArray signalObj = (JSONArray) parser.parse(signalReader);
-                    o2.put("signal", signalObj);
-                    obj.put(view.nameText.getText(), o2);
-                    existingArray.add(obj);
+                    data.put("signal", signalObj);
+                    existingArray.add(data);
+                    existingEntities.put("entities", existingArray);   
                 }
                 else{
-                    existingArray.add(obj);
+                    existingArray.add(data);
+                    existingEntities.put("entities", existingArray);
                 }
                 
                 // new File writer initialized to clear all content of the associated file
                 
                 FileWriter writer3 = new FileWriter(signalFile);
                 FileWriter writer2 = new FileWriter(newFile);
-                gson.toJson(existingArray, writer);
+                gson.toJson(existingEntities, writer);
                 writer.close();
             } catch (ParseException ex) {
                 Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
             }
                 
         }
-        nameList.add(view.nameText.getText());
+        nameList.add(view.nameTf.getText());
         System.out.println(nameList.toString());
     }
     
@@ -205,6 +215,8 @@ public class NewEntityController{
         tempList = list;
         tempList.removeAll(list);
         view.table.getItems().setAll(tempList);
+        view.nameTf.clear();
+        view.classNameTf.clear();
     }
     
     private void switchWindow(){
@@ -226,12 +238,6 @@ public class NewEntityController{
             new SignalStage(stage);
         });
     }
-
-    public void setSignalObj(JSONObject obj) {
-        this.signalObj = obj;
-    }
-    
-    
     
     private void viewSignal(){
         view.viewSignal.setOnAction((event) -> {

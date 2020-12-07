@@ -31,6 +31,7 @@ public class SignalEditorView extends GridPane{
     
     public Button saveSignal = new Button("save");
     public Button clearSignal = new Button("clear");
+    public Button delete = new Button("delete");
     
     public ComboBox cb = new ComboBox();
     public ComboBox signalSelector = new ComboBox();
@@ -49,9 +50,12 @@ public class SignalEditorView extends GridPane{
         btnBox.setPadding(new Insets(10));
         btnBox.setSpacing(10);
         
+        cb.setPromptText("select entity");
+        signalSelector.setPromptText("select signal");
+        
         labelBox.getChildren().addAll(nameLabel, targetNameLabel, inputNameLabel, arguementLabel);
         tfBox.getChildren().addAll(nameTf, targetNameTf, inputNameTf, arguementTf);
-        btnBox.getChildren().addAll(cb, signalSelector, saveSignal, clearSignal);
+        btnBox.getChildren().addAll(cb, signalSelector, saveSignal, clearSignal, delete);
         
         this.add(labelBox, 0, 0);
         this.add(tfBox, 1, 0);
