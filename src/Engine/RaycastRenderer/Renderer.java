@@ -18,7 +18,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 /**
  *
@@ -34,7 +33,7 @@ import javafx.scene.paint.Color;
 */
 public class Renderer {
     
-    private static HashMap<String, SpriteEntity> spriteEntities = new HashMap<>();
+    
     
     private static Canvas frame = new Canvas();
     private static GraphicsContext gc = frame.getGraphicsContext2D();
@@ -42,14 +41,14 @@ public class Renderer {
     
     private static Entity_Player player;
     private static Entity_Environment env;
+    
+    private static HashMap<String, SpriteEntity> spriteEntities = new HashMap<>();
+    
     private static float fov=70f; //default field of view (degrees)
-    private static double viewD=5.0; //default view distance
-    private static int res = 1;
+    private static double viewD=32.0; //default view distance
+    private static int res = 1; //resolution (determines the increment of loops) (bigger res means lower quality image)
     
     private Renderer(){}
-    
-    public static void setPlayer(Entity_Player player){Renderer.player = player;}
-    public static void setEnvironment(Entity_Environment env){Renderer.env=env;};
     
     public static void setCanvas(Canvas canvas){
         frame = canvas;
@@ -57,6 +56,13 @@ public class Renderer {
         screenWidth = canvas.getWidth();
         screenHeight = canvas.getHeight();
     }
+    public static void resize(){
+        screenWidth = frame.getWidth();
+        screenHeight = frame.getHeight();
+    }
+    
+    public static void setPlayer(Entity_Player player){Renderer.player = player;}
+    public static void setEnvironment(Entity_Environment env){Renderer.env=env;};
     
     public static void setEntityList(HashMap<String, SpriteEntity> list){spriteEntities = list;}
     public static void addEntity(SpriteEntity spriteEntity){spriteEntities.put(spriteEntity.getName(), spriteEntity);}
@@ -66,15 +72,11 @@ public class Renderer {
     public static void setViewDistance(double dist){viewD = dist;} // set the view distance
     public static void setResolution(int resolution){res = resolution;}
     
-    public static void resize(){
-        screenWidth = frame.getWidth();
-        screenHeight = frame.getHeight();
-    }
     
     //renders one frame
     public static void render(){
         //change colors here
-        //gc.clearRect(0, 0, screenWidth, screenHeight);
+        gc.clearRect(0, 0, screenWidth, screenHeight);
         //ceiling
         //gc.setFill(Color.LIGHTBLUE);
         //gc.fillRect(0, 0, screenWidth, screenHeight);
@@ -103,9 +105,9 @@ public class Renderer {
         for(int r=0; r<screenWidth;r+=res){
             //angle
             double rayA = Math.toDegrees(Math.atan
-            ((  2.0
-               *Math.tan( Math.toRadians(fov/2.0) )
-               *( (r/screenWidth)-0.5 ) 
+            ((
+               2.0*Math.tan( Math.toRadians(fov/2.0) )  //
+               *( (r/screenWidth)-0.5 )                 //position on screen (-0.5< x <0.5)
             )));
             rayA += camA;
             
@@ -123,6 +125,7 @@ public class Renderer {
             double stepX=0, stepY=0;
             
             Point2D rH = Point2D.ZERO, rV = Point2D.ZERO;
+            
             //intersects with vertical
             if(rightward){//looking right (+x)
                 rV = rV.add(tileX+1, cam.getY());
@@ -222,52 +225,47 @@ public class Renderer {
         }
         
         double distance = toWall.magnitude();
-        distance = distance*Math.cos(Math.toRadians(dir.angle(toWall)));
-        double height = screenHeight/distance;
-        double lineBottom = ((screenHeight-height)/2.0)+height;
+        distance *= Math.cos(Math.toRadians(dir.angle(toWall)));
+        double lineBottom = screenHeight*(0.5*(1 + 1/distance));
         
-        
-        
-        double y = 0.0; //y position on the scrren
         
         if(env.hasSky()){ //color the sky and jump to the floor
-            y=lineBottom;
             gc.setFill(env.getSkyColor());
             gc.fillRect(0, 0, screenWidth, screenHeight/2.0);
         }
         
-        while (y<(screenHeight)) //for every horizontal line of pixels on the screen
+        for(double y = lineBottom; y<(screenHeight) ; y+=res ) //for every horizontal line of pixels on the screen
         { 
             double fdist = Math.abs( 0.5/(( (y/screenHeight) -0.5)) );
-            
+            //2.0*Math.tan( Math.toRadians(fov/2.0) )
             if(fdist<level.height && fdist<level.width  && fdist<env.getFogFarDistance() )
             {
-                Point2D gridPos = player.getPosition().add(fdist*cos, fdist*sin);
-                Point2D gridLeft = gridPos.subtract(perpDir.multiply(fdist*Math.tan(fov/2.0)));
-                Point2D perpStep = perpDir.multiply(res*2*gridLeft.distance(gridPos)/screenWidth);
+                Point2D gridPos = player.getPosition().add(fdist*cos, fdist*sin); //point on the grid
+                Point2D gridLeft = gridPos.subtract(perpDir.multiply(fdist*Math.tan(Math.toRadians(fov/2.0)))); //leftmost point that will be rendered
+                Point2D perpStep = perpDir.multiply(res*2*gridLeft.distance(gridPos)/screenWidth );
 
                 gridPos = gridLeft;
 
                 for(int x=0; x<screenWidth; x+=res){
+                    //cell position
                     int cx = (int)gridPos.getX(), cy = (int)gridPos.getY();
-                    if(cx<0 ||cy<0 || cx>level.width || cy>level.height)
+                    
+                    if( !(cx<0 || cy<0 || cx>level.width || cy>level.height) && !level.isWall(cx, cy))
                     {
-                    }
-                    else
-                    {
-                        if(!level.isWall(cx, cy))
-                        {
                         Image texture = level.getCellTexture(cx, cy);
                         int tx = (int)(texture.getWidth() *(Math.abs(gridPos.getX()%1.0)));
                         int ty = (int)(texture.getHeight()*(Math.abs(gridPos.getY()%1.0)));
-                        gc.drawImage(texture, tx, ty, 1, 1, x, y, res, res);
-                        }
+                        
+                        int h = res;
+                        if(!env.hasSky())h = (int)(2*y-screenHeight);
+                        
+                        gc.drawImage(texture, tx, ty, 1, 1, x, y, res, h);
+                        
                     }
                     gridPos = gridPos.add(perpStep);
                 }
             }
             
-            y+=res;
         }
         
         
@@ -346,6 +344,7 @@ public class Renderer {
 
     //draws the line representing a slice of a wall
     private static void drawWallLine(int r, HitPoint hPoint){
+        
         Point2D toWall = hPoint.subtract(player.getPosition());
         double camA = Math.toRadians(player.getRotation());
         Point2D dir = new Point2D( Math.cos(camA), Math.sin(camA) );
@@ -355,27 +354,30 @@ public class Renderer {
         
         double height = screenHeight/distance;
         
-        double lineBottom = ((screenHeight-height)/2.0)+height;
+        double lineBottom = screenHeight*(0.5*(1 + 1/distance));
+        
         int x = r*res;
         
-        if(hPoint.getType()=='f'   || distance> env.getFogFarDistance() )
+        if(hPoint.getType()=='f' || distance> env.getFogFarDistance() )
         {
             gc.setFill(env.getFogColor());
             gc.fillRect(x, lineBottom, res, -height*env.getWallHeight());
-        }else{
+        }
+        else{
             Image texture = Game.getCurrentLevel().getCellTexture(hPoint.getXIndex(), hPoint.getYIndex());
-            int tx = 0;
+            int tx = 0; //x position on the texture
             switch(hPoint.getType()){
                 case('h'): tx = (int)(texture.getWidth()*(1.0-hPoint.getX()%1)); break;
                 case('v'): tx = (int)(texture.getWidth()*(1.0-hPoint.getY()%1)); break;
             }
-            
-            gc.drawImage(texture, tx, texture.getHeight(), 1, -texture.getHeight(), x, lineBottom, res, -height  *env.getWallHeight() );
+            //draws from the bottom to the height of the wall
+            gc.drawImage(texture, tx, texture.getHeight(), 1, -texture.getHeight(), x, lineBottom, res, -height*env.getWallHeight() );
         }
         
     }
 
     static class EntityDistanceComparator implements Comparator<SpriteEntity>{
+        //furthest first, closest last
         @Override
         public int compare(SpriteEntity o1, SpriteEntity o2) {
             Point2D cam = player.getPosition();
