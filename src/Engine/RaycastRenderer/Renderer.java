@@ -77,11 +77,17 @@ public class Renderer {
     
     //renders one frame
     public static void render(){
-        gc.clearRect(0, 0, screenWidth, screenHeight);
+        //gc.clearRect(0, 0, screenWidth, screenHeight);
         
         ArrayList<HitPoint> hPoints = getHitPoints();
         
-        renderFloorCeiling(hPoints);
+        //render floor/ceiling every other frame
+        if(other){
+            renderFloorCeiling(hPoints);
+            other = false; //remove this line to render every frame
+        }else{
+            other = true;
+        }
         renderWalls(hPoints);
         renderEntities(hPoints);
     }
@@ -227,7 +233,7 @@ public class Renderer {
         
         for(double y = screenHeight; y>lineBottom ; y-=res ) //for every horizontal line of pixels on the screen
         { 
-            double fdist = Math.abs( 0.5/ (((y+player.getHeight())/screenHeight) -0.5)  );
+            double fdist = Math.abs( 0.5/ (((y+screenHeight*(player.getHeight()-0.5))/screenHeight) -0.5)  );
             
             if(fdist<level.height && fdist<level.width  && fdist<env.getFogFarDistance() )
             {
