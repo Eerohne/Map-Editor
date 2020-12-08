@@ -35,7 +35,7 @@ public class GridController{
     double mouseX;
     double mouseY;
     
-    private int editingMode = 2; // 0: Editing Disabled | 1: Wall Placement | 2: Entity Placement
+    private int editingMode = 1; // 0: Editing Disabled | 1: Wall Placement | 2: Entity Placement
     
     double zoom = 1.0d;
 

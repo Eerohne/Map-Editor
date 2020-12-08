@@ -7,6 +7,8 @@ package Editor.Model.Profile;
 
 import Editor.Controller.GridController;
 import Editor.View.Grid.Grid;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.util.Map;
 import java.util.Objects;
@@ -29,12 +31,14 @@ public class MapProfile extends Profile{
     
     private Grid gridView;
     private GridController gc;
-    private WallProfile defaultWall;
+    public WallProfile defaultWall;
         
     private boolean mainMap;
     
     private Map<Integer, WallProfile> wallMap = new TreeMap<>();
     private Map<Integer, EntityProfile> entityMap = new TreeMap<>();
+    
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
     
 
     public MapProfile(String name, int gridWidth, int gridLength) {
@@ -49,6 +53,12 @@ public class MapProfile extends Profile{
         
         this.gc = new GridController(gridView);
         gc.setSelectedWallProfile(defaultWall);
+        
+        
+    }
+
+    public MapProfile(String name) {
+        super(name);
     }
     
     public MapProfile(File mapFile){
@@ -56,6 +66,9 @@ public class MapProfile extends Profile{
         
         //Implement Load Function
     }
+
+    
+    
     
     private static void setChildrenClipping(Pane pane) {
         Rectangle clip = new Rectangle();
@@ -111,10 +124,9 @@ public class MapProfile extends Profile{
 //    }
 //    
 //    
-    
-    public void save(){
-        //Save Method To Be Implemented
-    }
+   public void save(){
+        
+  }
     
     
     

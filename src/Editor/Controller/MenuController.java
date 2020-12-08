@@ -5,10 +5,18 @@
  */
 package Editor.Controller;
 
+import Editor.MapEditor;
+import Editor.Model.Profile.MapProfile;
 import Editor.View.New.NewEntityStage;
 import Editor.View.Menu.Entity.ExistingEntityStage;
 import Editor.View.Menu.TopMenu;
 import Engine.Core.Game;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +28,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
@@ -33,9 +44,13 @@ public class MenuController{
     private Menu help;
     private TopMenu menu;
     
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    
     
     
     public MenuController(TopMenu menu, Stage editorStage) {
+        
+        //this.map = new MapProfile("name", , 0), map.getGridView().getxLength());
         this.menu = menu;
         
         this.file = menu.getFile();
@@ -47,6 +62,13 @@ public class MenuController{
         List<MenuItem> fileItems = file.getItems();
         fileItems.get(fileItems.size()-1).setOnAction(e -> {
             editorStage.close();
+        });
+        fileItems.get(2).setOnAction((event) -> {
+            try {
+                save();
+            } catch (ParseException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         
         //Run Engine Event
@@ -78,5 +100,75 @@ public class MenuController{
                 Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        
+    }
+    
+    private void save() throws ParseException{
+        
+        FileReader reader = null;
+        try {
+            reader = new FileReader("grid.json"); 
+            FileWriter writer2 = new FileWriter("grid.json");
+            File file = new File("grid.json");
+            JSONParser parser = new JSONParser();
+            JSONObject savefileObj = new JSONObject(); 
+            JSONArray palette = new JSONArray();
+            
+            MapEditor.project.selectedMap.getGridView().getxLength();
+            
+            if(file.length() != 0){
+                savefileObj = (JSONObject) parser.parse(reader);
+            }
+            
+            JSONObject grid = new JSONObject();
+            grid.put("width", Integer.toString(MapEditor.project.selectedMap.getGridView().getxLength()));
+            grid.put("height", Integer.toString(MapEditor.project.selectedMap.getGridView().getyLength()));
+            JSONArray cellsArray = new JSONArray();
+            int maxValue = 0;
+            
+            for(int i = 0; i< MapEditor.project.selectedMap.getGridView().cells.length; i++){
+                JSONArray array = new JSONArray();
+                for(int j = 0; j < MapEditor.project.selectedMap.getGridView().cells[i].length; j++){
+                    array.add(MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID());
+                    if(MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID() > maxValue){
+                        maxValue = MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID();
+                    }
+                }
+                cellsArray.add(array);
+            }
+            grid.put("data", cellsArray);
+            
+            for(int i = 1; i <= maxValue; i++){
+                JSONObject paletteObj = new JSONObject();
+                
+                paletteObj.put("flag", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getFlag()));
+                paletteObj.put("id", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getID()));
+                paletteObj.put("image name", MapEditor.project.selectedMap.getWallMap().get(i).getImageName());
+                
+                palette.add(paletteObj);
+                
+            }
+            
+            grid.put("palette", palette);
+            
+            savefileObj.put("grid", grid);
+            
+            FileWriter writer = new FileWriter("grid.json");
+            gson.toJson(savefileObj, writer);
+            writer.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
+        
     }
 }
