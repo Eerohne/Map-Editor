@@ -46,7 +46,7 @@ public class MapEditor extends Application {
     ShortcutBar shortcuts; //Shortcut Bar for some menu items
     Info info; //Displays some useful information about the interaction with the Editor
     
-    EntityHierarchy entityHierarchy; //Hierarchy of Entities
+    static EntityHierarchy entityHierarchy; //Hierarchy of Entities
     WallHierarchy wallHierarchy; // Hierarchy of Walls
     MapHierarchy mapHierarchy; //Hierarchy of Maps
     
@@ -123,6 +123,7 @@ public class MapEditor extends Application {
             
             if (ProjectProfile.openProject(projectName)) {
                 wallHierarchy.setMapProfile(project.getSelectedMap());
+                entityHierarchy.setMapProfile(project.getSelectedMap());
                 mapHierarchy.setProject(project);
                 this.grid = project.getSelectedMap().getGridView();
                 gridDisplay.setCenter(grid);
@@ -236,5 +237,9 @@ public class MapEditor extends Application {
     private static void refreshDataView(){
         dataPane.setContent(metadataContent);
         metadataContent.reset();
+    }
+    
+    public static EntityHierarchy getEntityHierarchy(){
+        return entityHierarchy;
     }
 }

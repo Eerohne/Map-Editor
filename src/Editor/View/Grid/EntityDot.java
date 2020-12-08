@@ -31,9 +31,26 @@ public class EntityDot extends Circle{
     }
     
     public EntityDot(EntityProfile ep, double centerX, double centerY, double radius){
-        this(ep.getID(), ep.getColor(), centerX, centerY, radius);
+        this(ep.getID(), Color.BEIGE, centerX, centerY, radius);
+    }
+    
+    public EntityDot(Color c){
+        super();
+        
+        this.color = c;
+        this.setFill(color);
     }
 
+    public void initialize(double centerX, double centerY, double radius){
+        this.setCenterX(centerX);
+        this.setCenterY(centerY);
+        this.setRadius(radius);
+    }
+    
+    public Color getColor() {
+        return this.color;
+    }
+    
     public void setColor(Color color) {
         this.color = color;
         this.setFill(color);

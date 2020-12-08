@@ -25,6 +25,9 @@ public class GridController{
     //Objects to be controlled
     Grid grid;
     
+    //EntityDot ed = new EntityDot(Color.CYAN);
+
+    
     private Profile selectedProfile;
 
     //Grid Panning Vector Variables
@@ -183,7 +186,7 @@ public class GridController{
     }
     
     public EntityProfile getSelectedEntityProfile() {
-        this.selectedProfile  = new EntityProfile("Test", 1);//To remove
+        //this.selectedProfile  = new EntityProfile("Test", 1);//To remove
         return (EntityProfile)selectedProfile;
     }
 
@@ -233,13 +236,13 @@ public class GridController{
     private void placeEntity(){
         try {
             if(!(mouseX < 0 || mouseY < 0 || mouseX > getPaneBounds().getMaxX() || mouseY > getPaneBounds().getMaxY())){
-                EntityDot ed = new EntityDot(getSelectedEntityProfile(), (mouseX - dotX)/dot.getScaleObject().getX(), (mouseY - dotY)/dot.getScaleObject().getX(), 10);
-                ed.setScaleObject(dot.getScaleObject());
-                ed.setTranslationObject(dot.getTranslationObject());
-                System.out.println(dot.getCenterX());
-                
-                grid.getEntities().add(ed);
-                grid.getChildren().add(ed);
+                EntityDot ed = getSelectedEntityProfile().getDot();
+                ed.initialize((mouseX - dotX)/dot.getScaleObject().getX(), (mouseY - dotY)/dot.getScaleObject().getX(), 10);
+//                ed.setScaleObject(dot.getScaleObject());
+//                ed.setTranslationObject(dot.getTranslationObject());
+//
+//                grid.getEntities().add(ed);
+//                grid.getChildren().add(ed);
             }
         } catch(Exception e){
             System.out.println("Entity : " + e);
@@ -290,9 +293,19 @@ public class GridController{
         int wallId = wp.getID();
         this.setImg(cell, wallId);
     }
+    
     public void setImg(Cell cell, int paletteID){
         cell.setID(paletteID);
         cell.setTexture(new ImagePattern(((WallProfile)selectedProfile).getImage()));
+    }
+    
+    public void setupDot(EntityDot newDot){
+        newDot.initialize(0, 0, 1);
+        newDot.setScaleObject(dot.getScaleObject());
+        newDot.setTranslationObject(dot.getTranslationObject());
+
+        grid.getEntities().add(newDot);
+        grid.getChildren().add(newDot);
     }
 }
 

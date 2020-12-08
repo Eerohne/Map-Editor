@@ -5,6 +5,7 @@
  */
 package Editor.Model.Profile;
 
+import Editor.View.Grid.EntityDot;
 import javafx.scene.paint.Color;
 
 /**
@@ -12,17 +13,19 @@ import javafx.scene.paint.Color;
  * @author A
  */
 public class EntityProfile extends Profile{
-    private Color color;
     private int id;
+    private EntityDot dot;
     
     public EntityProfile(String name, int id) {
         super(name);
         int r = (int)((0.5 + Math.random()*0.5)*255);
         int g = (int)((0.5 + Math.random()*0.5)*255);
         int b = (int)((0.5 - Math.random()*0.5)*255);
-        this.color = Color.rgb(r, g, b);
-        //this.color = this.color.brighter();
+        //Color.rgb(r, g, b);
+
         this.id = id;
+        
+        this.dot = new EntityDot(Color.rgb(r, g, b));
     }
 
     public int getID() {
@@ -33,11 +36,11 @@ public class EntityProfile extends Profile{
         this.id = id;
     }
 
-    public Color getColor() {
-        return color;
+    public EntityDot getDot() {
+        return dot;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setDot(EntityDot dot) {
+        this.dot = dot;
     }
 }

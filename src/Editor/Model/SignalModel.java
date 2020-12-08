@@ -66,7 +66,4 @@ public class SignalModel {
     public String toString() {
         return name + ", " + targetname + ", " + inputname + ", " + Arrays.deepToString(arguments);
     }
-    
-    
-    
 }

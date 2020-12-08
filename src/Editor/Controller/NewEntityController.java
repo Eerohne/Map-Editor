@@ -5,6 +5,7 @@
  */
 package Editor.Controller;
 
+import Editor.MapEditor;
 import Editor.Model.EntityModel;
 import Editor.View.Menu.Entity.ExistingEntityModification;
 import Editor.View.Menu.Entity.ExistingEntityStage;
@@ -24,6 +25,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
  
 import org.json.simple.JSONArray;
@@ -76,7 +78,6 @@ public class NewEntityController{
             @Override
             public void handle(Event event) {
                 try {
-                    EntityModel.entityList.add(list);
                     export();
                 } catch (IOException ex) {
                     Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,11 +131,14 @@ public class NewEntityController{
         File newFile = new File("entities.json");
         JSONObject data = new JSONObject();
         FileWriter writer = new FileWriter("entities.json", true);
+        MapEditor.project.getSelectedMap().createEntityProfile(view.nameTf.getText());
+        MapEditor.getEntityHierarchy().refresh();
         
         // create or write to the entities.json if no entities exist
         if(newFile.length() == 0 || !newFile.exists()){
             data.put("classname", view.classNameTf.getText());
             data.put("name", view.nameTf.getText());
+
             
             for(int i = 0; i < list.size(); i++){
                 data.put(list.get(i).getProperty(), list.get(i).getValue());
