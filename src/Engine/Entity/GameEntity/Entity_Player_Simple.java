@@ -36,7 +36,7 @@ public class Entity_Player_Simple extends Entity_Player{
     
     private Label label;
     private float headBobTime;
-    private float headBobRange = 10;
+    private float headBobRange = 0.2f;
     private float headBobFrequency = 10;
     private double footstepDistance = 1.0;
     
@@ -93,10 +93,10 @@ public class Entity_Player_Simple extends Entity_Player{
 
             if(Input.keyPressed(KeyCode.SHIFT)){
                 playerSpeed = runSpeed;
-                headBobFrequency = 10*(runSpeed/walkSpeed);
+                headBobFrequency = 1*(runSpeed/walkSpeed);
             }else{
                 playerSpeed = walkSpeed;
-                headBobFrequency = 10;
+                headBobFrequency = 1;
             }
         }
         
