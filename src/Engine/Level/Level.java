@@ -169,7 +169,7 @@ public class Level {
         
         for(SphereCollider col : colliders.values())
         {
-            System.out.println("col");
+            //System.out.println("col");
             Point2D collisionVector = col.collide(position, newDirection, radius);
             if(collisionVector != null)
                 newDirection = collisionVector;

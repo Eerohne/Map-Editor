@@ -60,7 +60,11 @@ public class Game extends Application{
         }
         catch(Exception e)
         {
-            System.out.println("Engine level exception!");
+            isRunning = false;
+            isRendering = false;
+            isPaused = false;
+            errorMessage.set("Engine initialisation exception : \n- "+e.getMessage()+" -");
+            getWindowManager().setErrorMessageVisibility(true);
         }
         anim = new AnimationTimer() { //Game main loop
 
@@ -110,7 +114,6 @@ public class Game extends Application{
                     gameStage.close();
                     System.gc();}
         );
-        System.out.println("here");
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -125,7 +128,7 @@ public class Game extends Application{
         
         //temporary very ugly code to set the renderer
         Renderer.setFov(Settings.getFloat("r_fov"));
-        Renderer.setResolution(3);
+        Renderer.setResolution(5);
         
         //load .css style
         String pathName = Settings.get("e_stylepath");
@@ -137,7 +140,7 @@ public class Game extends Application{
         Input.init();
         SoundManager.init();
         Time.init();
-        
+        System.out.println("here");
         //now load the initial level
         loadLevel(Settings.get("e_initiallevel"));
         
