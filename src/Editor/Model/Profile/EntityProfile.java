@@ -36,16 +36,6 @@ public class EntityProfile extends Profile{
         this.id = id;
     }
 
-    
-    
-//    public Color getColor() {
-//        return color;
-//    }
-//
-//    public void setColor(Color color) {
-//        this.color = color;
-//    }
-
     public EntityDot getDot() {
         return dot;
     }

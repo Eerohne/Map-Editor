@@ -215,6 +215,10 @@ public class MapProfile extends Profile{
     public Map<Integer, WallProfile> getWallMap() {
         return wallMap;
     }
+    
+    public Map<Integer, EntityProfile> getEntityMap() {
+        return entityMap;
+    }
 
     public boolean isMainMap() {
         return mainMap;

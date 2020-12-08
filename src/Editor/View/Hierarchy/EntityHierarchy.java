@@ -5,30 +5,24 @@
  */
 package Editor.View.Hierarchy;
 
-import Editor.Model.EntityModel;
+import Editor.MapEditor;
 import Editor.Model.Profile.EntityProfile;
-import Editor.View.Metadata.DataView;
-import java.util.ArrayList;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import Editor.Model.Profile.MapProfile;
+import Editor.View.Metadata.EntityContent;
+import Editor.Controller.ProfileController.EntityController;
+import java.util.Map;
 import javafx.geometry.Insets;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
 
 /**
  *
  * @author A
  */
 public class EntityHierarchy extends Hierarchy{
-    private EntityProfile profile;
+    private MapProfile map;
     
     public EntityHierarchy() {
         super(null);
@@ -37,10 +31,45 @@ public class EntityHierarchy extends Hierarchy{
     @Override
     public void refresh() {
         //TODO
+        list.getChildren().clear();
+        
+        for (Map.Entry<Integer, EntityProfile> entry : map.getEntityMap().entrySet()) {
+            HBox item = new HBox(10);
+            item.setPadding(new Insets(25));
+            Label name = new Label(entry.getValue().getName());
+            
+            Circle ec = new Circle(32, entry.getValue().getDot().getColor());
+
+            item.setOnMouseClicked(e -> {
+                select(item);
+                EntityProfile ep = entry.getValue();
+                EntityContent eContent = new EntityContent(ep);
+                EntityController wc = new EntityController(eContent, map);
+                MapEditor.setDataView(eContent);
+
+                if(e.getButton().equals(MouseButton.PRIMARY)){
+                    map.getGc().setSelectedEntityProfile(entry.getValue());
+                }
+            });
+            item.getChildren().addAll(ec, name);
+            
+      
+            list.setFillWidth(true);
+            list.getChildren().add(item);
+        }
     }
 
-    public void setEntityProfile(EntityProfile profile) {
-        this.profile = profile;
+    
+    public MapProfile getMapProfile(){
+        return map;
     }
+    
+    public void setMapProfile(MapProfile map){
+        this.map = map;
+        this.refresh();
+    }
+//    public void setEntityProfile(EntityProfile profile) {
+//        this.profile = profile;
+//    }
     
 }

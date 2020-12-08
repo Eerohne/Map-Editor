@@ -132,6 +132,7 @@ public class NewEntityController{
         JSONObject data = new JSONObject();
         FileWriter writer = new FileWriter("entities.json", true);
         MapEditor.project.getSelectedMap().createEntityProfile(view.nameTf.getText());
+        MapEditor.getEntityHierarchy().refresh();
         
         // create or write to the entities.json if no entities exist
         if(newFile.length() == 0 || !newFile.exists()){

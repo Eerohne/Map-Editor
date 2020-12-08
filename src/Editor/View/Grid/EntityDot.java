@@ -47,6 +47,10 @@ public class EntityDot extends Circle{
         this.setRadius(radius);
     }
     
+    public Color getColor() {
+        return this.color;
+    }
+    
     public void setColor(Color color) {
         this.color = color;
         this.setFill(color);
