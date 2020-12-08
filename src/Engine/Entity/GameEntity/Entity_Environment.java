@@ -5,6 +5,7 @@
  */
 package Engine.Entity.GameEntity;
 
+import Engine.Core.Exceptions.EntityCreationException;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.RaycastRenderer.Renderer;
 import java.util.HashMap;
@@ -29,29 +30,35 @@ public class Entity_Environment extends Entity{
     //walls
     private float wallHeight;
     
-    public Entity_Environment(HashMap<String, Object> propertyMap)
+    public Entity_Environment(HashMap<String, Object> propertyMap) throws EntityCreationException
     {
         super(propertyMap);
-        
-        //fog
-        this.foggy = Boolean.valueOf((String) propertyMap.get("foggy"));
-        JSONArray colorArray = (JSONArray) propertyMap.get("fogcolor");
-        this.fogColor = Color.color(
-                        (double) colorArray.get(0),
-                        (double) colorArray.get(1),
-                        (double) colorArray.get(2));
-        this.fogNearDistance = Float.valueOf((String) propertyMap.get("fog_near_distance"));
-        this.fogFarDistance = Float.valueOf((String) propertyMap.get("fog_far_distance"));
-        
-        //sky
-        this.hasSky = Boolean.valueOf((String) propertyMap.get("has_sky"));
-        JSONArray skyColorArray = (JSONArray) propertyMap.get("skycolor");
-        this.skyColor = Color.color(
-                        (double) skyColorArray.get(0),
-                        (double) skyColorArray.get(1),
-                        (double) skyColorArray.get(2));
-        //walls
-        this.wallHeight = Float.valueOf((String) propertyMap.get("wallheight"));
+        try{
+            //fog
+            this.foggy = Boolean.valueOf((String) propertyMap.get("foggy"));
+            JSONArray colorArray = (JSONArray) propertyMap.get("fogcolor");
+            this.fogColor = Color.color(
+                            (double) colorArray.get(0),
+                            (double) colorArray.get(1),
+                            (double) colorArray.get(2));
+            this.fogNearDistance = Float.valueOf((String) propertyMap.get("fog_near_distance"));
+            this.fogFarDistance = Float.valueOf((String) propertyMap.get("fog_far_distance"));
+
+            //sky
+            this.hasSky = Boolean.valueOf((String) propertyMap.get("has_sky"));
+            JSONArray skyColorArray = (JSONArray) propertyMap.get("skycolor");
+            this.skyColor = Color.color(
+                            (double) skyColorArray.get(0),
+                            (double) skyColorArray.get(1),
+                            (double) skyColorArray.get(2));
+            //walls
+            this.wallHeight = Float.valueOf((String) propertyMap.get("wallheight"));
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+            throw new EntityCreationException("could not initialize entity '"+this.name+"' with the given properties");
+        }
     }
     
     @Override
@@ -77,7 +84,7 @@ public class Entity_Environment extends Entity{
     
     //fog
     public boolean isFoggy(){ return foggy; }
-    public Color getFogColor(){ return Color.BLUE; }
+    public Color getFogColor(){ return fogColor; }
     public float getFogNearDistance(){ return fogNearDistance; }
     public float getFogFarDistance(){ return fogFarDistance; }
     
