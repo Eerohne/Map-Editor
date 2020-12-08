@@ -37,7 +37,7 @@ public class NewEntity extends GridPane{
     public Button addBtn = new Button("add row");
     public Button deleteBtn = new Button("delete selected row");
     public Button exportBtn = new Button("export");
-    public Button newEntityBtn = new Button("create new entity");
+    //public Button newEntityBtn = new Button("create new entity");
     public Button switchBtn = new Button("open entity editting window");
     public Button signalBtn = new Button("create signal");
     public Button viewSignal = new Button("view signals");
@@ -84,7 +84,7 @@ public class NewEntity extends GridPane{
         vbox.getChildren().add(deleteBtn);
         vbox.getChildren().add(signalBtn);
         vbox.getChildren().add(exportBtn);
-        vbox.getChildren().add(newEntityBtn);
+        //vbox.getChildren().add(newEntityBtn);
         vbox.getChildren().add(switchBtn);
         vbox.getChildren().add(viewSignal);
         

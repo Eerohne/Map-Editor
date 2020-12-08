@@ -7,6 +7,14 @@ import Editor.View.Grid.Cell;
 import Editor.View.Grid.EntityDot;
 import Editor.View.Grid.Grid;
 import Editor.View.Info;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
@@ -16,6 +24,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -36,7 +48,7 @@ public class GridController{
     double mouseX;
     double mouseY;
     
-    private int editingMode = 2; // 0: Editing Disabled | 1: Wall Placement | 2: Entity Placement
+    private int editingMode = 1; // 0: Editing Disabled | 1: Wall Placement | 2: Entity Placement
     
     double zoom = 1.0d;
 
@@ -306,6 +318,51 @@ public class GridController{
 
         grid.getEntities().add(newDot);
         grid.getChildren().add(newDot);
+    }
+    
+    private void savePosition(String name, double x, double y){
+        
+        FileReader reader = null;
+        try {
+            JSONParser parser = new JSONParser();
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            reader = new FileReader("savefile.json");
+            JSONObject savefile = (JSONObject) parser.parse(reader);
+            JSONArray entities = (JSONArray) savefile.get("entities");
+            JSONObject currentEntity = new JSONObject();
+            JSONArray position = new JSONArray();
+            int counter = 0;
+            position.add(x);
+            position.add(y);
+            
+            for(int i = 0; i < entities.size(); i++){
+                currentEntity = (JSONObject) entities.get(i);
+                if(currentEntity.get("name").equals(name)){
+                    currentEntity.put("position", position);
+                    counter++;
+                }
+            }
+            
+            entities.set(counter, currentEntity);
+            savefile.put("entities", entities);
+            
+            FileWriter writer = new FileWriter("savefile.json");
+            gson.toJson(savefile, writer);
+            writer.close();
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }
 

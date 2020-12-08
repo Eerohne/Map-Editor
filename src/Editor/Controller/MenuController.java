@@ -6,7 +6,6 @@
 package Editor.Controller;
 
 import Editor.MapEditor;
-import Editor.Model.Profile.MapProfile;
 import Editor.View.New.NewEntityStage;
 import Editor.View.Menu.Entity.ExistingEntityStage;
 import Editor.View.Menu.TopMenu;
@@ -18,13 +17,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
@@ -105,57 +101,132 @@ public class MenuController{
     
     private void save() throws ParseException{
         
+        JSONObject grid = new JSONObject();
         FileReader reader = null;
         try {
-            reader = new FileReader("grid.json"); 
-            FileWriter writer2 = new FileWriter("grid.json");
-            File file = new File("grid.json");
+            reader = new FileReader("savefile.json"); 
+            //FileWriter writer2 = new FileWriter("savefile.json");
+            File file = new File("savefile.json");
             JSONParser parser = new JSONParser();
             JSONObject savefileObj = new JSONObject(); 
             JSONArray palette = new JSONArray();
             
-            MapEditor.project.selectedMap.getGridView().getxLength();
-            
-            if(file.length() != 0){
-                savefileObj = (JSONObject) parser.parse(reader);
-            }
-            
-            JSONObject grid = new JSONObject();
-            grid.put("width", Integer.toString(MapEditor.project.selectedMap.getGridView().getxLength()));
-            grid.put("height", Integer.toString(MapEditor.project.selectedMap.getGridView().getyLength()));
-            JSONArray cellsArray = new JSONArray();
-            int maxValue = 0;
-            
-            for(int i = 0; i< MapEditor.project.selectedMap.getGridView().cells.length; i++){
-                JSONArray array = new JSONArray();
-                for(int j = 0; j < MapEditor.project.selectedMap.getGridView().cells[i].length; j++){
-                    array.add(MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID());
-                    if(MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID() > maxValue){
-                        maxValue = MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID();
+            if(file.length() == 0 || !file.exists()){
+                //savefileObj = (JSONObject) parser.parse(reader);
+                grid.put("width", Integer.toString(MapEditor.project.selectedMap.getGridView().getxLength()));
+                grid.put("height", Integer.toString(MapEditor.project.selectedMap.getGridView().getyLength()));
+                JSONArray cellsArray = new JSONArray();
+                int maxValue = 0;
+
+                for(int i = 0; i< MapEditor.project.selectedMap.getGridView().cells.length; i++){
+                    JSONArray array = new JSONArray();
+                    for(int j = 0; j < MapEditor.project.selectedMap.getGridView().cells[i].length; j++){
+                        array.add(MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID());
+                        if(MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID() > maxValue){
+                            maxValue = MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID();
+                        }
                     }
+                    cellsArray.add(array);
                 }
-                cellsArray.add(array);
+                grid.put("data", cellsArray);
+
+                for(int i = 1; i <= maxValue; i++){
+                    JSONObject paletteObj = new JSONObject();
+
+                    paletteObj.put("flag", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getFlag()));
+                    paletteObj.put("id", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getID()));
+                    paletteObj.put("texture", "images/textures/" + MapEditor.project.selectedMap.getWallMap().get(i).getImageName());
+
+                    palette.add(paletteObj);
+
+                }
+
+                grid.put("palette", palette);
+
+                savefileObj.put("grid", grid);
+                FileWriter writer = new FileWriter("savefile.json");
+                gson.toJson(savefileObj, writer);
+                writer.close();
             }
-            grid.put("data", cellsArray);
-            
-            for(int i = 1; i <= maxValue; i++){
-                JSONObject paletteObj = new JSONObject();
-                
-                paletteObj.put("flag", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getFlag()));
-                paletteObj.put("id", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getID()));
-                paletteObj.put("image name", "images/textures/" + MapEditor.project.selectedMap.getWallMap().get(i).getImageName());
-                
-                palette.add(paletteObj);
-                
+            else{
+                savefileObj = (JSONObject) parser.parse(reader);
+                if(savefileObj.containsKey("grid")){
+                    
+                    grid = (JSONObject) savefileObj.get("grid");
+                    grid.put("width", Integer.toString(MapEditor.project.selectedMap.getGridView().getxLength()));
+                    grid.put("height", Integer.toString(MapEditor.project.selectedMap.getGridView().getyLength()));
+                    JSONArray cellsArray = new JSONArray();
+                    int maxValue = 0;
+
+                    for(int i = 0; i< MapEditor.project.selectedMap.getGridView().cells.length; i++){
+                        JSONArray array = new JSONArray();
+                        for(int j = 0; j < MapEditor.project.selectedMap.getGridView().cells[i].length; j++){
+                            array.add(MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID());
+                            if(MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID() > maxValue){
+                                maxValue = MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID();
+                            }
+                        }
+                        cellsArray.add(array);
+                    }
+                    grid.put("data", cellsArray);
+
+                    for(int i = 1; i <= maxValue; i++){
+                        JSONObject paletteObj = new JSONObject();
+
+                        paletteObj.put("flag", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getFlag()));
+                        paletteObj.put("id", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getID()));
+                        paletteObj.put("texture", "images/textures/" + MapEditor.project.selectedMap.getWallMap().get(i).getImageName());
+
+                        palette.add(paletteObj);
+
+                    }
+
+                    grid.put("palette", palette);
+                    savefileObj.put("grid", grid);
+                    FileWriter writer = new FileWriter("savefile.json");
+                    gson.toJson(savefileObj, writer);
+                    writer.close();
+                }
+                else{
+                    grid.put("width", Integer.toString(MapEditor.project.selectedMap.getGridView().getxLength()));
+                    grid.put("height", Integer.toString(MapEditor.project.selectedMap.getGridView().getyLength()));
+                    JSONArray cellsArray = new JSONArray();
+                    int maxValue = 0;
+
+                    for(int i = 0; i< MapEditor.project.selectedMap.getGridView().cells.length; i++){
+                        JSONArray array = new JSONArray();
+                        for(int j = 0; j < MapEditor.project.selectedMap.getGridView().cells[i].length; j++){
+                            array.add(MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID());
+                            if(MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID() > maxValue){
+                                maxValue = MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID();
+                            }
+                        }
+                        cellsArray.add(array);
+                    }
+                    grid.put("data", cellsArray);
+
+                    for(int i = 1; i <= maxValue; i++){
+                        JSONObject paletteObj = new JSONObject();
+
+                        paletteObj.put("flag", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getFlag()));
+                        paletteObj.put("id", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getID()));
+                        paletteObj.put("texture", "images/textures/" + MapEditor.project.selectedMap.getWallMap().get(i).getImageName());
+
+                        palette.add(paletteObj);
+
+                    }
+
+                    grid.put("palette", palette);
+
+                    savefileObj.put("grid", grid);
+
+                    FileWriter writer = new FileWriter("savefile.json");
+                    gson.toJson(savefileObj, writer);
+                    writer.close();
+                }
             }
             
-            grid.put("palette", palette);
             
-            savefileObj.put("grid", grid);
-            
-            FileWriter writer = new FileWriter("grid.json");
-            gson.toJson(savefileObj, writer);
-            writer.close();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -168,7 +239,7 @@ public class MenuController{
             }
         }
         
-        
-        
     }
+    
+    
 }

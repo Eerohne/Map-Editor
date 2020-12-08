@@ -1,0 +1,280 @@
+{
+  "entities": [
+    {
+      "231": "23123",
+      "classname": "123",
+      "name": "1231",
+      "position": [
+        10.0,
+        10.0
+      ]
+    },
+    {
+      "123": "123",
+      "classname": "123",
+      "name": "positiontest4",
+      "position": [
+        10.0,
+        10.0
+      ],
+      "signal": [
+        {
+          "targetname": "1231",
+          "name": "123",
+          "arguments": [
+            "23"
+          ],
+          "inputname": "231"
+        },
+        {
+          "targetname": "123",
+          "name": "123",
+          "arguments": [
+            "123"
+          ],
+          "inputname": "123"
+        }
+      ]
+    },
+    {
+      "123": "123",
+      "classname": "123",
+      "name": "positiontest4",
+      "position": [
+        10.0,
+        10.0
+      ],
+      "signal": [
+        {
+          "targetname": "1231",
+          "name": "123",
+          "arguments": [
+            "23"
+          ],
+          "inputname": "231"
+        },
+        {
+          "targetname": "123",
+          "name": "123",
+          "arguments": [
+            "123"
+          ],
+          "inputname": "123"
+        }
+      ]
+    },
+    {
+      "classname": "class",
+      "name": "positiontest",
+      "position": [
+        10.0,
+        10.0
+      ],
+      "pro": "val"
+    },
+    {
+      "classname": "werew",
+      "qdw": "edwedew",
+      "name": "positiontest2",
+      "position": [
+        10.0,
+        10.0
+      ],
+      "signal": [
+        {
+          "targetname": "recq",
+          "name": "wefwdcrec",
+          "arguments": [
+            "ececeqerc"
+          ],
+          "inputname": "erc"
+        },
+        {
+          "targetname": "erc",
+          "name": "cwcwerc",
+          "arguments": [
+            "rec"
+          ],
+          "inputname": "rec"
+        }
+      ]
+    },
+    {
+      "wedewd": "ewdewecr",
+      "classname": "wdewdewd",
+      "name": "positiontest3",
+      "signal": [
+        {
+          "targetname": "rec",
+          "name": "wexexcewcc",
+          "arguments": [
+            "ERCCERC"
+          ],
+          "inputname": "ERC"
+        },
+        {
+          "targetname": "wec",
+          "name": "scec",
+          "arguments": [
+            "wecwec"
+          ],
+          "inputname": "ewc"
+        }
+      ]
+    },
+    {
+      "123": "123",
+      "classname": "123",
+      "name": "positiontest4",
+      "position": [
+        10.0,
+        10.0
+      ],
+      "signal": [
+        {
+          "targetname": "1231",
+          "name": "123",
+          "arguments": [
+            "23"
+          ],
+          "inputname": "231"
+        },
+        {
+          "targetname": "123",
+          "name": "123",
+          "arguments": [
+            "123"
+          ],
+          "inputname": "123"
+        }
+      ]
+    }
+  ],
+  "grid": {
+    "data": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "width": "10",
+    "palette": [],
+    "height": "10"
+  }
+}
