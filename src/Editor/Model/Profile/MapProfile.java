@@ -92,11 +92,12 @@ public class MapProfile extends Profile{
         return wall;
     }
     
-    public EntityProfile createEntityProfile(String name, Color color){
+    public EntityProfile createEntityProfile(String name){
         EntityProfile entity = new EntityProfile(name, entityCounter);
         this.entityMap.put(entityCounter, entity);
         entityCounter++;
         this.gc.setSelectedEntityProfile(entity);
+        this.gc.setupDot(entity.getDot());
         return entity;
     }
     

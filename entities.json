@@ -94,6 +94,71 @@
       "proper": "values",
       "PRO": "VAL",
       "signal": []
+    },
+    {
+      "classname": "test",
+      "name": "new",
+      "entity": "new"
+    },
+    {
+      "a": "b",
+      "classname": "yes",
+      "name": "test"
+    },
+    {
+      "a": "b",
+      "classname": "test",
+      "name": "bane"
+    },
+    {
+      "a": "b",
+      "classname": "test",
+      "name": "bane"
+    },
+    {
+      "a": "b",
+      "classname": "test",
+      "name": "bane"
+    },
+    {
+      "b": "c",
+      "classname": "test2",
+      "name": "a"
+    },
+    {
+      "b": "c",
+      "classname": "test2",
+      "name": "a"
+    },
+    {
+      "b": "c",
+      "classname": "test2",
+      "name": "a"
+    },
+    {
+      "b": "c",
+      "classname": "test2",
+      "name": "a"
+    },
+    {
+      "b": "c",
+      "classname": "test2",
+      "name": "a"
+    },
+    {
+      "b": "c",
+      "classname": "test2",
+      "name": "a"
+    },
+    {
+      "b": "c",
+      "classname": "test",
+      "name": "a"
+    },
+    {
+      "a": "b",
+      "classname": "test1",
+      "name": "b"
     }
   ]
 }
