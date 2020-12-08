@@ -29,7 +29,7 @@ public abstract class Entity_Player extends Entity{
             if(propertyMap.containsKey("height"))
                 this.height = Float.parseFloat((String) propertyMap.get("height"));
             else
-                this.height = 0;
+                this.height = 0.5f;
         }
         catch(Exception e)
         {

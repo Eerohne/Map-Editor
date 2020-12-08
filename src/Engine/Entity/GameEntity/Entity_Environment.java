@@ -30,6 +30,17 @@ public class Entity_Environment extends Entity{
     //walls
     private float wallHeight;
     
+    public Entity_Environment()
+    {
+        super("environment", Point2D.ZERO);
+        foggy = false;
+        fogColor = Color.BLUE;
+        fogNearDistance = 1;
+        fogFarDistance = 20;
+        hasSky = true;
+        skyColor = Color.AQUA;
+        wallHeight=1;
+    }
     public Entity_Environment(HashMap<String, Object> propertyMap) throws EntityCreationException
     {
         super(propertyMap);

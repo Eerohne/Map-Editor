@@ -71,7 +71,7 @@
     "runspeed":"2.5",
     "rotationspeed":"10",
     "zfrequency":"1",
-    "zrange":"50"
+    "zrange":"0.4"
     },
     {
     "classname":"environment",
@@ -117,7 +117,7 @@
     "classname":"object_decor",
     "name":"skeleton",
     "active":"TRUE",
-    "position":[8.0,4.0],
+    "position":[8.5,4.0],
     "height":"0.2",
     "texture":"images/sprites/lamppost.png",
     "size":"0.5",

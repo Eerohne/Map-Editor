@@ -9,8 +9,10 @@ import Engine.Core.Exceptions.LevelCreationException;
 import Commons.SettingsManager.OrderedProperties;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Entity.EntityCreator;
+import Engine.Entity.GameEntity.Entity_Environment;
 import Engine.Level.Level;
 import Engine.Level.PaletteEntry;
+import Engine.RaycastRenderer.Renderer;
 import com.sun.scenario.Settings;
 import java.io.File;
 import java.io.FileInputStream;
@@ -160,6 +162,7 @@ public class ResourceLoader
             }
             
             //3) level entities
+            Renderer.setEnvironment(new Entity_Environment());
             JSONArray entityArray = (JSONArray) jsonObject.get("entities");
             Iterator<Object> entityIterator = entityArray.iterator();
             while (entityIterator.hasNext()) {
