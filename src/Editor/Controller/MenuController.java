@@ -143,7 +143,7 @@ public class MenuController{
                 
                 paletteObj.put("flag", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getFlag()));
                 paletteObj.put("id", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getID()));
-                paletteObj.put("image name", MapEditor.project.selectedMap.getWallMap().get(i).getImageName());
+                paletteObj.put("image name", "images/textures/" + MapEditor.project.selectedMap.getWallMap().get(i).getImageName());
                 
                 palette.add(paletteObj);
                 
