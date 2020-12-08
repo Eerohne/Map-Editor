@@ -146,16 +146,16 @@ public class ResourceLoader
                 
                 int id = Integer.valueOf((String)jsonEntry.get("id"));
                 
-                JSONArray colorArr = (JSONArray) jsonEntry.get("color");
+                /*JSONArray colorArr = (JSONArray) jsonEntry.get("color");
                 Color color = Color.color(
                         (double) colorArr.get(0),
                         (double) colorArr.get(1),
-                        (double) colorArr.get(2));
+                        (double) colorArr.get(2));*/
                 
                 Image texture = loadImage((String)jsonEntry.get("texture"));
                 int flag = Integer.valueOf((String)jsonEntry.get("flag"));
                 
-                PaletteEntry entry = new PaletteEntry(color, texture, flag);
+                PaletteEntry entry = new PaletteEntry(texture, flag);
                 level.putPaletteEntry(id, entry);
             }
             
@@ -184,6 +184,8 @@ public class ResourceLoader
             throw new LevelCreationException("level file '"+resourcePath + path+"' contains a parse error : \n"+ e.getMessage());
         } catch(ClassCastException e) {
             throw new LevelCreationException("level file '"+resourcePath + path+"' contains a property error : \n"+ e.getMessage());
+        } catch(NullPointerException e) {
+            throw new LevelCreationException("level file '"+resourcePath + path+"' throws null error when loading : \n"+ e.getMessage());
         }
         
         return level;

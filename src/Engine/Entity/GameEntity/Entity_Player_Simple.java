@@ -101,6 +101,7 @@ public class Entity_Player_Simple extends Entity_Player{
         }
         
             dir = Game.getCurrentLevel().checkCollision(position, dir, colisionRadius); //gets the final direction vector after colision detection
+            //dir = dir.normalize();
             dir = dir.multiply(playerSpeed * Time.deltaTime); //move the player in the calculated direction 
             position = position.add(dir);
             distanceTraveled += dir.magnitude();
@@ -113,7 +114,7 @@ public class Entity_Player_Simple extends Entity_Player{
             if(distanceTraveled > footstepDistance && true==true)
             {
                 int rnd = (int)(Time.timePassed%1 * (walkfootstepPaths.length));
-                this.footstepMediaPlayers[0].play();
+                this.footstepMediaPlayers[rnd].play();
                 distanceTraveled = 0;
                 //System.out.println("step "+rnd);
             }
