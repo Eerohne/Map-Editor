@@ -5,6 +5,8 @@
  */
 package Engine.Entity.GameEntity;
 
+import Engine.Entity.AbstractEntity.Entity_Sound;
+import Engine.Core.Exceptions.EntityCreationException;
 import Engine.Core.Sound.SoundManager;
 import Engine.Entity.AbstractEntity.Entity;
 import java.util.HashMap;
@@ -19,7 +21,7 @@ public class Entity_Sound_Ambient extends Entity_Sound{
     //variables here
     private int myVariable;
     
-    public Entity_Sound_Ambient(HashMap<String, Object> propertyMap)
+    public Entity_Sound_Ambient(HashMap<String, Object> propertyMap) throws EntityCreationException
     {
         super(propertyMap);
     }
@@ -27,6 +29,7 @@ public class Entity_Sound_Ambient extends Entity_Sound{
     @Override
     public void start() {
         //start logic here
+        playerVolume.set(0);
     }
 
     @Override

@@ -71,6 +71,7 @@ public class ResourceLoader
         }
         catch(IOException e)
         {
+            System.out.println("image at path '"+resourcePath+path+"' not found");
             if(error_imagePath != null)
                 return error_image;
             else
@@ -87,7 +88,7 @@ public class ResourceLoader
         }
         catch(Exception e)
         {
-            System.out.println(e);
+            System.out.println("sound at path '"+resourcePath +path+"' not found ");
         }
         return null;
     }
@@ -101,7 +102,7 @@ public class ResourceLoader
         }
         catch(IOException e)
         {
-            System.out.println("sound '"+path+"' not found");
+            System.out.println("style at path '"+path+"' not found");
         }
         return null;
     }

@@ -100,7 +100,7 @@
     "signals": []
     },
     {
-    "classname":"sprite_decor",
+    "classname":"object_decor",
     "name":"coin",
     "active":"TRUE",
     "position":[1.5,1.5],
@@ -110,7 +110,7 @@
     "signals": []
     },
     {
-    "classname":"sprite_decor",
+    "classname":"object_decor",
     "name":"lamppost",
     "active":"TRUE",
     "position":[1.7,1.5],
@@ -120,7 +120,7 @@
     "signals": []
     },
     {
-    "classname":"sprite_decor",
+    "classname":"object_decor",
     "name":"skeleton",
     "active":"TRUE",
     "position":[1.7,6.7],
@@ -130,7 +130,7 @@
     "signals": []
     },
     {
-    "classname":"sprite_decor",
+    "classname":"object_decor",
     "name":"radio",
     "active":"TRUE",
     "position":[1.7,7.0],
@@ -140,7 +140,7 @@
     "signals": []
     },
     {
-    "classname":"sprite_decor",
+    "classname":"object_decor",
     "name":"discoball",
     "active":"TRUE",
     "position":[1.7,7.0],
@@ -150,7 +150,7 @@
     "signals": []
     },
     {
-    "classname":"sprite_decor",
+    "classname":"object_decor",
     "name":"skeleton2",
     "active":"TRUE",
     "position":[1.6,7.3],
