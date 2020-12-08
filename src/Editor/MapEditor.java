@@ -60,7 +60,7 @@ public class MapEditor extends Application {
     
     static ScrollPane dataPane;
     
-    static ProjectProfile project; //Base project
+    public static ProjectProfile project; //Base project
 //    MapProfile currentMap = new MapProfile("Map", 10, 10); //Test Map -- To Be Removed
     
     /**
