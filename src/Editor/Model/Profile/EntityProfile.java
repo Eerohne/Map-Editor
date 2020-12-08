@@ -17,7 +17,11 @@ public class EntityProfile extends Profile{
     
     public EntityProfile(String name, int id) {
         super(name);
-        this.color = Color.rgb((int)(Math.random()*255), (int)(Math.random()*255), (int)(Math.random()*255));
+        int r = (int)((0.5 + Math.random()*0.5)*255);
+        int g = (int)((0.5 + Math.random()*0.5)*255);
+        int b = (int)((0.5 - Math.random()*0.5)*255);
+        this.color = Color.rgb(r, g, b);
+        //this.color = this.color.brighter();
         this.id = id;
     }
 

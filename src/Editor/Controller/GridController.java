@@ -33,7 +33,7 @@ public class GridController{
     double mouseX;
     double mouseY;
     
-    private int editingMode = 1; // 0: Editing Disabled | 1: Wall Placement | 2: Entity Placement
+    private int editingMode = 2; // 0: Editing Disabled | 1: Wall Placement | 2: Entity Placement
     
     double zoom = 1.0d;
 
@@ -47,9 +47,6 @@ public class GridController{
     public GridController(Grid grid) {
         //this.scene = scene;
         this.grid = grid;
-        
-//        dot.getScaleObject().setPivotX(grid.getCells()[0][0].getX());
-//        dot.getScaleObject().setPivotY(grid.getCells()[0][0].getY());
         
         
         //Grid Events
@@ -138,9 +135,6 @@ public class GridController{
                 dot.addTranslationVector(vector);
                 dotX += (mouseX - preMouseX);
                 dotY += (mouseY - preMouseY);
-//                for (EntityDot entity : grid.getEntities()) {
-//                    //entity.addTranslationVector(vector);
-//                }
                 
                 grid.getSelectionCell().addTranslationVector(vector);
             }
@@ -243,8 +237,6 @@ public class GridController{
                 ed.setScaleObject(dot.getScaleObject());
                 ed.setTranslationObject(dot.getTranslationObject());
                 System.out.println(dot.getCenterX());
-//                Translate t = new Translate(mouseX - ed.getCenterX(), mouseY - ed.getCenterY());
-//                ed.addTranslationVector(t);
                 
                 grid.getEntities().add(ed);
                 grid.getChildren().add(ed);
@@ -281,10 +273,6 @@ public class GridController{
         System.out.println("******************************************");
         this.dot.addScaleMatrix(scale);
         System.out.println(dot.getScaleObject());
-        for (EntityDot entity : grid.getEntities()) {
-            //entity.addScaleMatrix(scale);
-            System.out.println(entity.getScaleObject());
-        }
        
         grid.setEntityDotSize(10 * zoom);
         grid.getSelectionCell().addScaleMatrix(scale);
