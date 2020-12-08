@@ -38,12 +38,19 @@ public class GridController{
     double zoom = 1.0d;
 
     Cell hoverCell = new Cell(1);
-    EntityDot dot = new EntityDot(0, Color.BLACK, -10, -10, 1);
+    EntityDot dot = new EntityDot(0, Color.BLACK, 0, 0, 1);
     Info info = new Info();
+    
+    double dotX = 0;
+    double dotY = 0;
     
     public GridController(Grid grid) {
         //this.scene = scene;
         this.grid = grid;
+        
+//        dot.getScaleObject().setPivotX(grid.getCells()[0][0].getX());
+//        dot.getScaleObject().setPivotY(grid.getCells()[0][0].getY());
+        
         
         //Grid Events
         
@@ -127,9 +134,13 @@ public class GridController{
                     }
                 }
                 
-                for (EntityDot entity : grid.getEntities()) {
-                    entity.addTranslationVector(vector);
-                }
+                
+                dot.addTranslationVector(vector);
+                dotX += (mouseX - preMouseX);
+                dotY += (mouseY - preMouseY);
+//                for (EntityDot entity : grid.getEntities()) {
+//                    //entity.addTranslationVector(vector);
+//                }
                 
                 grid.getSelectionCell().addTranslationVector(vector);
             }
@@ -228,8 +239,13 @@ public class GridController{
     private void placeEntity(){
         try {
             if(!(mouseX < 0 || mouseY < 0 || mouseX > getPaneBounds().getMaxX() || mouseY > getPaneBounds().getMaxY())){
-                EntityDot ed = new EntityDot(getSelectedEntityProfile(), mouseX, mouseY, 10 * dot.getScaleObject().getX());
-                //ed.setScaleObject(dot.getScaleObject());
+                EntityDot ed = new EntityDot(getSelectedEntityProfile(), (mouseX - dotX)/dot.getScaleObject().getX(), (mouseY - dotY)/dot.getScaleObject().getX(), 10);
+                ed.setScaleObject(dot.getScaleObject());
+                ed.setTranslationObject(dot.getTranslationObject());
+                System.out.println(dot.getCenterX());
+//                Translate t = new Translate(mouseX - ed.getCenterX(), mouseY - ed.getCenterY());
+//                ed.addTranslationVector(t);
+                
                 grid.getEntities().add(ed);
                 grid.getChildren().add(ed);
             }
@@ -262,11 +278,14 @@ public class GridController{
             }
         }
         
+        System.out.println("******************************************");
         this.dot.addScaleMatrix(scale);
+        System.out.println(dot.getScaleObject());
         for (EntityDot entity : grid.getEntities()) {
-            entity.addScaleMatrix(scale);
+            //entity.addScaleMatrix(scale);
+            System.out.println(entity.getScaleObject());
         }
-        
+       
         grid.setEntityDotSize(10 * zoom);
         grid.getSelectionCell().addScaleMatrix(scale);
         

@@ -53,6 +53,12 @@ public class EntityDot extends Circle{
         this.getTransforms().addAll(tVector, sMatrix);
     }
     
+    public void setTranslationObject(Translate vector){
+        this.getTransforms().clear();
+        tVector = vector;
+        this.getTransforms().addAll(tVector, sMatrix);
+    }
+    
     public void addTranslationVector(Translate vector){
         double x = vector.getX() + tVector.getX();
         double y = vector.getY() + tVector.getY();
