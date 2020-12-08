@@ -105,7 +105,9 @@ public abstract class Entity_Sound extends Entity{
         switch(signalName) //new signals here
         {
             case "play":
-                mediaplayer.play();
+                if(!this.onlyOnce && !this.loop)
+                    mediaplayer.stop();
+                    mediaplayer.play();
                 break;
             case "pause":
                 this.mediaplayer.pause();

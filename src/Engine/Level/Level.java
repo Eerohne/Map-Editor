@@ -9,6 +9,7 @@ import Engine.Core.Collision.SphereCollider;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Entity.AbstractEntity.Entity_Player;
 import Engine.Util.RessourceManager.ResourceLoader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class Level {
     private int[][] levelData; //2d array with wall data
     private Map<Integer, PaletteEntry> palette; //Look-up table
     private Map<String, Entity> entities; //Entities stored by their name
+    private ArrayList<String> entityGarbage;
     private Map<String, SphereCollider> colliders; //Entities stored by their name
     
     
@@ -33,6 +35,7 @@ public class Level {
     public Level(){
         palette = new HashMap<Integer, PaletteEntry>();
         entities = new HashMap<String, Entity>();
+        entityGarbage = new ArrayList<>();
         colliders = new HashMap<String, SphereCollider>();
     }
     
@@ -206,7 +209,7 @@ public class Level {
     
     public void removeEntity(String entityName)
     {
-        entities.remove(entityName);
+        entityGarbage.add(entityName);
     }
     
     public void update() //update all entities. If this is the first update, call the entities start method instead to initialize them
@@ -223,6 +226,13 @@ public class Level {
             }
         }
         firstUpdate = false;
+        
+        //now clear the entity garbage
+        for(String name : entityGarbage)
+        {
+            entities.remove(name);
+        }
+        entityGarbage.clear();
     }
     
     public void addCollider(String name, SphereCollider collider)

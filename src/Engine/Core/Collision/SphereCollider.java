@@ -43,17 +43,19 @@ public class SphereCollider {
         Point2D pointVector = this.position.subtract(position);
             Point2D normalVector = new Point2D(pointVector.getY(), -pointVector.getX());
             double dot = normalVector.dotProduct(new Point2D(direction.getY(), -direction.getX()));
-            System.out.println("dot : "+dot);
-        if(intersect(position, radius))
-        {
+            //System.out.println("dot : "+dot);
+            
             int factor = 1;
             if(dot >0)
                 factor = 1;
             else
                 factor = -1;
-            System.out.println("normal : "+normalVector);
+            //System.out.println("factor : "+factor);
+        if(intersect(position, radius))
+        {
+            //System.out.println("normal : "+normalVector);
             Point2D projection = normalVector.multiply(position.dotProduct(normalVector)/normalVector.dotProduct(normalVector)).multiply(factor);
-            System.out.println("projected : "+projection.normalize());
+            //System.out.println("projected : "+projection.normalize());
             projection = projection.add(pointVector.multiply(-1*2).normalize());
             return projection.normalize();
         }

@@ -36,7 +36,9 @@ public class Entity_Object_Decor extends SpriteEntity{
     public void start() {
         //Sprite Entity start method
         super.start();
-        Game.getCurrentLevel().addCollider(this.name, col);
+        if(col.getRadius() >0){
+            Game.getCurrentLevel().addCollider(this.name, col);
+        }
     }
 
     @Override
@@ -49,12 +51,16 @@ public class Entity_Object_Decor extends SpriteEntity{
         switch(signalName) //new signals here
         {
             case "enable":
-                Game.getCurrentLevel().addCollider(this.name, col);
-                super.handleSignal(signalName, arguments);
+                if(col.getRadius() >0){
+                    Game.getCurrentLevel().addCollider(this.name, col);
+                    super.handleSignal(signalName, arguments);
+                }
                 break;
             case "disable":
-                Game.getCurrentLevel().removeCollider(this.name);
-                super.handleSignal(signalName, arguments);
+                if(col.getRadius() >0){
+                    Game.getCurrentLevel().removeCollider(this.name);
+                    super.handleSignal(signalName, arguments);
+                }
                 break;
             default:
                 super.handleSignal(signalName, arguments);

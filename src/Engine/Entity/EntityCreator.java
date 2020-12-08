@@ -82,6 +82,10 @@ public class EntityCreator { //Entity creation is defined in this class
                     if(verifyProperties(propertyMap, "texture", "size", "radius"))
                         entity = new Entity_Object_Decor(propertyMap);
                     break;
+                case "object_trigger":
+                    if(verifyProperties(propertyMap, "radius"))
+                        entity = new Entity_Object_Trigger(propertyMap);
+                    break;
                 case "ui_text":
                     if(verifyProperties(propertyMap, "text"))
                         entity = new Entity_Text(propertyMap);

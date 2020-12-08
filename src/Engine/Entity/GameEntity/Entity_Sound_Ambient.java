@@ -29,7 +29,8 @@ public class Entity_Sound_Ambient extends Entity_Sound{
     @Override
     public void start() {
         //start logic here
-        playerVolume.set(0);
+        if(this.loop)
+            playerVolume.set(0);
     }
 
     @Override

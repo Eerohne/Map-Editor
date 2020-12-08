@@ -40,7 +40,7 @@ public class Entity_Player_Simple extends Entity_Player{
     private float headBobFrequency = 10;
     private double footstepDistance = 1.0;
     
-    private String[] walkfootstepPaths = {"sounds/fx/footsteps_walk1.wav", "sounds/fx/footsteps_walk2.wav", "sounds/fx/footsteps_walk3.wav", "sounds/fx/footsteps_walk4.wav"};
+    private String[] walkfootstepPaths = {"sounds/fx/footsteps_walk1.wav", "sounds/fx/footsteps_walk3.wav", "sounds/fx/footsteps_walk4.wav"};
     private MediaPlayer[] footstepMediaPlayers;
     public double distanceTraveled=0;
     
@@ -116,7 +116,6 @@ public class Entity_Player_Simple extends Entity_Player{
                 int rnd = (int)(Time.timePassed%1 * (walkfootstepPaths.length));
                 this.footstepMediaPlayers[rnd].play();
                 distanceTraveled = 0;
-                //System.out.println("step "+rnd);
             }
             if(label != null)
                 label.setText(this.position.toString());

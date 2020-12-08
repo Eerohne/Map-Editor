@@ -5,64 +5,56 @@
  */
 package Engine.Entity.GameEntity;
 
-import Engine.Entity.AbstractEntity.Entity_Player;
 import Engine.Core.Collision.SphereCollider;
 import Engine.Core.Game;
-import Engine.Entity.AbstractEntity.SpriteEntity;
+import Engine.Entity.AbstractEntity.Entity;
+import Engine.Entity.AbstractEntity.Entity_Player;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
 
 /**
  *
  * @author child
  */
-public class Entity_Object_Collectible extends SpriteEntity{
+public class Entity_Object_Trigger extends Entity{
     
     private SphereCollider collider;
+    private boolean isInside;
+    
     private Entity_Player player;
     
-    public Entity_Object_Collectible(HashMap<String, Object> propertyMap)
+    public Entity_Object_Trigger(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
         
+        //parse property map here
         collider = new SphereCollider(this.position, Double.parseDouble((String) propertyMap.get("radius")), true);
+        this.isInside = false;
     }
     
     @Override
     public void start() {
-        //Sprite Entity start method
-        super.start();
         this.player = Game.getCurrentLevel().getPlayer();
     }
 
     @Override
     public void update() {
-        if(collider.inside(player.getPosition()))
+        if(collider.inside(player.getPosition()) && !isInside)
         {
-            this.collect();
+            this.fireSignal("OnTriggerEnter");
+            this.isInside = true;
         }
-    }
-    
-    public void collect()
-    {
-        //collect behavior
-        this.fireSignal("OnCollected");
-        super.destroy();
+        else if(!collider.inside(player.getPosition()) && isInside)
+        {
+            this.fireSignal("OnTriggerExit");
+            this.isInside = false;
+        }
     }
     
     @Override
     public void handleSignal(String signalName, Object[] arguments){
         switch(signalName) //new signals here
         {
-            case "enable":
-                Game.getCurrentLevel().addCollider(this.name, collider);
-                super.handleSignal(signalName, arguments);
-                break;
-            case "disable":
-                Game.getCurrentLevel().removeCollider(this.name);
-                super.handleSignal(signalName, arguments);
-                break;
             default:
                 super.handleSignal(signalName, arguments);
                 
