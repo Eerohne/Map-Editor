@@ -58,7 +58,7 @@ public class EntityCreator { //Entity creation is defined in this class
                     if(verifyProperties(propertyMap, "maxtime"))
                         entity = new Entity_Logic_Timer(propertyMap);
                     break;
-                case "player_base":
+                case "player_simple":
                     if(verifyProperties(propertyMap, "rotation", "walkspeed", "runspeed"))
                         entity = new Entity_Player_Simple(propertyMap);
                     break;

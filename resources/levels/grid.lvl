@@ -1,0 +1,187 @@
+{
+  "grid": {
+    "width": "10",
+    "height": "10",
+    "data": [
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "palette": [
+      {
+       "flag": "1",
+       "image name": "images/textures/skeleton.gif",
+       "id": "0"
+      },
+      {
+        "flag": "1",
+        "image name": "images/textures/brick.png",
+        "id": "1"
+      },
+      {
+        "flag": "1",
+        "image name": "images/textures/dev1.png",
+        "id": "2"
+      },
+      {
+        "flag": "0",
+        "image name": "images/textures/door.png",
+        "id": "3"
+      },
+      {
+        "flag": "1",
+        "image name": "images/textures/grey_brick.png",
+        "id": "4"
+      },
+      {
+        "flag": "1",
+        "image name": "images/textures/grey_brick_vines.png",
+        "id": "5"
+      }
+    ]
+  },
+"entities":[
+            {
+            "classname":"player_simple",
+            "name":"player1",
+            "active":"TRUE",
+            "position":[2.0, 2.5],
+            "rotation":"45",
+            "walkspeed":"1.5",
+            "runspeed":"2.5",
+            "rotationspeed":"10",
+            "zfrequency":"1",
+            "zrange":"50"
+            },
+            {
+            "classname":"environment",
+            "name":"env",
+            "active":"TRUE",
+            "position":[0.0, 0.0],
+            "foggy":"TRUE",
+            "fogcolor":[1.0, 0.6, 0.0],
+            "fog_near_distance":"2",
+            "fog_far_distance":"5",
+            "has_sky":"false",
+            "skycolor":[0.0, 0.5, 0.6],
+            "wallheight":"1.0"
+            },
+]
+}

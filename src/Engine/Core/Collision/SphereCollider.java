@@ -32,7 +32,7 @@ public class SphereCollider {
     
     public boolean intersect(Point2D position, float radius)
     {
-        if(this.position.distance(position) < (this.radius-radius))
+        if(this.position.distance(position) <= (this.radius-radius))
             return true;
         else
             return false;
@@ -44,10 +44,11 @@ public class SphereCollider {
         {
             Point2D pointVector = this.position.subtract(position);
             Point2D normalVector = new Point2D(pointVector.getY(), -pointVector.getX());
-            
-            Point2D projection = normalVector.multiply(position.dotProduct(normalVector)/normalVector.dotProduct(normalVector));
-            
-            return projection;
+            System.out.println("normal : "+normalVector);
+            Point2D projection = normalVector.multiply(position.dotProduct(normalVector)/normalVector.dotProduct(normalVector)).multiply(-1);
+            System.out.println("projected : "+projection.normalize());
+            projection = projection.add(pointVector.multiply(-1).normalize());
+            return projection.normalize();
         }
         else
             return null;
