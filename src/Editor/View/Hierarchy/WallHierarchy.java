@@ -41,12 +41,13 @@ public class WallHierarchy extends Hierarchy{
     public WallHierarchy(Stage stage) {
         super(null);
         this.stage = stage;
+        this.mode = 1;
     }
     
     public WallHierarchy(WallContent display, MapProfile map){
         super(display);
         this.map = map;
-        
+        this.mode = 1;
         this.refresh();
         selected = (HBox)list.getChildren().get(0);
     }

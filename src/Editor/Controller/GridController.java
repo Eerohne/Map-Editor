@@ -231,13 +231,11 @@ public class GridController{
     }
     
     private void placeWall(){
-        //Fix Mouse Drag Leak
-        WallProfile wp = (WallProfile)selectedProfile;
-        
+        //Fix Mouse Drag Leak        
         try {
             if(!(mouseX < 0 || mouseY < 0 || mouseX > getPaneBounds().getMaxX() || mouseY > getPaneBounds().getMaxY())){
                 Cell c = this.grid.getCells()[(int)getGridX()][(int)getGridY()];
-                this.setImg(c, wp.getImage());
+                this.setImg(c, getSelectedWallProfile().getImage());
                 onHover(c);
             }
         } catch (Exception e) {
