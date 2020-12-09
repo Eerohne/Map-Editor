@@ -250,11 +250,8 @@ public class GridController{
             if(!(mouseX < 0 || mouseY < 0 || mouseX > getPaneBounds().getMaxX() || mouseY > getPaneBounds().getMaxY())){
                 EntityDot ed = getSelectedEntityProfile().getDot();
                 ed.initialize((mouseX - dotX)/dot.getScaleObject().getX(), (mouseY - dotY)/dot.getScaleObject().getX(), 10);
-//                ed.setScaleObject(dot.getScaleObject());
-//                ed.setTranslationObject(dot.getTranslationObject());
-//
-//                grid.getEntities().add(ed);
-//                grid.getChildren().add(ed);
+
+                savePosition(getSelectedEntityProfile().getName(), getGridX(), getGridY());
             }
         } catch(Exception e){
             System.out.println("Entity : " + e);
