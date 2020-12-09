@@ -6,6 +6,7 @@
 package Engine.Entity.GameEntity;
 
 import Engine.Entity.AbstractEntity.Entity;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 
@@ -43,7 +44,7 @@ public class EntityTemplate extends Entity{
     }
     
     @Override
-    public void handleSignal(String signalName, Object[] arguments){
+    public void handleSignal(String signalName, ArrayList<Object> arguments){
         switch(signalName) //new signals here
         {
             case "signalexmaple":

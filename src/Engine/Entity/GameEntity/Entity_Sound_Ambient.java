@@ -9,6 +9,7 @@ import Engine.Entity.AbstractEntity.Entity_Sound;
 import Engine.Core.Exceptions.EntityCreationException;
 import Engine.Core.Sound.SoundManager;
 import Engine.Entity.AbstractEntity.Entity;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 
@@ -39,7 +40,7 @@ public class Entity_Sound_Ambient extends Entity_Sound{
     }
     
     @Override
-    public void handleSignal(String signalName, Object[] arguments){
+    public void handleSignal(String signalName, ArrayList<Object> arguments){
         switch(signalName) //new signals here
         {
             default:

@@ -66,10 +66,10 @@ public class Entity_Player_Simple extends Entity_Player{
         
         this.playerSpeed = walkSpeed;
         AnchorPane display = Game.getWindowManager().getIngameDisplay();
-        label = new Label();
+        /*label = new Label();
         label.setFont(Font.font("Cambria", 20));
         display.getChildren().add(label);
-        display.setTopAnchor(label, 10.0);
+        display.setTopAnchor(label, 10.0);*/
     }
 
     @Override

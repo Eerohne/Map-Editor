@@ -8,6 +8,7 @@ package Engine.Entity.GameEntity;
 import Engine.Core.Exceptions.EntityCreationException;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.RaycastRenderer.Renderer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -85,7 +86,7 @@ public class Entity_Environment extends Entity{
     }
     
     @Override
-    public void handleSignal(String signalName, Object[] arguments){
+    public void handleSignal(String signalName, ArrayList<Object> arguments){
         switch(signalName) //new signals here
         {
             default:

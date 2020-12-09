@@ -199,6 +199,42 @@
       "": "SDF;KLJWEHRUH",
       "classname": "WERHOPW",
       "name": "HGPIJ"
+    },
+    {
+      "": "5",
+      "classname": "player_simple",
+      "name": "player",
+      "signal": [
+        {
+          "targetname": "gameManager",
+          "name": "onTriggerEnter",
+          "arguments": [
+            "1"
+          ],
+          "inputname": "win"
+        },
+        {
+          "targetname": "gameManager",
+          "name": "onTriggerEnter",
+          "arguments": [
+            "1"
+          ],
+          "inputname": "win"
+        },
+        {
+          "targetname": "gameManager",
+          "name": "onTriggerEnter",
+          "arguments": [
+            "1"
+          ],
+          "inputname": "win"
+        }
+      ]
+    },
+    {
+      "classname": "logic_counter",
+      "name": "counter1",
+      "value": "5"
     }
   ]
 }

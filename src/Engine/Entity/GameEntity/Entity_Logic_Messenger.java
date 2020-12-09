@@ -6,6 +6,7 @@
 package Engine.Entity.GameEntity;
 
 import Engine.Entity.AbstractEntity.Entity;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 
@@ -35,12 +36,13 @@ public class Entity_Logic_Messenger extends Entity{
     }
     
     @Override
-    public void handleSignal(String signalName, Object[] arguments){
+    public void handleSignal(String signalName, ArrayList<Object> arguments){
         switch(signalName) //new signals here
         {
             case "printMessage":
                 try{
-                System.out.println((String) arguments[0]);
+                    System.out.println("------mesenger-------");
+                    System.out.println((String) arguments.get(0));
                 }catch(ArrayIndexOutOfBoundsException e){
                     System.out.println(e+ " no message specified for input 'printMessage' in entity '"+name+"'");
                 }

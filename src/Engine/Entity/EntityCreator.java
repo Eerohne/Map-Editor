@@ -40,13 +40,13 @@ public class EntityCreator { //Entity creation is defined in this class
                     if(verifyProperties(propertyMap, "levelpath"))
                         entity = new Entity_Game_Levelload(propertyMap);
                     break;
-                case "item_coin":
-                    if(verifyProperties(propertyMap, "scorepoint"))
-                        entity = new Entity_Item_Coin(propertyMap);
-                    break;
                 case "logic_counter":
                     if(verifyProperties(propertyMap, "minvalue", "maxvalue", "startingvalue"))
                         entity = new Entity_Logic_Counter(propertyMap);
+                    break;
+                 case "logic_gamemanager":
+                    if(verifyProperties(propertyMap, "losemessage", "winmessage"))
+                        entity = new Entity_Logic_GameManager(propertyMap);
                     break;
                 case "logic_messenger":
                     entity = new Entity_Logic_Messenger(propertyMap);

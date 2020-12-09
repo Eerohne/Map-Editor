@@ -9,6 +9,7 @@ import Engine.Core.Collision.SphereCollider;
 import Engine.Core.Game;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Entity.AbstractEntity.Entity_Player;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 
@@ -52,7 +53,7 @@ public class Entity_Object_Trigger extends Entity{
     }
     
     @Override
-    public void handleSignal(String signalName, Object[] arguments){
+    public void handleSignal(String signalName, ArrayList<Object> arguments){
         switch(signalName) //new signals here
         {
             default:

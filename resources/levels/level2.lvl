@@ -100,9 +100,46 @@
                     "name":"OnValueReached",
                     "targetname":"messenger1",
                     "inputname":"printMessage",
-                    "arguments":["all coins collected"]
+                    "arguments":["all coins collected1"]
+                },
+                {
+                    "name":"OnValueReached",
+                    "targetname":"manager",
+                    "inputname":"allCoinsCollected",
+                    "arguments":[]
+                },
+                {
+                    "name":"OnValueChanged",
+                    "targetname":"manager",
+                    "inputname":"coinCollected",
+                    "arguments":[]
                 }
                     ]
+    },
+    ,
+    {
+    "classname":"logic_gamemanager",
+    "name":"manager",
+    "active":"TRUE",
+    "position":[3.1, 7.0],
+    "losemessage":"you have surrounded yourself to the darkness",
+    "winmessage":"you have survived the darkness to live another day",
+    "signals": [
+                {
+                    "name":"OnCoinCollected",
+                    "targetname":"ui",
+                    "inputname":"setCoinText",
+                    "arguments":[]
+                }
+                    ]
+    },
+    {
+    "classname":"ui_text",
+    "name":"ui",
+    "active":"TRUE",
+    "position":[0.0,0.0],
+    "text":"you have survived the darkness to live another day",
+    "signals": []
     },
     {
     "classname":"logic_messenger",
@@ -145,10 +182,10 @@
     "signals": [
                 {
                     "name":"OnLevelLoad",
-                    "targetname":"ambient",
-                    "inputname":"fadein",
-                    "arguments":[]
-                }
+                    "targetname":"ui",
+                    "inputname":"setCoinText",
+                    "arguments":["new text that will hopefully work", "-fx-text-fill: rgba(0, 255, 0, 255);"]
+                },
                     ]
     },
     {
@@ -243,15 +280,15 @@
     "signals": [
                     {
                         "name":"OnTriggerEnter",
-                        "targetname":"messenger1",
-                        "inputname":"printMessage",
-                        "arguments":["trigger enter"]
+                        "targetname":"manager",
+                        "inputname":"openDoor",
+                        "arguments":[]
                     },
                     {
                         "name":"OnTriggerExit",
-                        "targetname":"messenger1",
-                        "inputname":"printMessage",
-                        "arguments":["trigger exit"]
+                        "targetname":"manager",
+                        "inputname":"closeDoor",
+                        "arguments":[]
                     }
                 ]
     },

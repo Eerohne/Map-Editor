@@ -47,7 +47,7 @@ public class Level {
         }
         catch(NullPointerException e)
         {
-            return true;
+            return false;
         }
     }
     

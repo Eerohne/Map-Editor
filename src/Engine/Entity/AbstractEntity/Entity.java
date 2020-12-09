@@ -4,6 +4,8 @@ import Engine.Core.Exceptions.EntityCreationException;
 import Engine.Core.Game;
 import Engine.Entity.Signal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 import org.json.simple.JSONArray;
@@ -54,7 +56,14 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
                     String name = (String) jsonEntry.get("name");
                     String targetName = (String) jsonEntry.get("targetname");
                     String inputName = (String) jsonEntry.get("inputname");
-                    Object[] arguments = ((JSONArray) jsonEntry.get("arguments")).toArray();
+                    Object[] argumentsArr = ((JSONArray) jsonEntry.get("arguments")).toArray();
+                    ArrayList<Object> arguments = new ArrayList<>();
+                    //System.out.println("/////init/////");
+                    for(Object arg : argumentsArr){
+                        arguments.add(arg);
+                        //System.out.println("adding : "+arg);
+                        //System.out.println("get 0 : "+arguments.get(0));
+                    }
 
                     Signal signal = new Signal(name, targetName, inputName, arguments);
                     this.addSignal(signal);
@@ -69,7 +78,7 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
         Game.getCurrentLevel().removeEntity(this.name); //temporary code
     }
     
-    public void handleSignal(String signalName, Object[] arguments){
+    public void handleSignal(String signalName, ArrayList<Object> arguments){
         
         switch(signalName)
         {
@@ -85,7 +94,7 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
         }
     }
     
-    public void fireSignal(String signalName){
+    public void fireSignal(String signalName, Object... extraArgs){
         for(Signal signal : signals)
         {
             if(signal.name.equals(signalName))
@@ -93,6 +102,14 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
                 Entity targetEntity = Game.getCurrentLevel().getEntity(signal.targetName);
                 if(targetEntity != null)
                 {
+                    ArrayList<Object> modifiedArgs = new ArrayList<>();
+                    if(extraArgs.length >0)
+                        signal.arguments.addAll(Arrays.asList(extraArgs));
+
+                    /*for(Object o : signal.arguments){
+                        System.out.println("class : "+o.getClass());
+                        System.out.println("value : "+o);
+                    }*/
                     targetEntity.handleSignal(signal.inputname, signal.arguments);
                 }
             }

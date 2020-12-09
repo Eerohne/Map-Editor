@@ -9,6 +9,7 @@ import Engine.Entity.AbstractEntity.Entity_Player;
 import Engine.Core.Collision.SphereCollider;
 import Engine.Core.Game;
 import Engine.Entity.AbstractEntity.SpriteEntity;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -52,7 +53,7 @@ public class Entity_Object_Collectible extends SpriteEntity{
     }
     
     @Override
-    public void handleSignal(String signalName, Object[] arguments){
+    public void handleSignal(String signalName, ArrayList<Object> arguments){
         switch(signalName) //new signals here
         {
             case "enable":

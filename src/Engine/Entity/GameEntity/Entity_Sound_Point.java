@@ -13,6 +13,7 @@ import Engine.Core.Sound.SoundManager;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Util.Input;
 import Engine.Util.Time;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
@@ -80,7 +81,7 @@ public class Entity_Sound_Point extends Entity_Sound{
     }
     
     @Override
-    public void handleSignal(String signalName, Object[] arguments){
+    public void handleSignal(String signalName, ArrayList<Object> arguments){
         switch(signalName) //new signals here
         {
             default:

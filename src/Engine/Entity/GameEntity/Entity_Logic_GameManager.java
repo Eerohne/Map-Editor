@@ -6,6 +6,7 @@
 package Engine.Entity.GameEntity;
 
 import Engine.Entity.AbstractEntity.Entity;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 
@@ -41,28 +42,45 @@ public class Entity_Logic_GameManager extends Entity{
     {
         if(coinsCollected == true && closeToDoor == true)
         {
+            System.out.println("you have escaped the dangeon to live another day...");
             this.fireSignal("OnPlayerWon");
         }
+        else if(coinsCollected == true && closeToDoor == false)
+            System.out.println("Escape before your time runs out");
+        else if(coinsCollected == false && closeToDoor == true)
+            System.out.println("Collect all coin and this door will open");
     }
     
     @Override
-    public void handleSignal(String signalName, Object[] arguments){
+    public void handleSignal(String signalName, ArrayList<Object> arguments){
+        System.out.println("collected"+this.coinsCollected+"door"+this.closeToDoor);
         switch(signalName) //new signals here
         {
             case "openDoor":
                 this.closeToDoor = true;
+                verifyLogic();
                 break;
             case "closeDoor":
                 this.closeToDoor = false;
                 break;
-            case "coinsCollected":
+            case "allCoinsCollected":
                 this.coinsCollected = true;
+                verifyLogic();
+                break;
+            case "coinCollected":
+                System.out.println("only one");
+                System.out.println((int) arguments.get(0));
+                int count = (int) arguments.get(0);
+                System.out.println("this is the count : "+count);
+                if(count == 0)
+                    this.fireSignal("OnCoinCollected", ("coins left : "+count), "-fx-text-fill: rgba(0, 255, 0, 255);");
+                else
+                    this.fireSignal("OnCoinCollected", ("coins left : "+count), "-fx-text-fill: rgba(255, 255, 255, 255);");
+                verifyLogic();
                 break;
             default:
                 super.handleSignal(signalName, arguments);
                 
         }
-        
-        verifyLogic();
     }
 }
