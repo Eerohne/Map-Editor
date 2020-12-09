@@ -18,7 +18,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 /**
  *
@@ -29,11 +28,12 @@ import javafx.scene.paint.Color;
 *   Render Level        +
 *   Render Entities     +
 *   Render Textures     +
-*   Render Floor/Ceil   +-
+*   Render Floor/Ceil   +
+*   Fog                 -
 *   Game Minimap        -
 */
 public class Renderer {
-    
+    private Renderer(){}
     
     
     private static Canvas frame = new Canvas();
@@ -49,13 +49,10 @@ public class Renderer {
     private static double viewD=32.0; //default view distance
     private static int res = 1; //resolution (determines the increment of loops) (bigger res means lower quality image)
     
-    private Renderer(){}
-    
     public static void setCanvas(Canvas canvas){
         frame = canvas;
         gc = canvas.getGraphicsContext2D();
-        screenWidth = canvas.getWidth();
-        screenHeight = canvas.getHeight();
+        resize();
     }
     public static void resize(){
         screenWidth = frame.getWidth();
@@ -79,7 +76,6 @@ public class Renderer {
     //renders one frame
     public static void render(){
         
-        
         ArrayList<HitPoint> hPoints = getHitPoints();
         
         if(doSkip){
@@ -90,7 +86,10 @@ public class Renderer {
             }
             else{other = true;}
         }
-        else{gc.clearRect(0, 0, screenWidth, screenHeight);}
+        else{
+            gc.clearRect(0, 0, screenWidth, screenHeight);
+            renderFloorCeiling(hPoints);
+        }
         
         renderWalls(hPoints);
         renderEntities(hPoints);
@@ -125,7 +124,8 @@ public class Renderer {
             boolean upward, rightward;
             upward = rayA<180; rightward = (rayA<90 || rayA>270);
             
-            final double tan = Math.tan(Math.toRadians(rayA));
+            rayA = Math.toRadians(rayA);
+            final double tan = Math.tan(rayA);
             final double cotan = 1.0/tan;
             
             double stepX=0, stepY=0;
@@ -152,13 +152,16 @@ public class Renderer {
             for(int i=0;i<viewD;i++){
                 int x = (int)Math.floor(rV.getX());
                 int y = (int)Math.floor(rV.getY());
-                if(x>=level.width || y>= level.height || x<0 || y<0)break;
-                if(level.isWall(x-1, y) && !rightward){v = new HitPoint(rV, 2, x-1, y);break;}
-                if(level.isWall(x, y)){v = new HitPoint(rV, 2, x, y);break;}
+                if(x>=level.width || y>= level.height || x<0 || y<0){
+                    v = new HitPoint(cam, rayA, viewD);
+                    break;
+                }
+                
+                if(level.isWall(x-1, y) && !rightward){ v = new HitPoint(rV, 3, x-1, y);break;}
+                if(level.isWall(x, y)){                 v = new HitPoint(rV, 4, x, y)  ;break;}
                 rV = rV.add(stepX, stepY);
-                if(i+1.0==viewD){
-                    rV = cam.add(viewD*Math.cos(Math.toRadians(rayA)), viewD*Math.sin(Math.toRadians(rayA)));
-                    v = new HitPoint(rV, 0, -1, -1);
+                if(i+1==viewD){
+                    v = new HitPoint(cam, rayA, viewD);
                 }
             }
             
@@ -183,13 +186,17 @@ public class Renderer {
             for(int i=0;i<viewD;i++){
                 int x = (int)Math.floor(rH.getX());
                 int y = (int)Math.floor(rH.getY());
-                if(x>=level.width || y>= level.height || x<0 || y<0)break;
-                if(level.isWall(x, y-1) && !upward){h = new HitPoint(rH,1, x, y-1);break;}
-                if(level.isWall(x, y)){h = new HitPoint(rH,1, x, y);break;}
+                if(x>=level.width || y>= level.height || x<0 || y<0){
+                    h = new HitPoint(cam, rayA, viewD);
+                    break;
+                }
+                
+                if(level.isWall(x, y-1) && !upward){h = new HitPoint(rH, 1, x, y-1);break;}
+                if(level.isWall(x, y)){             h = new HitPoint(rH, 2, x, y)  ;break;}
+                
                 rH = rH.add(stepX, stepY);
-                if(i+1.0==viewD){
-                    rH = cam.add(viewD*Math.cos(Math.toRadians(rayA)), viewD*Math.sin(Math.toRadians(rayA)));
-                    h = new HitPoint(rH, 0, -1, -1);
+                if(i==viewD){
+                    h = new HitPoint(cam, rayA, viewD);
                 }
             }
             
@@ -271,7 +278,7 @@ public class Renderer {
                     int cx = (int)gridPos.getX(), cy = (int)gridPos.getY();
                     
                     //in bounds and isn't a wall
-                    if( !(cx<0 || cy<0 || cx>level.width || cy>level.height) && !level.isWall(cx, cy) )
+                    if( !(cx<0 || cy<0 || cx>=level.width || cy>=level.height) && !level.isWall(cx, cy) )
                     {
                         Image texture = level.getCellTexture(cx, cy);
                         int tx = (int)(texture.getWidth() *(Math.abs(gridPos.getX()%1.0)));
@@ -373,32 +380,44 @@ public class Renderer {
     //draws the line representing a slice of a wall
     private static void drawWallLine(int r, HitPoint hPoint){
         
-        Point2D toWall = hPoint.subtract(player.getPosition());
         double camA = Math.toRadians(player.getRotation());
         Point2D dir = new Point2D( Math.cos(camA), Math.sin(camA) );
+        Point2D toWall = hPoint.subtract(player.getPosition());
+
+        boolean isFog = false;
         
         double distance = toWall.magnitude();
-        distance *= Math.cos(Math.toRadians(dir.angle(toWall)));
+        //if is a no-hit or if the hit is in fog
+        if( hPoint.getType()==0 || (env.isFoggy() && (distance-0.001)>=env.getFogFarDistance()) )
+        {
+            isFog = true;
+            if(env.isFoggy()){
+                distance = env.getFogFarDistance();
+            }
+            else{
+                distance = viewD;
+            }
+            
+        }else{
+            distance *= Math.cos(Math.toRadians(dir.angle(toWall)));
+        }
         
         double height = screenHeight/distance;
         
         double lineBottom = 0.5*(screenHeight-height)+height;
         lineBottom += height*(player.getHeight());
 
-        
         int x = r*res;
         
-        if( (hPoint.getType() == 0) || ( env.isFoggy() && toWall.magnitude()>=env.getFogFarDistance() ) )
+        if(!isFog)
         {
-            gc.setFill(env.getFogColor());
-            gc.fillRect(x, lineBottom, res, -height*env.getWallHeight());
-        }
-        else{
             Image texture = Game.getCurrentLevel().getCellTexture(hPoint.getXIndex(), hPoint.getYIndex());
             int tx = 0; //x position on the texture
             switch(hPoint.getType()){
-                case(1): tx = (int)(texture.getWidth()*(1.0-hPoint.getX()%1)); break;
-                case(2): tx = (int)(texture.getWidth()*(1.0-hPoint.getY()%1)); break;
+                case(1): tx = (int)(texture.getWidth()*(hPoint.getX()%1)); break;
+                case(2): tx = (int)(texture.getWidth()*(1-hPoint.getX()%1)); break;
+                case(3): tx = (int)(texture.getWidth()*(1-hPoint.getY()%1)); break;
+                case(4): tx = (int)(texture.getWidth()*(hPoint.getY()%1)); break;
             }
             
             //draws from the bottom to the height of the wall
@@ -410,6 +429,11 @@ public class Renderer {
                     gc.drawImage(texture, tx, texture.getHeight(), 1, -texture.getHeight(),x, lineBottom-height*y, res, -height);
                 }
             }
+        }
+        else
+        {
+            gc.setFill(env.getFogColor());
+            gc.fillRect(x, lineBottom, res, -height*env.getWallHeight());
         }
         
     }
@@ -437,6 +461,13 @@ class HitPoint extends Point2D{
         this.type = type;
         this.xIn = xIndex; this.yIn = yIndex;
     }
+    protected HitPoint(Point2D player, double rad, double dist){
+        super(player.getX()+dist*Math.cos(rad), player.getY()+dist*Math.sin(rad));
+        this.type = 0;
+        this.xIn = -1; this.yIn = -1;
+    }
+    
+    
     final static public HitPoint ZERO = new HitPoint(Point2D.ZERO, 0, -1, -1);
     
     public int getXIndex() {return xIn;}
