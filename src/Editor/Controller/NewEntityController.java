@@ -5,7 +5,7 @@
  */
 package Editor.Controller;
 
-import Editor.MapEditor;
+import Editor.Main.MapEditor;
 import Editor.Model.EntityModel;
 import Editor.View.Menu.Entity.ExistingEntityModification;
 import Editor.View.Menu.Entity.ExistingEntityStage;

@@ -5,7 +5,7 @@
  */
 package Editor.View.Hierarchy;
 
-import Editor.MapEditor;
+import Editor.Main.MapEditor;
 import Editor.Model.Profile.EntityProfile;
 import Editor.Model.Profile.MapProfile;
 import Editor.View.Metadata.EntityContent;

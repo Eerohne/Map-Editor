@@ -5,7 +5,7 @@
  */
 package Editor.View.Hierarchy;
 
-import Editor.MapEditor;
+import Editor.Main.MapEditor;
 import Editor.View.Metadata.DataView;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;

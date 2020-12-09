@@ -5,7 +5,7 @@
  */
 package Editor.Model.Profile;
 
-import Editor.MapEditor;
+import Editor.Main.MapEditor;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

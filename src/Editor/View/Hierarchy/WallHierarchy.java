@@ -6,7 +6,7 @@
 package Editor.View.Hierarchy;
 
 import Editor.Controller.ProfileController.WallController;
-import Editor.MapEditor;
+import Editor.Main.MapEditor;
 import Editor.View.Metadata.WallContent;
 import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.Profile;
