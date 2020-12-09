@@ -384,9 +384,11 @@ public class Renderer {
         Point2D dir = new Point2D( Math.cos(camA), Math.sin(camA) );
         Point2D toWall = hPoint.subtract(player.getPosition());
 
+        //should the fog be drawn?
         boolean isFog = false;
         
         double distance = toWall.magnitude();
+        
         //if is a no-hit or if the hit is in fog
         if( hPoint.getType()==0 || (env.isFoggy() && (distance-0.001)>=env.getFogFarDistance()) )
         {
@@ -397,15 +399,14 @@ public class Renderer {
             else{
                 distance = viewD;
             }
-            
-        }else{
-            distance *= Math.cos(Math.toRadians(dir.angle(toWall)));
         }
+        
+        distance *= Math.cos(Math.toRadians(dir.angle(toWall)));
         
         double height = screenHeight/distance;
         
-        double lineBottom = 0.5*(screenHeight-height)+height;
-        lineBottom += height*(player.getHeight());
+        double lineTop = 0.5*(screenHeight-height);
+        lineTop += height*(player.getHeight());
 
         int x = r*res;
         
@@ -422,18 +423,18 @@ public class Renderer {
             
             //draws from the bottom to the height of the wall
             if(env.getWallHeight() == 1.0){
-                gc.drawImage(texture, tx, texture.getHeight(), 1, -texture.getHeight(), x, lineBottom, res, -height );
+                gc.drawImage(texture, tx, 0, 1, texture.getHeight(), x, lineTop, res, height );
             }
             else{
                 for(int y=0;y<env.getWallHeight();y++){
-                    gc.drawImage(texture, tx, texture.getHeight(), 1, -texture.getHeight(),x, lineBottom-height*y, res, -height);
+                    gc.drawImage(texture, tx, 0, 1, texture.getHeight(),x, lineTop-height*y, res, height);
                 }
             }
         }
         else
         {
             gc.setFill(env.getFogColor());
-            gc.fillRect(x, lineBottom, res, -height*env.getWallHeight());
+            gc.fillRect(x, lineTop-height*(env.getWallHeight()-1), res, height*env.getWallHeight());
         }
         
     }
