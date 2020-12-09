@@ -33,6 +33,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -169,12 +170,18 @@ public class MapEditor extends Application {
             new ChangeListener<Tab>() {
             @Override
             public void changed(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
-                if(newValue.getText().equals("Walls"))
-                    project.getSelectedMap().getGc().setEditingMode(1);
-                else if(newValue.getText().equals("Entities"))
+                if(newValue.getText().equals("Walls")){
                     project.getSelectedMap().getGc().setEditingMode(2);
-                else
+                    project.getSelectedMap().getGridView().getSelectionCell().setStroke(Color.YELLOW);
+                }
+                else if(newValue.getText().equals("Entities")){
+                    project.getSelectedMap().getGc().setEditingMode(2);
+                    project.getSelectedMap().getGridView().getSelectionCell().setStroke(null);
+                }
+                else{
                     project.getSelectedMap().getGc().setEditingMode(0);
+                    project.getSelectedMap().getGridView().getSelectionCell().setStroke(null);
+                }
                 
                  System.out.println(project.getSelectedMap().getGc().getEditingMode());
             }
