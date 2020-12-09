@@ -22,6 +22,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -79,6 +81,8 @@ public class ExistingEntityController{
             Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
     
     private void launchSignalEditor(){
         view.signalBtn.setOnAction((event) -> {
@@ -153,20 +157,24 @@ public class ExistingEntityController{
                     for(int i = 0; i < entitiesArray.size(); i++){
                         JSONObject entity = (JSONObject) entitiesArray.get(i);
                         if(entity.get("name").equals(name)){
-                            
-                            entity.put("name", view.nameTf.getText());
-                            entity.put("classname", view.classNameTf.getText());
-                            tempModel = (EntityModel) view.table.getItems().get(selectedIndex);
-                            
-                            entity.remove(tempModel.getProperty());
-                            entity.put(view.propertyText.getText(), view.valueText.getText());
-                            entitiesArray.set(index, entity);
-                            allEntity.put("entities", entitiesArray);
+                            if(nameCheck(view.nameTf.getText()) == true || view.nameTf.getText().equals(name)){
+                                entity.put("name", view.nameTf.getText());
+                                entity.put("classname", view.classNameTf.getText());
+                                tempModel = (EntityModel) view.table.getItems().get(selectedIndex);
 
-                            FileWriter writer = new FileWriter("savefile.json");
-                            gson.toJson(allEntity, writer);
-                            writer.close();
-                            
+                                entity.remove(tempModel.getProperty());
+                                entity.put(view.propertyText.getText(), view.valueText.getText());
+                                entitiesArray.set(index, entity);
+                                allEntity.put("entities", entitiesArray);
+
+                                FileWriter writer = new FileWriter("savefile.json");
+                                gson.toJson(allEntity, writer);
+                                writer.close();
+                            }
+                            else{
+                                Alert a = new Alert(Alert.AlertType.ERROR, "this name is already defined", ButtonType.FINISH);
+                                a.show();
+                            }     
                         }
                         
                     }
@@ -176,14 +184,19 @@ public class ExistingEntityController{
                     for(int i = 0; i < entitiesArray.size(); i++){
                         JSONObject entity = (JSONObject) entitiesArray.get(i);
                         if(entity.get("name").equals(name)){
-                            entity.put("name", view.nameTf.getText());
-                            entity.put("classname", view.classNameTf.getText());
-                            entitiesArray.set(index, entity);
-                            allEntity.put("entities", entitiesArray);
+                            if(nameCheck(view.nameTf.getText()) == true || view.nameTf.getText().equals(name)){
+                                entity.put("name", view.nameTf.getText());
+                                entity.put("classname", view.classNameTf.getText());
+                                entitiesArray.set(index, entity);
+                                allEntity.put("entities", entitiesArray);
 
-                            FileWriter writer = new FileWriter("savefile.json");
-                            gson.toJson(allEntity, writer);
-                            writer.close();
+                                FileWriter writer = new FileWriter("savefile.json");
+                                gson.toJson(allEntity, writer);
+                                writer.close();
+                            }else{
+                                Alert a = new Alert(Alert.AlertType.ERROR, "this name is already defined", ButtonType.FINISH);
+                                a.show();
+                            }
                             
                         } 
                     }         
@@ -339,5 +352,56 @@ public class ExistingEntityController{
            Stage stage = new Stage();
            new NewEntityStage(stage);
         });
+}
+
+    private boolean nameCheck(String name){
+        boolean result = false;
+        FileReader reader = null;
+        try {
+            JSONParser parser = new JSONParser();
+            reader = new FileReader("savefile.json");
+            JSONObject savefile = (JSONObject) parser.parse(reader);
+            JSONArray entities = (JSONArray) savefile.get("entities");
+            JSONObject whatever = new JSONObject();
+            
+
+            for(int i = 0; i < entities.size(); i++){
+                JSONObject namecheckObj = (JSONObject) entities.get(i);
+                System.out.println(namecheckObj);
+                if(namecheckObj.values().contains(name)){
+                    whatever = namecheckObj;
+                }
+            }
+
+            if(whatever.values().contains(name)){
+                result = false;
+            }else{
+                result = true;
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+         return result;
     }
+    
+    private boolean isArray(String str){
+        boolean isArray = false;
+        if(str.contains(","))
+            isArray = true;
+        else
+            isArray = false;
+        return isArray;
+    }
+
+        
 }

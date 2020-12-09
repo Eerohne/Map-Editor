@@ -357,6 +357,50 @@ public class GridController{
             }
         }
     }
+    
+      private void saveColor(String name, double x, double y, double z){
+        
+        FileReader reader = null;
+        try {
+            JSONParser parser = new JSONParser();
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            reader = new FileReader("savefile.json");
+            JSONObject savefile = (JSONObject) parser.parse(reader);
+            JSONArray entities = (JSONArray) savefile.get("entities");
+            JSONObject currentEntity = new JSONObject();
+            JSONArray color = new JSONArray();
+            color.add(x);
+            color.add(y);
+            color.add(z);
+            
+            for(int i = 0; i < entities.size(); i++){
+                currentEntity = (JSONObject) entities.get(i);
+                if(currentEntity.get("name").equals(name)){
+                    currentEntity.put("color", color);
+                    entities.set(i, currentEntity);
+                }
+            }
+            
+            savefile.put("entities", entities);
+            
+            FileWriter writer = new FileWriter("savefile.json");
+            gson.toJson(savefile, writer);
+            writer.close();
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }
 
 

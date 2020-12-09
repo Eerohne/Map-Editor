@@ -27,6 +27,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.paint.Color;
@@ -103,6 +105,8 @@ public class NewEntityController{
         view.deleteBtn.setOnAction(deleteHandler);
         view.exportBtn.setOnAction(exportHandler);
         closeWindow();
+        disableButton();
+        
         //view.newEntityBtn.setOnAction(newEntityHandler);
     }
     
@@ -117,6 +121,16 @@ public class NewEntityController{
             view.table.getItems().remove(selectedIndex);
             list.remove(list.get(selectedIndex));
         }
+    }
+    
+    private void disableButton(){
+        view.nameTf.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                view.exportBtn.setDisable(nameCheck(view.nameTf.getText()));
+            }
+        
+        });
     }
     
     public void add(){
@@ -148,7 +162,10 @@ public class NewEntityController{
 
             
             for(int i = 0; i < list.size(); i++){
-                data.put(list.get(i).getProperty(), list.get(i).getValue());
+                if(isArray(list.get(i).getValue()) == true)
+                    data.put(list.get(i).getProperty(), list.get(i).getValue().split(","));
+                else
+                    data.put(list.get(i).getProperty(), list.get(i).getValue());
             }
             
             //verify if a signal is created for the current entity 
@@ -183,34 +200,33 @@ public class NewEntityController{
                 FileReader reader = new FileReader(newFile);
                 savefile = (JSONObject) parser.parse(reader);
                 if(savefile.containsKey("entities")){
-                    if(nameCheck(view.nameTf.getText()) == false){
-                        
-                        Alert a = new Alert(Alert.AlertType.ERROR, "this name is already defined", ButtonType.FINISH);
-                        a.show();
-                    }else{
-                         data.put("classname", view.classNameTf.getText());
-                         data.put("name", view.nameTf.getText());
-                         for(int i = 0; i < list.size(); i++){
-                            data.put(list.get(i).getProperty(), list.get(i).getValue());
+                     data.put("classname", view.classNameTf.getText());
+                     data.put("name", view.nameTf.getText());
+                     for(int i = 0; i < list.size(); i++){
+                         if(isArray(list.get(i).getValue()) == true){
+                             data.put(list.get(i).getProperty(), list.get(i).getValue().split(","));
+                         }else{
+                             data.put(list.get(i).getProperty(), list.get(i).getValue());
                          }
+                     }
 
-                        JSONArray existingEntities = (JSONArray) savefile.get("entities");
+                    JSONArray existingEntities = (JSONArray) savefile.get("entities");
 
-                        if(signalFile.length() != 0){
-                            FileReader signalReader = new FileReader(signalFile);
-                            JSONArray signalObj = (JSONArray) parser.parse(signalReader);
-                            data.put("signal", signalObj);
-                            existingEntities.add(data);
-                            savefile.put("entities", existingEntities);
-                            newEntity();
-                        }
-                        else{
-                            existingEntities.add(data);
-                            savefile.put("entities", existingEntities);
-                            newEntity();
-
-                        }  
+                    if(signalFile.length() != 0){
+                        FileReader signalReader = new FileReader(signalFile);
+                        JSONArray signalObj = (JSONArray) parser.parse(signalReader);
+                        data.put("signal", signalObj);
+                        existingEntities.add(data);
+                        savefile.put("entities", existingEntities);
+                        newEntity();
                     }
+                    else{
+                        existingEntities.add(data);
+                        savefile.put("entities", existingEntities);
+                        newEntity();
+
+                    }  
+
                 }
                 else{
                      JSONArray existingEntities = new JSONArray();
@@ -304,9 +320,9 @@ public class NewEntityController{
             }
             
             if(whatever.values().contains(name)){
-                result = false;
-            }else{
                 result = true;
+            }else{
+                result = false;
             }
             
         } catch (FileNotFoundException ex) {
@@ -328,6 +344,15 @@ public class NewEntityController{
     
     public void setData(){
         view.table.getItems().setAll(list);
+    }
+    
+    private boolean isArray(String str){
+        boolean isArray = false;
+        if(str.contains(","))
+            isArray = true;
+        else
+            isArray = false;
+        return isArray;
     }
     
     private void closeWindow(){
