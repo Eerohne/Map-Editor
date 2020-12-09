@@ -78,15 +78,20 @@ public class Renderer {
     
     //renders one frame
     public static void render(){
-        gc.clearRect(0, 0, screenWidth, screenHeight);
+        
         
         ArrayList<HitPoint> hPoints = getHitPoints();
         
         if(doSkip){
-            if(other){  other = false; renderFloorCeiling(hPoints);}
-            else{       other = true;}
+            if(other){
+                other = false;
+                gc.clearRect(0, 0, screenWidth, screenHeight);
+                renderFloorCeiling(hPoints);
+            }
+            else{other = true;}
         }
-        renderFloorCeiling(hPoints);
+        else{gc.clearRect(0, 0, screenWidth, screenHeight);}
+        
         renderWalls(hPoints);
         renderEntities(hPoints);
     }
@@ -211,7 +216,7 @@ public class Renderer {
         double sin = Math.sin(camA);
         double cos = Math.cos(camA);
         
-        //vector perpendicular (90 deg rotates) to the dir vertor
+        //vector perpendicular (90 deg rotated) to the dir vertor
         Point2D perpDir = new Point2D(-sin, cos);
         
         //the hit point furthest away from the player (smallest height)
@@ -222,17 +227,21 @@ public class Renderer {
             }
         }
         
-        double lineTop = screenHeight*(0.5*(1-1/toWall.magnitude())+player.getHeight()/toWall.magnitude());
+        double dist = toWall.magnitude();
+        double lineTop = screenHeight*(0.5*(1-1/dist)+player.getHeight()/dist);
+        
+        double y = 0.0;
         
         if(env.hasSky()){ //color the sky
+            y = lineTop+screenHeight/dist;
             gc.setFill(env.getSkyColor());
             gc.fillRect(0, 0, screenWidth, screenHeight/2.0);
         }
         
-        for(double y = 0; y<screenHeight ; y+=res ) //for every horizontal line of pixels on the screen
+        while( y<screenHeight ) //for every horizontal line of pixels on the screen
         { 
             //skip the smallest wall
-            if(y>lineTop && y<(lineTop+res)) y+=screenHeight/toWall.magnitude();
+            if(y>lineTop && y<(lineTop+res)) y+=screenHeight/dist;
             
             //distance on the map plane from the player to a point in the direction of the player
             double ry = y/screenHeight; //position on screen (0 -> 1)
@@ -246,7 +255,7 @@ public class Renderer {
                 fdist*=(1-ph);
             }
             
-            if( (fdist<level.height && fdist<level.width) && ( (env.isFoggy() && fdist<env.getFogFarDistance()) || fdist<viewD ) )
+            if( (env.isFoggy() && fdist<env.getFogFarDistance()) || (!env.isFoggy() && fdist<viewD) )
             {
                 //point on grid that is fdist from the player, in the direction of the player
                 Point2D gridPos = player.getPosition().add(fdist*cos, fdist*sin);
@@ -274,7 +283,7 @@ public class Renderer {
                     gridPos = gridPos.add(perpStep);
                 }
             }
-            
+            y+=res;
         }
         
         
@@ -331,6 +340,8 @@ public class Renderer {
                 for(int i = (int)(screenPos/res); i<(screenPos+width)/res && i<hPoints.size(); i++){
                     if(i<0){i=0;}
                     double eDist = cam.distance(e.getPosition());
+                    if( env.isFoggy() && eDist>env.getFogFarDistance())break;
+                    
                     double pDist = cam.distance(hPoints.get(i));
                     if(eDist<pDist){ hidden = false; break; }
                 }
