@@ -51,7 +51,7 @@ public class SignalEditorController {
 //show all entites with signals in the second combobox, will then open signal editor window
     private void allSignals() throws FileNotFoundException, IOException, ParseException{
         JSONParser parser = new JSONParser();
-        FileReader reader = new FileReader("entities.json");
+        FileReader reader = new FileReader("savefile.json");
         JSONObject allEntities = (JSONObject) parser.parse(reader);
         JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
         
@@ -72,7 +72,7 @@ public class SignalEditorController {
                 FileReader reader = null;
                 try {
                     JSONParser parser = new JSONParser();
-                    reader = new FileReader("entities.json");
+                    reader = new FileReader("savefile.json");
                     JSONObject allEntities = (JSONObject) parser.parse(reader);
                     JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
                     String name = (String) view.cb.getValue();
@@ -125,7 +125,7 @@ public class SignalEditorController {
                     String name = (String) view.cb.getValue();
                     String signalName = (String) view.signalSelector.getValue();
                     int index = view.signalSelector.getItems().indexOf(signalName);
-                    reader = new FileReader("entities.json");
+                    reader = new FileReader("savefile.json");
                     JSONParser parser = new JSONParser();
                     JSONObject allEntities = (JSONObject) parser.parse(reader);
                     JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
@@ -184,7 +184,7 @@ public class SignalEditorController {
             try {
                 String name = (String) view.cb.getValue();
                 JSONParser parser = new JSONParser();
-                reader = new FileReader("entities.json");
+                reader = new FileReader("savefile.json");
                 JSONObject allEntities = (JSONObject) parser.parse(reader);
                 JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
                 int index = view.cb.getItems().indexOf(view.cb.getValue());
@@ -221,7 +221,7 @@ public class SignalEditorController {
                     }
                 }
                 
-                FileWriter writer = new FileWriter("entities.json");
+                FileWriter writer = new FileWriter("savefile.json");
                 gson.toJson(allEntities, writer);
                 writer.close();
                 
@@ -248,7 +248,7 @@ public class SignalEditorController {
                 String name = (String) view.cb.getValue();
                 String key = name.substring(1, name.length()-1);
                 JSONParser parser = new JSONParser();
-                reader = new FileReader("entities.json");
+                reader = new FileReader("savefile.json");
                 JSONObject allEntities = (JSONObject) parser.parse(reader);
                 JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
                 int index = view.cb.getItems().indexOf(view.cb.getValue());
@@ -278,7 +278,7 @@ public class SignalEditorController {
                     }
                 }
                 
-                FileWriter writer = new FileWriter("entities.json");
+                FileWriter writer = new FileWriter("savefile.json");
                 gson.toJson(allEntities, writer);
                 writer.close();
                 

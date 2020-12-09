@@ -1,29 +1,219 @@
 {
   "entities": [
     {
-      "b": "c",
-      "classname": "test2",
-      "name": "a"
+      "123": "123",
+      "classname": "123",
+      "name": "lol tst",
+      "wtf": "wth",
+      "position": [
+        10.0,
+        10.0
+      ]
     },
     {
-      "b": "c",
-      "classname": "test2",
-      "name": "a"
+      "classname": "class",
+      "name": "positiontest",
+      "position": [
+        10.0,
+        10.0
+      ],
+      "pro": "val"
     },
     {
-      "b": "c",
-      "classname": "test2",
-      "name": "a"
+      "classname": "werew",
+      "qdw": "edwedew",
+      "name": "positiontest2",
+      "position": [
+        10.0,
+        10.0
+      ],
+      "signal": [
+        {
+          "targetname": "erc",
+          "name": "cwcwerc",
+          "arguments": [
+            "rec"
+          ],
+          "inputname": "rec"
+        }
+      ]
     },
     {
-      "b": "c",
-      "classname": "test",
-      "name": "a"
+      "wedewd": "ewdewecr",
+      "classname": "wdewdewd",
+      "name": "positiontest3",
+      "signal": [
+        {
+          "targetname": "rec",
+          "name": "wexexcewcc",
+          "arguments": [
+            "ERCCERC"
+          ],
+          "inputname": "ERC"
+        },
+        {
+          "targetname": "wec",
+          "name": "scec",
+          "arguments": [
+            "wecwec"
+          ],
+          "inputname": "ewc"
+        }
+      ]
     },
     {
-      "classname": "b",
-      "d": "e",
-      "name": "c"
+      "123": "123",
+      "classname": "123",
+      "name": "positiontest4",
+      "position": [
+        10.0,
+        10.0
+      ],
+      "signal": [
+        {
+          "targetname": "1231",
+          "name": "123",
+          "arguments": [
+            "23"
+          ],
+          "inputname": "231"
+        },
+        {
+          "targetname": "123",
+          "name": "123",
+          "arguments": [
+            "123"
+          ],
+          "inputname": "123"
+        }
+      ]
     }
-  ]
+  ],
+  "grid": {
+    "data": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "width": "10",
+    "palette": [],
+    "height": "10"
+  }
 }

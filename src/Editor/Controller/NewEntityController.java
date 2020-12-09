@@ -15,6 +15,7 @@ import Editor.View.Menu.Entity.SignalViewerStage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -177,17 +178,18 @@ public class NewEntityController{
                 
                 FileReader reader = new FileReader(newFile);
                 savefile = (JSONObject) parser.parse(reader);
-                
-                
-                data.put("classname", view.classNameTf.getText());
-                data.put("name", view.nameTf.getText());
-                for(int i = 0; i < list.size(); i++){
-                    data.put(list.get(i).getProperty(), list.get(i).getValue());
-                }
-                
                 if(savefile.containsKey("entities")){
-                    
+                    if(nameCheck(view.nameTf.getText()) == false){
+                        System.out.println("fuck");
+                    }
+                     data.put("classname", view.classNameTf.getText());
+                     data.put("name", view.nameTf.getText());
+                     for(int i = 0; i < list.size(); i++){
+                        data.put(list.get(i).getProperty(), list.get(i).getValue());
+                     }
+                     
                     JSONArray existingEntities = (JSONArray) savefile.get("entities");
+                    
                     if(signalFile.length() != 0){
                         FileReader signalReader = new FileReader(signalFile);
                         JSONArray signalObj = (JSONArray) parser.parse(signalReader);
@@ -274,6 +276,42 @@ public class NewEntityController{
             }
         });
         
+    }
+    
+    private boolean nameCheck(String name){
+        
+        boolean result = false;
+        FileReader reader = null;
+        try {
+            JSONParser parser = new JSONParser();
+            reader = new FileReader("savefile.json");
+            JSONObject savefile = (JSONObject) parser.parse(reader);
+            JSONArray entities = (JSONArray) savefile.get("entities");
+            
+            for(int i = 0; i < entities.size(); i++){
+                JSONObject namecheckObj = (JSONObject) entities.get(i);
+                System.out.println(namecheckObj);
+                if(namecheckObj.get("name").toString().equals(name)){
+                    result = false;
+                }else{
+                    result = true;
+                }
+            }
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
     }
     
     
