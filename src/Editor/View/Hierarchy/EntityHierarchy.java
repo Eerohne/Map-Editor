@@ -26,7 +26,6 @@ public class EntityHierarchy extends Hierarchy{
     
     public EntityHierarchy() {
         super(null);
-        this.mode = 2;
     }
 
     @Override
