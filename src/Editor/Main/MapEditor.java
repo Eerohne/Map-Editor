@@ -171,7 +171,7 @@ public class MapEditor extends Application {
             @Override
             public void changed(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
                 if(newValue.getText().equals("Walls")){
-                    project.getSelectedMap().getGc().setEditingMode(2);
+                    project.getSelectedMap().getGc().setEditingMode(1);
                     project.getSelectedMap().getGridView().getSelectionCell().setStroke(Color.YELLOW);
                 }
                 else if(newValue.getText().equals("Entities")){
