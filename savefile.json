@@ -10,13 +10,31 @@
       ]
     },
     {
-      "classname": "logic_manager",
-      "name": "manager1",
+      "q": "q",
+      "classname": "q",
+      "name": "q",
       "position": [
-        5.17,
-        4.93
-      ],
-      "wintext": "u win i guess?"
+        7.47,
+        2.41
+      ]
+    },
+    {
+      "q": "q",
+      "classname": "q",
+      "name": "q",
+      "position": [
+        7.47,
+        2.41
+      ]
+    },
+    {
+      "3": "4",
+      "classname": "1",
+      "name": "2",
+      "position": [
+        5.51,
+        4.55
+      ]
     },
     {
       "classname": "logic_manager",
@@ -145,22 +163,22 @@
       "wintext": "u win i guess?"
     },
     {
-      "classname": "logic_manager",
-      "name": "manager1",
+      "3": "4",
+      "classname": "1",
+      "name": "2",
       "position": [
-        5.17,
-        4.93
-      ],
-      "wintext": "u win i guess?"
+        5.51,
+        4.55
+      ]
     },
     {
-      "classname": "logic_manager",
-      "name": "manager1",
+      "q": "q",
+      "classname": "q",
+      "name": "q",
       "position": [
-        5.17,
-        4.93
-      ],
-      "wintext": "u win i guess?"
+        7.47,
+        2.41
+      ]
     }
   ],
   "grid": {
