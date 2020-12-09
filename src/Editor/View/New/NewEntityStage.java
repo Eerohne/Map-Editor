@@ -17,13 +17,11 @@ import javafx.stage.Stage;
  * @author linuo
  */
 public class NewEntityStage{
-
+    
     public NewEntityStage(Stage parent)  {
         Stage newEntity = new Stage();
         newEntity.initOwner(parent);
         newEntity.initModality(Modality.WINDOW_MODAL);
-        
-        
         NewEntity view = new NewEntity();
         NewEntityController nec = new NewEntityController(new EntityModel(), view);
         nec.setData();
@@ -32,4 +30,9 @@ public class NewEntityStage{
         newEntity.setScene(scene);
         newEntity.show();
     }
+
+    
+    
+    
+    
 }
