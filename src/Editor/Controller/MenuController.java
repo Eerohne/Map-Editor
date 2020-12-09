@@ -5,7 +5,7 @@
  */
 package Editor.Controller;
 
-import Editor.MapEditor;
+import Editor.Main.MapEditor;
 import Editor.View.New.NewEntityStage;
 import Editor.View.Menu.Entity.ExistingEntityStage;
 import Editor.View.Menu.TopMenu;

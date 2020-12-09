@@ -6,7 +6,7 @@
 package Editor.View.Hierarchy;
 
 import Editor.Controller.ProfileController.WallController;
-import Editor.MapEditor;
+import Editor.Main.MapEditor;
 import Editor.View.Metadata.WallContent;
 import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.Profile;
@@ -41,13 +41,12 @@ public class WallHierarchy extends Hierarchy{
     public WallHierarchy(Stage stage) {
         super(null);
         this.stage = stage;
-        this.mode = 1;
     }
     
     public WallHierarchy(WallContent display, MapProfile map){
         super(display);
         this.map = map;
-        this.mode = 1;
+        
         this.refresh();
         selected = (HBox)list.getChildren().get(0);
     }

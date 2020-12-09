@@ -5,7 +5,7 @@
  */
 package Editor.View.New;
 
-import Editor.MapEditor;
+import Editor.Main.MapEditor;
 import Editor.Model.Profile.MapProfile;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

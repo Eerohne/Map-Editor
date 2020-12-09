@@ -5,7 +5,7 @@
  */
 package Launcher;
 
-import Editor.MapEditor;
+import Editor.Main.MapEditor;
 import Engine.Core.Game;
 import java.io.File;
 import java.net.MalformedURLException;

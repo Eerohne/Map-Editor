@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Editor;
+package Editor.Main;
 
 import Commons.SettingsManager.Settings;
 import Editor.Controller.MenuController;
@@ -24,6 +24,8 @@ import Editor.View.Metadata.MapContent;
 import java.io.File;
 import java.net.MalformedURLException;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -31,6 +33,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -163,6 +166,26 @@ public class MapEditor extends Application {
         //Property Pane Setup
         TabPane properties = new TabPane(wallTab, entityTab, mapTab);
         properties.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        properties.getSelectionModel().selectedItemProperty().addListener(
+            new ChangeListener<Tab>() {
+            @Override
+            public void changed(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
+                if(newValue.getText().equals("Walls")){
+                    project.getSelectedMap().getGc().setEditingMode(2);
+                    project.getSelectedMap().getGridView().getSelectionCell().setStroke(Color.YELLOW);
+                }
+                else if(newValue.getText().equals("Entities")){
+                    project.getSelectedMap().getGc().setEditingMode(2);
+                    project.getSelectedMap().getGridView().getSelectionCell().setStroke(null);
+                }
+                else{
+                    project.getSelectedMap().getGc().setEditingMode(0);
+                    project.getSelectedMap().getGridView().getSelectionCell().setStroke(null);
+                }
+                
+                 System.out.println(project.getSelectedMap().getGc().getEditingMode());
+            }
+        });
         
         VBox.setVgrow(properties, Priority.ALWAYS);
         

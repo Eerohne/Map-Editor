@@ -1,215 +1,219 @@
 {
   "entities": [
     {
-      "classname": "car",
-      "name": "car1",
-      "model": "rav4",
-      "colro": "red",
-      "brand": "toyota",
+      "123": "123",
+      "classname": "123",
+      "name": "lol tst",
+      "wtf": "wth",
+      "position": [
+        10.0,
+        10.0
+      ]
+    },
+    {
+      "classname": "class",
+      "name": "positiontest",
+      "position": [
+        10.0,
+        10.0
+      ],
+      "pro": "val"
+    },
+    {
+      "classname": "werew",
+      "qdw": "edwedew",
+      "name": "positiontest2",
+      "position": [
+        10.0,
+        10.0
+      ],
       "signal": [
         {
-          "targetname": "12",
-          "name": "singal1",
+          "targetname": "erc",
+          "name": "cwcwerc",
           "arguments": [
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "2",
-            "2",
-            "2",
-            "3",
-            "3",
-            "4",
-            "4",
-            "5"
+            "rec"
           ],
-          "inputname": "12"
-        },
-        {
-          "targetname": "s12s",
-          "name": "123",
-          "arguments": [
-            "e ecew"
-          ],
-          "inputname": "d3d"
+          "inputname": "rec"
         }
       ]
     },
     {
-      "classname": "Car",
-      "name": "car2",
+      "wedewd": "ewdewecr",
+      "classname": "wdewdewd",
+      "name": "positiontest3",
       "signal": [
         {
-          "targetname": "112",
-          "name": "SIGNAL1",
+          "targetname": "rec",
+          "name": "wexexcewcc",
           "arguments": [
-            "1",
-            " 2",
-            " 3",
-            " 312"
+            "ERCCERC"
           ],
-          "inputname": "11212"
+          "inputname": "ERC"
         },
         {
-          "targetname": "2",
-          "name": "signal2",
+          "targetname": "wec",
+          "name": "scec",
           "arguments": [
-            "2",
-            "2",
-            "2",
-            "2",
-            "2",
-            "2"
+            "wecwec"
           ],
-          "inputname": "2"
-        },
-        {
-          "targetname": "312323d23",
-          "name": "SINAHl",
-          "arguments": [
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1"
-          ],
-          "inputname": "32433223d"
+          "inputname": "ewc"
         }
-      ],
-      "whatever": "pontiac lol"
-    },
-    {
-      "classname": "CLaaa",
-      "name": "`2`12",
-      "proper": "values",
-      "PRO": "VAL",
-      "signal": []
-    },
-    {
-      "classname": "test",
-      "name": "new",
-      "entity": "new"
-    },
-    {
-      "a": "b",
-      "classname": "yes",
-      "name": "test"
-    },
-    {
-      "a": "b",
-      "classname": "test",
-      "name": "bane"
-    },
-    {
-      "a": "b",
-      "classname": "test",
-      "name": "bane"
-    },
-    {
-      "a": "b",
-      "classname": "test",
-      "name": "bane"
-    },
-    {
-      "b": "c",
-      "classname": "test2",
-      "name": "a"
-    },
-    {
-      "b": "c",
-      "classname": "test2",
-      "name": "a"
-    },
-    {
-      "b": "c",
-      "classname": "test2",
-      "name": "a"
-    },
-    {
-      "b": "c",
-      "classname": "test2",
-      "name": "a"
-    },
-    {
-      "b": "c",
-      "classname": "test2",
-      "name": "a"
-    },
-    {
-      "b": "c",
-      "classname": "test2",
-      "name": "a"
-    },
-    {
-      "b": "c",
-      "classname": "test",
-      "name": "a"
-    },
-    {
-      "a": "b",
-      "classname": "test1",
-      "name": "b"
-    },
-    {
-      "c": "d",
-      "classname": "a",
-      "name": "b"
-    },
-    {
-      "b": "d",
-      "classname": "a",
-      "name": "c"
-    },
-    {
-      "classname": "b",
-      "d": "e",
-      "name": "c"
-    },
-    {
-      "c": "d",
-      "classname": "a`",
-      "name": "b"
-    },
-    {
-      "classname": "hghi",
-      "name": "lhgliugiluguiog",
-      "restyh4": "rteyretwyrtw"
-    },
-    {
-      "dhsrhdfg": "rtghkyuilui",
-      "classname": "rtyhrtey",
-      "name": "rtyrtyfhgfdhgfd"
-    },
-    {
-      "sdger": "fdgwtqe",
-      "classname": "werwerwerwer",
-      "name": "rwesdfghhj"
-    },
-    {
-      "": "SDF;KLJWEHRUH",
-      "classname": "WERHOPW",
-      "name": "HGPIJ"
-    },
-    {
-      "pro1": "val1",
-      "pro2": "val2",
-      "classname": "class1",
-      "name": "name1"
+      ]
     },
     {
       "123": "123",
-      "classname": "qwd",
-      "name": "name1"
+      "classname": "123",
+      "name": "positiontest4",
+      "position": [
+        10.0,
+        10.0
+      ],
+      "signal": [
+        {
+          "targetname": "1231",
+          "name": "123",
+          "arguments": [
+            "23"
+          ],
+          "inputname": "231"
+        },
+        {
+          "targetname": "123",
+          "name": "123",
+          "arguments": [
+            "123"
+          ],
+          "inputname": "123"
+        }
+      ]
     }
-  ]
+  ],
+  "grid": {
+    "data": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "width": "10",
+    "palette": [],
+    "height": "10"
+  }
 }

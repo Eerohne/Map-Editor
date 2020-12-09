@@ -5,11 +5,9 @@
  */
 package Editor.Controller;
 import Editor.Model.EntityModel;
-import Editor.Model.SignalModel;
 import Editor.View.New.NewEntityStage;
 import Editor.View.Menu.Entity.ExistingEntityModification;
 import Editor.View.Menu.Entity.SignalEditorStage;
-import Editor.View.Menu.Entity.SignalEditorView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.FileNotFoundException;
@@ -66,7 +64,7 @@ public class ExistingEntityController{
     private void allEntities() throws ParseException{
         JSONParser parser = new JSONParser();
         
-        try(FileReader reader = new FileReader("entities.json")){
+        try(FileReader reader = new FileReader("savefile.json")){
             
             JSONObject allEntity = (JSONObject) parser.parse(reader);
             JSONArray entitiesArray = (JSONArray) allEntity.get("entities");
@@ -102,7 +100,7 @@ public class ExistingEntityController{
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 JSONParser parser = new JSONParser();
-                try(FileReader reader = new FileReader("entities.json")){
+                try(FileReader reader = new FileReader("savefile.json")){
                     
                     JSONObject allEntity = (JSONObject) parser.parse(reader);
                     JSONArray entitiesArray = (JSONArray) allEntity.get("entities");
@@ -144,7 +142,7 @@ public class ExistingEntityController{
                 EntityModel model = new EntityModel(view.propertyText.getText(), view.valueText.getText());
                 int selectedIndex = view.table.getSelectionModel().getSelectedIndex();
                 JSONParser parser = new JSONParser();
-                reader = new FileReader("entities.json");
+                reader = new FileReader("savefile.json");
                 JSONObject allEntity = (JSONObject) parser.parse(reader);
                 JSONArray entitiesArray = (JSONArray) allEntity.get("entities");
                 String name = view.cb.getValue();
@@ -166,7 +164,7 @@ public class ExistingEntityController{
                             entitiesArray.set(index, entity);
                             allEntity.put("entities", entitiesArray);
 
-                            FileWriter writer = new FileWriter("entities.json");
+                            FileWriter writer = new FileWriter("savefile.json");
                             gson.toJson(allEntity, writer);
                             writer.close();
                             
@@ -184,14 +182,12 @@ public class ExistingEntityController{
                             entitiesArray.set(index, entity);
                             allEntity.put("entities", entitiesArray);
 
-                            FileWriter writer = new FileWriter("entities.json");
+                            FileWriter writer = new FileWriter("savefile.json");
                             gson.toJson(allEntity, writer);
                             writer.close();
                             
-                        }
-                        
-                    }
-                            
+                        } 
+                    }         
                 }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
@@ -215,14 +211,14 @@ public class ExistingEntityController{
             FileReader reader = null;
             try {
                 JSONParser parser = new JSONParser();
-                reader = new FileReader("entities.json");
+                reader = new FileReader("savefile.json");
                 JSONObject allEntities = (JSONObject) parser.parse(reader);
                 JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
                 String name = view.cb.getValue();
                 int index = view.cb.getItems().indexOf(name);
                 entitiesArray.remove(index);
                 allEntities.put("entities", entitiesArray);
-                FileWriter writer = new FileWriter("entities.json");
+                FileWriter writer = new FileWriter("savefile.json");
                 gson.toJson(allEntities, writer);
                 writer.close();
                 view.table.getItems().clear();
@@ -247,7 +243,7 @@ public class ExistingEntityController{
            FileReader reader = null;
            try {
                JSONParser parser = new JSONParser();
-               reader = new FileReader("entities.json");
+               reader = new FileReader("savefile.json");
                JSONObject allentities = (JSONObject) parser.parse(reader);
                JSONArray entitiesArray = (JSONArray) allentities.get("entities");
                String name = view.cb.getValue();
@@ -266,7 +262,7 @@ public class ExistingEntityController{
                    entitiesArray.set(index, entity);
                    allentities.put("entities", entitiesArray);
                    
-                   FileWriter writer = new FileWriter("entities.json");
+                   FileWriter writer = new FileWriter("savefile.json");
                    gson.toJson(allentities, writer);
                    writer.close();
                    
@@ -292,7 +288,7 @@ public class ExistingEntityController{
                 String property = view.propertyText.getText();
                 String value = view.valueText.getText();
                 JSONParser parser = new JSONParser();
-                reader = new FileReader("entities.json");
+                reader = new FileReader("savefile.json");
                 JSONObject allEntities = (JSONObject) parser.parse(reader);
                 JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
                 String name = view.cb.getValue();
@@ -309,7 +305,7 @@ public class ExistingEntityController{
                 entitiesArray.set(index, entity);
                 allEntities.put("entities", entitiesArray);
                 
-                FileWriter writer = new FileWriter("entities.json");
+                FileWriter writer = new FileWriter("savefile.json");
                 gson.toJson(allEntities, writer);
                 writer.close();
                 
