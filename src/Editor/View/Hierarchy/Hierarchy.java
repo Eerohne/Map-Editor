@@ -5,6 +5,7 @@
  */
 package Editor.View.Hierarchy;
 
+import Editor.MapEditor;
 import Editor.View.Metadata.DataView;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
@@ -23,7 +24,8 @@ public abstract class Hierarchy extends ScrollPane{
     protected DataView content;
     protected VBox list;
     protected static HBox selected = new HBox();
-
+    protected int mode = 0;
+    
     public Hierarchy(DataView content) {
         this.content = content;
         
@@ -36,8 +38,10 @@ public abstract class Hierarchy extends ScrollPane{
     public abstract void refresh();
     
     public void select(HBox box){
-        this.selected.setBackground(Background.EMPTY);
-        this.selected = box;
-        this.selected.setBackground(new Background(new BackgroundFill(Color.CADETBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+        selected.setBackground(Background.EMPTY);
+        selected = box;
+        selected.setBackground(new Background(new BackgroundFill(Color.CADETBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+        MapEditor.project.getSelectedMap().getGc().setEditingMode(mode);
+        System.out.println(mode);
     }
 }

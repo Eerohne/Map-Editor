@@ -73,15 +73,25 @@ public class Renderer {
     public static void setViewDistance(double dist){viewD = dist;} // set the view distance
     public static void setResolution(int resolution){res = resolution;}
     
+    private static boolean doSkip = true;
     private static boolean other = true;
     
     //renders one frame
     public static void render(){
-        gc.clearRect(0, 0, screenWidth, screenHeight);
+        
         
         ArrayList<HitPoint> hPoints = getHitPoints();
         
-        renderFloorCeiling(hPoints);
+        if(doSkip){
+            if(other){
+                other = false;
+                gc.clearRect(0, 0, screenWidth, screenHeight);
+                renderFloorCeiling(hPoints);
+            }
+            else{other = true;}
+        }
+        else{gc.clearRect(0, 0, screenWidth, screenHeight);}
+        
         renderWalls(hPoints);
         renderEntities(hPoints);
     }
@@ -102,8 +112,8 @@ public class Renderer {
             //angle
             double rayA = Math.toDegrees(Math.atan
             ((
-               2.0*Math.tan( Math.toRadians(fov/2.0) )  //
-               *( (r/screenWidth)-0.5 )                 //position on screen (-0.5< x <0.5)
+               2.0*Math.tan( Math.toRadians(fov/2.0) )  
+               *( (r/screenWidth)-0.5 )
             )));
             rayA += camA;
             
@@ -206,7 +216,7 @@ public class Renderer {
         double sin = Math.sin(camA);
         double cos = Math.cos(camA);
         
-        //vector perpendicular (90 deg rotates) to the dir vertor
+        //vector perpendicular (90 deg rotated) to the dir vertor
         Point2D perpDir = new Point2D(-sin, cos);
         
         //the hit point furthest away from the player (smallest height)
@@ -217,22 +227,41 @@ public class Renderer {
             }
         }
         
-        double lineBottom = screenHeight*(0.5*(1 + 1/toWall.magnitude()));
-        lineBottom -= player.getHeight();
+        double dist = toWall.magnitude();
+        double lineTop = screenHeight*(0.5*(1-1/dist)+player.getHeight()/dist);
+        
+        double y = 0.0;
         
         if(env.hasSky()){ //color the sky
+            y = lineTop+screenHeight/dist;
             gc.setFill(env.getSkyColor());
             gc.fillRect(0, 0, screenWidth, screenHeight/2.0);
         }
         
-        for(double y = screenHeight; y>lineBottom ; y-=res ) //for every horizontal line of pixels on the screen
+        while( y<screenHeight ) //for every horizontal line of pixels on the screen
         { 
-            double fdist = Math.abs( 0.5/ (((y+player.getHeight())/screenHeight) -0.5)  );
+            //skip the smallest wall
+            if(y>lineTop && y<(lineTop+res)) y+=screenHeight/dist;
             
-            if(fdist<level.height && fdist<level.width  && fdist<env.getFogFarDistance() )
+            //distance on the map plane from the player to a point in the direction of the player
+            double ry = y/screenHeight; //position on screen (0 -> 1)
+            double fdist = Math.abs(1/(ry-0.5) );
+            double ph = (0.5-player.getHeight());
+           
+            if(ry<0.5){
+                fdist*=ph;
+            }
+            else{
+                fdist*=(1-ph);
+            }
+            
+            if( (env.isFoggy() && fdist<env.getFogFarDistance()) || (!env.isFoggy() && fdist<viewD) )
             {
-                Point2D gridPos = player.getPosition().add(fdist*cos, fdist*sin); //point on the grid
-                Point2D gridLeft = gridPos.subtract(perpDir.multiply(fdist*Math.tan(Math.toRadians(fov/2.0)))); //leftmost point that will be rendered
+                //point on grid that is fdist from the player, in the direction of the player
+                Point2D gridPos = player.getPosition().add(fdist*cos, fdist*sin);
+                //leftmost point on the grid that will be rendered, line from gridLeft to gridPos is perpendicular to player's direction
+                Point2D gridLeft = gridPos.subtract(perpDir.multiply(fdist*Math.tan(Math.toRadians(fov/2.0))));
+                //step along the perpendicular line
                 Point2D perpStep = perpDir.multiply(res*2*gridLeft.distance(gridPos)/screenWidth );
 
                 gridPos = gridLeft;
@@ -241,22 +270,20 @@ public class Renderer {
                     //cell position
                     int cx = (int)gridPos.getX(), cy = (int)gridPos.getY();
                     
-                    if( !(cx<0 || cy<0 || cx>level.width || cy>level.height) && !level.isWall(cx, cy))
+                    //in bounds and isn't a wall
+                    if( !(cx<0 || cy<0 || cx>level.width || cy>level.height) && !level.isWall(cx, cy) )
                     {
                         Image texture = level.getCellTexture(cx, cy);
                         int tx = (int)(texture.getWidth() *(Math.abs(gridPos.getX()%1.0)));
                         int ty = (int)(texture.getHeight()*(Math.abs(gridPos.getY()%1.0)));
                         
-                        int h = res;
-                        if(!env.hasSky()){ h = (int)( screenHeight - 2*(y+player.getHeight()) );}
-                        
-                        gc.drawImage(texture, tx, ty, 1, 1, x, y, res, h);
+                        gc.drawImage(texture, tx, ty, 1, 1, x, y, res, res);
                         
                     }
                     gridPos = gridPos.add(perpStep);
                 }
             }
-            
+            y+=res;
         }
         
         
@@ -313,6 +340,8 @@ public class Renderer {
                 for(int i = (int)(screenPos/res); i<(screenPos+width)/res && i<hPoints.size(); i++){
                     if(i<0){i=0;}
                     double eDist = cam.distance(e.getPosition());
+                    if( env.isFoggy() && eDist>env.getFogFarDistance())break;
+                    
                     double pDist = cam.distance(hPoints.get(i));
                     if(eDist<pDist){ hidden = false; break; }
                 }
@@ -321,7 +350,7 @@ public class Renderer {
                     //position of the top pixel of the sprite
                     double relY = (screenHeight-height)/2.0; //center
                     relY -= h*(e.getHeight()-0.5); //height offset of entity
-                    relY -= player.getHeight();
+                    relY += h*(player.getHeight()); //height offset of player
                     
                     gc.drawImage(sprite, screenPos, relY, width, height );
 
@@ -354,7 +383,7 @@ public class Renderer {
         double height = screenHeight/distance;
         
         double lineBottom = 0.5*(screenHeight-height)+height;
-        lineBottom -= player.getHeight();
+        lineBottom += height*(player.getHeight());
 
         
         int x = r*res;

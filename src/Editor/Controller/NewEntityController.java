@@ -44,6 +44,7 @@ public class NewEntityController{
     EntityModel model = new EntityModel();
     NewEntity view = new NewEntity();
     ExistingEntityModification eem = new ExistingEntityModification();
+    JSONObject savefile = new JSONObject();
     
     JSONObject signalObj = new JSONObject();
     
@@ -97,7 +98,7 @@ public class NewEntityController{
         view.addBtn.setOnAction(handler);
         view.deleteBtn.setOnAction(deleteHandler);
         view.exportBtn.setOnAction(exportHandler);
-        view.newEntityBtn.setOnAction(newEntityHandler);
+        //view.newEntityBtn.setOnAction(newEntityHandler);
     }
     
     public NewEntityController(JSONObject signal){
@@ -128,9 +129,10 @@ public class NewEntityController{
         JSONArray array = new JSONArray();
         JSONObject allEntities = new JSONObject();
         JSONParser parser = new JSONParser();
-        File newFile = new File("entities.json");
+        File newFile = new File("savefile.json");
         JSONObject data = new JSONObject();
-        FileWriter writer = new FileWriter("entities.json", true);
+        FileWriter writer = new FileWriter("savefile.json", true);
+        File signalFile = new File("signals.json");
         MapEditor.project.getSelectedMap().createEntityProfile(view.nameTf.getText());
         MapEditor.getEntityHierarchy().refresh();
         
@@ -143,8 +145,6 @@ public class NewEntityController{
             for(int i = 0; i < list.size(); i++){
                 data.put(list.get(i).getProperty(), list.get(i).getValue());
             }
-            
-            File signalFile = new File("signals.json");
             
             //verify if a signal is created for the current entity 
             if(signalFile.length() != 0){
@@ -165,8 +165,8 @@ public class NewEntityController{
             }
             else{
                 array.add(data);
-                allEntities.put("entities", array);
-                gson.toJson(allEntities, writer);
+                savefile.put("entities", array);
+                gson.toJson(savefile, writer);
                 writer.close();
             }
         }
@@ -176,8 +176,8 @@ public class NewEntityController{
             try {
                 
                 FileReader reader = new FileReader(newFile);
-                JSONObject existingEntities = (JSONObject) new JSONParser().parse(reader);
-                JSONArray existingArray = (JSONArray) existingEntities.get("entities");
+                savefile = (JSONObject) parser.parse(reader);
+                
                 
                 data.put("classname", view.classNameTf.getText());
                 data.put("name", view.nameTf.getText());
@@ -185,25 +185,45 @@ public class NewEntityController{
                     data.put(list.get(i).getProperty(), list.get(i).getValue());
                 }
                 
-                
-                File signalFile = new File("signals.json");
-                if(signalFile.length() != 0){
-                    FileReader signalReader = new FileReader(signalFile);
-                    JSONArray signalObj = (JSONArray) parser.parse(signalReader);
-                    data.put("signal", signalObj);
-                    existingArray.add(data);
-                    existingEntities.put("entities", existingArray);   
+                if(savefile.containsKey("entities")){
+                    
+                    JSONArray existingEntities = (JSONArray) savefile.get("entities");
+                    if(signalFile.length() != 0){
+                        FileReader signalReader = new FileReader(signalFile);
+                        JSONArray signalObj = (JSONArray) parser.parse(signalReader);
+                        data.put("signal", signalObj);
+                        existingEntities.add(data);
+                        savefile.put("entities", existingEntities);
+
+                    }
+                    else{
+                        existingEntities.add(data);
+                        savefile.put("entities", existingEntities);
+
+                    }  
                 }
                 else{
-                    existingArray.add(data);
-                    existingEntities.put("entities", existingArray);
+                     JSONArray existingEntities = new JSONArray();
+                      if(signalFile.length() != 0){
+                        FileReader signalReader = new FileReader(signalFile);
+                        JSONArray signalObj = (JSONArray) parser.parse(signalReader);
+                        data.put("signal", signalObj);
+                        existingEntities.add(data);
+                        savefile.put("entities", existingEntities);
+
+                    }
+                    else{
+                        existingEntities.add(data);
+                        savefile.put("entities", existingEntities);
+
+                    }  
                 }
                 
                 // new File writer initialized to clear all content of the associated file
                 
                 FileWriter writer3 = new FileWriter(signalFile);
                 FileWriter writer2 = new FileWriter(newFile);
-                gson.toJson(existingEntities, writer);
+                gson.toJson(savefile, writer);
                 writer.close();
             } catch (ParseException ex) {
                 Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
@@ -212,6 +232,7 @@ public class NewEntityController{
         }
         nameList.add(view.nameTf.getText());
         System.out.println(nameList.toString());
+        newEntity();
     }
     
     public void newEntity(){

@@ -201,40 +201,15 @@
       "name": "HGPIJ"
     },
     {
-      "": "5",
-      "classname": "player_simple",
-      "name": "player",
-      "signal": [
-        {
-          "targetname": "gameManager",
-          "name": "onTriggerEnter",
-          "arguments": [
-            "1"
-          ],
-          "inputname": "win"
-        },
-        {
-          "targetname": "gameManager",
-          "name": "onTriggerEnter",
-          "arguments": [
-            "1"
-          ],
-          "inputname": "win"
-        },
-        {
-          "targetname": "gameManager",
-          "name": "onTriggerEnter",
-          "arguments": [
-            "1"
-          ],
-          "inputname": "win"
-        }
-      ]
+      "pro1": "val1",
+      "pro2": "val2",
+      "classname": "class1",
+      "name": "name1"
     },
     {
-      "classname": "logic_counter",
-      "name": "counter1",
-      "value": "5"
+      "123": "123",
+      "classname": "qwd",
+      "name": "name1"
     }
   ]
 }
