@@ -57,7 +57,6 @@ public class ExistingEntityController{
         deleteRow();
         switchWindow();
         addRow();   
-        //editName();
     }
 
     // getting all entities from the json file and display their name in the combobox
@@ -292,14 +291,11 @@ public class ExistingEntityController{
                 JSONObject allEntities = (JSONObject) parser.parse(reader);
                 JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
                 String name = view.cb.getValue();
-                String key = name.substring(1, name.length()-1);
                 int selectedIndex = view.table.getSelectionModel().getSelectedIndex();
                 int index = view.cb.getItems().indexOf(name);
                 
                 //getting the json object that will be added a property
                 JSONObject entity = (JSONObject) entitiesArray.get(index);
-                //JSONObject currentEntity = (JSONObject) entity.get(key);
-                //JSONObject updatedEntity = new JSONObject();
                 entity.put(property, value);
                 
                 entitiesArray.set(index, entity);

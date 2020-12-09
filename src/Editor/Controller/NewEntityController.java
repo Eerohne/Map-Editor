@@ -12,6 +12,7 @@ import Editor.View.Menu.Entity.ExistingEntityStage;
 import Editor.View.Menu.Entity.NewEntity;
 import Editor.View.Menu.Entity.SignalStage;
 import Editor.View.Menu.Entity.SignalViewerStage;
+import Editor.View.New.NewEntityStage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.File;
@@ -26,6 +27,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
  
@@ -99,6 +102,7 @@ public class NewEntityController{
         view.addBtn.setOnAction(handler);
         view.deleteBtn.setOnAction(deleteHandler);
         view.exportBtn.setOnAction(exportHandler);
+        closeWindow();
         //view.newEntityBtn.setOnAction(newEntityHandler);
     }
     
@@ -181,28 +185,32 @@ public class NewEntityController{
                 if(savefile.containsKey("entities")){
                     if(nameCheck(view.nameTf.getText()) == false){
                         System.out.println("fuck");
-                    }
-                     data.put("classname", view.classNameTf.getText());
-                     data.put("name", view.nameTf.getText());
-                     for(int i = 0; i < list.size(); i++){
-                        data.put(list.get(i).getProperty(), list.get(i).getValue());
-                     }
-                     
-                    JSONArray existingEntities = (JSONArray) savefile.get("entities");
-                    
-                    if(signalFile.length() != 0){
-                        FileReader signalReader = new FileReader(signalFile);
-                        JSONArray signalObj = (JSONArray) parser.parse(signalReader);
-                        data.put("signal", signalObj);
-                        existingEntities.add(data);
-                        savefile.put("entities", existingEntities);
+                        Alert a = new Alert(Alert.AlertType.ERROR, "this name is already defined", ButtonType.FINISH);
+                        a.show();
+                    }else{
+                         data.put("classname", view.classNameTf.getText());
+                         data.put("name", view.nameTf.getText());
+                         for(int i = 0; i < list.size(); i++){
+                            data.put(list.get(i).getProperty(), list.get(i).getValue());
+                         }
 
-                    }
-                    else{
-                        existingEntities.add(data);
-                        savefile.put("entities", existingEntities);
+                        JSONArray existingEntities = (JSONArray) savefile.get("entities");
 
-                    }  
+                        if(signalFile.length() != 0){
+                            FileReader signalReader = new FileReader(signalFile);
+                            JSONArray signalObj = (JSONArray) parser.parse(signalReader);
+                            data.put("signal", signalObj);
+                            existingEntities.add(data);
+                            savefile.put("entities", existingEntities);
+                            newEntity();
+                        }
+                        else{
+                            existingEntities.add(data);
+                            savefile.put("entities", existingEntities);
+                            newEntity();
+
+                        }  
+                    }
                 }
                 else{
                      JSONArray existingEntities = new JSONArray();
@@ -233,8 +241,6 @@ public class NewEntityController{
                 
         }
         nameList.add(view.nameTf.getText());
-        System.out.println(nameList.toString());
-        newEntity();
     }
     
     public void newEntity(){
@@ -287,15 +293,20 @@ public class NewEntityController{
             reader = new FileReader("savefile.json");
             JSONObject savefile = (JSONObject) parser.parse(reader);
             JSONArray entities = (JSONArray) savefile.get("entities");
+            JSONObject whatever = new JSONObject();
             
             for(int i = 0; i < entities.size(); i++){
                 JSONObject namecheckObj = (JSONObject) entities.get(i);
                 System.out.println(namecheckObj);
-                if(namecheckObj.get("name").toString().equals(name)){
-                    result = false;
-                }else{
-                    result = true;
+                if(namecheckObj.values().contains(name)){
+                    whatever = namecheckObj;
                 }
+            }
+            
+            if(whatever.values().contains(name)){
+                result = false;
+            }else{
+                result = true;
             }
             
         } catch (FileNotFoundException ex) {
@@ -317,5 +328,11 @@ public class NewEntityController{
     
     public void setData(){
         view.table.getItems().setAll(list);
+    }
+    
+    private void closeWindow(){
+        view.close.setOnAction((event) -> {
+          
+        });
     }
 }

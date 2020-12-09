@@ -1,16 +1,6 @@
 {
   "entities": [
     {
-      "123": "123",
-      "classname": "123",
-      "name": "lol tst",
-      "wtf": "wth",
-      "position": [
-        10.0,
-        10.0
-      ]
-    },
-    {
       "classname": "class",
       "name": "positiontest",
       "position": [
@@ -27,39 +17,13 @@
         10.0,
         10.0
       ],
-      "signal": [
-        {
-          "targetname": "erc",
-          "name": "cwcwerc",
-          "arguments": [
-            "rec"
-          ],
-          "inputname": "rec"
-        }
-      ]
+      "signal": []
     },
     {
       "wedewd": "ewdewecr",
       "classname": "wdewdewd",
       "name": "positiontest3",
-      "signal": [
-        {
-          "targetname": "rec",
-          "name": "wexexcewcc",
-          "arguments": [
-            "ERCCERC"
-          ],
-          "inputname": "ERC"
-        },
-        {
-          "targetname": "wec",
-          "name": "scec",
-          "arguments": [
-            "wecwec"
-          ],
-          "inputname": "ewc"
-        }
-      ]
+      "signal": []
     },
     {
       "123": "123",
@@ -69,22 +33,43 @@
         10.0,
         10.0
       ],
+      "signal": []
+    },
+    {
+      "123": "123123",
+      "classname": "123",
+      "name": "1234",
       "signal": [
         {
-          "targetname": "1231",
-          "name": "123",
+          "targetname": "dsqwswedewd",
+          "name": "32s3w",
           "arguments": [
-            "23"
+            "2ded"
           ],
-          "inputname": "231"
+          "inputname": "2ewdew"
         },
         {
-          "targetname": "123",
-          "name": "123",
+          "targetname": "qweqwe",
+          "name": "qw",
           "arguments": [
-            "123"
+            "sqw"
           ],
-          "inputname": "123"
+          "inputname": "sqws"
+        }
+      ]
+    },
+    {
+      "123": "123123",
+      "classname": "123",
+      "name": "12345",
+      "signal": [
+        {
+          "targetname": "1",
+          "name": "1",
+          "arguments": [
+            "1"
+          ],
+          "inputname": "1"
         }
       ]
     }
