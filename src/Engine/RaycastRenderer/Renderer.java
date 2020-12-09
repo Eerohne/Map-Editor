@@ -73,6 +73,7 @@ public class Renderer {
     public static void setViewDistance(double dist){viewD = dist;} // set the view distance
     public static void setResolution(int resolution){res = resolution;}
     
+    private static boolean doSkip = true;
     private static boolean other = true;
     
     //renders one frame
@@ -81,6 +82,10 @@ public class Renderer {
         
         ArrayList<HitPoint> hPoints = getHitPoints();
         
+        if(doSkip){
+            if(other){  other = false; renderFloorCeiling(hPoints);}
+            else{       other = true;}
+        }
         renderFloorCeiling(hPoints);
         renderWalls(hPoints);
         renderEntities(hPoints);
@@ -226,6 +231,7 @@ public class Renderer {
         
         for(double y = 0; y<screenHeight ; y+=res ) //for every horizontal line of pixels on the screen
         { 
+            //skip the smallest wall
             if(y>lineTop && y<(lineTop+res)) y+=screenHeight/toWall.magnitude();
             
             //distance on the map plane from the player to a point in the direction of the player
@@ -255,8 +261,8 @@ public class Renderer {
                     //cell position
                     int cx = (int)gridPos.getX(), cy = (int)gridPos.getY();
                     
-                    //
-                    if( !(cx<0 || cy<0 || cx>level.width || cy>level.height) )
+                    //in bounds and isn't a wall
+                    if( !(cx<0 || cy<0 || cx>level.width || cy>level.height) && !level.isWall(cx, cy) )
                     {
                         Image texture = level.getCellTexture(cx, cy);
                         int tx = (int)(texture.getWidth() *(Math.abs(gridPos.getX()%1.0)));
