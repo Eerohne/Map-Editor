@@ -184,7 +184,7 @@ public class NewEntityController{
                 savefile = (JSONObject) parser.parse(reader);
                 if(savefile.containsKey("entities")){
                     if(nameCheck(view.nameTf.getText()) == false){
-                        System.out.println("fuck");
+                        
                         Alert a = new Alert(Alert.AlertType.ERROR, "this name is already defined", ButtonType.FINISH);
                         a.show();
                     }else{
