@@ -5,8 +5,10 @@
  */
 package Engine.Entity.GameEntity;
 
+import Engine.Core.Collision.SphereCollider;
 import Engine.Core.Game;
 import Engine.Entity.AbstractEntity.Entity;
+import Engine.Entity.AbstractEntity.Entity_Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
@@ -15,37 +17,45 @@ import javafx.geometry.Point2D;
  *
  * @author child
  */
-public class Entity_Game_Levelload extends Entity{
+public class Entity_Object_Trigger extends Entity{
     
-    //variables here
-    private String levelPath;
+    private SphereCollider collider;
+    private boolean isInside;
     
-    public Entity_Game_Levelload(HashMap<String, Object> propertyMap)
+    private Entity_Player player;
+    
+    public Entity_Object_Trigger(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
         
         //parse property map here
-        this.levelPath = (String) propertyMap.get("levelpath");
-        this.active = false;
+        collider = new SphereCollider(this.position, Double.parseDouble((String) propertyMap.get("radius")), true);
+        this.isInside = false;
     }
     
     @Override
     public void start() {
-        //start logic here
+        this.player = Game.getCurrentLevel().getPlayer();
     }
 
     @Override
     public void update() {
-        //update logic here
+        if(collider.inside(player.getPosition()) && !isInside)
+        {
+            this.fireSignal("OnTriggerEnter");
+            this.isInside = true;
+        }
+        else if(!collider.inside(player.getPosition()) && isInside)
+        {
+            this.fireSignal("OnTriggerExit");
+            this.isInside = false;
+        }
     }
     
     @Override
     public void handleSignal(String signalName, ArrayList<Object> arguments){
         switch(signalName) //new signals here
         {
-            case "load":
-                Game.loadLevel(levelPath);
-                break;
             default:
                 super.handleSignal(signalName, arguments);
                 

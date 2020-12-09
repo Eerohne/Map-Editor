@@ -9,6 +9,7 @@ import Engine.Entity.AbstractEntity.Entity_Player;
 import Engine.Core.Exceptions.EntityCreationException;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Util.Time;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 
@@ -49,7 +50,7 @@ public class Entity_Player_Idle extends Entity_Player{
     }
     
     @Override
-    public void handleSignal(String signalName, Object[] arguments){
+    public void handleSignal(String signalName, ArrayList<Object> arguments){
         switch(signalName) //new signals here
         {
             default:

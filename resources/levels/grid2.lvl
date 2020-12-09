@@ -1,0 +1,203 @@
+{
+  "entities": [
+    {
+    "classname":"player_simple",
+    "name":"player1",
+    "active":"TRUE",
+    "position":[2.5, 0.5],
+    "rotation":"45",
+    "walkspeed":"1.5",
+    "runspeed":"2.5",
+    "rotationspeed":"10",
+    "zfrequency":"1",
+    "zrange":"0.4"
+    },
+    {
+      "231": "23123",
+      "classname": "123",
+      "name": "1231"
+    },
+    {
+      "pro1": "val1",
+      "classname": "class1",
+      "name": "name1",
+      "signal": [
+        {
+          "targetname": "123",
+          "name": "signal1",
+          "arguments": [
+            "123"
+          ],
+          "inputname": "123"
+        },
+        {
+          "targetname": "dsfa",
+          "name": "signal2",
+          "arguments": [
+            "asf"
+          ],
+          "inputname": "sd"
+        }
+      ]
+    },
+    {
+      "pro1": "pro2",
+      "123": "123",
+      "classname": "class2",
+      "name": "name2",
+      "signal": [
+        {
+          "targetname": "dweqd",
+          "name": "sqw",
+          "arguments": [
+            "dewdewd"
+          ],
+          "inputname": "ewdew"
+        }
+      ]
+    }
+  ],
+  "grid": {
+    "data": [
+      [
+        0,
+        2,
+        0,
+        1,
+        0,
+        0,
+        0,
+        3,
+        3,
+        0
+      ],
+      [
+        0,
+        2,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      [
+        2,
+        2,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        3,
+        0
+      ],
+      [
+        2,
+        2,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        3,
+        0
+      ],
+      [
+        2,
+        2,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        3,
+        0
+      ],
+      [
+        2,
+        2,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        2,
+        1,
+        1,
+        1,
+        1,
+        0,
+        3,
+        0
+      ],
+      [
+        0,
+        2,
+        2,
+        0,
+        0,
+        1,
+        0,
+        3,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "width": "10",
+    "palette": [
+      {
+        "flag": "0",
+        "texture": "images/textures/door.png",
+        "id": "1"
+      },
+      {
+        "flag": "1",
+        "texture": "images/textures/brick.png",
+        "id": "2"
+      },
+      {
+        "flag": "1",
+        "texture": "images/textures/grey_brick_vines.png",
+        "id": "3"
+      }
+    ],
+    "height": "10"
+  }
+}

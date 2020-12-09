@@ -6,6 +6,7 @@
 package Engine.Entity.GameEntity;
 
 import Engine.Entity.AbstractEntity.Entity;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 
@@ -50,16 +51,20 @@ public class Entity_Logic_Counter extends Entity{
     }
     
     @Override
-    public void handleSignal(String signalName, Object[] arguments){
+    public void handleSignal(String signalName, ArrayList<Object> arguments){
         switch(signalName)
         {
             case "increment":
                 this.value++;
                 verifyCount();
+                System.out.println("value inside the counter is : "+this.value);
+                System.out.println("the normal returned value is : "+(this.maxValue-this.value));
+                this.fireSignal("OnValueChanged", (this.maxValue-this.value));
                 break;
             case "decrement":
                 this.value--;
                 verifyCount();
+                this.fireSignal("OnValueChanged", this.value-this.minValue);
                 break;
             case "reset":
                 this.value = startingValue;
@@ -73,7 +78,7 @@ public class Entity_Logic_Counter extends Entity{
     public void verifyCount()
     {
         if(canCount && (value >= maxValue | value <= minValue)){
-            fireSignal("OnValueReached");
+            System.out.println("calling reached signal");
             if(canReset)
                 reset();
             else

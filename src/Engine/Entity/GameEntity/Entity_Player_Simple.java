@@ -36,11 +36,11 @@ public class Entity_Player_Simple extends Entity_Player{
     
     private Label label;
     private float headBobTime;
-    private float headBobRange = 0.2f;
-    private float headBobFrequency = 10;
+    private float headBobRange = 0.02f;
+    private float headBobFrequency = 10f;
     private double footstepDistance = 1.0;
     
-    private String[] walkfootstepPaths = {"sounds/fx/footsteps_walk1.wav", "sounds/fx/footsteps_walk2.wav", "sounds/fx/footsteps_walk3.wav", "sounds/fx/footsteps_walk4.wav"};
+    private String[] walkfootstepPaths = {"sounds/fx/footsteps_walk1.wav", "sounds/fx/footsteps_walk3.wav", "sounds/fx/footsteps_walk4.wav"};
     private MediaPlayer[] footstepMediaPlayers;
     public double distanceTraveled=0;
     
@@ -65,16 +65,13 @@ public class Entity_Player_Simple extends Entity_Player{
         super.start();
         
         this.playerSpeed = walkSpeed;
-        AnchorPane display = Game.getWindowManager().getIngameDisplay();
-        label = new Label();
-        label.setFont(Font.font("Cambria", 20));
-        display.getChildren().add(label);
-        display.setTopAnchor(label, 10.0);
     }
 
     @Override
     public void update() {
+        System.out.println("player height : "+this.height);
         Point2D dir = Point2D.ZERO;
+        float newHeadBob = 0;
         if(!Game.isPaused)
         {
             if(Input.keyPressed(KeyCode.W))
@@ -93,10 +90,10 @@ public class Entity_Player_Simple extends Entity_Player{
 
             if(Input.keyPressed(KeyCode.SHIFT)){
                 playerSpeed = runSpeed;
-                headBobFrequency = 1*(runSpeed/walkSpeed);
+                newHeadBob = headBobFrequency*(runSpeed/walkSpeed);
             }else{
                 playerSpeed = walkSpeed;
-                headBobFrequency = 1;
+                newHeadBob = headBobFrequency;
             }
         }
         
@@ -108,15 +105,13 @@ public class Entity_Player_Simple extends Entity_Player{
             //System.out.println(dir.magnitude());
             //headbob code
             if(dir.magnitude() != 0){
-                headBobTime += Time.deltaTime;
-                this.height = (float)Math.sin(headBobTime * headBobFrequency) * headBobRange;
+                this.height = (float)Math.sin(Time.timePassed * newHeadBob) * headBobRange;
             }
             if(distanceTraveled > footstepDistance && true==true)
             {
                 int rnd = (int)(Time.timePassed%1 * (walkfootstepPaths.length));
                 this.footstepMediaPlayers[rnd].play();
                 distanceTraveled = 0;
-                //System.out.println("step "+rnd);
             }
             if(label != null)
                 label.setText(this.position.toString());

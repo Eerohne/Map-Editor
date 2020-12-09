@@ -140,7 +140,6 @@ public class Game extends Application{
         Input.init();
         SoundManager.init();
         Time.init();
-        System.out.println("here");
         //now load the initial level
         loadLevel(Settings.get("e_initiallevel"));
         

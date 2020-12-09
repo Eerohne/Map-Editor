@@ -3,6 +3,7 @@ package Engine.Entity.AbstractEntity;
 import Engine.Core.Exceptions.EntityCreationException;
 import Engine.RaycastRenderer.Renderer;
 import Engine.Util.RessourceManager.ResourceLoader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -42,7 +43,7 @@ public abstract class SpriteEntity extends Entity{ //A type of entity that provi
     }
     
     @Override
-    public void handleSignal(String signalName, Object[] arguments){
+    public void handleSignal(String signalName, ArrayList<Object> arguments){
         
         switch(signalName)
         {

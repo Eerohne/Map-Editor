@@ -10,6 +10,7 @@ import Engine.Core.Sound.SoundManager;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.Util.RessourceManager.ResourceLoader;
 import Engine.Util.Time;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -90,7 +91,6 @@ public abstract class Entity_Sound extends Entity{
     
     public void fadeIn()
     {
-        System.out.println("fading in...");
         final Timeline timeline = new Timeline();
         //timeline.setCycleCount(Timeline.INDEFINITE);
         final KeyValue kv = new KeyValue(playerVolume, this.initialVolume,
@@ -101,11 +101,13 @@ public abstract class Entity_Sound extends Entity{
     }
     
     @Override
-    public void handleSignal(String signalName, Object[] arguments){
+    public void handleSignal(String signalName, ArrayList<Object> arguments){
         switch(signalName) //new signals here
         {
             case "play":
-                mediaplayer.play();
+                if(!this.onlyOnce && !this.loop)
+                    mediaplayer.stop();
+                    mediaplayer.play();
                 break;
             case "pause":
                 this.mediaplayer.pause();

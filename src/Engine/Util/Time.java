@@ -25,9 +25,10 @@ public class Time {
     {
         fpsLabel = new Label();
         fpsLabel.setFont(Font.font("Cambria", 20));
+        fpsLabel.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);");
         AnchorPane pane = Game.getWindowManager().getPauseMenu();
         pane.getChildren().add(fpsLabel);
-        pane.setTopAnchor(fpsLabel, 0.0);
+        pane.setTopAnchor(fpsLabel, 50.0);
         pane.setRightAnchor(fpsLabel, 2.0);
     }
     public static void update()
