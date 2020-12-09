@@ -85,7 +85,7 @@ public class MapEditor extends Application {
         BorderPane view = setupView(metadataContent);
 //        project = new ProjectProfile("Test", new MapProfile("map", 10, 10));
         initialize(editorWindow);
-  
+   
         Scene scene = new Scene(view, 1920, 1080);
         
 //        WallController wc = new WallController(editorWindow, wallHierarchy);

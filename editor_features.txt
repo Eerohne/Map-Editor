@@ -1,6 +1,9 @@
-Entity Placement System
-Entity Creation and Modification System (New Entity Display)
-Default PlayerInfo Panel Update
+Wall Texture Change Fix
+Wall Hierarchy Refresh After Modification
+Wall Deletion
+Entity Data Content View
+Entity Deletion
+Default Player
 Info Panel Update
 Setup Events for All buttons
 New Project System
