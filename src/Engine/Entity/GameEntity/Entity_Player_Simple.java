@@ -109,7 +109,8 @@ public class Entity_Player_Simple extends Entity_Player{
             }
             if(distanceTraveled > footstepDistance && true==true)
             {
-                int rnd = (int)(Time.timePassed%1 * (walkfootstepPaths.length));
+                int rnd = (int)(Math.random() * (walkfootstepPaths.length));
+                System.out.println(rnd);
                 this.footstepMediaPlayers[rnd].play();
                 distanceTraveled = 0;
             }

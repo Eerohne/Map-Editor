@@ -1,7 +1,7 @@
 {
 "grid":{
     "width":"12",
-    "height":"10",
+    "height":"14",
     "data": [ 
             [1,5,1,1,1,1,1,1,1,1,1,1],
             [1,6,6,2,1,0,0,0,0,0,0,1],
@@ -12,6 +12,10 @@
             [1,6,6,6,1,0,0,0,0,0,0,1],
             [1,6,6,6,1,0,1,0,1,0,0,1],
             [1,6,6,3,1,0,0,0,0,0,0,1],
+            [1,6,3,3,1,1,1,1,1,1,1,1],
+            [1,6,6,3,6,6,6,6,6,6,6,1],
+            [1,6,6,6,6,6,6,6,6,6,6,1],
+            [1,6,6,3,6,6,3,3,6,6,3,1],
             [1,1,1,1,1,1,1,1,1,1,1,1]
             ],
     "palette": [
@@ -65,9 +69,9 @@
     "classname":"player_simple",
     "name":"player1",
     "active":"TRUE",
-    "position":[2.0, 3.2],
+    "position":[1.5, 2.0],
     "height":"0.0",
-    "rotation":"45",
+    "rotation":"270",
     "walkspeed":"1.5",
     "runspeed":"2.5",
     "rotationspeed":"10",
@@ -82,7 +86,7 @@
     "foggy":"TRUE",
     "fogcolor":[0.0, 0.0, 0.0],
     "fog_near_distance":"1",
-    "fog_far_distance":"1",
+    "fog_far_distance":"4",
     "has_sky":"false",
     "skycolor":[0.0, 0.5, 0.6],
     "wallheight":"1.0"
@@ -93,7 +97,7 @@
     "name":"timer",
     "active":"TRUE",
     "position":[1.0,1.0],
-    "maxtime":"20",
+    "maxtime":"60",
     "onstart":"TRUE",
     "canreset":"false",
     "signals": [
@@ -176,16 +180,16 @@
                 },
                 {
                     "name":"OnWin",
-                    "targetname":"ui",
-                    "inputname":"setmessageText",
-                    "arguments":["You escaped in time!", "-fx-text-fill: rgba(0, 255, 0, 255);"]
-                },
-                {
-                    "name":"OnWin",
-                    "targetname":"player1",
-                    "inputname":"disable",
+                    "targetname":"winSequence",
+                    "inputname":"activate",
                     "arguments":[]
                 }
+                {
+                    "name":"OnLost",
+                    "targetname":"loseSequence",
+                    "inputname":"activate",
+                    "arguments":[]
+                },
                 
                     ]
     },
@@ -194,7 +198,9 @@
     "name":"ui",
     "active":"TRUE",
     "position":[0.0,0.0],
-    "text":"you have survived the darkness to live another day",
+    "cointext":"Coins Left : 3",
+    "timetext":"Time Left : 01:00",
+    "opacity":"1",
     "signals": []
     },
     {
@@ -231,23 +237,159 @@
     "signals": []
     },
     {
-    "classname":"logic_start",
-    "name":"logicstart",
+    "classname":"sound_ambient",
+    "name":"dooropensound",
+    "active":"TRUE",
+    "position":[1.8,7.5],
+    "audiopath":"sounds/fx/door_open.wav",
+    "channel":"game",
+    "volume":"1.0",
+    "onstart":"false",
+    "loop":"false",
+    "onlyonce":"false",
+    "signals": []
+    },
+    {
+    "classname":"sound_ambient",
+    "name":"doorclosesound",
+    "active":"TRUE",
+    "position":[1.8,7.5],
+    "audiopath":"sounds/fx/door_close.wav",
+    "channel":"game",
+    "volume":"1.0",
+    "onstart":"false",
+    "loop":"false",
+    "onlyonce":"false",
+    "signals": []
+    },
+    {
+    "classname":"sound_ambient",
+    "name":"loosesound",
+    "active":"TRUE",
+    "position":[1.8,7.5],
+    "audiopath":"sounds/fx/loose.wav",
+    "channel":"game",
+    "volume":"1.0",
+    "onstart":"false",
+    "loop":"false",
+    "onlyonce":"false",
+    "signals": []
+    },
+    {
+    "classname":"logic_sequence",
+    "name":"startSequence",
     "active":"TRUE",
     "position":[1.7,7.0],
+    "onstart":"true",
     "signals": [
                 {
-                    "name":"OnLevelLoad",
+                    "name":"event1",
                     "targetname":"ui",
                     "inputname":"setmessageText",
-                    "arguments":["Escape at all cost", "-fx-text-fill: rgba(255, 255, 255, 255);"]
+                    "arguments":["Escape before the time runs out", "-fx-text-fill: rgba(255, 255, 255, 255);", "1.0"]
                 },
                 {
-                    "name":"OnLevelLoad",
+                    "name":"event2",
+                    "targetname":"dooropensound",
+                    "inputname":"play",
+                    "arguments":["0.3"]
+                },
+                {
+                    "name":"event3",
+                    "targetname":"ui",
+                    "inputname":"fadein",
+                    "arguments":["1.0"]
+                },
+                {
+                    "name":"event4",
                     "targetname":"ambient",
                     "inputname":"fadein",
+                    "arguments":["0.0"]
+                }
+                    ]
+    },
+    {
+    "classname":"logic_sequence",
+    "name":"winSequence",
+    "active":"TRUE",
+    "position":[1.7,7.0],
+    "onstart":"false",
+    "signals": [
+                {
+                    "name":"event1",
+                    "targetname":"timer",
+                    "inputname":"stop",
                     "arguments":[]
                 },
+                {
+                    "name":"event2",
+                    "targetname":"player1",
+                    "inputname":"disable",
+                    "arguments":["0.0"]
+                }
+                {
+                    "name":"event3",
+                    "targetname":"ui",
+                    "inputname":"fadeout",
+                    "arguments":["0.0"]
+                },
+                {
+                    "name":"event4",
+                    "targetname":"ambient",
+                    "inputname":"fadeout",
+                    "arguments":["0.0"]
+                },
+                {
+                    "name":"event5",
+                    "targetname":"doorclosesound",
+                    "inputname":"play",
+                    "arguments":["0.5"]
+                },
+                {
+                    "name":"event6",
+                    "targetname":"ui",
+                    "inputname":"setmessageText",
+                    "arguments":["You escaped the daungeon to die another day...\nPress Q to restart", "-fx-text-fill: rgba(0, 255, 0, 255);, "1.5""]
+                }
+                    ]
+    },
+    {
+    "classname":"logic_sequence",
+    "name":"loseSequence",
+    "active":"TRUE",
+    "position":[1.7,7.0],
+    "onstart":"false",
+    "signals": [
+                {
+                    "name":"event2",
+                    "targetname":"player1",
+                    "inputname":"disable",
+                    "arguments":["0.0"]
+                }
+                {
+                    "name":"event3",
+                    "targetname":"ui",
+                    "inputname":"fadeout",
+                    "arguments":["0.0"]
+                },
+                {
+                    "name":"event4",
+                    "targetname":"ambient",
+                    "inputname":"fadeout",
+                    "arguments":["0.0"]
+                },
+                {
+                    "name":"event5",
+                    "targetname":"loosesound",
+                    "inputname":"play",
+                    "arguments":["0.5"]
+                },
+                {
+                    "name":"event6",
+                    "targetname":"ui",
+                    "inputname":"setmessageText",
+                    "arguments":["You were consumed by the darkness...\nPress Q to restart", "-fx-text-fill: rgba(255, 0, 0, 255);, "1.5""]
+                }
                     ]
     },
     {
@@ -258,14 +400,14 @@
     "height":"0.2",
     "texture":"images/sprites/lamppost.png",
     "size":"0.5",
-    "radius":"0.4",
+    "radius":"0.0",
     "signals": []
     },
     {
     "classname":"object_collectible",
     "name":"coin1",
     "active":"TRUE",
-    "position":[10.0, 8.5],
+    "position":[10.0, 2.5],
     "height":"0.4",
     "texture":"images/sprites/coin.png",
     "size":"0.2",
@@ -313,7 +455,7 @@
     "classname":"object_collectible",
     "name":"coin3",
     "active":"TRUE",
-    "position":[6.0, 8.5],
+    "position":[8.5, 12.5],
     "height":"0.4",
     "texture":"images/sprites/coin.png",
     "size":"0.2",

@@ -14,6 +14,10 @@ import Engine.Util.Time;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -24,6 +28,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
 
 /**
  *
@@ -32,11 +37,12 @@ import javafx.scene.text.TextAlignment;
 public class Entity_Text extends Entity{
     
     //variables here
-    private Label messagelabel = new Label("a");
-    private Label timelabel = new Label("b");
-    private Label coinlabel = new Label("c");
+    private Label messagelabel = new Label("");
+    private Label timelabel = new Label("");
+    private Label coinlabel = new Label("");
     
-    private Pane p;
+    private Pane blackPane;
+    private double originalOpacity;
     
     private boolean writingMessage = false;
     private String messageText = "";
@@ -57,11 +63,12 @@ public class Entity_Text extends Entity{
         //dialoguePath = (String) propertyMap.get("dialogueSoundPath");
         soundMedia= ResourceLoader.loadAudio(dialoguePath);
         mediaPlayer = SoundManager.createPlayer(soundMedia, "game", true, false);
-    }
-    
-    @Override
-    public void start() {
-        //start logic here
+        coinlabel.setText((String) propertyMap.get("cointext"));
+        timelabel.setText((String) propertyMap.get("timetext"));
+        originalOpacity = Double.parseDouble((String) propertyMap.get("opacity"));
+        
+        ///UI SETUP///
+        
         messagelabel.setWrapText(true);
         messagelabel.setMaxWidth(Game.getWindowManager().getWidth());
         messagelabel.setTextAlignment(TextAlignment.CENTER);
@@ -71,22 +78,22 @@ public class Entity_Text extends Entity{
         timelabel.setWrapText(true);
         timelabel.setMaxWidth(Game.getWindowManager().getWidth());
         timelabel.setTextAlignment(TextAlignment.CENTER);
-        timelabel.setFont(Font.font("Cambria", 30));
+        timelabel.setFont(Font.font("Cambria", 40));
         //timelabel.setStyle("-fx-text-fill: rgba(255, 255, 255, 255);");
         
         coinlabel.setWrapText(true);
         coinlabel.setMaxWidth(Game.getWindowManager().getWidth());
         coinlabel.setTextAlignment(TextAlignment.CENTER);
-        coinlabel.setFont(Font.font("Cambria", 30));
+        coinlabel.setFont(Font.font("Cambria", 40));
         //coinlabel.setStyle("-fx-text-fill: rgba(255, 255, 255, 255);");
         
         HBox hb = new HBox();
         hb.setAlignment(Pos.CENTER);
         hb.getChildren().add(messagelabel);
         
-        p = new Pane();
-        p.setStyle("-fx-background-color: rgba(0, 0, 0, 1.0);");
-        p.setOpacity(0);
+        blackPane = new Pane();
+        blackPane.setStyle("-fx-background-color: rgba(0, 0, 0, 1.0);");
+        blackPane.setOpacity(originalOpacity);
         
         /*Media video = new Media(new File("c:/Users/child/Desktop/srender/render3.mp4").toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(video); 
@@ -96,7 +103,7 @@ public class Entity_Text extends Entity{
         mediaView.setPreserveRatio(false);
         mediaPlayer.setAutoPlay(true);*/
         
-        Game.getWindowManager().getIngameDisplay().getChildren().addAll(timelabel, coinlabel, p, hb);
+        Game.getWindowManager().getIngameDisplay().getChildren().addAll(timelabel, coinlabel, blackPane, hb);
         
         //Game.getWindowManager().getIngameDisplay().set
         //Game.getWindowManager().getIngameDisplay().setTopAnchor(hb, 0.0);
@@ -104,10 +111,10 @@ public class Entity_Text extends Entity{
         Game.getWindowManager().getIngameDisplay().setRightAnchor(hb, 0.0);
         Game.getWindowManager().getIngameDisplay().setLeftAnchor(hb, 0.0);
         
-        Game.getWindowManager().getIngameDisplay().setTopAnchor(p, 0.0);
-        Game.getWindowManager().getIngameDisplay().setBottomAnchor(p, 0.0);
-        Game.getWindowManager().getIngameDisplay().setRightAnchor(p, 0.0);
-        Game.getWindowManager().getIngameDisplay().setLeftAnchor(p, 0.0);
+        Game.getWindowManager().getIngameDisplay().setTopAnchor(blackPane, 0.0);
+        Game.getWindowManager().getIngameDisplay().setBottomAnchor(blackPane, 0.0);
+        Game.getWindowManager().getIngameDisplay().setRightAnchor(blackPane, 0.0);
+        Game.getWindowManager().getIngameDisplay().setLeftAnchor(blackPane, 0.0);
         
         Game.getWindowManager().getIngameDisplay().setTopAnchor(timelabel, 0.0);
         Game.getWindowManager().getIngameDisplay().setLeftAnchor(timelabel, 0.0);
@@ -120,6 +127,11 @@ public class Entity_Text extends Entity{
         Game.getWindowManager().getIngameDisplay().setBottomAnchor(mediaView, 0.0);
         Game.getWindowManager().getIngameDisplay().setRightAnchor(mediaView, 0.0);
         Game.getWindowManager().getIngameDisplay().setLeftAnchor(mediaView, 0.0);*/
+    }
+    
+    @Override
+    public void start() {
+        //start logic here
         
     }
 
@@ -165,6 +177,28 @@ public class Entity_Text extends Entity{
         
     }
     
+    private void fadein()
+    {
+        final Timeline timeline = new Timeline();
+        //timeline.setCycleCount(Timeline.INDEFINITE);
+        final KeyValue kv = new KeyValue(blackPane.opacityProperty(), 0,
+         Interpolator.EASE_BOTH);
+        final KeyFrame kf = new KeyFrame(Duration.millis(1500), kv);
+        timeline.getKeyFrames().add(kf);
+        timeline.play();
+    }
+    
+    private void fadeout()
+    {
+        final Timeline timeline = new Timeline();
+        //timeline.setCycleCount(Timeline.INDEFINITE);
+        final KeyValue kv = new KeyValue(blackPane.opacityProperty(), 1,
+         Interpolator.EASE_BOTH);
+        final KeyFrame kf = new KeyFrame(Duration.millis(1500), kv);
+        timeline.getKeyFrames().add(kf);
+        timeline.play();
+    }
+    
     @Override
     public void handleSignal(String signalName, ArrayList<Object> arguments){
         switch(signalName) //new signals here
@@ -191,6 +225,12 @@ public class Entity_Text extends Entity{
                 else
                     messagelabel.setStyle("-fx-text-fill: rgba(255, 255, 255, 255);");
                 writeMessage((String)arguments.get(0), 0.005f);
+                break;
+            case "fadein":
+                fadein();
+                break;
+            case "fadeout":
+                fadeout();
                 break;
             default:
                 super.handleSignal(signalName, arguments);

@@ -19,6 +19,8 @@ public class Entity_Logic_GameManager extends Entity{
     private boolean coinsCollected;
     private boolean closeToDoor;
     
+    private boolean lost = false;
+    
     public Entity_Logic_GameManager(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
@@ -40,7 +42,7 @@ public class Entity_Logic_GameManager extends Entity{
     
     private void verifyLogic()
     {
-        if(coinsCollected == true && closeToDoor == true)
+        if(coinsCollected == true && closeToDoor == true && lost == false)
         {
             System.out.println("you have escaped the dangeon to live another day...");
             this.fireSignal("OnWin");
@@ -88,8 +90,9 @@ public class Entity_Logic_GameManager extends Entity{
                     this.fireSignal("OnSecondPassed", "Time Left : "+timeText, "-fx-text-fill: rgba(255, 0, 0, 255);");
                 break;
             case "gameLost":
+                this.lost = true;
                 System.out.println("lost!!!");
-                this.fireSignal("gameLost");
+                this.fireSignal("OnLost");
                     
             default:
                 super.handleSignal(signalName, arguments);

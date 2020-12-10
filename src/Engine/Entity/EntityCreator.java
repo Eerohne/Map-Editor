@@ -51,6 +51,10 @@ public class EntityCreator { //Entity creation is defined in this class
                 case "logic_messenger":
                     entity = new Entity_Logic_Messenger(propertyMap);
                     break;
+                case "logic_sequence":
+                    if(verifyProperties(propertyMap, "onstart"))
+                        entity = new Entity_Logic_Sequence(propertyMap);
+                    break;
                 case "logic_start":
                     entity = new Entity_Logic_Start(propertyMap);
                     break;
@@ -87,7 +91,7 @@ public class EntityCreator { //Entity creation is defined in this class
                         entity = new Entity_Object_Trigger(propertyMap);
                     break;
                 case "ui_text":
-                    if(verifyProperties(propertyMap, "text"))
+                    if(verifyProperties(propertyMap, "cointext", "timetext", "opacity"))
                         entity = new Entity_Text(propertyMap);
                     break;
                 default:
