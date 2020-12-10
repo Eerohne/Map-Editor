@@ -101,6 +101,14 @@ public class MapProfile extends Profile{
         return entity;
     }
     
+    public WallProfile loadWallProfile(String name, String imgName, int flag, int id){
+        WallProfile wall = new WallProfile(id, name, imgName, flag);
+        this.wallMap.put(id, wall);
+        wallCounter++;
+        this.gc.setSelectedWallProfile(wall);
+        return wall;
+    }
+    
     public static String getTxrURL(MapProfile map, int id){
         for (Map.Entry<Integer, WallProfile> entry : map.wallMap.entrySet()) {
             if(entry.getKey() == id){

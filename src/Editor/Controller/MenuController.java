@@ -6,6 +6,9 @@
 package Editor.Controller;
 
 import Editor.Main.MapEditor;
+import Editor.Model.Profile.MapProfile;
+import Editor.Model.Profile.WallProfile;
+import Editor.View.Grid.Cell;
 import Editor.View.New.NewEntityStage;
 import Editor.View.Menu.Entity.ExistingEntityStage;
 import Editor.View.Menu.TopMenu;
@@ -17,6 +20,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -141,6 +146,7 @@ public class MenuController{
                     paletteObj.put("flag", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getFlag()));
                     paletteObj.put("id", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getID()));
                     paletteObj.put("texture", "images/textures/" + MapEditor.project.selectedMap.getWallMap().get(i).getImageName());
+                    paletteObj.put("name", MapEditor.project.selectedMap.getWallMap().get(i).getImageName());
 
                     palette.add(paletteObj);
 
@@ -181,6 +187,7 @@ public class MenuController{
                         paletteObj.put("flag", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getFlag()));
                         paletteObj.put("id", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getID()));
                         paletteObj.put("texture", "images/textures/" + MapEditor.project.selectedMap.getWallMap().get(i).getImageName());
+                        paletteObj.put("name", MapEditor.project.selectedMap.getWallMap().get(i).getImageName());
 
                         palette.add(paletteObj);
 
@@ -216,6 +223,7 @@ public class MenuController{
                         paletteObj.put("flag", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getFlag()));
                         paletteObj.put("id", Integer.toString(MapEditor.project.selectedMap.getWallMap().get(i).getID()));
                         paletteObj.put("texture", "images/textures/" + MapEditor.project.selectedMap.getWallMap().get(i).getImageName());
+                        paletteObj.put("name", MapEditor.project.selectedMap.getWallMap().get(i).getImageName());
 
                         palette.add(paletteObj);
 
@@ -286,8 +294,7 @@ public class MenuController{
                 Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        
+ 
     }
     
     private void load(){
@@ -298,12 +305,75 @@ public class MenuController{
             JSONObject savefile = (JSONObject) parser.parse(reader);
             JSONObject mapInfo = (JSONObject) savefile.get("grid");
             JSONArray entities = (JSONArray) savefile.get("entities");
+            JSONArray gridData = new JSONArray();
             
+            // getting width and height of the grid
             String gridWidthStr =  (String) mapInfo.get("width");
             String gridHeightStr = (String) mapInfo.get("height");
+            int gridWidth = Integer.parseInt(gridWidthStr);
+            int gridHeight = Integer.parseInt(gridHeightStr);
             
             
+            // getting the grid array
+            int[][] gridArray = new int[gridHeight][gridWidth];
+            gridData = (JSONArray) mapInfo.get("data");
+            Iterator<JSONArray> rowIterator = gridData.iterator();
+            int rowNumber = 0;
             
+            while(rowIterator.hasNext()){
+                JSONArray columns = rowIterator.next();
+                Iterator<Long> colIterator = columns.iterator();
+                int colNumber = 0;
+                while(colIterator.hasNext()){
+                    gridArray[rowNumber][colNumber] = colIterator.next().intValue();
+                    colNumber++;
+                }
+                rowNumber++;
+            }
+            
+            
+            //getting grid palette
+            JSONArray paletteArray = (JSONArray) mapInfo.get("palette");
+            Iterator<Object> paletteIterator = paletteArray.iterator();
+            MapProfile mapToLoad = new MapProfile("savefile.json", gridWidth, gridHeight);
+            
+            while(paletteIterator.hasNext()){
+                JSONObject palette = (JSONObject) paletteIterator.next();
+                String idStr = (String) palette.get("id");
+                int id = Integer.parseInt(idStr); 
+                String imagePath = (String) palette.get("texture");
+                String flagStr = (String) palette.get("flag");
+                int flag = Integer.parseInt(flagStr); 
+                String imageName = (String) palette.get("name");
+                System.out.println(id + " , " + imagePath + " , " + flag + " , " + imageName);
+                
+                mapToLoad.loadWallProfile(imagePath, imageName, flag, id);
+            }
+            
+            //getting entities 
+            Iterator<Object> entitiesIterator = entities.iterator();
+            double [] position = new double[3];
+            double [] color = new double[4];
+            String entityName = "";
+            while(entitiesIterator.hasNext()){
+                JSONObject entity = (JSONObject) entitiesIterator.next();
+                JSONArray positionArray = (JSONArray) entity.get("position");
+                Iterator<Double> positionIterator = positionArray.iterator();
+                int positionCounter = 0;
+                while(positionIterator.hasNext()){
+                    position[positionCounter] = positionIterator.next().doubleValue();
+                    positionCounter++;
+                }
+                JSONArray colorArray = (JSONArray) entity.get("color");
+                Iterator<Double> colorIterator = colorArray.iterator();
+                int colorCounter = 0;
+                while(colorIterator.hasNext()){
+                    color[colorCounter] = colorIterator.next().doubleValue();
+                    colorCounter++;
+                }
+                entityName = (String) entity.get("name");
+                System.out.println(Arrays.toString(position) + " , " + Arrays.toString(color) + " , " + entityName);
+            }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
