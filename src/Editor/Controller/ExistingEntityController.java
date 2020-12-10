@@ -15,6 +15,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +23,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -57,7 +60,6 @@ public class ExistingEntityController{
         deleteRow();
         switchWindow();
         addRow();   
-        //editName();
     }
 
     // getting all entities from the json file and display their name in the combobox
@@ -81,6 +83,8 @@ public class ExistingEntityController{
         }
     }
     
+    
+    
     private void launchSignalEditor(){
         view.signalBtn.setOnAction((event) -> {
             try {
@@ -99,39 +103,54 @@ public class ExistingEntityController{
         view.cb.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                JSONParser parser = new JSONParser();
-                try(FileReader reader = new FileReader("savefile.json")){
+                FileReader reader = null;
+                try {
+                    JSONParser parser = new JSONParser();
+                    reader = new FileReader("savefile.json");
+                    JSONObject savefile = (JSONObject) parser.parse(reader);
+                    JSONArray entities = (JSONArray) savefile.get("entities");
+                    String name = view.cb.getValue();
+                    int currentEntityIndex = view.cb.getItems().indexOf(name);
                     
-                    JSONObject allEntity = (JSONObject) parser.parse(reader);
-                    JSONArray entitiesArray = (JSONArray) allEntity.get("entities");
+                    JSONObject currentEntity = (JSONObject) entities.get(currentEntityIndex);
                     
-                    for(int i = 0; i < entitiesArray.size(); i++){
-                        JSONObject entity = (JSONObject) entitiesArray.get(i);
-                        String str = (String) entity.get("name");
-                        list.clear();
+                    view.classNameTf.setText((String) currentEntity.get("classname"));
+                    view.nameTf.setText((String) currentEntity.get("name"));
+                    
+                    List keyList = new ArrayList(currentEntity.keySet());
+                    List valueList = new ArrayList(currentEntity.values());
+                    
+                    list.clear();
+                    for(int i = 0; i < currentEntity.keySet().size(); i++){
                         
-                        if(newValue.equals(str)){
-                            ObservableList<String> keylist = FXCollections.observableArrayList(entity.keySet());
-                            ObservableList<String> valuelist = FXCollections.observableArrayList(entity.values());
-                            view.classNameTf.setText((String) entity.get("classname"));
-                            view.nameTf.setText((String) entity.get("name"));
-                            for(int j = 0; j < entity.keySet().size(); j++){
-                                if((valuelist.get(j) instanceof String) && !keylist.get(j).equals("classname") && !keylist.get(j).equals("name")){
-                                    list.add(new EntityModel(keylist.get(j), valuelist.get(j)));
-                                    view.table.getItems().setAll(list);
-                                } else {
-                                    continue;
-                                }
-                            }      
+                        if(!keyList.get(i).equals("signal") && !keyList.get(i).equals("name") && !keyList.get(i).equals("classname")){
+                            ObservableList<String> propertyList = FXCollections.observableArrayList();
+                            propertyList.add(keyList.get(i).toString());
+                            ObservableList<String> values = FXCollections.observableArrayList();
+                            values.add(valueList.get(i).toString());
+
+                            for(int j = 0; j < propertyList.size(); j++){
+                                list.add(new EntityModel(propertyList.get(j), values.get(j)));
+                            }
                         }
                     }
+                    view.table.getItems().setAll(list);
                     
-                } catch (FileNotFoundException ex) {
+                            } catch (FileNotFoundException ex) {
                     Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException | ParseException ex) {
+                } catch (IOException ex) {
                     Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    try {
+                        reader.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
+               
         });
     }
     
@@ -154,20 +173,28 @@ public class ExistingEntityController{
                     for(int i = 0; i < entitiesArray.size(); i++){
                         JSONObject entity = (JSONObject) entitiesArray.get(i);
                         if(entity.get("name").equals(name)){
-                            
-                            entity.put("name", view.nameTf.getText());
-                            entity.put("classname", view.classNameTf.getText());
-                            tempModel = (EntityModel) view.table.getItems().get(selectedIndex);
-                            
-                            entity.remove(tempModel.getProperty());
-                            entity.put(view.propertyText.getText(), view.valueText.getText());
-                            entitiesArray.set(index, entity);
-                            allEntity.put("entities", entitiesArray);
+                            if(nameCheck(view.nameTf.getText()) == true || view.nameTf.getText().equals(name)){
+                                entity.put("name", view.nameTf.getText());
+                                entity.put("classname", view.classNameTf.getText());
+                                tempModel = (EntityModel) view.table.getItems().get(selectedIndex);
 
-                            FileWriter writer = new FileWriter("savefile.json");
-                            gson.toJson(allEntity, writer);
-                            writer.close();
-                            
+                                entity.remove(tempModel.getProperty());
+                                if(isArray(view.valueText.getText()) == true){
+                                    entity.put(view.propertyText.getText(), view.valueText.getText().split(","));
+                                }else{
+                                    entity.put(view.propertyText.getText(), view.valueText.getText());
+                                }
+                                entitiesArray.set(index, entity);
+                                allEntity.put("entities", entitiesArray);
+
+                                FileWriter writer = new FileWriter("savefile.json");
+                                gson.toJson(allEntity, writer);
+                                writer.close();
+                            }
+                            else{
+                                Alert a = new Alert(Alert.AlertType.ERROR, "this name is already defined", ButtonType.FINISH);
+                                a.show();
+                            }     
                         }
                         
                     }
@@ -177,14 +204,19 @@ public class ExistingEntityController{
                     for(int i = 0; i < entitiesArray.size(); i++){
                         JSONObject entity = (JSONObject) entitiesArray.get(i);
                         if(entity.get("name").equals(name)){
-                            entity.put("name", view.nameTf.getText());
-                            entity.put("classname", view.classNameTf.getText());
-                            entitiesArray.set(index, entity);
-                            allEntity.put("entities", entitiesArray);
+                            if(nameCheck(view.nameTf.getText()) == true || view.nameTf.getText().equals(name)){
+                                entity.put("name", view.nameTf.getText());
+                                entity.put("classname", view.classNameTf.getText());
+                                entitiesArray.set(index, entity);
+                                allEntity.put("entities", entitiesArray);
 
-                            FileWriter writer = new FileWriter("savefile.json");
-                            gson.toJson(allEntity, writer);
-                            writer.close();
+                                FileWriter writer = new FileWriter("savefile.json");
+                                gson.toJson(allEntity, writer);
+                                writer.close();
+                            }else{
+                                Alert a = new Alert(Alert.AlertType.ERROR, "this name is already defined", ButtonType.FINISH);
+                                a.show();
+                            }
                             
                         } 
                     }         
@@ -292,15 +324,16 @@ public class ExistingEntityController{
                 JSONObject allEntities = (JSONObject) parser.parse(reader);
                 JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
                 String name = view.cb.getValue();
-                String key = name.substring(1, name.length()-1);
                 int selectedIndex = view.table.getSelectionModel().getSelectedIndex();
                 int index = view.cb.getItems().indexOf(name);
                 
                 //getting the json object that will be added a property
                 JSONObject entity = (JSONObject) entitiesArray.get(index);
-                //JSONObject currentEntity = (JSONObject) entity.get(key);
-                //JSONObject updatedEntity = new JSONObject();
-                entity.put(property, value);
+                if(isArray(value) == true){
+                    entity.put(property, value.split(","));
+                }else{
+                    entity.put(property, value);
+                }
                 
                 entitiesArray.set(index, entity);
                 allEntities.put("entities", entitiesArray);
@@ -343,5 +376,56 @@ public class ExistingEntityController{
            Stage stage = new Stage();
            new NewEntityStage(stage);
         });
+}
+
+    private boolean nameCheck(String name){
+        boolean result = false;
+        FileReader reader = null;
+        try {
+            JSONParser parser = new JSONParser();
+            reader = new FileReader("savefile.json");
+            JSONObject savefile = (JSONObject) parser.parse(reader);
+            JSONArray entities = (JSONArray) savefile.get("entities");
+            JSONObject whatever = new JSONObject();
+            
+
+            for(int i = 0; i < entities.size(); i++){
+                JSONObject namecheckObj = (JSONObject) entities.get(i);
+                System.out.println(namecheckObj);
+                if(namecheckObj.values().contains(name)){
+                    whatever = namecheckObj;
+                }
+            }
+
+            if(whatever.values().contains(name)){
+                result = false;
+            }else{
+                result = true;
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+         return result;
     }
+    
+    private boolean isArray(String str){
+        boolean isArray = false;
+        if(str.contains(","))
+            isArray = true;
+        else
+            isArray = false;
+        return isArray;
+    }
+
+        
 }

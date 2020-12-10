@@ -32,6 +32,7 @@ public class SignalEditorView extends GridPane{
     public Button saveSignal = new Button("save");
     public Button clearSignal = new Button("clear");
     public Button delete = new Button("delete");
+    public Button add = new Button("add signal");
     
     public ComboBox cb = new ComboBox();
     public ComboBox signalSelector = new ComboBox();
@@ -55,7 +56,7 @@ public class SignalEditorView extends GridPane{
         
         labelBox.getChildren().addAll(nameLabel, targetNameLabel, inputNameLabel, arguementLabel);
         tfBox.getChildren().addAll(nameTf, targetNameTf, inputNameTf, arguementTf);
-        btnBox.getChildren().addAll(cb, signalSelector, saveSignal, clearSignal, delete);
+        btnBox.getChildren().addAll(cb, signalSelector, saveSignal, clearSignal, delete, add);
         
         this.add(labelBox, 0, 0);
         this.add(tfBox, 1, 0);

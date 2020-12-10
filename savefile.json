@@ -1,76 +1,95 @@
 {
   "entities": [
     {
-      "classname": "class",
-      "name": "positiontest",
-      "position": [
-        10.0,
-        10.0
+      "12": "32",
+      "1": "2",
+      "asd": "drf",
+      "classname": "class1",
+      "color": [
+        0.0,
+        0.0,
+        1.0
       ],
-      "pro": "val"
+      "name": "NAME",
+      "property": [
+        "p",
+        "r",
+        "o",
+        "p",
+        "e",
+        "r",
+        "t",
+        "y"
+      ]
     },
     {
-      "classname": "werew",
-      "qdw": "edwedew",
-      "name": "positiontest2",
-      "position": [
-        10.0,
-        10.0
+      "prop1": "valu1",
+      "12": "12",
+      "classname": "class2",
+      "color": [
+        0.0,
+        0.0,
+        1.0
       ],
-      "signal": []
-    },
-    {
-      "wedewd": "ewdewecr",
-      "classname": "wdewdewd",
-      "name": "positiontest3",
-      "signal": []
-    },
-    {
-      "123": "123",
-      "classname": "123",
-      "name": "positiontest4",
-      "position": [
-        10.0,
-        10.0
+      "1234": "1234",
+      "name": "NAME2",
+      "numbers": [
+        "1",
+        "2",
+        "3",
+        "4"
       ],
-      "signal": []
-    },
-    {
-      "123": "123123",
-      "classname": "123",
-      "name": "1234",
+      "position": [
+        3.45,
+        2.39
+      ],
       "signal": [
         {
-          "targetname": "dsqwswedewd",
-          "name": "32s3w",
+          "targetname": "2",
+          "name": "signal1",
           "arguments": [
-            "2ded"
+            "2",
+            "3"
           ],
-          "inputname": "2ewdew"
+          "inputname": "2"
         },
         {
-          "targetname": "qweqwe",
-          "name": "qw",
+          "targetname": "123",
+          "name": "123",
           "arguments": [
-            "sqw"
+            "123"
           ],
-          "inputname": "sqws"
+          "inputname": "123"
         }
       ]
     },
     {
-      "123": "123123",
+      "123": "123",
+      "classname": "lass2",
+      "name": "NAME3"
+    },
+    {
+      "123": "123",
       "classname": "123",
-      "name": "12345",
-      "signal": [
-        {
-          "targetname": "1",
-          "name": "1",
-          "arguments": [
-            "1"
-          ],
-          "inputname": "1"
-        }
+      "name": "NAME1"
+    },
+    {
+      "2": "2",
+      "3": "3",
+      "classname": "123",
+      "name": "123456",
+      "position": [
+        3.47,
+        1.59
+      ]
+    },
+    {
+      "a": "b",
+      "classname": "jhgerituyrdoy8",
+      "name": "abd",
+      "position": [
+        5.3041173598345575,
+        5.809999982048481
       ]
     }
   ],

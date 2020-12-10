@@ -24,5 +24,10 @@ public class EntityController extends MetadataController{
     protected void saveAction() {
 
     }
+
+    @Override
+    protected void deleteAction() {
+
+    }
     
 }

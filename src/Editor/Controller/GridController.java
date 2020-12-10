@@ -326,7 +326,6 @@ public class GridController{
             JSONArray entities = (JSONArray) savefile.get("entities");
             JSONObject currentEntity = new JSONObject();
             JSONArray position = new JSONArray();
-            int counter = 0;
             position.add(x);
             position.add(y);
             
@@ -334,11 +333,10 @@ public class GridController{
                 currentEntity = (JSONObject) entities.get(i);
                 if(currentEntity.get("name").equals(name)){
                     currentEntity.put("position", position);
-                    counter++;
+                    entities.set(i, currentEntity);
                 }
             }
             
-            entities.set(counter, currentEntity);
             savefile.put("entities", entities);
             
             FileWriter writer = new FileWriter("savefile.json");

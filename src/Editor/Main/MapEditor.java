@@ -50,7 +50,7 @@ public class MapEditor extends Application {
     Info info; //Displays some useful information about the interaction with the Editor
     
     static EntityHierarchy entityHierarchy; //Hierarchy of Entities
-    WallHierarchy wallHierarchy; // Hierarchy of Walls
+    static WallHierarchy wallHierarchy; // Hierarchy of Walls
     MapHierarchy mapHierarchy; //Hierarchy of Maps
     
     static DataView metadataContent; //Content Wrapper to display in metadata tab
@@ -85,7 +85,7 @@ public class MapEditor extends Application {
         BorderPane view = setupView(metadataContent);
 //        project = new ProjectProfile("Test", new MapProfile("map", 10, 10));
         initialize(editorWindow);
-  
+   
         Scene scene = new Scene(view, 1920, 1080);
         
 //        WallController wc = new WallController(editorWindow, wallHierarchy);
@@ -264,5 +264,9 @@ public class MapEditor extends Application {
     
     public static EntityHierarchy getEntityHierarchy(){
         return entityHierarchy;
+    }
+
+    public static WallHierarchy getWallHierarchy() {
+        return wallHierarchy;
     }
 }

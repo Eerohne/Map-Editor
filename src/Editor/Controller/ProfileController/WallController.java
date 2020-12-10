@@ -5,6 +5,7 @@
  */
 package Editor.Controller.ProfileController;
 
+import Editor.Main.MapEditor;
 import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.WallProfile;
 import Editor.View.Grid.Cell;
@@ -47,6 +48,7 @@ public class WallController extends MetadataController {
         super(content);
         this.grid = map.getGridView();
         this.map = map;
+        this.imgName = content.getWallProfile().getImageName();
         this.setupReferences((WallContent)content);
         this.stage = stage;
         if(((WallContent)content).getWallProfile().isDelete()){
@@ -70,7 +72,7 @@ public class WallController extends MetadataController {
                     File textureFile = fileChooser.showOpenDialog(stage);
                 try {
                     this.newImage = new Image(new FileInputStream(textureFile.getAbsoluteFile()), 100, 100, false, false);
-                    this.imgName = textureFile.getName().substring(0, textureFile.getName().lastIndexOf("."));
+                    this.imgName = textureFile.getName();
                     txrPreview.setFill(new ImagePattern(newImage));
                 } catch (FileNotFoundException ex) {
                        System.out.println(ex);
@@ -91,7 +93,7 @@ public class WallController extends MetadataController {
     @Override
     protected void saveAction(){
         ((WallContent)content).getWallProfile().setFlag((String)flagCombo.getValue());
-        ((WallContent)content).getWallProfile().setImg(imgName); //DUMMY
+        ((WallContent)content).getWallProfile().setImg(imgName);
         ((WallContent)content).getWallProfile().setName(nameField.getText());
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {
@@ -99,6 +101,29 @@ public class WallController extends MetadataController {
                     this.map.getGc().setImg(cell, ((WallContent)content).getWallProfile().getImage());
             }
         }
+        
+        MapEditor.getWallHierarchy().refresh();
+    }
+    
+    @Override
+    protected void deleteAction() {
+        this.map.getGc().setSelectedWallProfile(MapEditor.getProject().getSelectedMap().getDefaultWall());
+        
+        for (Cell[] cells : grid.getCells()) {
+            for (Cell cell : cells) {
+                if(cell.getID() == ((WallContent)content).getWallProfile().getID()){
+                    System.out.println(cell.getID());
+                    this.map.getGc().setImg(cell, this.map.getDefaultWall().getDeleteImage());
+                    cell.setID(0);
+                }
+            }
+        }
+        WallContent wallContent = new WallContent(this.map.getGc().getSelectedWallProfile());
+        WallController wc = new WallController(wallContent, map, stage);
+        MapEditor.setDataView(wallContent);
+        
+        MapEditor.getProject().getSelectedMap().getWallMap().remove(((WallContent)content).getWallProfile().getID());
+        MapEditor.getWallHierarchy().refresh();
     }
     
     public void refresh(){
