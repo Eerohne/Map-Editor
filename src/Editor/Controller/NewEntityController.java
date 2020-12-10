@@ -152,6 +152,8 @@ public class NewEntityController{
         JSONObject data = new JSONObject();
         FileWriter writer = new FileWriter("savefile.json", true);
         File signalFile = new File("signals.json");
+        double[] initialPosition = {0.0 , 0.0};
+        
         
         String entityName = view.nameTf.getText();
         
@@ -159,6 +161,7 @@ public class NewEntityController{
         if(newFile.length() == 0 || !newFile.exists()){
             data.put("classname", view.classNameTf.getText());
             data.put("name", view.nameTf.getText());
+            data.put("position", initialPosition);
 
             
             for(int i = 0; i < list.size(); i++){
@@ -202,6 +205,7 @@ public class NewEntityController{
                 if(savefile.containsKey("entities")){
                      data.put("classname", view.classNameTf.getText());
                      data.put("name", view.nameTf.getText());
+                     data.put("position", initialPosition);
                      for(int i = 0; i < list.size(); i++){
                          if(isArray(list.get(i).getValue()) == true){
                              data.put(list.get(i).getProperty(), list.get(i).getValue().split(","));
@@ -224,9 +228,7 @@ public class NewEntityController{
                         existingEntities.add(data);
                         savefile.put("entities", existingEntities);
                         newEntity();
-
-                    }  
-
+                    }
                 }
                 else{
                      JSONArray existingEntities = new JSONArray();
@@ -236,12 +238,10 @@ public class NewEntityController{
                         data.put("signal", signalObj);
                         existingEntities.add(data);
                         savefile.put("entities", existingEntities);
-
                     }
                     else{
                         existingEntities.add(data);
                         savefile.put("entities", existingEntities);
-
                     }  
                 }
                 
