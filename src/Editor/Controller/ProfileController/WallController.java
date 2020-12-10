@@ -5,6 +5,7 @@
  */
 package Editor.Controller.ProfileController;
 
+import Editor.Main.MapEditor;
 import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.WallProfile;
 import Editor.View.Grid.Cell;
@@ -47,6 +48,7 @@ public class WallController extends MetadataController {
         super(content);
         this.grid = map.getGridView();
         this.map = map;
+        this.imgName = content.getWallProfile().getImageName();
         this.setupReferences((WallContent)content);
         this.stage = stage;
         if(((WallContent)content).getWallProfile().isDelete()){
@@ -70,7 +72,7 @@ public class WallController extends MetadataController {
                     File textureFile = fileChooser.showOpenDialog(stage);
                 try {
                     this.newImage = new Image(new FileInputStream(textureFile.getAbsoluteFile()), 100, 100, false, false);
-                    this.imgName = textureFile.getName().substring(0, textureFile.getName().lastIndexOf("."));
+                    this.imgName = textureFile.getName();
                     txrPreview.setFill(new ImagePattern(newImage));
                 } catch (FileNotFoundException ex) {
                        System.out.println(ex);
@@ -99,6 +101,8 @@ public class WallController extends MetadataController {
                     this.map.getGc().setImg(cell, ((WallContent)content).getWallProfile().getImage());
             }
         }
+        
+        MapEditor.getWallHierarchy().refresh();
     }
     
     public void refresh(){

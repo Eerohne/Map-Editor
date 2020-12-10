@@ -82,7 +82,7 @@ public class WallProfile extends Profile{
     }
 
     public void setImg(String img) {
-        this.setImgName(imgName);
+        this.setImgName(img);
         try {
             this.img = new Image(new FileInputStream(resourceFolder + imgName), 100, 100, false, false);
         } catch (FileNotFoundException ex) {
