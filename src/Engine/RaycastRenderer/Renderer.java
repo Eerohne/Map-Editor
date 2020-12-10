@@ -29,7 +29,7 @@ import javafx.scene.image.Image;
 *   Render Entities     +
 *   Render Textures     +
 *   Render Floor/Ceil   +
-*   Fog                 -
+*   Fog                 +
 *   Game Minimap        -
 */
 public class Renderer {
@@ -235,7 +235,7 @@ public class Renderer {
         }
         
         double dist = toWall.magnitude();
-        double lineTop = screenHeight*(0.5*(1-1/dist)+player.getHeight()/dist);
+        double lineTop = 0.5*(screenHeight-screenHeight/dist) + player.getHeight()/dist;
         
         double y = 0.0;
         
@@ -248,17 +248,17 @@ public class Renderer {
         while( y<screenHeight ) //for every horizontal line of pixels on the screen
         { 
             //skip the smallest wall
-            if(y>lineTop && y<(lineTop+res)) y+=screenHeight/dist;
+            if(y>=lineTop && y<(lineTop+res)) y+=screenHeight/dist;
             
-            //distance on the map plane from the player to a point in the direction of the player
+            
             double ry = y/screenHeight; //position on screen (0 -> 1)
-            double fdist = Math.abs(1/(ry-0.5) );
-            double ph = (0.5-player.getHeight());
+            double fdist = Math.abs(1/(ry-0.5) );//distance on the map plane from the player to a point in the direction of the player
+            double ph = (0.5-player.getHeight());//player height, centered on horizon
            
-            if(ry<0.5){
-                fdist*=ph;
+            if(ry<0.5){ //top half of the screen
+                fdist*=(ph+env.getWallHeight()-1);
             }
-            else{
+            else{ //botom half of the screen
                 fdist*=(1-ph);
             }
             
@@ -313,9 +313,9 @@ public class Renderer {
         ArrayList<VisibleSprite> fogless = new ArrayList<>();
         
         //sort entities by distance to player
-        for(String name: spriteEntities.keySet()){
+        spriteEntities.keySet().forEach((name) -> {
             sprites.offer(spriteEntities.get(name));
-        }
+        });
         
         //draw entities
         while(!sprites.isEmpty())
@@ -494,7 +494,7 @@ public class Renderer {
             }
             
             //draws the wall
-            if(env.getWallHeight() == 1.0 || !env.hasSky()){
+            if(env.getWallHeight() == 1.0){
                 gc.drawImage(texture, tx, 0, 1, texture.getHeight(), x, lineTop, res, height );
             }
             else{
@@ -539,22 +539,20 @@ public class Renderer {
                 
                 gc.setFill(env.getFogColor().deriveColor(1, 1, 1, 0.5));
                 
-                if(env.getWallHeight() == 1.0 || !env.hasSky()){
+                if(env.getWallHeight() == 1.0){
                     gc.fillRect(x*res, lineTop, res, height);
                 }
                 else{
-                    for(int y=0;y<env.getWallHeight();y++){
-                        gc.fillRect(x*res, lineTop, res, height*env.getWallHeight());
-                    }
+                        gc.fillRect(x*res, lineTop-height*(env.getWallHeight()-1), res, height*env.getWallHeight());
                 }
                 
             }
             
         }
         
-        for(VisibleSprite s: sprites){
+        sprites.forEach((s) -> {
             gc.drawImage(s.sprite, s.sx, s.sy, s.sw, s.sh, s.dx, s.dy, s.dw, s.dh);
-        }
+        });
     }
     
     

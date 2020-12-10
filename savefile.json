@@ -23,190 +23,48 @@
       ]
     },
     {
-      "prop1": "valu1",
-      "12": "12",
-      "classname": "class2",
+      "12": "32",
+      "1": "2",
+      "asd": "drf",
+      "classname": "class1",
       "color": [
         0.0,
         0.0,
         1.0
       ],
-      "1234": "1234",
-      "name": "NAME2",
-      "numbers": [
-        "1",
-        "2",
-        "3",
-        "4"
-      ],
-      "position": [
-        3.45,
-        2.39
-      ],
-      "signal": [
-        {
-          "targetname": "2",
-          "name": "signal1",
-          "arguments": [
-            "2",
-            " 4"
-          ],
-          "inputname": "2"
-        },
-        {
-          "targetname": "123",
-          "name": "123",
-          "arguments": [
-            "123"
-          ],
-          "inputname": "123"
-        }
+      "name": "name123lol",
+      "property": [
+        "p",
+        "r",
+        "o",
+        "p",
+        "e",
+        "r",
+        "t",
+        "y"
       ]
     },
     {
-      "123": "123",
-      "classname": "lass2",
-      "name": "NAME3"
-    },
-    {
-      "123": "123",
-      "classname": "123",
-      "name": "NAME1"
-    },
-    {
-      "2": "2",
-      "3": "3",
-      "classname": "123",
-      "name": "123456",
-      "position": [
-        3.47,
-        1.59
-      ]
-    },
-    {
-      "a": "a",
-      "ab": "b",
-      "classname": "jhgerituyrdoy8",
-      "name": "abd",
-      "position": [
-        5.3041173598345575,
-        5.809999982048481
-      ]
-    },
-    {
-      "a": "v",
-      "classname": "j,sdghaf;ugq",
-      "name": "k;gigiug"
-    },
-    {
-      "classname": "dfg",
-      "d": "d",
-      "name": "dfg"
-    },
-    {
-      "classname": "test",
+      "12": "32",
+      "1": "2",
+      "asd": "drf",
+      "classname": "class1",
       "color": [
-        164.0,
-        139.0,
-        14.0
+        0.0,
+        0.0,
+        1.0
       ],
-      "name": "test"
-    },
-    {
-      "a": "d",
-      "classname": "s",
-      "color": [
-        199.0,
-        190.0,
-        12.0
-      ],
-      "name": "ba",
-      "position": [
-        14.29,
-        16.85
+      "name": "duplicat",
+      "property": [
+        "p",
+        "r",
+        "o",
+        "p",
+        "e",
+        "r",
+        "t",
+        "y"
       ]
-    },
-    {
-      "a": "b",
-      "classname": "uoytuy2",
-      "color": [
-        151.0,
-        221.0,
-        74.0
-      ],
-      "name": "greendot",
-      "position": [
-        3.17,
-        2.99
-      ]
-    },
-    {
-      "a": "b",
-      "classname": "test",
-      "color": [
-        247.0,
-        174.0,
-        8.0
-      ],
-      "name": "verycool",
-      "position": [
-        9.29,
-        14.53
-      ]
-    },
-    {
-      "good job": "pay2win!",
-      "classname": "new",
-      "color": [
-        238.0,
-        166.0,
-        105.0
-      ],
-      "name": "entity",
-      "i like it": "very solid",
-      "great": "system",
-      "signal": [
-        {
-          "targetname": "b",
-          "name": "a",
-          "arguments": [
-            "d"
-          ],
-          "inputname": "c"
-        }
-      ]
-    },
-    {
-      "classname": "logic_timer",
-      "color": [
-        217.0,
-        160.0,
-        119.0
-      ],
-      "maxtimer": "5",
-      "name": "match timer",
-      "position": [
-        1.4463634144176134,
-        1.5918182373046872
-      ]
-    },
-    {
-      "runspeed": "2.5",
-      "classname": "player_simple",
-      "color": [
-        127.0,
-        242.0,
-        20.0
-      ],
-      "rotation": "45",
-      "name": "player",
-      "active": "true",
-      "position": [
-        5.028181596235795,
-        5.010000055486505
-      ],
-      "walkspeed": "1.5",
-      "height": "0"
     }
   ],
   "grid": {
