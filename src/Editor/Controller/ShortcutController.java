@@ -10,6 +10,7 @@ import Editor.View.New.NewWallProfile;
 import Editor.View.Help;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Hierarchy.WallHierarchy;
+import Editor.View.New.NewEntityStage;
 import Engine.Core.Game;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
@@ -41,6 +42,10 @@ public class ShortcutController{
         
         shortcutBar.getWallShort().setOnAction(e -> {
             new NewWallProfile(owner, WallProfile.resourceFolder, wallList);
+        });
+        
+        shortcutBar.getEntityShort().setOnAction(e -> {
+            new NewEntityStage(owner);
         });
     }
     
