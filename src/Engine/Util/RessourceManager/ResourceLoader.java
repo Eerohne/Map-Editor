@@ -86,15 +86,14 @@ public class ResourceLoader
     //AudioPlayer.player.start(ResourceLoader.loadMedia("sounds/musictest.wav"));
     public static Media loadMedia(String path)
     {
-        System.out.println("try load");
         try
         {
-            System.out.println("path : "+ resourcePath + path);
             return new Media(new File(resourcePath + path).toURI().toString());
         }
         catch(MediaException e)
         {
             System.out.println("media loading error");
+            return null;
         }
         catch(Exception e)
         {

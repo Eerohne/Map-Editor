@@ -23,11 +23,16 @@ public class Input {
         Game.scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
             public void handle(KeyEvent key) {
                 keyMap.put(key.getCode(), true);
-                if(key.getCode() == KeyCode.ESCAPE)
-                    Game.togglePause();
+                if(key.getCode() == KeyCode.ESCAPE){
+                        Game.togglePause();
+                }
                 if(key.getCode() == KeyCode.Q){
                     Game.reloadCurrentLevel();
                 }
+                
+                //skip intro cutscene
+                 if(Game.inIntro)
+                    Game.skipIntro();
             }
         });
         
