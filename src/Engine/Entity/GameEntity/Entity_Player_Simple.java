@@ -43,6 +43,7 @@ public class Entity_Player_Simple extends Entity_Player{
     private String[] walkfootstepPaths = {"sounds/fx/footsteps_walk1.wav", "sounds/fx/footsteps_walk3.wav", "sounds/fx/footsteps_walk4.wav"};
     private MediaPlayer[] footstepMediaPlayers;
     public double distanceTraveled=0;
+    private int oldFootstepRnd;
     
     public Entity_Player_Simple(HashMap<String, Object> propertyMap) throws EntityCreationException
     {
@@ -109,8 +110,11 @@ public class Entity_Player_Simple extends Entity_Player{
             }
             if(distanceTraveled > footstepDistance && true==true)
             {
-                int rnd = (int)(Math.random() * (walkfootstepPaths.length));
-                System.out.println(rnd);
+                int rnd = oldFootstepRnd;
+                while(rnd==oldFootstepRnd){
+                    rnd = (int)(Math.random() * (walkfootstepPaths.length));
+                }
+                oldFootstepRnd = rnd;
                 this.footstepMediaPlayers[rnd].play();
                 distanceTraveled = 0;
             }

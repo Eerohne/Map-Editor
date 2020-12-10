@@ -150,7 +150,7 @@ public class Entity_Text extends Entity{
                 
                 if(this.charCounter >= this.messageText.length())
                 {
-                    mediaPlayer.pause();
+                    mediaPlayer.stop();
                     this.writingMessage = false;
                 }
             }
@@ -218,8 +218,6 @@ public class Entity_Text extends Entity{
                     timelabel.setStyle("-fx-text-fill: rgba(255, 255, 255, 255);");
                 break;
             case "setmessageText":
-                //messagelabel.setText((String)arguments.get(0));
-                System.out.println("signal sent");
                 if(arguments.size() >1)
                     messagelabel.setStyle((String)arguments.get(1));
                 else

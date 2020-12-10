@@ -86,7 +86,7 @@
     "foggy":"TRUE",
     "fogcolor":[0.0, 0.0, 0.0],
     "fog_near_distance":"1",
-    "fog_far_distance":"4",
+    "fog_far_distance":"3",
     "has_sky":"false",
     "skycolor":[0.0, 0.5, 0.6],
     "wallheight":"1.0"
@@ -349,7 +349,7 @@
                     "name":"event6",
                     "targetname":"ui",
                     "inputname":"setmessageText",
-                    "arguments":["You escaped the daungeon to die another day...\nPress Q to restart", "-fx-text-fill: rgba(0, 255, 0, 255);, "1.5""]
+                    "arguments":["You escaped the daungeon to die another day...\nPress Q to restart", "-fx-text-fill: rgba(0, 255, 0, 255);, "2.0""]
                 }
                     ]
     },

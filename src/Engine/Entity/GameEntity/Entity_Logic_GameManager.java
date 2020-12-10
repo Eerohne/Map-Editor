@@ -91,7 +91,6 @@ public class Entity_Logic_GameManager extends Entity{
                 break;
             case "gameLost":
                 this.lost = true;
-                System.out.println("lost!!!");
                 this.fireSignal("OnLost");
                     
             default:
