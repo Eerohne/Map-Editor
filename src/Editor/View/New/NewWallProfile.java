@@ -5,10 +5,12 @@
  */
 package Editor.View.New;
 
+import Editor.Main.MapEditor;
 import Editor.Model.Profile.WallProfile;
 import Editor.View.Hierarchy.WallHierarchy;
 import java.io.File;
 import java.util.Arrays;
+import java.util.Map;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
@@ -52,13 +54,13 @@ public class NewWallProfile extends NewObject{
         Label name = new Label("Name : ");
         Label flag = new Label("Flag : ");
         
-        TextField nameField = new TextField(selectedImage);
+        TextField nameField = new TextField();
         
         ObservableList<String> flagsList = FXCollections.observableArrayList();
         flagsList.addAll(Arrays.asList(WallProfile.flagArray));
         
         ComboBox<String> flagBox = new ComboBox<>(flagsList);
-        flagBox.setValue(flagsList.get(0));
+        flagBox.setValue(flagsList.get(1));
         
         VBox view = new VBox();
         
@@ -67,6 +69,10 @@ public class NewWallProfile extends NewObject{
         
         view.getChildren().addAll(nameContainer, flagContainer);
         
+        
+        nameField.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.finish.setDisable(nameCheck(newValue));
+        });
         this.next.setDisable(true);
         this.finish.setDisable(false);
         this.finish.setOnAction(e -> {
@@ -75,6 +81,17 @@ public class NewWallProfile extends NewObject{
             wallList.refresh();
         });
         
+        nameField.setText(selectedImage);
+        
         return view;
+    }
+    
+    private boolean nameCheck(String name){
+        for (Map.Entry<Integer, WallProfile> entry : MapEditor.getProject().getSelectedMap().getWallMap().entrySet()) {
+            if (entry.getValue().getName().equals(name) || name.equals(""))
+                return true;
+        }
+        
+        return false;
     }
 }

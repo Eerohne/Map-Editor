@@ -19,7 +19,7 @@ import javafx.scene.image.Image;
  */
 public class WallProfile extends Profile{
     public static String resourceFolder = "resources/images/textures/";//To displace
-    public static String[] flagArray = {"Empty", "Wall"};
+    public static String[] flagArray = {"Floor", "Wall"};
     
     private final boolean isDelete;
     private String imgName;
