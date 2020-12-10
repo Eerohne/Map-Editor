@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Editor.Controller;
+import Editor.Main.MapEditor;
 import Editor.Model.EntityModel;
 import Editor.View.New.NewEntityStage;
 import Editor.View.Menu.Entity.ExistingEntityModification;
@@ -166,7 +167,7 @@ public class ExistingEntityController{
                 JSONArray entitiesArray = (JSONArray) allEntity.get("entities");
                 String name = view.cb.getValue();
                 int index = view.cb.getItems().indexOf(name);
-                
+                MapEditor.getProject().getSelectedMap().getGc().getSelectedEntityProfile().setName(view.nameTf.getText());
                 if(selectedIndex >= 0){
                     
                     EntityModel tempModel = new EntityModel();
@@ -221,6 +222,8 @@ public class ExistingEntityController{
                         } 
                     }         
                 }
+                
+                MapEditor.getEntityHierarchy().refresh();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {

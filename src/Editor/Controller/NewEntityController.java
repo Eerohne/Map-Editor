@@ -152,7 +152,8 @@ public class NewEntityController{
         JSONObject data = new JSONObject();
         FileWriter writer = new FileWriter("savefile.json", true);
         File signalFile = new File("signals.json");
-        MapEditor.getEntityHierarchy().refresh();
+        
+        String entityName = view.nameTf.getText();
         
         // create or write to the entities.json if no entities exist
         if(newFile.length() == 0 || !newFile.exists()){
@@ -256,7 +257,8 @@ public class NewEntityController{
                 
         }
         nameList.add(view.nameTf.getText());
-        MapEditor.project.getSelectedMap().createEntityProfile(view.nameTf.getText());
+        MapEditor.project.getSelectedMap().createEntityProfile(entityName);
+        MapEditor.getEntityHierarchy().refresh();
     }
     
     public void newEntity(){
