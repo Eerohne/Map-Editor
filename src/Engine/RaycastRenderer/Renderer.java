@@ -17,12 +17,7 @@ import java.util.PriorityQueue;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.Blend;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 /**
  *
@@ -39,7 +34,6 @@ import javafx.scene.paint.Color;
 */
 public class Renderer {
     private Renderer(){}
-    
     
     private static Canvas frame = new Canvas();
     private static GraphicsContext gc = frame.getGraphicsContext2D();
@@ -97,7 +91,8 @@ public class Renderer {
         }
         
         renderWalls(hPoints);
-        renderEntities(hPoints);
+        ArrayList<VisibleSprite> sprites = renderEntities(hPoints);
+        if(env.isFoggy()) renderFog(hPoints, sprites);
     }
     
     //calculates all the of the points of intersection with a wall
@@ -304,16 +299,18 @@ public class Renderer {
     //renders level
     private static void renderWalls(ArrayList<HitPoint> hPoints){
         for(int i=0;i<screenWidth/res;i++){
-            drawWallLine(i, hPoints.get(i), false);
+            drawWallLine(i, hPoints.get(i));
         }
     }
     
     //renders entities
-    private static void renderEntities(ArrayList<HitPoint> hPoints){
+    private static ArrayList<VisibleSprite> renderEntities(ArrayList<HitPoint> hPoints){
         Point2D cam = player.getPosition();
         float camA = player.getRotation();
         final Point2D dir = new Point2D(Math.cos(Math.toRadians(camA)), Math.sin(Math.toRadians(camA)));
         PriorityQueue<SpriteEntity> sprites = new PriorityQueue(new EntityDistanceComparator());
+        
+        ArrayList<VisibleSprite> fogless = new ArrayList<>();
         
         //sort entities by distance to player
         for(String name: spriteEntities.keySet()){
@@ -346,10 +343,11 @@ public class Renderer {
                 double width    = scale*sprite.getWidth();
                 
                 //position on screen of the leftmost pixel of the sprite
-                double screenPos = (screenWidth*fovLeft.angle(ePos)/fov) - (width/2.0);
+                double screenXPos = (screenWidth*fovLeft.angle(ePos)/fov) - (width/2.0);
                 
-                boolean hidden = true; //if the entity is completely obscured by a wall
-                for(int i = (int)(screenPos/res); i<(screenPos+width)/res && i<hPoints.size(); i++){
+                //check if the entity is completely obscured by a wall
+                boolean hidden = true; 
+                for(int i = (int)(screenXPos/res); i<(screenXPos+width)/res && i<hPoints.size(); i++){
                     if(i<0){i=0;}
                     double eDist = cam.distance(e.getPosition());
                     if( env.isFoggy() && eDist>env.getFogFarDistance())break;
@@ -361,37 +359,104 @@ public class Renderer {
                 if(!hidden)
                 {
                     //position of the top pixel of the sprite
-                    double relY = (screenHeight-height)/2.0; //center
-                    relY -= h*(e.getHeight()-0.5); //height offset of entity
-                    relY += h*(player.getHeight()); //height offset of player
+                    double screenYPos = (screenHeight-height)/2.0; //center
+                    screenYPos -= h*(e.getHeight()-0.5); //height offset of entity
+                    screenYPos += h*(player.getHeight()); //height offset of player
                     
-                    gc.drawImage(sprite, screenPos, relY, width, height );
-
+                    if(!env.isFoggy()) gc.drawImage(sprite, screenXPos, screenYPos, width, height);
+                    
+                    //pixels of the sprite that are hidden
+                    int pointer = 0;
+                    int startHide = -1, endHide = -1;
+                    
                     //draw walls that are in front of the entity
-                    for(int i = (int)(screenPos/res); i<(screenPos+width)/res && i<hPoints.size(); i++)
+                    for(int i = (int)(screenXPos/res); i<(screenXPos+width)/res && i<hPoints.size(); i++)
                     {
                         if(i<0){i=0;}
-                        double pDist = cam.distance(hPoints.get(i));
-                        double eDist = cam.distance(e.getPosition());
+                        double wDist = cam.distance(hPoints.get(i)); //wall distance
+                        double eDist = cam.distance(e.getPosition());//entity distance
                         
-                        if(pDist<eDist)drawWallLine(i, hPoints.get(i), true);
+                        if(wDist<eDist){
+                            if(startHide == -1){
+                                startHide = pointer;
+                            }
+                            else{
+                                endHide = pointer;
+                            }
+                            drawWallLine(i, hPoints.get(i));
+                        }
+                        pointer+=res;
+                    }
+                    
+                    if(env.isFoggy())
+                    {
+                        switch(startHide)
+                        {
+                            case(-1):{
+                                
+                                if(dist+0.01<env.getFogNearDistance()){
+                                    fogless.add(new VisibleSprite(sprite, screenXPos, screenYPos, width, height));
+                                }
+                                else{
+                                    gc.drawImage(sprite, screenXPos, screenYPos, width, height);
+                                }
+                                
+                                break;
+                            } 
+                            case( 0):
+                            {
+                                screenXPos += endHide+1;
+                                double spriteStart = sprite.getWidth()*(endHide)/width;
+                                width -= endHide;
+
+                                if(dist+0.01<env.getFogNearDistance()){
+                                    fogless.add(new VisibleSprite
+                                                (sprite, spriteStart, 0, sprite.getWidth()-spriteStart, sprite.getHeight(),
+                                                screenXPos, screenYPos, width, height));
+                                }
+                                else{
+                                    gc.drawImage(sprite, spriteStart, 0, sprite.getWidth()-spriteStart, sprite.getHeight(),
+                                                screenXPos, screenYPos, width, height);
+                                }
+                                
+                                break;
+                            }
+                            default:
+                            {
+                                if(endHide == -1)endHide = startHide;
+                                double hideLength = endHide-startHide;
+                                double spriteWidth = sprite.getWidth()*(width-hideLength)/width;
+                                width -= hideLength+1;
+
+                                if(dist+0.01<env.getFogNearDistance()){
+                                    fogless.add(new VisibleSprite
+                                            (sprite, 0, 0, spriteWidth, sprite.getHeight(),
+                                            screenXPos, screenYPos, width, height));
+                                }
+                                else{
+                                    gc.drawImage(sprite, 0, 0, spriteWidth, sprite.getHeight(),
+                                                screenXPos, screenYPos, width, height);
+                                }
+                                
+                            }
+                        }
                     }
                     
                 }
                 
             }
         }
-        
+        return fogless;
     }
 
     //draws the line representing a slice of a wall
-    private static void drawWallLine(int r, HitPoint hPoint, boolean hide){
+    private static void drawWallLine(int r, HitPoint hPoint){
         
         double camA = Math.toRadians(player.getRotation());
         Point2D dir = new Point2D( Math.cos(camA), Math.sin(camA) );
         Point2D toWall = hPoint.subtract(player.getPosition());
 
-        //should the fog be drawn?
+        //does the hitPoint represent opaque fog?
         boolean isFog = false;
         
         double distance = toWall.magnitude();
@@ -435,7 +500,6 @@ public class Renderer {
             else{
                 for(int y=0;y<env.getWallHeight();y++){
                     gc.drawImage(texture, tx, 0, 1, texture.getHeight(),x, lineTop-height*y, res, height);
-                    
                 }
             }
         }
@@ -446,43 +510,54 @@ public class Renderer {
             gc.fillRect(x, lineTop-height*(env.getWallHeight()-1), res, height*env.getWallHeight());
         }
         
-        //draw the transparent fog
-        if(env.isFoggy())
-        {
-            double tFogDist = (int)env.getFogFarDistance();
-            if(tFogDist*fixDist>distance)
-            {
-                tFogDist = Math.ceil(distance);
-            }
+    }
+
+    //draws the transparent fog
+    private static void renderFog(ArrayList<HitPoint> hPoints, ArrayList<VisibleSprite> sprites){
+        double camA = Math.toRadians(player.getRotation());
+        Point2D dir = new Point2D( Math.cos(camA), Math.sin(camA) );
+        
+        for(int x=0; x<hPoints.size(); x++){
             
+            HitPoint hPoint = hPoints.get(x);
+            Point2D toWall = hPoint.subtract(player.getPosition());
+
+            double fixDist = Math.cos(Math.toRadians(dir.angle(toWall)));
             
-            float fogLength = env.getFogFarDistance()-env.getFogNearDistance();
+            double distance = toWall.magnitude();
+            double tFogDist = env.getFogFarDistance();
+            
+            if(tFogDist>distance)tFogDist = Math.ceil(distance);
             
             while (tFogDist>env.getFogNearDistance()) {                
                 tFogDist-=1;
                 
                 distance = tFogDist*fixDist;
-                if(!hide){
-                    height = screenHeight/distance;
-                    lineTop = 0.5*(screenHeight-height) + height*(player.getHeight());
-                }
+        
+                double height = screenHeight/distance;
+                double lineTop = 0.5*(screenHeight-height) + height*(player.getHeight());
                 
-                gc.setFill(env.getFogColor().deriveColor(1, 1, 1, tFogDist/fogLength));
+                gc.setFill(env.getFogColor().deriveColor(1, 1, 1, 0.5));
                 
                 if(env.getWallHeight() == 1.0 || !env.hasSky()){
-                    gc.fillRect(x, lineTop, res, height);
+                    gc.fillRect(x*res, lineTop, res, height);
                 }
                 else{
                     for(int y=0;y<env.getWallHeight();y++){
-                        gc.fillRect(x, lineTop, res, height*env.getWallHeight());
+                        gc.fillRect(x*res, lineTop, res, height*env.getWallHeight());
                     }
                 }
                 
             }
+            
         }
         
+        for(VisibleSprite s: sprites){
+            gc.drawImage(s.sprite, s.sx, s.sy, s.sw, s.sh, s.dx, s.dy, s.dw, s.dh);
+        }
     }
-
+    
+    
     static class EntityDistanceComparator implements Comparator<SpriteEntity>{
         //furthest first, closest last
         @Override
@@ -518,4 +593,30 @@ class HitPoint extends Point2D{
     public int getXIndex() {return xIn;}
     public int getYIndex() {return yIn;}
     public int getType() {return type;}
+}
+
+class VisibleSprite{
+    final protected Image sprite;
+    final protected double sx, sy, sw, sh;
+    final protected double dx, dy, dw, dh;
+
+    protected VisibleSprite(Image sprite, double sx, double sy, double sw, double sh, double dx, double dy, double dw, double dh) {
+        this.sprite = sprite;
+        this.sx = sx;
+        this.sy = sy;
+        this.sw = sw;
+        this.sh = sh;
+        this.dx = dx;
+        this.dy = dy;
+        this.dw = dw;
+        this.dh = dh;
+    }
+
+    public VisibleSprite(Image sprite, double dx, double dy, double dw, double dh) {
+        this(sprite, 0, 0, sprite.getWidth(), sprite.getHeight(), dx, dy, dw, dh);
+    }
+
+    
+    
+    
 }
