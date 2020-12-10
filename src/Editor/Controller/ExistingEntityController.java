@@ -123,7 +123,8 @@ public class ExistingEntityController{
                     list.clear();
                     for(int i = 0; i < currentEntity.keySet().size(); i++){
                         
-                        if(!keyList.get(i).equals("signal") && !keyList.get(i).equals("name") && !keyList.get(i).equals("classname")){
+                        if(!keyList.get(i).equals("signal") && !keyList.get(i).equals("name") && !keyList.get(i).equals("classname") 
+                                && !keyList.get(i).equals("position") && !keyList.get(i).equals("color")){
                             ObservableList<String> propertyList = FXCollections.observableArrayList();
                             propertyList.add(keyList.get(i).toString());
                             ObservableList<String> values = FXCollections.observableArrayList();
@@ -348,7 +349,8 @@ public class ExistingEntityController{
                 
                 list.clear();
                 for(int i = 0; i < keyList.size(); i++){
-                    if(!keyList.get(i).equals("signal") && !keyList.get(i).equals("name") && !keyList.get(i).equals("classname")){
+                    if(!keyList.get(i).equals("signal") && !keyList.get(i).equals("name") && !keyList.get(i).equals("classname")
+                             && !keyList.get(i).equals("position") && !keyList.get(i).equals("color")){
                         ObservableList<String> propertyList = FXCollections.observableArrayList();
                         propertyList.add(keyList.get(i).toString());
                         ObservableList<String> valueList = FXCollections.observableArrayList();
