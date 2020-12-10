@@ -9,7 +9,6 @@ import Editor.Controller.ProfileController.WallController;
 import Editor.Main.MapEditor;
 import Editor.View.Metadata.WallContent;
 import Editor.Model.Profile.MapProfile;
-import Editor.Model.Profile.Profile;
 import Editor.Model.Profile.WallProfile;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,16 +17,10 @@ import java.util.Map;
 import java.util.TreeMap;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**

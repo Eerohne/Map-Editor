@@ -1,5 +1,3 @@
-Wall Texture Change Fix
-Wall Hierarchy Refresh After Modification
 Wall Deletion
 Entity Data Content View
 Entity Deletion

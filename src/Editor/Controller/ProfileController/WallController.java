@@ -105,6 +105,27 @@ public class WallController extends MetadataController {
         MapEditor.getWallHierarchy().refresh();
     }
     
+    @Override
+    protected void deleteAction() {
+        this.map.getGc().setSelectedWallProfile(MapEditor.getProject().getSelectedMap().getDefaultWall());
+        
+        for (Cell[] cells : grid.getCells()) {
+            for (Cell cell : cells) {
+                if(cell.getID() == ((WallContent)content).getWallProfile().getID()){
+                    System.out.println(cell.getID());
+                    this.map.getGc().setImg(cell, this.map.getDefaultWall().getDeleteImage());
+                    cell.setID(0);
+                }
+            }
+        }
+        WallContent wallContent = new WallContent(this.map.getGc().getSelectedWallProfile());
+        WallController wc = new WallController(wallContent, map, stage);
+        MapEditor.setDataView(wallContent);
+        
+        MapEditor.getProject().getSelectedMap().getWallMap().remove(((WallContent)content).getWallProfile().getID());
+        MapEditor.getWallHierarchy().refresh();
+    }
+    
     public void refresh(){
         
     }
