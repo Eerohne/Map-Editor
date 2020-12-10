@@ -66,7 +66,7 @@
     "name":"player1",
     "active":"TRUE",
     "position":[2.0, 3.2],
-    "height":"0.7",
+    "height":"0.0",
     "rotation":"45",
     "walkspeed":"1.5",
     "runspeed":"2.5",
@@ -80,12 +80,36 @@
     "active":"TRUE",
     "position":[0.0, 0.0],
     "foggy":"TRUE",
-    "fogcolor":[1.0, 0.6, 0.0],
+    "fogcolor":[0.0, 0.0, 0.0],
     "fog_near_distance":"2",
     "fog_far_distance":"5",
     "has_sky":"false",
     "skycolor":[0.0, 0.5, 0.6],
     "wallheight":"1.0"
+    },
+    ,
+    {
+    "classname":"logic_timer",
+    "name":"timer",
+    "active":"TRUE",
+    "position":[1.0,1.0],
+    "maxtime":"20",
+    "onstart":"TRUE",
+    "canreset":"false",
+    "signals": [
+                    {
+                        "name":"OnTimerEnded",
+                        "targetname":"manager",
+                        "inputname":"gameLost",
+                        "arguments":[]
+                    },
+                    {
+                        "name":"OnSecondPassed",
+                        "targetname":"manager",
+                        "inputname":"secondPassed",
+                        "arguments":[]
+                    }
+                    ]
     },
     {
     "classname":"logic_counter",
@@ -131,7 +155,38 @@
                     "targetname":"ui",
                     "inputname":"setCoinText",
                     "arguments":[]
+                },
+                {
+                    "name":"OnAllCoinsCollected",
+                    "targetname":"ui",
+                    "inputname":"setmessageText",
+                    "arguments":["Now reach the door before the time ends", "-fx-text-fill: rgba(255, 255, 255, 255);"]
+                },
+                {
+                    "name":"OnSecondPassed",
+                    "targetname":"ui",
+                    "inputname":"setTimeText",
+                    "arguments":[]
+                },
+                {
+                    "name":"OnDoorClosed",
+                    "targetname":"ui",
+                    "inputname":"setmessageText",
+                    "arguments":["Collect all coins and this door will open", "-fx-text-fill: rgba(255, 255, 255, 255);"]
+                },
+                {
+                    "name":"OnWin",
+                    "targetname":"ui",
+                    "inputname":"setmessageText",
+                    "arguments":["You escaped in time!", "-fx-text-fill: rgba(0, 255, 0, 255);"]
+                },
+                {
+                    "name":"OnWin",
+                    "targetname":"player1",
+                    "inputname":"disable",
+                    "arguments":[]
                 }
+                
                     ]
     },
     {
@@ -184,8 +239,14 @@
                 {
                     "name":"OnLevelLoad",
                     "targetname":"ui",
-                    "inputname":"setCoinText",
-                    "arguments":["new text that will hopefully work", "-fx-text-fill: rgba(0, 255, 0, 255);"]
+                    "inputname":"setmessageText",
+                    "arguments":["Escape at all cost", "-fx-text-fill: rgba(255, 255, 255, 255);"]
+                },
+                {
+                    "name":"OnLevelLoad",
+                    "targetname":"ambient",
+                    "inputname":"fadein",
+                    "arguments":[]
                 },
                     ]
     },

@@ -69,7 +69,7 @@ public class Entity_Player_Simple extends Entity_Player{
 
     @Override
     public void update() {
-        System.out.println("player height : "+this.height);
+        //System.out.println("player height : "+this.height);
         Point2D dir = Point2D.ZERO;
         float newHeadBob = 0;
         if(!Game.isPaused)

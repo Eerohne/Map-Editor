@@ -20,6 +20,7 @@ import javafx.scene.paint.Color;
  */
 public class Entity_Object_Collectible extends SpriteEntity{
     
+    private boolean collected = false;
     private SphereCollider collider;
     private Entity_Player player;
     
@@ -39,8 +40,9 @@ public class Entity_Object_Collectible extends SpriteEntity{
 
     @Override
     public void update() {
-        if(collider.inside(player.getPosition()))
+        if(collider.inside(player.getPosition()) && !collected)
         {
+            this.collected = true;
             this.collect();
         }
     }

@@ -56,15 +56,13 @@ public class Entity_Logic_Counter extends Entity{
         {
             case "increment":
                 this.value++;
-                verifyCount();
-                System.out.println("value inside the counter is : "+this.value);
-                System.out.println("the normal returned value is : "+(this.maxValue-this.value));
                 this.fireSignal("OnValueChanged", (this.maxValue-this.value));
+                verifyCount();
                 break;
             case "decrement":
                 this.value--;
-                verifyCount();
                 this.fireSignal("OnValueChanged", this.value-this.minValue);
+                verifyCount();
                 break;
             case "reset":
                 this.value = startingValue;
@@ -78,7 +76,8 @@ public class Entity_Logic_Counter extends Entity{
     public void verifyCount()
     {
         if(canCount && (value >= maxValue | value <= minValue)){
-            System.out.println("calling reached signal");
+            this.fireSignal("OnValueReached");
+            
             if(canReset)
                 reset();
             else

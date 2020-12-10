@@ -10,21 +10,17 @@ import javafx.geometry.Point2D;
 
 //Merouane Issad
 public class Entity_Logic_Timer extends Entity{
-    protected float time;
-    protected float maxTime;
-    protected boolean counting;
-    
-    public Entity_Logic_Timer(String name, Point2D position, float maxTime, boolean onStart) {
-        super(name, position);
-        this.maxTime = maxTime;
-        this.counting = onStart;
-    }
+    private float time;
+    private float maxTime;
+    private boolean counting;
+    private boolean canReset;
     
     public Entity_Logic_Timer(HashMap<String, Object> propertyMap)
     {
         super(propertyMap);
         this.maxTime = Float.parseFloat((String) propertyMap.get("maxtime"));
         this.counting = Boolean.parseBoolean((String) propertyMap.get("onstart"));
+        this.canReset = Boolean.parseBoolean((String) propertyMap.get("canreset"));
         this.time = maxTime;
     }
     
@@ -39,8 +35,15 @@ public class Entity_Logic_Timer extends Entity{
             if(time <=0)
             {
                 fireSignal("OnTimerEnded");
-                time = maxTime;
+                if(canReset){
+                    time = maxTime;
+                }else{
+                    this.counting = false;
+                }
             }
+            
+            if(time %1 <=0.05)
+                fireSignal("OnSecondPassed", time);
         }
     }
     

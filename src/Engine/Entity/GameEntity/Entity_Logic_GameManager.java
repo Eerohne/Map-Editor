@@ -43,17 +43,20 @@ public class Entity_Logic_GameManager extends Entity{
         if(coinsCollected == true && closeToDoor == true)
         {
             System.out.println("you have escaped the dangeon to live another day...");
-            this.fireSignal("OnPlayerWon");
+            this.fireSignal("OnWin");
         }
-        else if(coinsCollected == true && closeToDoor == false)
-            System.out.println("Escape before your time runs out");
-        else if(coinsCollected == false && closeToDoor == true)
+        else if(coinsCollected == true && closeToDoor == false){
+            this.fireSignal("OnAllCoinsCollected");
+            System.out.println("collected all coins");
+        }
+        else if(coinsCollected == false && closeToDoor == true){
             System.out.println("Collect all coin and this door will open");
+            this.fireSignal("OnDoorClosed");
+        }
     }
     
     @Override
     public void handleSignal(String signalName, ArrayList<Object> arguments){
-        System.out.println("collected"+this.coinsCollected+"door"+this.closeToDoor);
         switch(signalName) //new signals here
         {
             case "openDoor":
@@ -68,8 +71,6 @@ public class Entity_Logic_GameManager extends Entity{
                 verifyLogic();
                 break;
             case "coinCollected":
-                System.out.println("only one");
-                System.out.println((int) arguments.get(0));
                 int count = (int) arguments.get(0);
                 System.out.println("this is the count : "+count);
                 if(count == 0)
@@ -78,6 +79,18 @@ public class Entity_Logic_GameManager extends Entity{
                     this.fireSignal("OnCoinCollected", ("coins left : "+count), "-fx-text-fill: rgba(255, 255, 255, 255);");
                 verifyLogic();
                 break;
+            case "secondPassed":
+                int time = Math.round((float)arguments.get(0));
+                String timeText = String.format("%02d:%02d", time/100%60, time/1%60);
+                if(time > 0)
+                    this.fireSignal("OnSecondPassed", "Time Left : "+timeText, "-fx-text-fill: rgba(255, 255, 255, 255);");
+                else
+                    this.fireSignal("OnSecondPassed", "Time Left : "+timeText, "-fx-text-fill: rgba(255, 0, 0, 255);");
+                break;
+            case "gameLost":
+                System.out.println("lost!!!");
+                this.fireSignal("gameLost");
+                    
             default:
                 super.handleSignal(signalName, arguments);
                 

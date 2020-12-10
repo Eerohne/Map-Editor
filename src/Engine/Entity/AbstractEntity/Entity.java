@@ -58,11 +58,8 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
                     String inputName = (String) jsonEntry.get("inputname");
                     Object[] argumentsArr = ((JSONArray) jsonEntry.get("arguments")).toArray();
                     ArrayList<Object> arguments = new ArrayList<>();
-                    //System.out.println("/////init/////");
                     for(Object arg : argumentsArr){
                         arguments.add(arg);
-                        //System.out.println("adding : "+arg);
-                        //System.out.println("get 0 : "+arguments.get(0));
                     }
 
                     Signal signal = new Signal(name, targetName, inputName, arguments);
@@ -103,14 +100,14 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
                 if(targetEntity != null)
                 {
                     ArrayList<Object> modifiedArgs = new ArrayList<>();
-                    if(extraArgs.length >0)
-                        signal.arguments.addAll(Arrays.asList(extraArgs));
-
-                    /*for(Object o : signal.arguments){
-                        System.out.println("class : "+o.getClass());
-                        System.out.println("value : "+o);
-                    }*/
-                    targetEntity.handleSignal(signal.inputname, signal.arguments);
+                    modifiedArgs.addAll(signal.arguments);
+                    if(extraArgs.length >0){
+                        for(Object arg : extraArgs){
+                            modifiedArgs.add(arg);
+                        }
+                        modifiedArgs.addAll(Arrays.asList(extraArgs));
+                    }
+                    targetEntity.handleSignal(signal.inputname, modifiedArgs);
                 }
             }
         }

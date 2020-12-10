@@ -41,7 +41,6 @@ public class Entity_Logic_Messenger extends Entity{
         {
             case "printMessage":
                 try{
-                    System.out.println("------mesenger-------");
                     System.out.println((String) arguments.get(0));
                 }catch(ArrayIndexOutOfBoundsException e){
                     System.out.println(e+ " no message specified for input 'printMessage' in entity '"+name+"'");
