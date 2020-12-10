@@ -313,9 +313,9 @@ public class Renderer {
         ArrayList<VisibleSprite> fogless = new ArrayList<>();
         
         //sort entities by distance to player
-        for(String name: spriteEntities.keySet()){
+        spriteEntities.keySet().forEach((name) -> {
             sprites.offer(spriteEntities.get(name));
-        }
+        });
         
         //draw entities
         while(!sprites.isEmpty())
@@ -550,9 +550,9 @@ public class Renderer {
             
         }
         
-        for(VisibleSprite s: sprites){
+        sprites.forEach((s) -> {
             gc.drawImage(s.sprite, s.sx, s.sy, s.sw, s.sh, s.dx, s.dy, s.dw, s.dh);
-        }
+        });
     }
     
     
