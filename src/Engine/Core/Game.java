@@ -19,6 +19,7 @@ import static Engine.Util.RessourceManager.ResourceLoader.loadLevel;
 import Engine.Util.Time;
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
@@ -32,7 +33,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -140,10 +143,39 @@ public class Game extends Application{
         Input.init();
         SoundManager.init();
         Time.init();
+        
+        playIntro();
         //now load the initial level
-        loadLevel(Settings.get("e_initiallevel"));
+        //loadLevel(Settings.get("e_initiallevel"));
         
         
+    }
+    
+    public static void playIntro()
+    {
+        isRunning = false;
+        isRendering = false;
+        isPaused = false;
+        
+        Media video = new Media(new File("resources/media/optik.mp4").toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(video); 
+        mediaPlayer.setVolume(1.0);
+        mediaPlayer.setAutoPlay(true);
+        
+        MediaView mediaView = new MediaView(mediaPlayer);
+        mediaView.fitWidthProperty().set(Game.getWindowManager().getWidth());
+        mediaView.fitHeightProperty().set(Game.getWindowManager().getHeight());
+        mediaView.setPreserveRatio(false);
+        Game.getWindowManager().getIngameDisplay().getChildren().addAll(mediaView);
+        
+        mediaPlayer.setOnEndOfMedia(() -> {
+            Game.getWindowManager().getIngameDisplay().getChildren().remove(mediaView);
+            //mediaPlayer.dispose();
+            isRunning = true;
+            isRendering = true;
+            isPaused = false;
+            loadLevel(Settings.get("e_initiallevel"));
+        });
     }
     
     public static Level getCurrentLevel()

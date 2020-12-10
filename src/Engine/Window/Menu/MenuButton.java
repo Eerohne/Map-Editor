@@ -24,9 +24,9 @@ public class MenuButton extends Button{
     private static String mouseClickSound = "sounds/ui/button_click.wav";
     private static String mouseClickInvalideSound = "sounds/ui/button_click_invalide.wav";
     
-    public static Media mouseEnterMedia= ResourceLoader.loadAudio(mouseEnterSound);
-    public static Media mouseClickMedia= ResourceLoader.loadAudio(mouseClickSound);
-    public static Media mouseInvalideMedia= ResourceLoader.loadAudio(mouseClickInvalideSound);
+    public static Media mouseEnterMedia= ResourceLoader.loadMedia(mouseEnterSound);
+    public static Media mouseClickMedia= ResourceLoader.loadMedia(mouseClickSound);
+    public static Media mouseInvalideMedia= ResourceLoader.loadMedia(mouseClickInvalideSound);
     
     public MenuButton(String text)
     {

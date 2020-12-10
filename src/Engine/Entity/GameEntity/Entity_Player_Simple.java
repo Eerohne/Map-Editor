@@ -55,7 +55,7 @@ public class Entity_Player_Simple extends Entity_Player{
         int mediaplayerCounter=0;
         for(String path : walkfootstepPaths)
         {
-            Media walkfootstepMedia= ResourceLoader.loadAudio(path);
+            Media walkfootstepMedia= ResourceLoader.loadMedia(path);
             footstepMediaPlayers[mediaplayerCounter] = SoundManager.createPlayer(walkfootstepMedia, "game", false, false);
             mediaplayerCounter++;
         }
