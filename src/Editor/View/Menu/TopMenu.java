@@ -26,9 +26,10 @@ public class TopMenu extends MenuBar{
         MenuItem newMap = new MenuItem("New Map");
         MenuItem open = new MenuItem("Open");
         MenuItem save = new MenuItem("Save");
+        MenuItem load = new MenuItem("Load"); // for test
         MenuItem exit = new MenuItem("Exit");
         
-        this.file = new Menu("File", null, newMap, open, save, exit);
+        this.file = new Menu("File", null, newMap, open, save, load, exit);
         
         //Add Edit Options
         MenuItem newWall = new MenuItem("Add New Wall");

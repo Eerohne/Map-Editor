@@ -29,6 +29,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaException;
 import javafx.scene.paint.Color;
  
 import org.json.simple.JSONArray;
@@ -82,15 +83,22 @@ public class ResourceLoader
         return null;
     }
     
-    //AudioPlayer.player.start(ResourceLoader.loadAudio("sounds/musictest.wav"));
-    public static Media loadAudio(String path)
+    //AudioPlayer.player.start(ResourceLoader.loadMedia("sounds/musictest.wav"));
+    public static Media loadMedia(String path)
     {
-        try{
-        return new Media(new File(resourcePath + path).toURI().toString());
+        System.out.println("try load");
+        try
+        {
+            System.out.println("path : "+ resourcePath + path);
+            return new Media(new File(resourcePath + path).toURI().toString());
+        }
+        catch(MediaException e)
+        {
+            System.out.println("media loading error");
         }
         catch(Exception e)
         {
-            System.out.println("sound at path '"+resourcePath +path+"' not found ");
+            System.out.println("media at path '"+resourcePath +path+"' not found ");
         }
         return null;
     }

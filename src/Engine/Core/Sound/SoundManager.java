@@ -60,7 +60,7 @@ public class SoundManager {
     
     public static MediaPlayer createPlayer(String soundPath, String channelName, boolean loop, boolean onlyOnce)
     {
-        MediaPlayer mediaPlayer = new MediaPlayer(ResourceLoader.loadAudio(soundPath));
+        MediaPlayer mediaPlayer = new MediaPlayer(ResourceLoader.loadMedia(soundPath));
         if(loop){
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         }

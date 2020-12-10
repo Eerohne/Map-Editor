@@ -61,7 +61,7 @@ public class Entity_Text extends Entity{
         super(propertyMap);
         
         //dialoguePath = (String) propertyMap.get("dialogueSoundPath");
-        soundMedia= ResourceLoader.loadAudio(dialoguePath);
+        soundMedia= ResourceLoader.loadMedia(dialoguePath);
         mediaPlayer = SoundManager.createPlayer(soundMedia, "game", true, false);
         coinlabel.setText((String) propertyMap.get("cointext"));
         timelabel.setText((String) propertyMap.get("timetext"));
@@ -121,12 +121,6 @@ public class Entity_Text extends Entity{
         
         Game.getWindowManager().getIngameDisplay().setTopAnchor(coinlabel, 0.0);
         Game.getWindowManager().getIngameDisplay().setRightAnchor(coinlabel, 0.0);
-        
-        //splash screen
-        /*Game.getWindowManager().getIngameDisplay().setTopAnchor(mediaView, 0.0);
-        Game.getWindowManager().getIngameDisplay().setBottomAnchor(mediaView, 0.0);
-        Game.getWindowManager().getIngameDisplay().setRightAnchor(mediaView, 0.0);
-        Game.getWindowManager().getIngameDisplay().setLeftAnchor(mediaView, 0.0);*/
     }
     
     @Override
@@ -150,7 +144,7 @@ public class Entity_Text extends Entity{
                 
                 if(this.charCounter >= this.messageText.length())
                 {
-                    mediaPlayer.pause();
+                    mediaPlayer.stop();
                     this.writingMessage = false;
                 }
             }
@@ -218,8 +212,6 @@ public class Entity_Text extends Entity{
                     timelabel.setStyle("-fx-text-fill: rgba(255, 255, 255, 255);");
                 break;
             case "setmessageText":
-                //messagelabel.setText((String)arguments.get(0));
-                System.out.println("signal sent");
                 if(arguments.size() >1)
                     messagelabel.setStyle((String)arguments.get(1));
                 else
