@@ -10,7 +10,6 @@
         0.0,
         1.0
       ],
-      "qqweqwexe": "qxexwee",
       "name": "NAME",
       "property": [
         "p",
@@ -94,11 +93,64 @@
       ]
     },
     {
-      "classname": "1",
-      "name": "12345",
-      "pro": [
-        "p",
-        "p"
+      "a": "v",
+      "classname": "j,sdghaf;ugq",
+      "name": "k;gigiug"
+    },
+    {
+      "classname": "dfg",
+      "d": "d",
+      "name": "dfg"
+    },
+    {
+      "classname": "test",
+      "color": [
+        164.0,
+        139.0,
+        14.0
+      ],
+      "name": "test"
+    },
+    {
+      "a": "d",
+      "classname": "s",
+      "color": [
+        199.0,
+        190.0,
+        12.0
+      ],
+      "name": "ba",
+      "position": [
+        14.29,
+        16.85
+      ]
+    },
+    {
+      "a": "b",
+      "classname": "uoytuy2",
+      "color": [
+        151.0,
+        221.0,
+        74.0
+      ],
+      "name": "greendot",
+      "position": [
+        3.17,
+        2.99
+      ]
+    },
+    {
+      "a": "b",
+      "classname": "test",
+      "color": [
+        247.0,
+        174.0,
+        8.0
+      ],
+      "name": "verycool",
+      "position": [
+        9.29,
+        14.53
       ]
     }
   ],

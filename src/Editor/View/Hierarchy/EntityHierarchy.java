@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 /**
  *
@@ -23,9 +24,11 @@ import javafx.scene.shape.Circle;
  */
 public class EntityHierarchy extends Hierarchy{
     private MapProfile map;
+    private Stage stage;
     
-    public EntityHierarchy() {
+    public EntityHierarchy(Stage stage) {
         super(null);
+        this.stage = stage;
     }
 
     @Override
@@ -44,7 +47,7 @@ public class EntityHierarchy extends Hierarchy{
                 select(item);
                 EntityProfile ep = entry.getValue();
                 EntityContent eContent = new EntityContent(ep);
-                EntityController wc = new EntityController(eContent, map);
+                EntityController wc = new EntityController(eContent, map, stage);
                 MapEditor.setDataView(eContent);
 
                 if(e.getButton().equals(MouseButton.PRIMARY)){

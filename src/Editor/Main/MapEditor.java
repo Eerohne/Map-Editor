@@ -74,8 +74,8 @@ public class MapEditor extends Application {
      */
     @Override
     public void start(Stage editorWindow) throws MalformedURLException {
-        this.entityHierarchy = new EntityHierarchy();
-        this.wallHierarchy = new WallHierarchy(editorWindow);
+        entityHierarchy = new EntityHierarchy(editorWindow);
+        wallHierarchy = new WallHierarchy(editorWindow);
         this.mapHierarchy = new MapHierarchy();
         this.grid = new Grid();
         this.gridDisplay = new BorderPane();
