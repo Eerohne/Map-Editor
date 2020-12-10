@@ -88,7 +88,7 @@ public class NewEntity extends GridPane{
         //vbox.getChildren().add(newEntityBtn);
         vbox.getChildren().add(switchBtn);
         vbox.getChildren().add(viewSignal);
-        vbox.getChildren().add(close);
+        //vbox.getChildren().add(close);
         
         this.add(vbox, 2, 1);
         propertyCol.setCellValueFactory(new PropertyValueFactory<EntityModel, String>("property"));
