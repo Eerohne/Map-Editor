@@ -81,8 +81,8 @@
     "position":[0.0, 0.0],
     "foggy":"TRUE",
     "fogcolor":[0.0, 0.0, 0.0],
-    "fog_near_distance":"2",
-    "fog_far_distance":"5",
+    "fog_near_distance":"1",
+    "fog_far_distance":"1",
     "has_sky":"false",
     "skycolor":[0.0, 0.5, 0.6],
     "wallheight":"1.0"
