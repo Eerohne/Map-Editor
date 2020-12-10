@@ -52,6 +52,16 @@ public abstract class DataView extends Pane{
         return buttons;
     }
     
+    protected HBox getButtonForEntities(Insets padding){
+        save.setText("Duplicate");
+        save.setDisable(false);
+        HBox buttons = new HBox(save, delete);
+        buttons.setPadding(padding);
+        buttons.setSpacing(5);
+        
+        return buttons;
+    }
+    
     public Profile getProfile() {
         return profile;
     }
