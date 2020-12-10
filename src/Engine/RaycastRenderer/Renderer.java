@@ -17,7 +17,12 @@ import java.util.PriorityQueue;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -70,7 +75,7 @@ public class Renderer {
     public static void setViewDistance(double dist){viewD = dist;} // set the view distance
     public static void setResolution(int resolution){res = resolution;}
     
-    private static boolean doSkip = true;
+    private static boolean doSkip = false;
     private static boolean other = true;
     
     //renders one frame
@@ -299,7 +304,7 @@ public class Renderer {
     //renders level
     private static void renderWalls(ArrayList<HitPoint> hPoints){
         for(int i=0;i<screenWidth/res;i++){
-            drawWallLine(i, hPoints.get(i));
+            drawWallLine(i, hPoints.get(i), false);
         }
     }
     
@@ -353,7 +358,8 @@ public class Renderer {
                     if(eDist<pDist){ hidden = false; break; }
                 }
                 
-                if(!hidden){
+                if(!hidden)
+                {
                     //position of the top pixel of the sprite
                     double relY = (screenHeight-height)/2.0; //center
                     relY -= h*(e.getHeight()-0.5); //height offset of entity
@@ -368,17 +374,18 @@ public class Renderer {
                         double pDist = cam.distance(hPoints.get(i));
                         double eDist = cam.distance(e.getPosition());
                         
-                        if(pDist<eDist)drawWallLine(i, hPoints.get(i));
+                        if(pDist<eDist)drawWallLine(i, hPoints.get(i), true);
                     }
                     
                 }
+                
             }
         }
         
     }
 
     //draws the line representing a slice of a wall
-    private static void drawWallLine(int r, HitPoint hPoint){
+    private static void drawWallLine(int r, HitPoint hPoint, boolean hide){
         
         double camA = Math.toRadians(player.getRotation());
         Point2D dir = new Point2D( Math.cos(camA), Math.sin(camA) );
@@ -400,8 +407,8 @@ public class Renderer {
                 distance = viewD;
             }
         }
-        
-        distance *= Math.cos(Math.toRadians(dir.angle(toWall)));
+        double fixDist = Math.cos(Math.toRadians(dir.angle(toWall)));
+        distance*=fixDist;
         
         double height = screenHeight/distance;
         
@@ -415,26 +422,63 @@ public class Renderer {
             Image texture = Game.getCurrentLevel().getCellTexture(hPoint.getXIndex(), hPoint.getYIndex());
             int tx = 0; //x position on the texture
             switch(hPoint.getType()){
-                case(1): tx = (int)(texture.getWidth()*(hPoint.getX()%1)); break;
-                case(2): tx = (int)(texture.getWidth()*(1-hPoint.getX()%1)); break;
-                case(3): tx = (int)(texture.getWidth()*(1-hPoint.getY()%1)); break;
-                case(4): tx = (int)(texture.getWidth()*(hPoint.getY()%1)); break;
+                case(1): tx = (int)(texture.getWidth()*(hPoint.getX()%1))   ; break;
+                case(2): tx = (int)(texture.getWidth()*(1-hPoint.getX()%1)) ; break;
+                case(3): tx = (int)(texture.getWidth()*(1-hPoint.getY()%1)) ; break;
+                case(4): tx = (int)(texture.getWidth()*(hPoint.getY()%1))   ; break;
             }
             
-            //draws from the bottom to the height of the wall
-            if(env.getWallHeight() == 1.0){
+            //draws the wall
+            if(env.getWallHeight() == 1.0 || !env.hasSky()){
                 gc.drawImage(texture, tx, 0, 1, texture.getHeight(), x, lineTop, res, height );
             }
             else{
                 for(int y=0;y<env.getWallHeight();y++){
                     gc.drawImage(texture, tx, 0, 1, texture.getHeight(),x, lineTop-height*y, res, height);
+                    
                 }
             }
         }
         else
         {
+            //draws the opaque fog
             gc.setFill(env.getFogColor());
             gc.fillRect(x, lineTop-height*(env.getWallHeight()-1), res, height*env.getWallHeight());
+        }
+        
+        //draw the transparent fog
+        if(env.isFoggy())
+        {
+            double tFogDist = (int)env.getFogFarDistance();
+            if(tFogDist*fixDist>distance)
+            {
+                tFogDist = Math.ceil(distance);
+            }
+            
+            
+            float fogLength = env.getFogFarDistance()-env.getFogNearDistance();
+            
+            while (tFogDist>env.getFogNearDistance()) {                
+                tFogDist-=1;
+                
+                distance = tFogDist*fixDist;
+                if(!hide){
+                    height = screenHeight/distance;
+                    lineTop = 0.5*(screenHeight-height) + height*(player.getHeight());
+                }
+                
+                gc.setFill(env.getFogColor().deriveColor(1, 1, 1, tFogDist/fogLength));
+                
+                if(env.getWallHeight() == 1.0 || !env.hasSky()){
+                    gc.fillRect(x, lineTop, res, height);
+                }
+                else{
+                    for(int y=0;y<env.getWallHeight();y++){
+                        gc.fillRect(x, lineTop, res, height*env.getWallHeight());
+                    }
+                }
+                
+            }
         }
         
     }
