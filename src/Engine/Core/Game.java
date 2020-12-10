@@ -52,11 +52,16 @@ public class Game extends Application{
     public static boolean isRunning = false;
     public static boolean isRendering = true;
     public static boolean isPaused = false;
+    public static boolean pauseLocked = false;
+    public static boolean inIntro = false;
     
     public static SimpleStringProperty errorMessage = new SimpleStringProperty();
     
     private static AnimationTimer anim;
     
+    //intro video
+    private static MediaView introMediaView;
+    private static MediaPlayer introMediaPlayer;
     public void start(Stage stage){
         try{
         initEngine(stage);
@@ -156,26 +161,56 @@ public class Game extends Application{
         isRunning = false;
         isRendering = false;
         isPaused = false;
-        
-        Media video = new Media(new File("resources/media/optik.mp4").toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(video); 
-        mediaPlayer.setVolume(1.0);
-        mediaPlayer.setAutoPlay(true);
-        
-        MediaView mediaView = new MediaView(mediaPlayer);
-        mediaView.fitWidthProperty().set(Game.getWindowManager().getWidth());
-        mediaView.fitHeightProperty().set(Game.getWindowManager().getHeight());
-        mediaView.setPreserveRatio(false);
-        Game.getWindowManager().getIngameDisplay().getChildren().addAll(mediaView);
-        
-        mediaPlayer.setOnEndOfMedia(() -> {
-            Game.getWindowManager().getIngameDisplay().getChildren().remove(mediaView);
-            //mediaPlayer.dispose();
-            isRunning = true;
-            isRendering = true;
-            isPaused = false;
-            loadLevel(Settings.get("e_initiallevel"));
-        });
+        pauseLocked = true;
+        inIntro = true;
+        String path = Settings.get("e_intropath");
+        if(path != null && !path.equals("")){
+            try{
+                Media video = ResourceLoader.loadMedia(Settings.get("e_intropath"));
+                introMediaPlayer = new MediaPlayer(video); 
+                introMediaPlayer.setVolume(1.0);
+                introMediaPlayer.setAutoPlay(true);
+
+                introMediaView = new MediaView(introMediaPlayer);
+                introMediaView.fitWidthProperty().set(Game.getWindowManager().getWidth());
+                introMediaView.fitHeightProperty().set(Game.getWindowManager().getHeight());
+                introMediaView.setPreserveRatio(false);
+                Game.getWindowManager().getIngameDisplay().getChildren().addAll(introMediaView);
+                
+                
+                introMediaPlayer.setOnEndOfMedia(() -> {
+                    Game.getWindowManager().getIngameDisplay().getChildren().remove(introMediaView);
+                    introMediaPlayer.dispose();
+                    isRunning = true;
+                    isRendering = true;
+                    isPaused = false;
+                    pauseLocked = false;
+                    loadLevel(Settings.get("e_initiallevel"));
+                });
+            }
+            catch(NullPointerException e)
+            {
+                System.out.println("no valid intro specified");
+                isRunning = true;
+                isRendering = true;
+                isPaused = false;
+                pauseLocked = false;
+                inIntro = false;
+                loadLevel(Settings.get("e_initiallevel"));
+            }
+        }
+    }
+    
+    public static void skipIntro()
+    {
+        Game.getWindowManager().getIngameDisplay().getChildren().remove(introMediaView);
+        introMediaPlayer.dispose();
+        isRunning = true;
+        isRendering = true;
+        isPaused = false;
+        pauseLocked = false;
+        inIntro = false;
+        loadLevel(Settings.get("e_initiallevel"));
     }
     
     public static Level getCurrentLevel()
@@ -233,12 +268,14 @@ public class Game extends Application{
     }
     public static void togglePause()
     {
-        isPaused = !isPaused;
-        if(isPaused)
-            scene.setCursor(Cursor.DEFAULT);
-        else
-            scene.setCursor(Cursor.NONE);
-        windowManager.setPauseMenuVisibility(isPaused);
+        if(!pauseLocked){
+            isPaused = !isPaused;
+            if(isPaused)
+                scene.setCursor(Cursor.DEFAULT);
+            else
+                scene.setCursor(Cursor.NONE);
+            windowManager.setPauseMenuVisibility(isPaused);
+        }
     }
     
     public static void exit()
