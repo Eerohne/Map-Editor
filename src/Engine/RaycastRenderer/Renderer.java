@@ -20,18 +20,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 /**
- *
- * @author Jeffrey
+ * Team Optik
+ * @author Jeffrey Gan
  */
 
-/*  TODO FEATURES:
-*   Render Level        +
-*   Render Entities     +
-*   Render Textures     +
-*   Render Floor/Ceil   +
-*   Fog                 +
-*   Game Minimap        -
-*/
 public class Renderer {
     private Renderer(){}
     
@@ -45,7 +37,7 @@ public class Renderer {
     private static HashMap<String, SpriteEntity> spriteEntities = new HashMap<>();
     
     private static float fov=70f; //default field of view (degrees)
-    private static double viewD=32.0; //default view distance
+    private static double viewD=32.0; //default view distance (determines the number of ray step calculations)
     private static int res = 1; //resolution (determines the increment of loops) (bigger res means lower quality image)
     
     public static void setCanvas(Canvas canvas){
