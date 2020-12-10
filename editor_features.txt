@@ -1,6 +1,6 @@
-Wall Deletion
 Entity Data Content View
 Entity Deletion
+Fix item in Hierarchy dynamic selection
 Default Player
 Info Panel Update
 Setup Events for All buttons
