@@ -93,7 +93,7 @@ public class WallController extends MetadataController {
     @Override
     protected void saveAction(){
         ((WallContent)content).getWallProfile().setFlag((String)flagCombo.getValue());
-        ((WallContent)content).getWallProfile().setImg(imgName); //DUMMY
+        ((WallContent)content).getWallProfile().setImg(imgName);
         ((WallContent)content).getWallProfile().setName(nameField.getText());
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {
