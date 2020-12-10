@@ -616,7 +616,4 @@ class VisibleSprite{
         this(sprite, 0, 0, sprite.getWidth(), sprite.getHeight(), dx, dy, dw, dh);
     }
 
-    
-    
-    
 }
