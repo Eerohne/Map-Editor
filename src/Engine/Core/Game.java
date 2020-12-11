@@ -197,6 +197,7 @@ public class Game extends Application{
                     isRendering = true;
                     isPaused = false;
                     pauseLocked = false;
+                    inIntro = false;
                     loadLevel(Settings.get("e_initiallevel"));
                 });
             }

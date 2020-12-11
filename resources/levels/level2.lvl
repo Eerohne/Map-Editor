@@ -349,7 +349,7 @@
                     "name":"event6",
                     "targetname":"ui",
                     "inputname":"setmessageText",
-                    "arguments":["You escaped the daungeon to die another day...\nPress Q to restart", "-fx-text-fill: rgba(0, 255, 0, 255);, "2.0""]
+                    "arguments":["You escaped the daungeon to die another day...\nPress Q to restart", "-fx-text-fill: rgba(0, 255, 0, 255);", "2.0"]
                 }
                     ]
     },
@@ -388,7 +388,7 @@
                     "name":"event6",
                     "targetname":"ui",
                     "inputname":"setmessageText",
-                    "arguments":["You were consumed by the darkness...\nPress Q to restart", "-fx-text-fill: rgba(255, 0, 0, 255);, "1.5""]
+                    "arguments":["You were consumed by the darkness...\nPress Q to restart", "-fx-text-fill: rgba(255, 0, 0, 255);", "1.5"]
                 }
                     ]
     },
