@@ -11,6 +11,7 @@ import Editor.View.Help;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Hierarchy.WallHierarchy;
 import Editor.View.New.NewEntityStage;
+import Editor.View.New.NewMap;
 import Engine.Core.Game;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
@@ -46,6 +47,10 @@ public class ShortcutController{
         
         shortcutBar.getEntityShort().setOnAction(e -> {
             new NewEntityStage(owner);
+        });
+        
+        shortcutBar.getMapShort().setOnAction(e -> {
+            new NewMap(owner);
         });
     }
     

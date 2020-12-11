@@ -52,7 +52,7 @@ public class MapEditor extends Application {
     
     static EntityHierarchy entityHierarchy; //Hierarchy of Entities
     static WallHierarchy wallHierarchy; // Hierarchy of Walls
-    MapHierarchy mapHierarchy; //Hierarchy of Maps
+    static MapHierarchy mapHierarchy; //Hierarchy of Maps
     
     static DataView metadataContent; //Content Wrapper to display in metadata tab
     WallContent wallContent; //Compatible with DataView and delivers WallProfile information
@@ -273,5 +273,9 @@ public class MapEditor extends Application {
 
     public static WallHierarchy getWallHierarchy() {
         return wallHierarchy;
+    }
+
+    public static MapHierarchy getMapHierarchy() {
+        return mapHierarchy;
     }
 }

@@ -75,6 +75,8 @@ public class ShortcutBar extends HBox{
     public Button getHelp() {
         return help;
     }
-        
-    
+
+    public Button getMapShort() {
+        return mapShort;
+    }
 }

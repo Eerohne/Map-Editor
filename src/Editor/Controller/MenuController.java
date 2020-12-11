@@ -7,9 +7,13 @@ package Editor.Controller;
 
 import Editor.Main.MapEditor;
 import Editor.Model.Profile.MapProfile;
+import Editor.Model.Profile.WallProfile;
+import Editor.View.Help;
 import Editor.View.New.NewEntityStage;
 import Editor.View.Menu.Entity.ExistingEntityStage;
 import Editor.View.Menu.TopMenu;
+import Editor.View.New.NewMap;
+import Editor.View.New.NewWallProfile;
 import Engine.Core.Game;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -58,10 +62,19 @@ public class MenuController{
         
         //File Events
         List<MenuItem> fileItems = file.getItems();
+        
+        //File -> Exit : Closes the Editor Stage
         fileItems.get(fileItems.size()-1).setOnAction(e -> {
             editorStage.close();
         });
-        fileItems.get(2).setOnAction((event) -> {
+        
+        //File -> Load Map : Loads a Map from a file
+        fileItems.get(3).setOnAction((ActionEvent event) -> {
+            load();
+        });
+        
+        //File -> Save Map : Saves the currently viewed map
+        fileItems.get(2).setOnAction(e -> {
             try {
                 save();
             } catch (ParseException ex) {
@@ -69,14 +82,19 @@ public class MenuController{
             }
         });
         
-        //Run Engine Event
+        //File -> New Map : Opens Stage for New Map Instantiation
+        fileItems.get(0).setOnAction(e -> {
+            new NewMap(editorStage);
+        });
+        
+        //Run -> Run Map : Runs Current Map
         List<MenuItem> runItems = run.getItems();
         runItems.get(0).setOnAction(e ->{
             try {
                 Stage engine = new Stage();
                 Game game = new Game();
                 engine.initOwner(editorStage);
-                game.start(engine);
+                game.editorModeStart(engine, "levels/level2.lvl");
             } catch (Exception ex) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Engine Error");
@@ -86,10 +104,19 @@ public class MenuController{
         });
         
         List<MenuItem> editItems = edit.getItems();
+        
+        //Edit -> New Wall : Open New Wall Window
+        editItems.get(0).setOnAction(e -> {
+            new NewWallProfile(editorStage, WallProfile.resourceFolder, MapEditor.getWallHierarchy());
+        });
+        
+        //Edit -> New Entity : Open New Entity Window
         editItems.get(1).setOnAction(e -> {
             new NewEntityStage(editorStage);
         });
-        editItems.get(2).setOnAction((event) -> {
+        
+        //Edit -> Edit Entities : Open Edit Existing Entity Window
+        editItems.get(2).setOnAction(e -> {
             try {
                 new ExistingEntityStage(editorStage);
             } catch (IOException ex) {
@@ -99,10 +126,11 @@ public class MenuController{
             }
         });
         
-        fileItems.get(3).setOnAction((ActionEvent event) -> {
-            load();
+        List<MenuItem> helpItems = help.getItems();
+
+        helpItems.get(0).setOnAction(e -> {
+            new Help(editorStage);
         });
-        
     }
     
     private void save() throws ParseException{
