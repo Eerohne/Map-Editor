@@ -31,7 +31,7 @@ public class ShortcutController{
                 Stage engine = new Stage();
                 Game game = new Game();
                 engine.initOwner(owner);
-                game.start(engine);
+                game.editorModeStart(engine, "levels/grid4.lvl");
             } catch (Exception ex) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Engine Error");

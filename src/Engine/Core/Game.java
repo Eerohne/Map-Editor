@@ -49,6 +49,8 @@ public class Game extends Application{
     private static WindowManager windowManager;
     private static Level currentLevel;
     //flags
+    public static boolean editorMode = false;
+    public static String levelPath = "";
     public static boolean isRunning = false;
     public static boolean isRendering = true;
     public static boolean isPaused = false;
@@ -62,6 +64,13 @@ public class Game extends Application{
     //intro video
     private static MediaView introMediaView;
     private static MediaPlayer introMediaPlayer;
+    
+    public void editorModeStart(Stage s, String path)
+    {
+        editorMode = true;
+        levelPath = path;
+        start(s);
+    }
     public void start(Stage stage){
         try{
         initEngine(stage);
@@ -149,7 +158,10 @@ public class Game extends Application{
         SoundManager.init();
         Time.init();
         
-        playIntro();
+        if(!editorMode)
+            playIntro();
+        else
+            loadLevel(levelPath);
         //now load the initial level
         //loadLevel(Settings.get("e_initiallevel"));
         
@@ -249,7 +261,7 @@ public class Game extends Application{
     {
         //if(currentLevel != null)
             //loadLevel(currentLevel.path);
-        loadLevel("levels/level2.lvl");
+        loadLevel(Game.getCurrentLevel().path);
     }
     
     public static WindowManager getWindowManager()
