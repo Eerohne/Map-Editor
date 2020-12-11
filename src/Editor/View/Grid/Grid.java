@@ -108,4 +108,8 @@ public class Grid extends Pane{
     public void setCellSize(double scaleFactor) {
         this.cellSize = scaleFactor;//cells[0][0].getDefaultSize()*cells[0][0].getScaleObject().getX();
     }
+    
+    public void printGrid(int[][] grid){
+        
+    }
 }

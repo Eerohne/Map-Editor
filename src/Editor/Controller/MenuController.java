@@ -300,6 +300,14 @@ public class MenuController{
                 System.out.println(id + " , " + imagePath + " , " + flag + " , " + imageName);
                 
                 mapToLoad.loadWallProfile(imagePath, imageName, flag, id);
+                mapToLoad.getGc().loadPalette(gridArray);
+            }
+            
+            for(int i = 0; i < mapToLoad.getGridView().cells.length; i++){
+                for(int j = 0; j < mapToLoad.getGridView().cells[i].length; j++){
+                    System.out.print(mapToLoad.getGridView().cells[i][j].getWallID());
+                }
+                System.out.println();
             }
             
             //getting entities 
@@ -309,19 +317,23 @@ public class MenuController{
             String entityName = "";
             while(entitiesIterator.hasNext()){
                 JSONObject entity = (JSONObject) entitiesIterator.next();
-                JSONArray positionArray = (JSONArray) entity.get("position");
-                Iterator<Double> positionIterator = positionArray.iterator();
-                int positionCounter = 0;
-                while(positionIterator.hasNext()){
-                    position[positionCounter] = positionIterator.next().doubleValue();
-                    positionCounter++;
+                if(entity.containsKey("position")){
+                    JSONArray positionArray = (JSONArray) entity.get("position");
+                    Iterator<Double> positionIterator = positionArray.iterator();
+                    int positionCounter = 0;
+                    while(positionIterator.hasNext()){
+                        position[positionCounter] = positionIterator.next().doubleValue();
+                        positionCounter++;
+                    }
                 }
-                JSONArray colorArray = (JSONArray) entity.get("color");
-                Iterator<Double> colorIterator = colorArray.iterator();
-                int colorCounter = 0;
-                while(colorIterator.hasNext()){
-                    color[colorCounter] = colorIterator.next().doubleValue();
-                    colorCounter++;
+                if(entity.containsKey("color")){
+                    JSONArray colorArray = (JSONArray) entity.get("color");
+                    Iterator<Double> colorIterator = colorArray.iterator();
+                    int colorCounter = 0;
+                    while(colorIterator.hasNext()){
+                        color[colorCounter] = colorIterator.next().doubleValue();
+                        colorCounter++;
+                    }
                 }
                 entityName = (String) entity.get("name");
                 System.out.println(Arrays.toString(position) + " , " + Arrays.toString(color) + " , " + entityName);
