@@ -52,6 +52,8 @@ public class GridController{
     
     double zoom = 1.0d;
 
+    String hoverEntity;
+    
     Cell hoverCell = new Cell(1);
     EntityDot dot = new EntityDot(Color.BLACK, 0, 0, 1);
     Info info = new Info();
@@ -184,6 +186,10 @@ public class GridController{
     public int getEditingMode(){
         return editingMode;
     }
+
+    public String getHoverEntity() {
+        return hoverEntity;
+    }
     
     public void setEditingMode(int mode){
         this.editingMode = mode;
@@ -246,9 +252,16 @@ public class GridController{
     private void placeEntity(){
         try {
             if(!(mouseX < 0 || mouseY < 0 || mouseX > getPaneBounds().getMaxX() || mouseY > getPaneBounds().getMaxY())){
-                EntityDot ed = getSelectedEntityProfile().getDot();
+                EntityProfile ep = getSelectedEntityProfile();
+                EntityDot ed = ep.getDot();
                 ed.initialize((mouseX - dotX)/dot.getScaleObject().getX(), (mouseY - dotY)/dot.getScaleObject().getX(), 10);
-
+                ed.setOnMouseEntered(e -> {
+                    this.hoverEntity = ep.getName();
+                });
+                ed.setOnMouseExited(e -> {
+                    this.hoverEntity = "NULL";
+                });
+                
                 savePosition(getSelectedEntityProfile().getName(), getGridX(), getGridY());
             }
         } catch(Exception e){
