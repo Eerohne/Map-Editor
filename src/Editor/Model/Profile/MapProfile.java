@@ -107,6 +107,16 @@ public class MapProfile extends Profile{
         return wall;
     }
     
+    public EntityProfile loadEntityProfile(String name, Color color, double gridX, double gridY){
+        EntityProfile entity = new EntityProfile(name, color);
+        this.entityMap.put(name, entity);
+        this.gc.setSelectedEntityProfile(entity);
+        this.gc.setupDot(entity.getDot());
+        
+        entity.getDot().initialize(gridX * 50, gridY * 50, 10);
+        return entity;
+    }
+    
     public static String getTxrURL(MapProfile map, int id){
         for (Map.Entry<Integer, WallProfile> entry : map.wallMap.entrySet()) {
             if(entry.getKey() == id){

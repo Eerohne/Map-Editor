@@ -49,6 +49,8 @@ public class NewMap extends NewObject{
         frame.setCenter(init());
         
         newWindow.show();
+        
+        new NewMapController(this);
     }
     
     public GridPane init(){
@@ -89,6 +91,8 @@ class NewMapController{
         nm.getFinish().setOnAction(e -> {
             MapProfile map = new MapProfile(nm.getMapNameField().getText(), Integer.parseInt(nm.getGridWidth().getText()), Integer.parseInt(nm.getGridLength().getText()));
             MapEditor.getProject().addMap(map);
+            MapEditor.getMapHierarchy().refresh();
+            nm.getNewWindow().close();
         });
     }
 }

@@ -37,6 +37,13 @@ public class EntityProfile extends Profile{
         
         this.dot = new EntityDot(Color.rgb(r, g, b));
     }
+    
+    public EntityProfile(String name, Color color) {
+        super(name);
+        this.saveColor(name, color.getRed(), color.getGreen(), color.getBlue());
+        
+        this.dot = new EntityDot(color);
+    }
 
     public EntityDot getDot() {
         return dot;

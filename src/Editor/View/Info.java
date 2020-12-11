@@ -70,8 +70,6 @@ public class Info extends HBox{
             @Override
             public void handle(long now) {
                 refresh();
-                System.out.println("GC Mode : " + gc.getEditingMode());
-                System.out.println("Local Data : " + editingMode);
             }
         };
         

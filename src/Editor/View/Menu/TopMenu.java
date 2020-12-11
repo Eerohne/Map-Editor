@@ -24,16 +24,16 @@ public class TopMenu extends MenuBar{
     public TopMenu() {
         //Add File Options
         MenuItem newMap = new MenuItem("New Map");
-        MenuItem open = new MenuItem("Open");
-        MenuItem save = new MenuItem("Save");
-        MenuItem load = new MenuItem("Load"); // for test
+        MenuItem open = new MenuItem("Open Project");
+        MenuItem save = new MenuItem("Save Map");
+        MenuItem load = new MenuItem("Load Map"); // for test
         MenuItem exit = new MenuItem("Exit");
         
         this.file = new Menu("File", null, newMap, open, save, load, exit);
         
         //Add Edit Options
-        MenuItem newWall = new MenuItem("Add New Wall");
-        MenuItem newEntity = new MenuItem("Create New Entity");
+        MenuItem newWall = new MenuItem("New Wall");
+        MenuItem newEntity = new MenuItem("New Entity");
         MenuItem editEntity = new MenuItem("Edit Entities");
         
         this.edit = new Menu("Edit", null, newWall, newEntity, editEntity);
@@ -44,7 +44,7 @@ public class TopMenu extends MenuBar{
         this.run = new Menu("Run", null, runOption);
         
         //Add Help Menu
-        MenuItem helpOption = new MenuItem("Optik Editor Tutorial");
+        MenuItem helpOption = new MenuItem("Help Window");
         
         this.help = new Menu("Help", null, helpOption);
         
