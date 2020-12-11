@@ -5,14 +5,24 @@
  */
 package Editor.Controller.ProfileController;
 
+import Editor.Controller.MenuController;
+import Editor.Main.MapEditor;
 import Editor.Model.Profile.MapProfile;
 import Editor.View.Grid.Grid;
 import Editor.View.Menu.Entity.ExistingEntityStage;
 import Editor.View.Metadata.EntityContent;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.stage.Stage;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
@@ -24,6 +34,9 @@ public class EntityController extends MetadataController{
     Grid grid;
     Stage stage;
     
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+    
     public EntityController(EntityContent content, MapProfile map, Stage stage) {
         super(content);
         this.map = map;
@@ -32,12 +45,18 @@ public class EntityController extends MetadataController{
         
         ((EntityContent)content).getOpenEditingButton().setOnAction(e -> {
             try {
-                new ExistingEntityStage(stage);
+                ExistingEntityStage ees = new ExistingEntityStage(stage);
+                ees.getView().getCb().setValue(MapEditor.project.getSelectedMap().getGc().getSelectedEntityProfile().getName());
             } catch (IOException ex) {
                 Logger.getLogger(EntityController.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ParseException ex) {
                 Logger.getLogger(EntityController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        });
+        
+        ((EntityContent)content).getDuplicateButton().setOnAction(e -> {
+            duplicate(MapEditor.getProject().getSelectedMap().getGc().getSelectedEntityProfile().getName());
+            MapEditor.getEntityHierarchy().refresh();
         });
     }
 
@@ -45,12 +64,57 @@ public class EntityController extends MetadataController{
     //Actually this is the duplication event
     @Override
     protected void saveAction() {
-        
+        //Event left to ExistingEntityController
     }
 
     @Override
     protected void deleteAction() {
-
+        
     }
     
+    
+    private void duplicate(String name){
+        String newName = name + "1";
+        FileReader reader = null;
+        try {
+            JSONParser parser = new JSONParser();
+            reader = new FileReader("savefile.json");
+            JSONObject savefile = (JSONObject) parser.parse(reader);
+            JSONArray entities = (JSONArray) savefile.get("entities");
+            JSONObject entity = new JSONObject();
+            JSONObject entityToDuplicate = new JSONObject();
+            
+            for(int i = 0; i < entities.size(); i++){
+                entity = (JSONObject) entities.get(i);
+                if(entity.get("name").equals(name)){
+                    entityToDuplicate.putAll(entity);
+                    entityToDuplicate.put("name", newName);
+                    entityToDuplicate.remove("color");
+                    entityToDuplicate.remove("position");
+                    MapEditor.getProject().getSelectedMap().createEntityProfile(newName);
+                }
+            }
+            
+            entities.add(entityToDuplicate);
+            savefile.put("entities",entities);
+            
+            FileWriter writer = new FileWriter("savefile.json");
+            gson.toJson(savefile, writer);
+            writer.close();
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+ 
+    }
 }

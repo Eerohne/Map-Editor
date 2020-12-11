@@ -259,7 +259,7 @@ public class ExistingEntityController{
                 writer.close();
                 view.table.getItems().clear();
                 view.cb.getItems().remove(index);
-                
+                MapEditor.getProject().getSelectedMap().getEntityMap().remove(index);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException | ParseException ex) {
@@ -271,7 +271,7 @@ public class ExistingEntityController{
                     Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            });
+        });
     }
     
     private void deleteRow() throws FileNotFoundException, IOException, ParseException{ 

@@ -92,6 +92,8 @@ public class ExistingEntityModification extends GridPane{
         propertyText.setPromptText("add or change property here");
         valueText.setPromptText("add or change value here");
     }
-    
-    
+
+    public ComboBox<String> getCb() {
+        return cb;
+    }
 }

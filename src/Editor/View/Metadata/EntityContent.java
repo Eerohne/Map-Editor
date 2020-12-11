@@ -67,4 +67,8 @@ public class EntityContent extends DataView{
     public Button getOpenEditingButton(){
         return openEdit;
     }
+    
+    public Button getDuplicateButton(){
+        return duplicate;
+    }
 }

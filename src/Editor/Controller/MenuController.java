@@ -7,8 +7,6 @@ package Editor.Controller;
 
 import Editor.Main.MapEditor;
 import Editor.Model.Profile.MapProfile;
-import Editor.Model.Profile.WallProfile;
-import Editor.View.Grid.Cell;
 import Editor.View.New.NewEntityStage;
 import Editor.View.Menu.Entity.ExistingEntityStage;
 import Editor.View.Menu.TopMenu;
@@ -26,7 +24,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -48,8 +45,6 @@ public class MenuController{
     private TopMenu menu;
     
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    
-    
     
     public MenuController(TopMenu menu, Stage editorStage) {
         
@@ -252,49 +247,6 @@ public class MenuController{
             }
         }
         
-    }
-    
-    private void duplicate(String name, String newName){
-        
-        FileReader reader = null;
-        try {
-            JSONParser parser = new JSONParser();
-            reader = new FileReader("savefile.json");
-            JSONObject savefile = (JSONObject) parser.parse(reader);
-            JSONArray entities = (JSONArray) savefile.get("entities");
-            JSONObject entity = new JSONObject();
-            JSONObject entityToDuplicate = new JSONObject();
-            
-            for(int i = 0; i < entities.size(); i++){
-                entity = (JSONObject) entities.get(i);
-                if(entity.get("name").equals(name)){
-                    entityToDuplicate.putAll(entity);
-                    entityToDuplicate.put("name", newName);
-                }
-            }
-            
-            //System.out.println(entityToDuplicate);
-            entities.add(entityToDuplicate);
-            savefile.put("entities",entities);
-            
-            FileWriter writer = new FileWriter("savefile.json");
-            gson.toJson(savefile, writer);
-            writer.close();
-            
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
-            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                reader.close();
-            } catch (IOException ex) {
-                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
- 
     }
     
     private void load(){
