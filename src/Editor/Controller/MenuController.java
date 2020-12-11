@@ -31,6 +31,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -340,8 +341,8 @@ public class MenuController{
             
             //getting entities 
             Iterator<Object> entitiesIterator = entities.iterator();
-            double [] position = new double[3];
-            double [] color = new double[4];
+            double [] position = new double[2];
+            float [] color = new float[3];
             String entityName = "";
             while(entitiesIterator.hasNext()){
                 JSONObject entity = (JSONObject) entitiesIterator.next();
@@ -359,12 +360,14 @@ public class MenuController{
                     Iterator<Double> colorIterator = colorArray.iterator();
                     int colorCounter = 0;
                     while(colorIterator.hasNext()){
-                        color[colorCounter] = colorIterator.next().doubleValue();
+                        color[colorCounter] = (float) colorIterator.next().doubleValue();
                         colorCounter++;
                     }
+                    
                 }
                 entityName = (String) entity.get("name");
-                System.out.println(Arrays.toString(position) + " , " + Arrays.toString(color) + " , " + entityName);
+                
+                mapToLoad.loadEntityProfile(entityName, Color.color(color[0], color[1], color[2]) , position[0], position[1]);
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
