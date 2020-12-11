@@ -254,7 +254,7 @@ public class GridController{
             if(!(mouseX < 0 || mouseY < 0 || mouseX > getPaneBounds().getMaxX() || mouseY > getPaneBounds().getMaxY())){
                 EntityProfile ep = getSelectedEntityProfile();
                 EntityDot ed = ep.getDot();
-                ed.initialize((mouseX - dotX)/dot.getScaleObject().getX(), (mouseY - dotY)/dot.getScaleObject().getX(), 10);
+                ed.initialize((mouseX - dotX)/dot.getScaleObject().getX(), (mouseY - dotY)/dot.getScaleObject().getY(), 10);
                 ed.setOnMouseEntered(e -> {
                     this.hoverEntity = ep.getName();
                 });
