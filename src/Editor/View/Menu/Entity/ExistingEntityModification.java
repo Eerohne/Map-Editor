@@ -96,4 +96,8 @@ public class ExistingEntityModification extends GridPane{
     public ComboBox<String> getCb() {
         return cb;
     }
+
+    public Button getRemoveEntityBtn() {
+        return removeEntityBtn;
+    }
 }

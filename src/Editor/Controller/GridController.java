@@ -53,7 +53,7 @@ public class GridController{
     double zoom = 1.0d;
 
     Cell hoverCell = new Cell(1);
-    EntityDot dot = new EntityDot(0, Color.BLACK, 0, 0, 1);
+    EntityDot dot = new EntityDot(Color.BLACK, 0, 0, 1);
     Info info = new Info();
     
     double dotX = 0;

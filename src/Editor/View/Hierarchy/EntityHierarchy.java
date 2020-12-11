@@ -36,7 +36,7 @@ public class EntityHierarchy extends Hierarchy{
         //TODO
         list.getChildren().clear();
         
-        for (Map.Entry<Integer, EntityProfile> entry : map.getEntityMap().entrySet()) {
+        for (Map.Entry<String, EntityProfile> entry : map.getEntityMap().entrySet()) {
             HBox item = new HBox(10);
             item.setPadding(new Insets(25));
             Label name = new Label(entry.getValue().getName());

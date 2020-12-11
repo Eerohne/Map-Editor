@@ -6,6 +6,7 @@
 package Editor.Controller;
 import Editor.Main.MapEditor;
 import Editor.Model.EntityModel;
+import Editor.Model.Profile.EntityProfile;
 import Editor.View.New.NewEntityStage;
 import Editor.View.Menu.Entity.ExistingEntityModification;
 import Editor.View.Menu.Entity.SignalEditorStage;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
@@ -259,7 +261,9 @@ public class ExistingEntityController{
                 writer.close();
                 view.table.getItems().clear();
                 view.cb.getItems().remove(index);
-                MapEditor.getProject().getSelectedMap().getEntityMap().remove(index);
+                EntityProfile p = MapEditor.getProject().getSelectedMap().getEntityMap().remove(name);
+                p.destroy();
+                MapEditor.getEntityHierarchy().refresh();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException | ParseException ex) {

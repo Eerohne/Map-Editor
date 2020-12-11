@@ -26,27 +26,16 @@ import org.json.simple.parser.ParseException;
  * @author A
  */
 public class EntityProfile extends Profile{
-    private int id;
     private EntityDot dot;
     
-    public EntityProfile(String name, int id) {
+    public EntityProfile(String name) {
         super(name);
         int r = (int)((0.5 + Math.random()*0.5)*255);
         int g = (int)((0.5 + Math.random()*0.5)*255);
         int b = (int)((0.5 - Math.random()*0.5)*255);
         this.saveColor(name, r, g, b);
-
-        this.id = id;
         
         this.dot = new EntityDot(Color.rgb(r, g, b));
-    }
-
-    public int getID() {
-        return id;
-    }
-
-    public void setID(int id) {
-        this.id = id;
     }
 
     public EntityDot getDot() {
@@ -99,5 +88,9 @@ public class EntityProfile extends Profile{
                 Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    public void destroy(){
+        dot.setRadius(0);
     }
 }

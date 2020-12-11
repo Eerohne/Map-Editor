@@ -5,10 +5,13 @@
  */
 package Editor.Controller.ProfileController;
 
+import Editor.Controller.ExistingEntityController;
 import Editor.Controller.MenuController;
 import Editor.Main.MapEditor;
+import Editor.Model.EntityModel;
 import Editor.Model.Profile.MapProfile;
 import Editor.View.Grid.Grid;
+import Editor.View.Menu.Entity.ExistingEntityModification;
 import Editor.View.Menu.Entity.ExistingEntityStage;
 import Editor.View.Metadata.EntityContent;
 import com.google.gson.Gson;
@@ -69,7 +72,16 @@ public class EntityController extends MetadataController{
 
     @Override
     protected void deleteAction() {
-        
+        try {
+            ExistingEntityModification view = new ExistingEntityModification();
+            ExistingEntityController ec = new ExistingEntityController(new EntityModel(), view);
+            view.getCb().setValue(MapEditor.project.getSelectedMap().getGc().getSelectedEntityProfile().getName());
+            view.getRemoveEntityBtn().fire();
+        } catch (IOException ex) {
+            Logger.getLogger(EntityController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(EntityController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     

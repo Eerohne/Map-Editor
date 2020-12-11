@@ -97,7 +97,7 @@
     "name":"timer",
     "active":"TRUE",
     "position":[1.0,1.0],
-    "maxtime":"60",
+    "maxtime":"100",
     "onstart":"TRUE",
     "canreset":"false",
     "signals": [
