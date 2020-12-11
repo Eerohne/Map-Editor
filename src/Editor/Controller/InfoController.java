@@ -27,22 +27,18 @@ public class InfoController{
         this.gc = map.getGc();
         
         this.info.setupInfoBar(gc);
-        
-        
     }
     
     public void refreshInfoBar(){
-        info.setMouseX(gc.getMouseX());
-        info.setMouseY(gc.getMouseY());
+        //info.setMouseX(gc.getMouseX());
+        //info.setMouseY(gc.getMouseY());
         info.setZoom(gc.getZoom());
         
-        info.reset();
+        info.refresh();
     }
     
     public void setMap(MapProfile map){
         this.grid = map.getGridView();
         this.gc = map.getGc();
     }
-    
-    
 }

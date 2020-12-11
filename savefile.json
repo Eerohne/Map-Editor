@@ -1,5 +1,53 @@
 {
-  "entities": [],
+  "entities": [
+    {
+      "classname": "awsd",
+      "color": [
+        186.0,
+        189.0,
+        73.0
+      ],
+      "name": "asdas",
+      "position": [
+        2.77,
+        3.47
+      ]
+    },
+    {
+      "classname": "awsd",
+      "name": "asdas1",
+      "position": [
+        8.03,
+        3.47
+      ]
+    },
+    {
+      "classname": "awsd",
+      "name": "asdas1",
+      "position": [
+        8.03,
+        3.47
+      ]
+    },
+    {
+      "classname": "awsd",
+      "name": "asdas11"
+    },
+    {
+      "classname": "dsf",
+      "color": [
+        165.0,
+        218.0,
+        38.0
+      ],
+      "werfwe": "ewrew",
+      "name": "sdfwsadf",
+      "position": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
   "grid": {
     "data": [
       [

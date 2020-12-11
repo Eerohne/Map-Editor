@@ -132,6 +132,8 @@ public class MapEditor extends Application {
                 gridDisplay.setCenter(grid);
                 setDataView(new WallContent(project.getMainMap().getDefaultWall()));
                 new WallController((WallContent)metadataContent, project.getSelectedMap(), stage);
+                info.setupInfoBar(project.getSelectedMap().getGc());
+                info.start();
                 //EntityHierarchy
             }
         } catch (Exception e) {

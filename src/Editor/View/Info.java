@@ -6,45 +6,51 @@
 package Editor.View;
 
 import Editor.Controller.GridController;
+import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 /**
  *
  * @author A
  */
 public class Info extends HBox{
-    private Label gridXLabel;
-    private Label mouseYLabel;
+    private GridController gc;
+    
+    private Label coordinateLabel;
     private Label zoomLabel;
     private Label modeLabel;
+    private Label gridSize;
+    private Label hoverEntity;
+    private Label selectedProfile;
     
     public Button save;
     public Button load;
     
-    private double mouseX;
-    private double mouseY;
+    private double gridX;
+    private double gridY;
     private double zoom;
+    private int editingMode;
+    
+    private AnimationTimer eventLoop;
     
     public Info() {
+        this.coordinateLabel = new Label();
+        this.zoomLabel = new Label();
+        this.modeLabel = new Label();
     }
     
     public void setupInfoBar(GridController gc){
-        this.mouseX = gc.getMouseX();
-        this.mouseY = gc.getMouseY();
-        this.zoom = gc.getZoom();
+        this.gc = gc;
         
-        gridXLabel = new Label("X : " + String.format("%.2f", mouseX) + "");
-        mouseYLabel = new Label("Y : " + String.format("%.2f", mouseY) + "");
-        
-        zoomLabel = new Label("Zoom : " + String.format("%.0f", zoom*100) + "%");
-        modeLabel = new Label("Current Mode : Place Wall");
+        this.refresh();
         
         save = new Button("Save");
         load = new Button("Load");
@@ -52,27 +58,39 @@ public class Info extends HBox{
         Region spacing = new Region();
         HBox.setHgrow(spacing, Priority.ALWAYS);
         
-        this.getChildren().addAll(gridXLabel, mouseYLabel, zoomLabel, modeLabel, spacing, save, load);
+        this.getChildren().addAll(coordinateLabel, zoomLabel, modeLabel, spacing, save, load);
         this.setSpacing(10);
         
         Insets insets = new Insets(10);
         this.setPadding(insets);
     }
 
-    public double getMouseX() {
-        return mouseX;
+    public void start(){
+        eventLoop = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                refresh();
+                System.out.println("Loop Executed");
+            }
+        };
+        
+        eventLoop.start();
+    }
+    
+    public double getGridX() {
+        return gridX;
     }
 
-    public void setMouseX(double mouseX) {
-        this.mouseX = mouseX;
+    public void setGridX(double mouseX) {
+        this.gridX = mouseX;
     }
 
-    public double getMouseY() {
-        return mouseY;
+    public double getGridY() {
+        return gridY;
     }
 
-    public void setMouseY(double mouseY) {
-        this.mouseY = mouseY;
+    public void setGridY(double mouseY) {
+        this.gridY = mouseY;
     }
 
     public double getZoom() {
@@ -83,9 +101,38 @@ public class Info extends HBox{
         this.zoom = zoom;
     }
 
-    public void reset() {
-        this.gridXLabel.setText("X : " + String.format("%.2f", mouseX) + "");
-        this.mouseYLabel.setText("Y : " + String.format("%.2f", mouseY) + "");
-        this.zoomLabel.setText("Zoom : " + String.format("%.0f", zoom*100) + "%");
+    public void refresh() {
+        this.gridX = gc.getGridX();
+        this.gridY = gc.getGridY();
+        this.zoom = gc.getZoom();
+        this.editingMode = gc.getEditingMode();
+        
+        this.coordinateLabel.setText("Coordinates : (" + String.format("%.2f", gridX) + ", " + String.format("%.2f", gridY) + ") ");
+        this.zoomLabel.setText("Zoom : " + String.format("%.0f", zoom*100) + "% ");
+        
+        switch(editingMode){
+            case 0:
+                modeLabel = new Label("Editing Mode : Editing Disabled ");
+                break;
+            case 1:
+                modeLabel = new Label("Editing Mode : Wall Editing ");
+                break;
+            case 2: 
+                modeLabel = new Label("Editing Mode : Entity Editing ");
+                break;
+            default:
+                modeLabel = new Label("Editing Mode : Error ");
+                break;
+        }
+    }
+    
+    public void reload(GridController gc){
+        eventLoop.stop();
+        this.gridX = gc.getGridX();
+        this.gridY = gc.getGridY();
+        this.zoom = gc.getZoom();
+        this.editingMode = gc.getEditingMode();
+        
+        eventLoop.start();
     }
 }
