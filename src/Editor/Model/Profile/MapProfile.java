@@ -24,7 +24,6 @@ import javafx.scene.shape.Rectangle;
  */
 public class MapProfile extends Profile{
     private int wallCounter = 1;
-    private int entityCounter = 1;
     
     //private String resourcePath;
     //private String mapLocation;
@@ -32,11 +31,11 @@ public class MapProfile extends Profile{
     private Grid gridView;
     private GridController gc;
     public WallProfile defaultWall;
-        
+    
     private boolean mainMap;
     
     private Map<Integer, WallProfile> wallMap = new TreeMap<>();
-    private Map<Integer, EntityProfile> entityMap = new TreeMap<>();
+    private Map<String, EntityProfile> entityMap = new TreeMap<>();
     
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     
@@ -93,9 +92,8 @@ public class MapProfile extends Profile{
     }
     
     public EntityProfile createEntityProfile(String name){
-        EntityProfile entity = new EntityProfile(name, entityCounter);
-        this.entityMap.put(entityCounter, entity);
-        entityCounter++;
+        EntityProfile entity = new EntityProfile(name);
+        this.entityMap.put(name, entity);
         this.gc.setSelectedEntityProfile(entity);
         this.gc.setupDot(entity.getDot());
         return entity;
@@ -224,7 +222,7 @@ public class MapProfile extends Profile{
         return wallMap;
     }
     
-    public Map<Integer, EntityProfile> getEntityMap() {
+    public Map<String, EntityProfile> getEntityMap() {
         return entityMap;
     }
 

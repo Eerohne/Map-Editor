@@ -20,14 +20,16 @@ import org.json.simple.parser.ParseException;
  * @author linuo
  */
 public class ExistingEntityStage{
-
+    ExistingEntityModification view;
+    
+    
     public ExistingEntityStage(Stage primaryStage) throws IOException, FileNotFoundException, ParseException {
         
         Stage existingEntity = new Stage();
         existingEntity.initOwner(primaryStage);
         existingEntity.initModality(Modality.WINDOW_MODAL);
         
-        ExistingEntityModification view = new ExistingEntityModification();
+        view = new ExistingEntityModification();
         EntityModel model = new EntityModel();
         ExistingEntityController controller = new ExistingEntityController(model, view);
         existingEntity.setTitle("Edit Existing Entities");
@@ -35,13 +37,8 @@ public class ExistingEntityStage{
         existingEntity.setScene(scene);
         existingEntity.show();
     }
-    
-    
 
-    
-//    
-//    public static void main(String[] args) {
-//        launch(args);
-//    }
-    
+    public ExistingEntityModification getView() {
+        return view;
+    }
 }

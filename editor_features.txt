@@ -1,10 +1,7 @@
-Entity Data Content View
-Entity Deletion
-Fix item in Hierarchy dynamic selection
-Default Player
 Info Panel Update
 Setup Events for All buttons
 New Project System
 Help Menu
 Fix Mouse Drag Leak
 Fix Scale Corrector
+Fix item in Hierarchy dynamic selection

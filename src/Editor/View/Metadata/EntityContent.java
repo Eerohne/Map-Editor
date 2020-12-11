@@ -35,13 +35,11 @@ public class EntityContent extends DataView{
         Insets padding = new Insets(10); // Padding
         Region space = new Region(); //GUI Gap
         
-        //HBox.setHgrow(openEdit, Priority.ALWAYS);
+        HBox.setHgrow(openEdit, Priority.ALWAYS);
         HBox.setHgrow(duplicate, Priority.ALWAYS);
         HBox.setHgrow(delete, Priority.ALWAYS);
         VBox.setVgrow(space, Priority.ALWAYS);
-        
-        openEdit.setMinWidth(Double.MAX_VALUE);
-        
+                
         HBox editBox = new HBox(openEdit);
         editBox.setPadding(padding);
         editBox.setSpacing(10);
@@ -66,5 +64,9 @@ public class EntityContent extends DataView{
     
     public Button getOpenEditingButton(){
         return openEdit;
+    }
+    
+    public Button getDuplicateButton(){
+        return duplicate;
     }
 }

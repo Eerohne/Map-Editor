@@ -16,22 +16,20 @@ import javafx.scene.transform.Translate;
  * @author A
  */
 public class EntityDot extends Circle{
-    private int entityId;
     private Color color;
     
     private Translate tVector = new Translate(0, 0);
     private Scale sMatrix = new Scale(1, 1);
 
-    public EntityDot(int entityId, Color color, double centerX, double centerY, double radius) {
+    public EntityDot(Color color, double centerX, double centerY, double radius) {
         super(centerX, centerY, radius);
-        this.entityId = entityId;
         this.color = color;
         this.setFill(color);
         this.getTransforms().addAll(tVector, sMatrix);
     }
     
     public EntityDot(EntityProfile ep, double centerX, double centerY, double radius){
-        this(ep.getID(), Color.BEIGE, centerX, centerY, radius);
+        this(Color.BEIGE, centerX, centerY, radius);
     }
     
     public EntityDot(Color c){
