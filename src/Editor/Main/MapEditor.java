@@ -24,6 +24,7 @@ import Editor.View.Metadata.MapContent;
 import java.io.File;
 import java.net.MalformedURLException;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
@@ -60,6 +61,8 @@ public class MapEditor extends Application {
     
     Grid grid;
     BorderPane gridDisplay;
+    
+    //BorderPane view;
     
     static ScrollPane dataPane;
     
