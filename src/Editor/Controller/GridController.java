@@ -306,6 +306,14 @@ public class GridController{
         cell.setTexture(new ImagePattern(((WallProfile)selectedProfile).getImage()));
     }
     
+    public void loadPalette(int[][] palette){
+        for (int i = 0; i < grid.getCells().length; i++) {
+            for(int j = 0; j < grid.getCells()[i].length; j++){
+                this.setImg(grid.getCells()[i][j], palette[i][j]);
+            }
+        }
+    }
+    
     public void setupDot(EntityDot newDot){
         newDot.initialize(0, 0, 1);
         newDot.setScaleObject(dot.getScaleObject());
