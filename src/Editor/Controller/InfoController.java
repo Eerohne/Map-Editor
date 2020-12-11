@@ -6,21 +6,10 @@
 package Editor.Controller;
 
 import Editor.Model.Profile.MapProfile;
-import java.io.FileNotFoundException;
 import Editor.View.Info;
 import Editor.View.Grid.Grid;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
- 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 /**
  *
  * @author linuo

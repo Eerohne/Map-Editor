@@ -20,12 +20,10 @@ import javafx.scene.shape.Rectangle;
  * @author A
  */
 public class Info extends HBox{
-    private Label mouseXLabel;
+    private Label gridXLabel;
     private Label mouseYLabel;
     private Label zoomLabel;
     private Label modeLabel;
-    private Label modeInfoLabel;
-    private Rectangle colorViewer;
     
     public Button save;
     public Button load;
@@ -42,15 +40,11 @@ public class Info extends HBox{
         this.mouseY = gc.getMouseY();
         this.zoom = gc.getZoom();
         
-        mouseXLabel = new Label("X : " + String.format("%.2f", mouseX) + "");
+        gridXLabel = new Label("X : " + String.format("%.2f", mouseX) + "");
         mouseYLabel = new Label("Y : " + String.format("%.2f", mouseY) + "");
         
         zoomLabel = new Label("Zoom : " + String.format("%.0f", zoom*100) + "%");
         modeLabel = new Label("Current Mode : Place Wall");
-        modeInfoLabel = new Label("Selected Color : ");
-        colorViewer = new Rectangle(20, 20);
-        colorViewer.setFill(Color.BLACK);
-        colorViewer.setStroke(Color.BLACK);
         
         save = new Button("Save");
         load = new Button("Load");
@@ -58,7 +52,7 @@ public class Info extends HBox{
         Region spacing = new Region();
         HBox.setHgrow(spacing, Priority.ALWAYS);
         
-        this.getChildren().addAll(mouseXLabel, mouseYLabel, zoomLabel, modeLabel, modeInfoLabel, colorViewer, spacing, save, load);
+        this.getChildren().addAll(gridXLabel, mouseYLabel, zoomLabel, modeLabel, spacing, save, load);
         this.setSpacing(10);
         
         Insets insets = new Insets(10);
@@ -90,7 +84,7 @@ public class Info extends HBox{
     }
 
     public void reset() {
-        this.mouseXLabel.setText("X : " + String.format("%.2f", mouseX) + "");
+        this.gridXLabel.setText("X : " + String.format("%.2f", mouseX) + "");
         this.mouseYLabel.setText("Y : " + String.format("%.2f", mouseY) + "");
         this.zoomLabel.setText("Zoom : " + String.format("%.0f", zoom*100) + "%");
     }

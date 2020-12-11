@@ -31,7 +31,7 @@ public class MapProfile extends Profile{
     private Grid gridView;
     private GridController gc;
     public WallProfile defaultWall;
-        
+    
     private boolean mainMap;
     
     private Map<Integer, WallProfile> wallMap = new TreeMap<>();
