@@ -31,12 +31,12 @@ public class EntityProfile extends Profile{
     
     public EntityProfile(String name) {
         super(name);
-        int r = (int)((0.5 + Math.random()*0.5)*255);
-        int g = (int)((0.5 + Math.random()*0.5)*255);
-        int b = (int)((0.5 - Math.random()*0.5)*255);
+        double r = 0.5 + Math.random()*0.5;
+        double g = 0.5 + Math.random()*0.5;
+        double b = 0.5 - Math.random()*0.5;
         this.saveColor(MapEditor.getProject().getSelectedMap().getName(), name, r, g, b);
         
-        this.dot = new EntityDot(Color.rgb(r, g, b));
+        this.dot = new EntityDot(Color.color(r, g, b));
     }
     
     public EntityProfile(String mapName, String entityName, Color color) {

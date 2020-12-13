@@ -96,7 +96,7 @@ public class MapProfile extends Profile{
         EntityProfile entity = new EntityProfile(name);
         this.entityMap.put(name, entity);
         this.gc.setSelectedEntityProfile(entity);
-        this.gc.setupDot(entity.getDot());
+        this.gc.setupDot(entity);
         return entity;
     }
     
@@ -110,11 +110,13 @@ public class MapProfile extends Profile{
     }
     
      public EntityProfile loadEntityProfile(String mapName, String entityName, float[] color, double gridX, double gridY){
-        
-        EntityProfile entity = new EntityProfile(mapName, entityName, Color.rgb((int)(color[0]*255), (int)(color[1]*255), (int)(color[2]*255)));
+         for (float f : color) {
+             System.out.println(f);
+         }
+        EntityProfile entity = new EntityProfile(mapName, entityName, Color.color(color[0], color[1], color[2]));
         this.entityMap.put(entityName, entity);
         this.gc.setSelectedEntityProfile(entity);
-        this.gc.setupDot(entity.getDot());
+        this.gc.setupDot(entity);
         
         entity.getDot().initialize(gridX * 50, gridY * 50, 10);
         return entity;

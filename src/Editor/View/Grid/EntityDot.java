@@ -26,6 +26,7 @@ public class EntityDot extends Circle{
         this.color = color;
         this.setFill(color);
         this.getTransforms().addAll(tVector, sMatrix);
+        
     }
     
     public EntityDot(EntityProfile ep, double centerX, double centerY, double radius){

@@ -66,8 +66,8 @@
       "texture": "images/sprites/skeleton.gif",
       "name": "coolSkeleton1",
       "position": [
-        1.51,
-        3.47
+        4.85,
+        8.79
       ],
       "radius": "0.0",
       "height": "0.5"
