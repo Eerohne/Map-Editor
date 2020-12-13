@@ -156,6 +156,7 @@ public class NewEntityController{
         double[] initialPosition = {0.0 , 0.0};
         
         
+        
         String entityName = view.nameTf.getText();
         
         // create or write to the entities.json if no entities exist
@@ -338,7 +339,6 @@ public class NewEntityController{
                     }
                     reader.close();
                 }
-                reader.close();
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
