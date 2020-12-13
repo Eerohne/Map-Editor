@@ -111,7 +111,7 @@ public class MapProfile extends Profile{
     
      public EntityProfile loadEntityProfile(String mapName, String entityName, float[] color, double gridX, double gridY){
         
-        EntityProfile entity = new EntityProfile(mapName, entityName, Color.rgb((int)(color[0]*255), (int)(color[1]*255), (int)(color[2]*255)));
+        EntityProfile entity = new EntityProfile(mapName, entityName, Color.rgb((int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255)));
         this.entityMap.put(entityName, entity);
         this.gc.setSelectedEntityProfile(entity);
         this.gc.setupDot(entity.getDot());

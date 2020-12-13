@@ -14,6 +14,9 @@ import Editor.View.Hierarchy.WallHierarchy;
 import Editor.View.New.NewEntityStage;
 import Editor.View.New.NewMap;
 import Engine.Core.Game;
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
@@ -47,7 +50,11 @@ public class ShortcutController{
         });
         
         shortcutBar.getEntityShort().setOnAction(e -> {
-            new NewEntityStage(owner);
+            try {
+                new NewEntityStage(owner);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(ShortcutController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         
         shortcutBar.getMapShort().setOnAction(e -> {

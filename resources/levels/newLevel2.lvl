@@ -3,9 +3,9 @@
     {
       "classname": "awsd",
       "color": [
-        0.002860438311472535,
-        0.0029065744020044804,
-        0.0029065744020044804
+        0.0,
+        0.0,
+        0.0
       ],
       "name": "asdas",
       "position": [
@@ -16,9 +16,9 @@
     {
       "classname": "awsd",
       "color": [
-        0.002860438311472535,
-        0.0029065744020044804,
-        0.0029065744020044804
+        0.0,
+        0.0,
+        0.0
       ],
       "name": "asdas1",
       "position": [
@@ -29,9 +29,9 @@
     {
       "classname": "awsd",
       "color": [
-        0.002860438311472535,
-        0.0029065744020044804,
-        0.0029065744020044804
+        0.0,
+        0.0,
+        0.0
       ],
       "name": "asdas1",
       "position": [
@@ -42,18 +42,18 @@
     {
       "classname": "awsd",
       "color": [
-        0.002860438311472535,
-        0.0029065744020044804,
-        0.0029065744020044804
+        0.0,
+        0.0,
+        0.0
       ],
       "name": "asdas11"
     },
     {
       "classname": "dsf",
       "color": [
-        0.0025374856777489185,
-        0.0033525568433105946,
-        0.0033525568433105946
+        0.0,
+        0.0,
+        0.0
       ],
       "werfwe": "ewrew",
       "name": "sdfwsadf",
@@ -65,9 +65,9 @@
     {
       "classname": "sfc",
       "color": [
-        0.00281430222094059,
-        0.0021222608629614115,
-        0.0021222608629614115
+        0.0,
+        0.0,
+        0.0
       ],
       "wer": "wer",
       "name": "werew",
@@ -79,9 +79,9 @@
     {
       "classname": "wqeqw",
       "color": [
-        0.002629757858812809,
-        0.0024913495872169733,
-        0.0024913495872169733
+        0.0,
+        0.0,
+        0.0
       ],
       "name": "eqwdqwd",
       "position": [
@@ -94,9 +94,9 @@
       "runspeed": "2.5",
       "classname": "player_simple",
       "color": [
-        170.0,
-        184.0,
-        29.0
+        0.0,
+        0.0,
+        0.0
       ],
       "rotation": "270",
       "name": "player",
@@ -113,9 +113,9 @@
       "onstart": "true",
       "classname": "sound_ambient",
       "color": [
-        220.0,
-        183.0,
-        24.0
+        0.0,
+        0.0,
+        0.0
       ],
       "onlyonce": "false",
       "loop": "true",
@@ -132,9 +132,9 @@
       "classname": "object_decor",
       "size": "1.0",
       "color": [
-        214.0,
-        245.0,
-        26.0
+        0.0,
+        0.0,
+        0.0
       ],
       "texture": "images/sprites/skeleton.gif",
       "name": "coolSkeleton",
@@ -148,6 +148,11 @@
     {
       "classname": "object_decor",
       "size": "1.0",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "texture": "images/sprites/skeleton.gif",
       "name": "coolSkeleton1",
       "position": [

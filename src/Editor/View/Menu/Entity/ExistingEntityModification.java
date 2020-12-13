@@ -56,6 +56,10 @@ public class ExistingEntityModification extends GridPane{
         table.setEditable(true);
         this.setHgap(10);
         this.setVgap(10);
+        
+        propertyCol.prefWidthProperty().bind(table.widthProperty().multiply(0.5));
+        valueCol.prefWidthProperty().bind(table.widthProperty().multiply(0.5));
+        
         this.add(table, 1, 1);
         this.add(labelBox, 1, 0);
         this.add(tfBox, 2, 0);

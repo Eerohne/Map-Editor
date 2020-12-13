@@ -7,6 +7,8 @@ package Editor.View.Menu.Entity;
 
 import Editor.Controller.SignalController;
 import Editor.Model.SignalModel;
+import java.io.File;
+import java.net.MalformedURLException;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -18,7 +20,7 @@ import javafx.stage.Stage;
  */
 public class SignalStage{
 
-    public SignalStage(Stage stage) {
+    public SignalStage(Stage stage) throws MalformedURLException {
         Stage newSignal = new Stage();
         newSignal.initOwner(stage);
         newSignal.initModality(Modality.WINDOW_MODAL);
@@ -26,7 +28,16 @@ public class SignalStage{
         SignalView sv = new SignalView();
         SignalController sc = new SignalController(new SignalModel(), sv);
         
-        Scene s = new Scene(sv, 500, 300);
+        Scene s = new Scene(sv, 600, 300);
+        
+        String pathName = "dev/editor/style/style.css" ;
+        File file = new File(pathName);
+        if (file.exists()) {
+            s.getStylesheets().add(file.toURI().toURL().toExternalForm());
+        } else {
+           System.out.println("Could not find css file: "+pathName);
+        }
+        
         newSignal.setTitle("create signal");
         newSignal.setScene(s);
         newSignal.show();

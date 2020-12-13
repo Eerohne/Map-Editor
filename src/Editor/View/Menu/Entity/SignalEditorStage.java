@@ -9,6 +9,7 @@ import Editor.Controller.ExistingEntityController;
 import Editor.Controller.SignalEditorController;
 import Editor.Controller.SignalViewerController;
 import Editor.Model.SignalModel;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javafx.scene.Scene;
@@ -30,7 +31,16 @@ public class SignalEditorStage {
         SignalEditorView sev = new SignalEditorView();
         SignalEditorController sec = new SignalEditorController(new SignalModel(), sev);
         
-        Scene s = new Scene(sev, 500, 300);
+        Scene s = new Scene(sev, 600, 300);
+        
+        String pathName = "dev/editor/style/style.css" ;
+        File file = new File(pathName);
+        if (file.exists()) {
+            s.getStylesheets().add(file.toURI().toURL().toExternalForm());
+        } else {
+           System.out.println("Could not find css file: "+pathName);
+        }
+        
         newSignal.setTitle("Signal editor");
         newSignal.setScene(s);
         newSignal.show();

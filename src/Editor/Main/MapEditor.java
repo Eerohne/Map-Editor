@@ -379,35 +379,40 @@ public class MapEditor extends Application {
 //            }
             
             //getting entities 
-            Iterator<Object> entitiesIterator = entities.iterator();
-            double [] position = new double[2];
-            float [] color = new float[3];
-            String entityName = "";
-            while(entitiesIterator.hasNext()){
-                JSONObject entity = (JSONObject) entitiesIterator.next();
-                if(entity.containsKey("position")){
-                    JSONArray positionArray = (JSONArray) entity.get("position");
-                    Iterator<Double> positionIterator = positionArray.iterator();
-                    int positionCounter = 0;
-                    while(positionIterator.hasNext()){
-                        position[positionCounter] = positionIterator.next().doubleValue();
-                        positionCounter++;
+            if(savefile.containsKey("entities")){
+                Iterator<Object> entitiesIterator = entities.iterator();
+                double [] position = new double[2];
+                float [] color = new float[3];
+                String entityName = "";
+                while(entitiesIterator.hasNext()){
+                    JSONObject entity = (JSONObject) entitiesIterator.next();
+                    if(entity.containsKey("position")){
+                        JSONArray positionArray = (JSONArray) entity.get("position");
+                        Iterator<Double> positionIterator = positionArray.iterator();
+                        int positionCounter = 0;
+                        while(positionIterator.hasNext()){
+                            position[positionCounter] = positionIterator.next().doubleValue();
+                            positionCounter++;
+                        }
                     }
-                }
-                if(entity.containsKey("color")){
-                    JSONArray colorArray = (JSONArray) entity.get("color");
-                    Iterator<Double> colorIterator = colorArray.iterator();
-                    int colorCounter = 0;
-                    while(colorIterator.hasNext()){
-                        color[colorCounter] = (float) colorIterator.next().doubleValue();
-                        colorCounter++;
+                    if(entity.containsKey("color")){
+                        JSONArray colorArray = (JSONArray) entity.get("color");
+                        Iterator<Double> colorIterator = colorArray.iterator();
+                        int colorCounter = 0;
+                        while(colorIterator.hasNext()){
+                            color[colorCounter] = (float) colorIterator.next().doubleValue();
+                            colorCounter++;
+                        }
+
                     }
-                    
+                    entityName = (String) entity.get("name");
+
+                    //mapToLoad.getGc().
+                    mapToLoad.loadEntityProfile(mapToLoad.getName(), entityName, color , position[0], position[1]);
                 }
-                entityName = (String) entity.get("name");
+            }
+            else{
                 
-                //mapToLoad.getGc().
-                mapToLoad.loadEntityProfile(mapToLoad.getName(), entityName, color , position[0], position[1]);
             }
             
         } catch (FileNotFoundException ex) {

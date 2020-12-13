@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -383,7 +384,11 @@ public class ExistingEntityController{
     private void switchWindow(){
         view.switchBtn.setOnAction((event) -> {
            Stage stage = new Stage();
-           new NewEntityStage(stage);
+            try {
+                new NewEntityStage(stage);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 }
 
