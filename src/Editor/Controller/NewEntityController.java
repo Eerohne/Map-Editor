@@ -25,6 +25,7 @@ import javafx.event.EventHandler;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
@@ -148,9 +149,9 @@ public class NewEntityController{
         JSONArray array = new JSONArray();
         JSONObject allEntities = new JSONObject();
         JSONParser parser = new JSONParser();
-        File newFile = new File("savefile.json");
+        File newFile = new File(MapEditor.getProject().getSelectedMapPath());
         JSONObject data = new JSONObject();
-        FileWriter writer = new FileWriter("savefile.json", true);
+        FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath(), true);
         File signalFile = new File("signals.json");
         double[] initialPosition = {0.0 , 0.0};
         
@@ -286,7 +287,11 @@ public class NewEntityController{
     private void signalWindow(){
         view.signalBtn.setOnAction((event) -> {
             Stage stage = new Stage();
-            new SignalStage(stage);
+            try {
+                new SignalStage(stage);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
     
@@ -296,6 +301,8 @@ public class NewEntityController{
             try {
                 new SignalViewerStage(stage);
             } catch (ParseException ex) {
+                Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (MalformedURLException ex) {
                 Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -308,7 +315,7 @@ public class NewEntityController{
         FileReader reader = null;
         try {
             JSONParser parser = new JSONParser();
-            reader = new FileReader("savefile.json");
+            reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
             JSONObject savefile = (JSONObject) parser.parse(reader);
             JSONArray entities = (JSONArray) savefile.get("entities");
             JSONObject whatever = new JSONObject();

@@ -89,4 +89,9 @@ public class EntityDot extends Circle{
         this.sMatrix.setX(x);
         this.sMatrix.setY(y);
     }
+
+    @Override
+    public String toString() {
+        return "EntityDot{" + "color=" + color + ", tVector=" + tVector + ", sMatrix=" + sMatrix + '}';
+    }
 }

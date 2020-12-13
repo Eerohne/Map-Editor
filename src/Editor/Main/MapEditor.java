@@ -9,6 +9,7 @@ import Commons.SettingsManager.Settings;
 import Editor.Controller.MenuController;
 import Editor.Controller.ShortcutController;
 import Editor.Controller.ProfileController.WallController;
+import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.ProjectProfile;
 import Editor.View.Grid.Grid;
 import Editor.View.Info;
@@ -22,7 +23,13 @@ import Editor.View.Hierarchy.WallHierarchy;
 import Editor.View.Metadata.EntityContent;
 import Editor.View.Metadata.MapContent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
@@ -36,6 +43,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * Main class of the Optik Engine Editor
@@ -48,7 +59,7 @@ public class MapEditor extends Application {
      */
     TopMenu menu; //Classical Menu
     ShortcutBar shortcuts; //Shortcut Bar for some menu items
-    Info info; //Displays some useful information about the interaction with the Editor
+    static Info info; //Displays some useful information about the interaction with the Editor
     
     static EntityHierarchy entityHierarchy; //Hierarchy of Entities
     static WallHierarchy wallHierarchy; // Hierarchy of Walls
@@ -59,10 +70,10 @@ public class MapEditor extends Application {
     MapContent mapContent;
     EntityContent entityContent;
     
-    Grid grid;
-    BorderPane gridDisplay;
+    static Grid grid;
+    static BorderPane gridDisplay;
     
-    //BorderPane view;
+    static TabPane properties;
     
     static ScrollPane dataPane;
     
@@ -79,10 +90,10 @@ public class MapEditor extends Application {
     public void start(Stage editorWindow) throws MalformedURLException {
         entityHierarchy = new EntityHierarchy(editorWindow);
         wallHierarchy = new WallHierarchy(editorWindow);
-        this.mapHierarchy = new MapHierarchy();
-        this.grid = new Grid();
-        this.gridDisplay = new BorderPane();
-        this.info = new Info();
+        mapHierarchy = new MapHierarchy();
+        grid = new Grid();
+        gridDisplay = new BorderPane();
+        info = new Info();
         
         
         BorderPane view = setupView(metadataContent);
@@ -91,11 +102,8 @@ public class MapEditor extends Application {
    
         Scene scene = new Scene(view, 1920, 1080);
         
-//        WallController wc = new WallController(editorWindow, wallHierarchy);
-//        InfoController ic = new InfoController(info, currentMap);
         MenuController mc = new MenuController(menu, editorWindow);
         ShortcutController sc = new ShortcutController(shortcuts, editorWindow, wallHierarchy);
-        //wallContent.setWallController(wc);
         
         String pathName = "dev/editor/style/style.css" ;
         File file = new File(pathName);
@@ -122,16 +130,16 @@ public class MapEditor extends Application {
     }
     
     private void initialize(Stage stage){
-        try {
-            Settings.init();
-            String projectName = Settings.get("ed_proj");
-            System.out.println(projectName);
+//        try {
+//            Settings.init();
+//            String projectName = Settings.get("ed_proj");//To Remove
+//            System.out.println(projectName);
             
-            if (ProjectProfile.openProject(projectName)) {
+            if (ProjectProfile.openProject()) {
                 wallHierarchy.setMapProfile(project.getSelectedMap());
                 entityHierarchy.setMapProfile(project.getSelectedMap());
                 mapHierarchy.setProject(project);
-                this.grid = project.getSelectedMap().getGridView();
+                grid = project.getSelectedMap().getGridView();
                 gridDisplay.setCenter(grid);
                 setDataView(new WallContent(project.getMainMap().getDefaultWall()));
                 new WallController((WallContent)metadataContent, project.getSelectedMap(), stage);
@@ -139,9 +147,9 @@ public class MapEditor extends Application {
                 info.start();
                 //EntityHierarchy
             }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        }
     }
     
     
@@ -169,7 +177,7 @@ public class MapEditor extends Application {
         Tab mapTab = new Tab("Maps", mapHierarchy);
         
         //Property Pane Setup
-        TabPane properties = new TabPane(wallTab, entityTab, mapTab);
+        properties = new TabPane(wallTab, entityTab, mapTab);
         properties.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         properties.getSelectionModel().selectedItemProperty().addListener(
             new ChangeListener<Tab>() {
@@ -244,6 +252,35 @@ public class MapEditor extends Application {
         return layout;
     }
     
+    public static void refreshEditor(){
+        grid = project.getSelectedMap().getGridView();
+        gridDisplay.setCenter(grid);
+        info.reload(project.getSelectedMap().getGc());
+        wallHierarchy.setMapProfile(project.getSelectedMap());
+        entityHierarchy.setMapProfile(project.getSelectedMap());
+//        properties.getSelectionModel().selectedItemProperty().addListener(
+//            new ChangeListener<Tab>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
+//                if(newValue.getText().equals("Walls")){
+//                    project.getSelectedMap().getGc().setEditingMode(1);
+//                    project.getSelectedMap().getGridView().getSelectionCell().setStroke(Color.YELLOW);
+//                }
+//                else if(newValue.getText().equals("Entities")){
+//                    project.getSelectedMap().getGc().setEditingMode(2);
+//                    project.getSelectedMap().getGridView().getSelectionCell().setStroke(null);
+//                }
+//                else{
+//                    project.getSelectedMap().getGc().setEditingMode(0);
+//                    project.getSelectedMap().getGridView().getSelectionCell().setStroke(null);
+//                }
+//                
+//                 System.out.println(project.getSelectedMap().getGc().getEditingMode());
+//            }
+//        });
+    }
+    
+    
     public static void setProject(ProjectProfile proj){
         project = proj;
         //Add refresh code
@@ -277,5 +314,120 @@ public class MapEditor extends Application {
 
     public static MapHierarchy getMapHierarchy() {
         return mapHierarchy;
+    }
+    
+    public static MapProfile load(File pathFile){
+        FileReader reader = null;
+        MapProfile mapToLoad = null;
+        try {
+            JSONParser parser = new JSONParser();
+            reader = new FileReader(pathFile);
+            JSONObject savefile = (JSONObject) parser.parse(reader);
+            JSONObject mapInfo = (JSONObject) savefile.get("grid");
+            JSONArray entities = (JSONArray) savefile.get("entities");
+            JSONArray gridData = new JSONArray();
+            
+            // getting width and height of the grid
+            String gridWidthStr =  (String) mapInfo.get("width");
+            String gridHeightStr = (String) mapInfo.get("height");
+            int gridWidth = Integer.parseInt(gridWidthStr);
+            int gridHeight = Integer.parseInt(gridHeightStr);
+            
+            
+            // getting the grid array
+            int[][] gridArray = new int[gridHeight][gridWidth];
+            gridData = (JSONArray) mapInfo.get("data");
+            Iterator<JSONArray> rowIterator = gridData.iterator();
+            int rowNumber = 0;
+            
+            while(rowIterator.hasNext()){
+                JSONArray columns = rowIterator.next();
+                Iterator<Long> colIterator = columns.iterator();
+                int colNumber = 0;
+                while(colIterator.hasNext()){
+                    gridArray[rowNumber][colNumber] = colIterator.next().intValue();
+                    colNumber++;
+                }
+                rowNumber++;
+            }
+            
+            
+            //getting grid palette
+            JSONArray paletteArray = (JSONArray) mapInfo.get("palette");
+            Iterator<Object> paletteIterator = paletteArray.iterator();
+            mapToLoad = new MapProfile(pathFile.getName().replaceAll(".lvl", ""), gridWidth, gridHeight);
+            
+            while(paletteIterator.hasNext()){
+                JSONObject palette = (JSONObject) paletteIterator.next();
+                String idStr = (String) palette.get("id");
+                int id = Integer.parseInt(idStr); 
+                String imagePath = (String) palette.get("texture");
+                String flagStr = (String) palette.get("flag");
+                int flag = Integer.parseInt(flagStr); 
+                String name = (String) palette.get("name");
+                //System.out.println(id + " , " + imagePath + " , " + flag + " , " + name);
+                
+                mapToLoad.loadWallProfile(name, imagePath.replaceAll("images/textures/", ""), flag, id);
+            }
+            
+            mapToLoad.getGc().loadPalette(gridArray, mapToLoad);
+//            for(int i = 0; i < mapToLoad.getGridView().cells.length; i++){
+//                for(int j = 0; j < mapToLoad.getGridView().cells[i].length; j++){
+//                    System.out.print(mapToLoad.getGridView().cells[i][j].getWallID());
+//                }
+//                System.out.println();
+//            }
+            
+            //getting entities 
+            if(savefile.containsKey("entities")){
+                Iterator<Object> entitiesIterator = entities.iterator();
+                double [] position = new double[2];
+                float [] color = new float[3];
+                String entityName = "";
+                while(entitiesIterator.hasNext()){
+                    JSONObject entity = (JSONObject) entitiesIterator.next();
+                    if(entity.containsKey("position")){
+                        JSONArray positionArray = (JSONArray) entity.get("position");
+                        Iterator<Double> positionIterator = positionArray.iterator();
+                        int positionCounter = 0;
+                        while(positionIterator.hasNext()){
+                            position[positionCounter] = positionIterator.next().doubleValue();
+                            positionCounter++;
+                        }
+                    }
+                    if(entity.containsKey("color")){
+                        JSONArray colorArray = (JSONArray) entity.get("color");
+                        Iterator<Double> colorIterator = colorArray.iterator();
+                        int colorCounter = 0;
+                        while(colorIterator.hasNext()){
+                            color[colorCounter] = (float) colorIterator.next().doubleValue();
+                            colorCounter++;
+                        }
+
+                    }
+                    entityName = (String) entity.get("name");
+
+                    //mapToLoad.getGc().
+                    mapToLoad.loadEntityProfile(mapToLoad.getName(), entityName, color , position[0], position[1]);
+                }
+            }
+            else{
+                
+            }
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return mapToLoad;
     }
 }

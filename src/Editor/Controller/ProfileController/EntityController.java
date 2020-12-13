@@ -90,7 +90,7 @@ public class EntityController extends MetadataController{
         FileReader reader = null;
         try {
             JSONParser parser = new JSONParser();
-            reader = new FileReader("savefile.json");
+            reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
             JSONObject savefile = (JSONObject) parser.parse(reader);
             JSONArray entities = (JSONArray) savefile.get("entities");
             JSONObject entity = new JSONObject();
@@ -110,7 +110,7 @@ public class EntityController extends MetadataController{
             entities.add(entityToDuplicate);
             savefile.put("entities",entities);
             
-            FileWriter writer = new FileWriter("savefile.json");
+            FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath());
             gson.toJson(savefile, writer);
             writer.close();
             

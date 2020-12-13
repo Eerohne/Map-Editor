@@ -38,8 +38,8 @@ public class SignalView extends GridPane{
     
     
     public SignalView() {
-        labelBox.setPadding(new Insets(16));
-        labelBox.setSpacing(16);
+        labelBox.setPadding(new Insets(25));
+        labelBox.setSpacing(25);
         tfBox.setPadding(new Insets(10));
         tfBox.setSpacing(10);
         btnBox.setPadding(new Insets(10));

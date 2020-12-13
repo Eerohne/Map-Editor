@@ -5,6 +5,7 @@
  */
 package Editor.View.Hierarchy;
 
+import Editor.Main.MapEditor;
 import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.ProjectProfile;
 import Editor.View.Metadata.DataView;
@@ -44,6 +45,8 @@ public class MapHierarchy extends Hierarchy{
             item.setOnMouseClicked(e -> {
                 super.select(item);
                 project.setSelectedMap(map);
+                map.getGc().setEditingMode(0);
+                MapEditor.refreshEditor();
             });
             
             list.setFillWidth(true);

@@ -1,0 +1,500 @@
+{
+"grid":{
+    "width":"12",
+    "height":"14",
+    "data": [ 
+            [1,5,1,1,1,1,1,1,1,1,1,1],
+            [1,6,6,2,1,0,0,0,0,0,0,1],
+            [1,6,6,6,1,0,1,0,1,0,0,1],
+            [1,6,6,6,1,0,0,0,0,0,0,1],
+            [1,6,2,6,6,0,0,0,0,0,0,1],
+            [1,6,6,6,1,0,0,0,0,0,0,1],
+            [1,6,6,6,1,0,0,0,0,0,0,1],
+            [1,6,6,6,1,0,1,0,1,0,0,1],
+            [1,6,6,3,1,0,0,0,0,0,0,1],
+            [1,6,3,3,1,1,1,1,1,1,1,1],
+            [1,6,6,3,6,6,6,6,6,6,6,1],
+            [1,6,6,6,6,6,6,6,6,6,6,1],
+            [1,6,6,3,6,6,3,3,6,6,3,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1]
+            ],
+    "palette": [
+        {
+                "id":"0",
+                "color":[1.0, 1.0, 1.0],
+                "texture":"images/textures/brick.png",
+                "flag":"0"
+               },
+               {
+                "id":"1",
+                "color":[0.0, 1.0, 0.5],
+                "texture":"images/textures/grey_brick.png",
+                "flag":"1"
+               },
+               {
+                "id":"2",
+                "color":[1.0, 0.6, 0.0],
+                "texture":"images/textures/grey_brick_vines.png",
+                "flag":"1"
+               },
+               {
+                "id":"3",
+                "color":[0.0, 0.0, 1.0],
+                "texture":"images/textures/dev1.png",
+                "flag":"1"
+               },
+               {
+                "id":"4",
+                "color":[0.0, 0.0, 1.0],
+                "texture":"images/sprites/error_sprite.png",
+                "flag":"1"
+               },
+               {
+                "id":"5",
+                "color":[0.0, 0.0, 1.0],
+                "texture":"images/textures/door.png",
+                "flag":"1"
+               },
+               {
+                "id":"6",
+                "color":[0.0, 0.0, 1.0],
+                "texture":"images/textures/dev1.png",
+                "flag":"0"
+               }
+               ]
+},
+
+"entities": [
+    {
+    "classname":"player_simple",
+    "name":"player1",
+    "active":"TRUE",
+    "position":[1.5, 2.0],
+    "height":"0.0",
+    "rotation":"270",
+    "walkspeed":"1.5",
+    "runspeed":"2.5",
+    "rotationspeed":"10",
+    "zfrequency":"1",
+    "zrange":"0.4"
+    },
+    {
+    "classname":"environment",
+    "name":"env",
+    "active":"TRUE",
+    "position":[0.0, 0.0],
+    "foggy":"TRUE",
+    "fogcolor":[0.0, 0.0, 0.0],
+    "fog_near_distance":"1",
+    "fog_far_distance":"3",
+    "has_sky":"false",
+    "skycolor":[0.0, 0.5, 0.6],
+    "wallheight":"1.0"
+    },
+    ,
+    {
+    "classname":"logic_timer",
+    "name":"timer",
+    "active":"TRUE",
+    "position":[1.0,1.0],
+    "maxtime":"100",
+    "onstart":"TRUE",
+    "canreset":"false",
+    "signals": [
+                    {
+                        "name":"OnTimerEnded",
+                        "targetname":"manager",
+                        "inputname":"gameLost",
+                        "arguments":[]
+                    },
+                    {
+                        "name":"OnSecondPassed",
+                        "targetname":"manager",
+                        "inputname":"secondPassed",
+                        "arguments":[]
+                    }
+                    ]
+    },
+    {
+    "classname":"logic_counter",
+    "name":"counter",
+    "active":"TRUE",
+    "position":[3.1, 7.0],
+    "minvalue":"-1",
+    "maxvalue":"3",
+    "startingvalue":"0",
+    "canreset":"FALSE",
+    "signals": [
+                {
+                    "name":"OnValueReached",
+                    "targetname":"messenger1",
+                    "inputname":"printMessage",
+                    "arguments":["all coins collected1"]
+                },
+                {
+                    "name":"OnValueReached",
+                    "targetname":"manager",
+                    "inputname":"allCoinsCollected",
+                    "arguments":[]
+                },
+                {
+                    "name":"OnValueChanged",
+                    "targetname":"manager",
+                    "inputname":"coinCollected",
+                    "arguments":[]
+                }
+                    ]
+    },
+    ,
+    {
+    "classname":"logic_gamemanager",
+    "name":"manager",
+    "active":"TRUE",
+    "position":[3.1, 7.0],
+    "losemessage":"you have surrounded yourself to the darkness",
+    "winmessage":"you have survived the darkness to live another day",
+    "signals": [
+                {
+                    "name":"OnCoinCollected",
+                    "targetname":"ui",
+                    "inputname":"setCoinText",
+                    "arguments":[]
+                },
+                {
+                    "name":"OnAllCoinsCollected",
+                    "targetname":"ui",
+                    "inputname":"setmessageText",
+                    "arguments":["Now reach the door before the time ends", "-fx-text-fill: rgba(255, 255, 255, 255);"]
+                },
+                {
+                    "name":"OnSecondPassed",
+                    "targetname":"ui",
+                    "inputname":"setTimeText",
+                    "arguments":[]
+                },
+                {
+                    "name":"OnDoorClosed",
+                    "targetname":"ui",
+                    "inputname":"setmessageText",
+                    "arguments":["Collect all coins and this door will open", "-fx-text-fill: rgba(255, 255, 255, 255);"]
+                },
+                {
+                    "name":"OnWin",
+                    "targetname":"winSequence",
+                    "inputname":"activate",
+                    "arguments":[]
+                }
+                {
+                    "name":"OnLost",
+                    "targetname":"loseSequence",
+                    "inputname":"activate",
+                    "arguments":[]
+                },
+                
+                    ]
+    },
+    {
+    "classname":"ui_text",
+    "name":"ui",
+    "active":"TRUE",
+    "position":[0.0,0.0],
+    "cointext":"Coins Left : 3",
+    "timetext":"Time Left : 01:00",
+    "opacity":"1",
+    "signals": []
+    },
+    {
+    "classname":"logic_messenger",
+    "name":"messenger1",
+    "active":"TRUE",
+    "position":[0.0,0.0],
+    "signals": []
+    },
+    {
+    "classname":"sound_ambient",
+    "name":"ambient",
+    "active":"TRUE",
+    "position":[1.7,7.0],
+    "audiopath":"sounds/fx/ambient.wav",
+    "channel":"game",
+    "volume":"0.2",
+    "onstart":"true",
+    "loop":"true",
+    "onlyonce":"false",
+    "signals": []
+    },
+    {
+    "classname":"sound_ambient",
+    "name":"coinSound",
+    "active":"TRUE",
+    "position":[1.8,7.5],
+    "audiopath":"sounds/fx/coin.wav",
+    "channel":"game",
+    "volume":"1.0",
+    "onstart":"false",
+    "loop":"false",
+    "onlyonce":"false",
+    "signals": []
+    },
+    {
+    "classname":"sound_ambient",
+    "name":"dooropensound",
+    "active":"TRUE",
+    "position":[1.8,7.5],
+    "audiopath":"sounds/fx/door_open.wav",
+    "channel":"game",
+    "volume":"1.0",
+    "onstart":"false",
+    "loop":"false",
+    "onlyonce":"false",
+    "signals": []
+    },
+    {
+    "classname":"sound_ambient",
+    "name":"doorclosesound",
+    "active":"TRUE",
+    "position":[1.8,7.5],
+    "audiopath":"sounds/fx/door_close.wav",
+    "channel":"game",
+    "volume":"1.0",
+    "onstart":"false",
+    "loop":"false",
+    "onlyonce":"false",
+    "signals": []
+    },
+    {
+    "classname":"sound_ambient",
+    "name":"loosesound",
+    "active":"TRUE",
+    "position":[1.8,7.5],
+    "audiopath":"sounds/fx/loose.wav",
+    "channel":"game",
+    "volume":"1.0",
+    "onstart":"false",
+    "loop":"false",
+    "onlyonce":"false",
+    "signals": []
+    },
+    {
+    "classname":"logic_sequence",
+    "name":"startSequence",
+    "active":"TRUE",
+    "position":[1.7,7.0],
+    "onstart":"true",
+    "signals": [
+                {
+                    "name":"event1",
+                    "targetname":"ui",
+                    "inputname":"setmessageText",
+                    "arguments":["Escape before the time runs out", "-fx-text-fill: rgba(255, 255, 255, 255);", "1.0"]
+                },
+                {
+                    "name":"event2",
+                    "targetname":"dooropensound",
+                    "inputname":"play",
+                    "arguments":["0.3"]
+                },
+                {
+                    "name":"event3",
+                    "targetname":"ui",
+                    "inputname":"fadein",
+                    "arguments":["1.0"]
+                },
+                {
+                    "name":"event4",
+                    "targetname":"ambient",
+                    "inputname":"fadein",
+                    "arguments":["0.0"]
+                }
+                    ]
+    },
+    {
+    "classname":"logic_sequence",
+    "name":"winSequence",
+    "active":"TRUE",
+    "position":[1.7,7.0],
+    "onstart":"false",
+    "signals": [
+                {
+                    "name":"event1",
+                    "targetname":"timer",
+                    "inputname":"stop",
+                    "arguments":[]
+                },
+                {
+                    "name":"event2",
+                    "targetname":"player1",
+                    "inputname":"disable",
+                    "arguments":["0.0"]
+                }
+                {
+                    "name":"event3",
+                    "targetname":"ui",
+                    "inputname":"fadeout",
+                    "arguments":["0.0"]
+                },
+                {
+                    "name":"event4",
+                    "targetname":"ambient",
+                    "inputname":"fadeout",
+                    "arguments":["0.0"]
+                },
+                {
+                    "name":"event5",
+                    "targetname":"doorclosesound",
+                    "inputname":"play",
+                    "arguments":["0.5"]
+                },
+                {
+                    "name":"event6",
+                    "targetname":"ui",
+                    "inputname":"setmessageText",
+                    "arguments":["You escaped the daungeon to die another day...\nPress Q to restart", "-fx-text-fill: rgba(0, 255, 0, 255);", "2.0"]
+                }
+                    ]
+    },
+    {
+    "classname":"logic_sequence",
+    "name":"loseSequence",
+    "active":"TRUE",
+    "position":[1.7,7.0],
+    "onstart":"false",
+    "signals": [
+                {
+                    "name":"event2",
+                    "targetname":"player1",
+                    "inputname":"disable",
+                    "arguments":["0.0"]
+                }
+                {
+                    "name":"event3",
+                    "targetname":"ui",
+                    "inputname":"fadeout",
+                    "arguments":["0.0"]
+                },
+                {
+                    "name":"event4",
+                    "targetname":"ambient",
+                    "inputname":"fadeout",
+                    "arguments":["0.0"]
+                },
+                {
+                    "name":"event5",
+                    "targetname":"loosesound",
+                    "inputname":"play",
+                    "arguments":["0.5"]
+                },
+                {
+                    "name":"event6",
+                    "targetname":"ui",
+                    "inputname":"setmessageText",
+                    "arguments":["You were consumed by the darkness...\nPress Q to restart", "-fx-text-fill: rgba(255, 0, 0, 255);", "1.5"]
+                }
+                    ]
+    },
+    {
+    "classname":"object_decor",
+    "name":"skeleton",
+    "active":"TRUE",
+    "position":[8.5,4.0],
+    "height":"0.2",
+    "texture":"images/sprites/lamppost.png",
+    "size":"0.5",
+    "radius":"0.0",
+    "signals": []
+    },
+    {
+    "classname":"object_collectible",
+    "name":"coin1",
+    "active":"TRUE",
+    "position":[10.0, 2.5],
+    "height":"0.4",
+    "texture":"images/sprites/coin.png",
+    "size":"0.2",
+    "radius":"0.5",
+    "signals": [
+                {
+                    "name":"OnCollected",
+                    "targetname":"coinSound",
+                    "inputname":"play",
+                    "arguments":[]
+                },
+                {
+                    "name":"OnCollected",
+                    "targetname":"counter",
+                    "inputname":"increment",
+                    "arguments":[]
+                }
+                ]
+    },
+    {
+    "classname":"object_collectible",
+    "name":"coin2",
+    "active":"TRUE",
+    "position":[7.0, 8.5],
+    "height":"0.4",
+    "texture":"images/sprites/coin.png",
+    "size":"0.2",
+    "radius":"0.5",
+    "signals": [
+                {
+                    "name":"OnCollected",
+                    "targetname":"coinSound",
+                    "inputname":"play",
+                    "arguments":[]
+                },
+                {
+                    "name":"OnCollected",
+                    "targetname":"counter",
+                    "inputname":"increment",
+                    "arguments":[]
+                }
+                ]
+    },
+    {
+    "classname":"object_collectible",
+    "name":"coin3",
+    "active":"TRUE",
+    "position":[8.5, 12.5],
+    "height":"0.4",
+    "texture":"images/sprites/coin.png",
+    "size":"0.2",
+    "radius":"0.5",
+    "signals": [
+                {
+                    "name":"OnCollected",
+                    "targetname":"coinSound",
+                    "inputname":"play",
+                    "arguments":[]
+                },
+                {
+                    "name":"OnCollected",
+                    "targetname":"counter",
+                    "inputname":"increment",
+                    "arguments":[]
+                }
+                ]
+    },
+    {
+    "classname":"object_trigger",
+    "name":"doorTrigger",
+    "active":"TRUE",
+    "position":[1.5,1.2],
+    "radius":"0.5",
+    "signals": [
+                    {
+                        "name":"OnTriggerEnter",
+                        "targetname":"manager",
+                        "inputname":"openDoor",
+                        "arguments":[]
+                    },
+                    {
+                        "name":"OnTriggerExit",
+                        "targetname":"manager",
+                        "inputname":"closeDoor",
+                        "arguments":[]
+                    }
+                ]
+    },
+]
+}

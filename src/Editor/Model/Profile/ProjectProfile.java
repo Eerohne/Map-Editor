@@ -25,117 +25,136 @@ public class ProjectProfile extends Profile{
     private LinkedList<MapProfile> maps;
     private int mainMapID = 0;
     
+    private String resourceFolder;
+    private String imageFolder;
+    private String levelFolder;
+    
     public MapProfile selectedMap;
 
     public ProjectProfile(String name) {
         super(name);
+        this.resourceFolder = "resources/";
+        this.imageFolder = this.resourceFolder + "images/textures/";
+        this.levelFolder = this.resourceFolder + "levels/";
         this.maps = new LinkedList<>();
     }
     
-    public ProjectProfile(String name, MapProfile map){
-        this(name);
-        
-        map.save();
-        maps.add(map);
-        this.selectedMap = map;
-        this.initializeProject();
-    }
+//    public ProjectProfile(String name, MapProfile map){
+//        this(name);
+//        
+//        map.save();
+//        maps.add(map);
+//        this.selectedMap = map;
+//        //this.initializeProject();
+//    }
 
-    public static boolean openProject(String projectName){
-        File projFile = new File(projectName);
+    public static boolean openProject(){
+        //File projFile = new File(projectName);
         
-        if(projFile.exists()){
-            ProjectProfile p = new ProjectProfile(projectName);
-            p.loadProject(projectName);
+        ///if(projFile.exists()){
+            ProjectProfile p = new ProjectProfile("optik_editor");
+            p.loadProject();
+            p.setSelectedMap(p.getMaps().get(0));
             MapEditor.setProject(p);
             return true;
-        } else
-            return false;
+        //} else
+            //return false;
     }
     
-    public boolean loadProject(String projName){
-        String mapFile = projName + "/resources/levels/";
+    public boolean loadProject(){
         
-        File mapDir = new File(mapFile);
+        File mapDir = new File(levelFolder);
         File[] mapList = mapDir.listFiles();
         
         for (File file : mapList) {
-            this.loadMap(new MapProfile(file));
+            this.loadMap(MapEditor.load(file));
         }
         
-        File projectConfig = new File(projName + "/project.proj");
-        
-        try {
-            Scanner configReader = new Scanner(projectConfig);
-            while (configReader.hasNext()) {
-                String next = configReader.next();
-                
-                if(next.startsWith("last_map="))
-                    this.selectedMap = this.getMapByName(next.replace("last_map=", ""));
-            }
-            
-            return true;
-        } catch (FileNotFoundException ex) {
-            System.out.println("project.proj unreadable");
-            return false;
-        }
-        
+//        File projectConfig = new File(projName + "/project.proj");
+//        
+//        try {
+//            Scanner configReader = new Scanner(projectConfig);
+//            while (configReader.hasNext()) {
+//                String next = configReader.next();
+//                
+//                if(next.startsWith("last_map="))
+//                    this.selectedMap = this.getMapByName(next.replace("last_map=", ""));
+//            }
+//            
+//            return true;
+//        } catch (FileNotFoundException ex) {
+//            System.out.println("project.proj unreadable");
+//            return false;
+//        }
+        return true;
     }
     
-    public boolean initializeProject(){
-        File rootFile = new File(name);
-        boolean success = rootFile.mkdir();
-        
-        if(success){
-            return setupDirectories();
-        } else{
-            return false;
-        }
+//    public boolean initializeProject(){
+//        File rootFile = new File(name);
+//        boolean success = rootFile.mkdir();
+//        
+//        if(success){
+//            return setupDirectories();
+//        } else{
+//            return false;
+//        }
+//    }
+//    
+//    private boolean setupDirectories(){
+//        boolean success;
+//        
+//        File textures = new File(name + "/resources/images");
+//        success = textures.mkdirs();
+//
+//        File sprites = new File(name + "/resources/dev/sprites");
+//        success = sprites.mkdirs();
+//
+//        File levels = new File(name + "/resources/levels");
+//        success = levels.mkdirs();
+//
+//        File music = new File(name + "/resources/sounds");
+//        success = music.mkdirs();
+//        
+//        File ui = new File(name + "/resources/dev/ui");
+//        success = ui.mkdirs();
+//        
+//        try {
+//            File errorSprite = new File("dev/engine/error_sprite.png");
+//            
+//            Path src = Paths.get(errorSprite.getAbsolutePath());
+//            Path dst = Paths.get(sprites.getAbsolutePath() + "/error_sprite.png");
+//            Files.copy(src, dst, StandardCopyOption.REPLACE_EXISTING);
+//            
+//            File uiFile = new File("dev/engine/ui");
+//            
+//            copyFolder(Paths.get(uiFile.getAbsolutePath()), Paths.get(ui.getAbsolutePath()));
+//        } catch (FileNotFoundException ex) {
+//            return false;
+//        } catch (IOException ex) {
+//            return false;
+//        }
+//        
+//        File projectConfig = new File(name + "/project.proj");
+//        try {
+//            projectConfig.createNewFile();
+//        } catch (IOException ex) {
+//            System.out.println(ex + "/n Unable to create project.proj");
+//            return false;
+//        }
+//        
+//        return success;
+//    }
+
+    public String getResourceFolder() {
+        return resourceFolder;
     }
-    
-    private boolean setupDirectories(){
-        boolean success;
-        
-        File textures = new File(name + "/resources/images");
-        success = textures.mkdirs();
 
-        File sprites = new File(name + "/resources/dev/sprites");
-        success = sprites.mkdirs();
+    public String getImageFolder() {
+        return imageFolder;
+    }
 
-        File levels = new File(name + "/resources/levels");
-        success = levels.mkdirs();
-
-        File music = new File(name + "/resources/sounds");
-        success = music.mkdirs();
-        
-        File ui = new File(name + "/resources/dev/ui");
-        success = ui.mkdirs();
-        
-        try {
-            File errorSprite = new File("dev/engine/error_sprite.png");
-            
-            Path src = Paths.get(errorSprite.getAbsolutePath());
-            Path dst = Paths.get(sprites.getAbsolutePath() + "/error_sprite.png");
-            Files.copy(src, dst, StandardCopyOption.REPLACE_EXISTING);
-            
-            File uiFile = new File("dev/engine/ui");
-            
-            copyFolder(Paths.get(uiFile.getAbsolutePath()), Paths.get(ui.getAbsolutePath()));
-        } catch (FileNotFoundException ex) {
-            return false;
-        } catch (IOException ex) {
-            return false;
-        }
-        
-        File projectConfig = new File(name + "/project.proj");
-        try {
-            projectConfig.createNewFile();
-        } catch (IOException ex) {
-            System.out.println(ex + "/n Unable to create project.proj");
-            return false;
-        }
-        
-        return success;
+    public String getLevelFolder() {
+        return levelFolder;
     }
     
     public LinkedList<MapProfile> getMaps() {
@@ -178,6 +197,10 @@ public class ProjectProfile extends Profile{
         this.selectedMap = selectedMap;
     }
     
+    public String getSelectedMapPath(){
+        return MapEditor.getProject().getLevelFolder() + MapEditor.getProject().getSelectedMap().getName() + ".lvl";
+    }
+    
     public MapProfile getMapByName(String name) throws FileNotFoundException{
         for (MapProfile map : maps) {
             if(map.getName().equals(name))
@@ -187,17 +210,17 @@ public class ProjectProfile extends Profile{
         throw new FileNotFoundException();
     }
     
-    private void copyFolder(Path src, Path dest) {
-        try (Stream<Path> stream = Files.walk(src)) {
-            stream.forEach(source -> {
-                try {
-                    Files.copy(source, dest.resolve(src.relativize(source)), StandardCopyOption.REPLACE_EXISTING);
-                } catch (IOException ex) {
-                    System.out.println(ex);
-                }
-            });
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-    }
+//    private void copyFolder(Path src, Path dest) {
+//        try (Stream<Path> stream = Files.walk(src)) {
+//            stream.forEach(source -> {
+//                try {
+//                    Files.copy(source, dest.resolve(src.relativize(source)), StandardCopyOption.REPLACE_EXISTING);
+//                } catch (IOException ex) {
+//                    System.out.println(ex);
+//                }
+//            });
+//        } catch (IOException ex) {
+//            System.out.println(ex);
+//        }
+//    }
 }

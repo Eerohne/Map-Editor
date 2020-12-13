@@ -5,6 +5,7 @@
  */
 package Editor.Controller;
 
+import Editor.Main.MapEditor;
 import Editor.Model.Profile.WallProfile;
 import Editor.View.New.NewWallProfile;
 import Editor.View.Help;
@@ -13,6 +14,9 @@ import Editor.View.Hierarchy.WallHierarchy;
 import Editor.View.New.NewEntityStage;
 import Editor.View.New.NewMap;
 import Engine.Core.Game;
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
@@ -42,11 +46,15 @@ public class ShortcutController{
         });
         
         shortcutBar.getWallShort().setOnAction(e -> {
-            new NewWallProfile(owner, WallProfile.resourceFolder, wallList);
+            new NewWallProfile(owner, MapEditor.getProject().getImageFolder(), wallList);
         });
         
         shortcutBar.getEntityShort().setOnAction(e -> {
-            new NewEntityStage(owner);
+            try {
+                new NewEntityStage(owner);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(ShortcutController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         
         shortcutBar.getMapShort().setOnAction(e -> {

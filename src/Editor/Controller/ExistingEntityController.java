@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,7 +70,7 @@ public class ExistingEntityController{
     private void allEntities() throws ParseException{
         JSONParser parser = new JSONParser();
         
-        try(FileReader reader = new FileReader("savefile.json")){
+        try(FileReader reader = new FileReader(MapEditor.getProject().getSelectedMapPath())){
             
             JSONObject allEntity = (JSONObject) parser.parse(reader);
             JSONArray entitiesArray = (JSONArray) allEntity.get("entities");
@@ -109,7 +110,7 @@ public class ExistingEntityController{
                 FileReader reader = null;
                 try {
                     JSONParser parser = new JSONParser();
-                    reader = new FileReader("savefile.json");
+                    reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
                     JSONObject savefile = (JSONObject) parser.parse(reader);
                     JSONArray entities = (JSONArray) savefile.get("entities");
                     String name = view.cb.getValue();
@@ -165,7 +166,7 @@ public class ExistingEntityController{
                 EntityModel model = new EntityModel(view.propertyText.getText(), view.valueText.getText());
                 int selectedIndex = view.table.getSelectionModel().getSelectedIndex();
                 JSONParser parser = new JSONParser();
-                reader = new FileReader("savefile.json");
+                reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
                 JSONObject allEntity = (JSONObject) parser.parse(reader);
                 JSONArray entitiesArray = (JSONArray) allEntity.get("entities");
                 String name = view.cb.getValue();
@@ -191,7 +192,7 @@ public class ExistingEntityController{
                                 entitiesArray.set(index, entity);
                                 allEntity.put("entities", entitiesArray);
 
-                                FileWriter writer = new FileWriter("savefile.json");
+                                FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath());
                                 gson.toJson(allEntity, writer);
                                 writer.close();
                             }
@@ -214,7 +215,7 @@ public class ExistingEntityController{
                                 entitiesArray.set(index, entity);
                                 allEntity.put("entities", entitiesArray);
 
-                                FileWriter writer = new FileWriter("savefile.json");
+                                FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath());
                                 gson.toJson(allEntity, writer);
                                 writer.close();
                             }else{
@@ -249,14 +250,14 @@ public class ExistingEntityController{
             FileReader reader = null;
             try {
                 JSONParser parser = new JSONParser();
-                reader = new FileReader("savefile.json");
+                reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
                 JSONObject allEntities = (JSONObject) parser.parse(reader);
                 JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
                 String name = view.cb.getValue();
                 int index = view.cb.getItems().indexOf(name);
                 entitiesArray.remove(index);
                 allEntities.put("entities", entitiesArray);
-                FileWriter writer = new FileWriter("savefile.json");
+                FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath());
                 gson.toJson(allEntities, writer);
                 writer.close();
                 view.table.getItems().clear();
@@ -283,7 +284,7 @@ public class ExistingEntityController{
            FileReader reader = null;
            try {
                JSONParser parser = new JSONParser();
-               reader = new FileReader("savefile.json");
+               reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
                JSONObject allentities = (JSONObject) parser.parse(reader);
                JSONArray entitiesArray = (JSONArray) allentities.get("entities");
                String name = view.cb.getValue();
@@ -302,7 +303,7 @@ public class ExistingEntityController{
                    entitiesArray.set(index, entity);
                    allentities.put("entities", entitiesArray);
                    
-                   FileWriter writer = new FileWriter("savefile.json");
+                   FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath());
                    gson.toJson(allentities, writer);
                    writer.close();
                    
@@ -328,7 +329,7 @@ public class ExistingEntityController{
                 String property = view.propertyText.getText();
                 String value = view.valueText.getText();
                 JSONParser parser = new JSONParser();
-                reader = new FileReader("savefile.json");
+                reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
                 JSONObject allEntities = (JSONObject) parser.parse(reader);
                 JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
                 String name = view.cb.getValue();
@@ -346,7 +347,7 @@ public class ExistingEntityController{
                 entitiesArray.set(index, entity);
                 allEntities.put("entities", entitiesArray);
                 
-                FileWriter writer = new FileWriter("savefile.json");
+                FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath());
                 gson.toJson(allEntities, writer);
                 writer.close();
                 
@@ -383,7 +384,11 @@ public class ExistingEntityController{
     private void switchWindow(){
         view.switchBtn.setOnAction((event) -> {
            Stage stage = new Stage();
-           new NewEntityStage(stage);
+            try {
+                new NewEntityStage(stage);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 }
 
@@ -392,7 +397,7 @@ public class ExistingEntityController{
         FileReader reader = null;
         try {
             JSONParser parser = new JSONParser();
-            reader = new FileReader("savefile.json");
+            reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
             JSONObject savefile = (JSONObject) parser.parse(reader);
             JSONArray entities = (JSONArray) savefile.get("entities");
             JSONObject whatever = new JSONObject();
