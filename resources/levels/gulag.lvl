@@ -1,0 +1,177 @@
+{
+  "entities": [
+    {
+      "zrange": "0.4",
+      "runspeed": "2.5",
+      "zfrequency": "1",
+      "classname": "player_simple",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": "270",
+      "name": "player1",
+      "active": "TRUE",
+      "rotationspeed": "10",
+      "position": [
+        3.63,
+        1.71
+      ],
+      "walkspeed": "1.5",
+      "height": "0.0"
+    }
+  ],
+  "grid": {
+    "data": [
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        4,
+        4
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        4,
+        4
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        4,
+        4
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        4,
+        4
+      ],
+      [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4
+      ],
+      [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        4,
+        4
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        4,
+        4
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        4,
+        4
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        4,
+        4
+      ]
+    ],
+    "width": "10",
+    "palette": [
+      {
+        "flag": "0",
+        "texture": "images/textures/blue.png",
+        "name": "blue.png",
+        "id": "1"
+      },
+      {
+        "flag": "0",
+        "texture": "images/textures/green.png",
+        "name": "green.png",
+        "id": "2"
+      },
+      {
+        "flag": "0",
+        "texture": "images/textures/red.png",
+        "name": "red.png",
+        "id": "3"
+      },
+      {
+        "flag": "0",
+        "texture": "images/textures/yellow.png",
+        "name": "yellow.png",
+        "id": "4"
+      }
+    ],
+    "height": "10"
+  }
+}
