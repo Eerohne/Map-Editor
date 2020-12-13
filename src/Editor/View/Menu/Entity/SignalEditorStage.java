@@ -31,7 +31,7 @@ public class SignalEditorStage {
         SignalEditorView sev = new SignalEditorView();
         SignalEditorController sec = new SignalEditorController(new SignalModel(), sev);
         
-        Scene s = new Scene(sev, 600, 300);
+        Scene s = new Scene(sev, 700, 400);
         
         String pathName = "dev/editor/style/style.css" ;
         File file = new File(pathName);

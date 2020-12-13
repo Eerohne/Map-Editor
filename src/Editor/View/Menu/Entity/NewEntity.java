@@ -75,6 +75,12 @@ public class NewEntity extends GridPane{
         tfBox.setPadding(new Insets(10));
         tfBox.setSpacing(10);
         
+        addBtn.setMaxWidth(Double.MAX_VALUE);
+        deleteBtn.setMaxWidth(Double.MAX_VALUE);
+        exportBtn.setMaxWidth(Double.MAX_VALUE);
+        switchBtn.setMaxWidth(Double.MAX_VALUE);
+        signalBtn.setMaxWidth(Double.MAX_VALUE);
+        viewSignal.setMaxWidth(Double.MAX_VALUE);
         
         
         vbox.setPadding(new Insets(5));
