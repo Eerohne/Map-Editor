@@ -316,7 +316,7 @@ public class NewEntityController{
         try {
             JSONParser parser = new JSONParser();
             File file = new File(MapEditor.getProject().getSelectedMapPath());
-           // if(file.exists()){
+            if(file.exists()){
                 reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
                 JSONObject savefile = (JSONObject) parser.parse(reader);
                 JSONArray entities = (JSONArray) savefile.get("entities");
@@ -336,7 +336,7 @@ public class NewEntityController{
                     result = false;
                 }
                 reader.close();
-            //}
+            }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
