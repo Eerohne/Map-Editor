@@ -29,6 +29,7 @@ public class ShortcutBar extends HBox{
     private Button entityShort;
     private Button mapShort;
     private Button runShort;
+    private Button saveShort;
     private Button help;
     
     public ShortcutBar() {
@@ -37,18 +38,22 @@ public class ShortcutBar extends HBox{
         ImageView addMap;
         ImageView runImage;
         ImageView helpImage;
+        ImageView saveImage;
+        
         try {
             addWall = new ImageView(new Image(new FileInputStream("dev/editor/brickicon.png"), 32, 32, true, true));
             addEntity = new ImageView(new Image(new FileInputStream("dev/editor/skeleton_icon.gif"), 32, 32, true, true));
             addMap = new ImageView(new Image(new FileInputStream("dev/editor/map.png"), 32, 32, true, true));
             runImage = new ImageView(new Image(new FileInputStream("dev/editor/playicon.png"), 32, 32, true, true));
             helpImage = new ImageView(new Image(new FileInputStream("dev/editor/helpicon.png"), 32, 32, true, true));
+            saveImage = new ImageView(new Image(new FileInputStream("dev/editor/saveicon.png"), 32, 32, true, true));
             
             wallShort = new Button("", addWall);
             mapShort = new Button("", addMap);
             entityShort = new Button("", addEntity);
             runShort = new Button("", runImage);
             help = new Button("", helpImage);
+            saveShort = new Button("", saveImage);
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
         }
@@ -60,7 +65,7 @@ public class ShortcutBar extends HBox{
         HBox.setHgrow(space, Priority.ALWAYS);
         
         this.setSpacing(5);
-        this.getChildren().addAll(wallShort, entityShort, mapShort, space, runShort, help);
+        this.getChildren().addAll(wallShort, entityShort, mapShort, space, saveShort, runShort, help);
     }
 
     public Button getWallShort() {
@@ -80,5 +85,9 @@ public class ShortcutBar extends HBox{
 
     public Button getMapShort() {
         return mapShort;
+    }
+
+    public Button getSaveShort() {
+        return saveShort;
     }
 }

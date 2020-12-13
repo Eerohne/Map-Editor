@@ -8,7 +8,7 @@ package Editor.Controller;
 import Editor.Main.MapEditor;
 import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.WallProfile;
-import Editor.View.Help;
+import Editor.View.Help.Help;
 import Editor.View.New.NewEntityStage;
 import Editor.View.Menu.Entity.ExistingEntityStage;
 import Editor.View.Menu.TopMenu;
