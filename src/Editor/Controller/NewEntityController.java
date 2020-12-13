@@ -338,6 +338,7 @@ public class NewEntityController{
                     }
                     reader.close();
                 }
+                reader.close();
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
