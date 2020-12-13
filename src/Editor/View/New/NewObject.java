@@ -6,6 +6,10 @@
  */
 package Editor.View.New;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -35,6 +39,7 @@ public class NewObject {
         newWindow.initModality(Modality.APPLICATION_MODAL);
         newWindow.initStyle(StageStyle.UTILITY);
         newWindow.setTitle(name);
+        newWindow.setResizable(false);
         
         frame = new BorderPane();
         frame.setPadding(new Insets(10));
@@ -50,6 +55,18 @@ public class NewObject {
         
         Scene scene = new Scene(frame);
         newWindow.setScene(scene);
+        
+        String pathName = "dev/editor/style/style.css" ;
+        File file = new File(pathName);
+        if (file.exists()) {
+            try {
+                scene.getStylesheets().add(file.toURI().toURL().toExternalForm());
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(NewObject.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+           System.out.println("Could not find css file: "+pathName);
+        }
         
         back.setDisable(true);
         finish.setDisable(true);

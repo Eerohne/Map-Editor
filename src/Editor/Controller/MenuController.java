@@ -8,7 +8,7 @@ package Editor.Controller;
 import Editor.Main.MapEditor;
 import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.WallProfile;
-import Editor.View.Help;
+import Editor.View.Help.Help;
 import Editor.View.New.NewEntityStage;
 import Editor.View.Menu.Entity.ExistingEntityStage;
 import Editor.View.Menu.TopMenu;
@@ -66,17 +66,12 @@ public class MenuController{
         List<MenuItem> fileItems = file.getItems();
         
         //File -> Exit : Closes the Editor Stage
-        fileItems.get(fileItems.size()-1).setOnAction(e -> {
+        fileItems.get(2).setOnAction(e -> {
             editorStage.close();
         });
         
-        //File -> Load Map : Loads a Map from a file
-        fileItems.get(3).setOnAction((ActionEvent event) -> {
-            //MapEditor.load();
-        });
-        
         //File -> Save Map : Saves the currently viewed map
-        fileItems.get(2).setOnAction(e -> {
+        fileItems.get(1).setOnAction(e -> {
             try {
                 save();
             } catch (ParseException ex) {

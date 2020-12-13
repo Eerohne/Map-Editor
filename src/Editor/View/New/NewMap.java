@@ -36,13 +36,6 @@ public class NewMap extends NewObject{
     TextField gridLength;
     TextField mapNameField;
     
-    
-    public NewMap(){
-        gridWidth = new TextField();
-        gridLength = new TextField();
-        mapNameField = new TextField();
-    }
-    
     public NewMap(Stage owner) {
         super(owner, "New Map");
         
