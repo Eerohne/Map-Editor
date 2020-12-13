@@ -6,8 +6,13 @@
  */
 package Editor.View.New;
 
+import Editor.Controller.MenuController;
 import Editor.Main.MapEditor;
 import Editor.Model.Profile.MapProfile;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,6 +24,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -91,7 +97,15 @@ class NewMapController{
     public NewMapController(NewMap nm) {
         nm.getFinish().setOnAction(e -> {
             MapProfile map = new MapProfile(nm.getMapNameField().getText(), Integer.parseInt(nm.getGridWidth().getText()), Integer.parseInt(nm.getGridLength().getText()));
-            MapEditor.getProject().addMap(map);
+            MapEditor.getProject().addMap(map, true);
+            
+            //File mapFile = new File(MapEditor.getProject().getSelectedMapPath());
+            try {
+                MenuController.save();
+            } catch (ParseException ex) {
+                Logger.getLogger(NewMapController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             MapEditor.getMapHierarchy().refresh();
             nm.getNewWindow().close();
         });

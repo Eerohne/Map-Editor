@@ -165,12 +165,16 @@ public class ProjectProfile extends Profile{
         this.maps = maps;
     }
 
-    public void addMap(MapProfile map){
+    public void addMap(MapProfile map, boolean isNew){
         this.maps.add(map);
+        if(isNew){
+            this.setSelectedMap(map);
+            MapEditor.refreshEditor();
+        }
     }
     
     public void loadMap(MapProfile map){
-        this.addMap(map);
+        this.addMap(map, false);
         if(map.isMainMap())
             this.setMainMap(map);
     }
