@@ -87,18 +87,13 @@ public class NewEntityController{
             public void handle(Event event) {
                 try {
                     export();
+                    newEntity();
                 } catch (IOException ex) {
                     Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }; 
          
-         EventHandler newEntityHandler = new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                newEntity();
-            }
-        }; 
         viewSignal();
         signalWindow();
         switchWindow();
@@ -252,6 +247,7 @@ public class NewEntityController{
                 FileWriter writer2 = new FileWriter(newFile);
                 gson.toJson(savefile, writer);
                 writer.close();
+                newEntity();
             } catch (ParseException ex) {
                 Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -316,27 +312,28 @@ public class NewEntityController{
         try {
             JSONParser parser = new JSONParser();
             File file = new File(MapEditor.getProject().getSelectedMapPath());
-           // if(file.exists()){
+            if(file.exists()){
                 reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
                 JSONObject savefile = (JSONObject) parser.parse(reader);
-                JSONArray entities = (JSONArray) savefile.get("entities");
-                JSONObject whatever = new JSONObject();
+                if(!savefile.keySet().isEmpty()){
+                    JSONArray entities = (JSONArray) savefile.get("entities");
+                    JSONObject whatever = new JSONObject();
 
-                for(int i = 0; i < entities.size(); i++){
-                    JSONObject namecheckObj = (JSONObject) entities.get(i);
-                    System.out.println(namecheckObj);
-                    if(namecheckObj.values().contains(name)){
-                        whatever = namecheckObj;
+                    for(int i = 0; i < entities.size(); i++){
+                        JSONObject namecheckObj = (JSONObject) entities.get(i);
+                        if(namecheckObj.values().contains(name)){
+                            whatever = namecheckObj;
+                        }
                     }
-                }
 
-                if(whatever.values().contains(name)){
-                    result = true;
-                }else{
-                    result = false;
+                    if(whatever.values().contains(name)){
+                        result = true;
+                    }else{
+                        result = false;
+                    }
+                    reader.close();
                 }
-                reader.close();
-            //}
+            }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
