@@ -163,9 +163,9 @@ public class MenuController{
                 for(int i = 0; i< MapEditor.project.selectedMap.getGridView().cells.length; i++){
                     JSONArray array = new JSONArray();
                     for(int j = 0; j < MapEditor.project.selectedMap.getGridView().cells[i].length; j++){
-                        array.add(MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID());
-                        if(MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID() > maxValue){
-                            maxValue = MapEditor.project.selectedMap.getGridView().cells[j][i].getWallID();
+                        array.add(MapEditor.project.selectedMap.getGridView().cells[i][j].getWallID());
+                        if(MapEditor.project.selectedMap.getGridView().cells[i][j].getWallID() > maxValue){
+                            maxValue = MapEditor.project.selectedMap.getGridView().cells[i][j].getWallID();
                         }
                     }
                     cellsArray.add(array);
