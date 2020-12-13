@@ -101,7 +101,7 @@ public class MapProfile extends Profile{
     }
     
     public WallProfile loadWallProfile(String name, String imgName, int flag, int id){
-        System.out.println("WHYYYYYYYYYYYYYYYYYYYY");
+        //System.out.println("WHYYYYYYYYYYYYYYYYYYYY");
         WallProfile wall = new WallProfile(id, name, imgName, flag);
         this.wallMap.put(id, wall);
         wallCounter++;

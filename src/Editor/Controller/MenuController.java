@@ -50,7 +50,7 @@ public class MenuController{
     private Menu help;
     private TopMenu menu;
     
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     
     public MenuController(TopMenu menu, Stage editorStage) {
         
@@ -139,7 +139,7 @@ public class MenuController{
         });
     }
     
-    private void save() throws ParseException{
+    public static void save() throws ParseException{
         JSONObject grid = new JSONObject();
         FileReader reader = null;
         try {
