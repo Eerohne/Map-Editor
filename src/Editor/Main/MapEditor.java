@@ -335,7 +335,7 @@ public class MapEditor extends Application {
             
             
             // getting the grid array
-            int[][] gridArray = new int[gridHeight][gridWidth];
+            int[][] gridArray = new int[gridWidth][gridHeight]; //width and height inverted
             gridData = (JSONArray) mapInfo.get("data");
             Iterator<JSONArray> rowIterator = gridData.iterator();
             int rowNumber = 0;
@@ -410,6 +410,8 @@ public class MapEditor extends Application {
                     //mapToLoad.getGc().
                     mapToLoad.loadEntityProfile(mapToLoad.getName(), entityName, color , position[0], position[1]);
                 }
+                
+                System.out.println();
             }
             else{
                 
