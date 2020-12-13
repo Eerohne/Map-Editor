@@ -5,6 +5,7 @@
  */
 package Editor.Model.Profile;
 
+import Editor.Main.MapEditor;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -18,7 +19,7 @@ import javafx.scene.image.Image;
  * @author A
  */
 public class WallProfile extends Profile{
-    public static String resourceFolder = "resources/images/textures/";//To displace
+    public static String imagePath = "resources/images/textures/";
     public static String[] flagArray = {"Floor", "Wall"};
     
     private final boolean isDelete;
@@ -84,9 +85,9 @@ public class WallProfile extends Profile{
     public void setImg(String img) {
         this.setImgName(img);
         try {
-            this.img = new Image(new FileInputStream(resourceFolder + imgName), 100, 100, false, false);
+            this.img = new Image(new FileInputStream(WallProfile.imagePath + imgName), 100, 100, false, false);
         } catch (FileNotFoundException ex) {
-            System.out.println(ex);
+            System.out.println("Lol : " + ex);
         }
     }
 

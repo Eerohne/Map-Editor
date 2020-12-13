@@ -68,7 +68,7 @@ public class WallController extends MetadataController {
                     FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Textures", "*.png", "*.jpg");
                     fileChooser.getExtensionFilters().add(extFilter);
                     fileChooser.setTitle("Choose A Wall Texture");
-                    fileChooser.setInitialDirectory(new File(WallProfile.resourceFolder));
+                    fileChooser.setInitialDirectory(new File(MapEditor.getProject().getImageFolder()));
                     File textureFile = fileChooser.showOpenDialog(stage);
                 try {
                     this.newImage = new Image(new FileInputStream(textureFile.getAbsoluteFile()), 100, 100, false, false);

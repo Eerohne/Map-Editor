@@ -148,9 +148,9 @@ public class NewEntityController{
         JSONArray array = new JSONArray();
         JSONObject allEntities = new JSONObject();
         JSONParser parser = new JSONParser();
-        File newFile = new File("savefile.json");
+        File newFile = new File(MapEditor.getProject().getSelectedMapPath());
         JSONObject data = new JSONObject();
-        FileWriter writer = new FileWriter("savefile.json", true);
+        FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath(), true);
         File signalFile = new File("signals.json");
         double[] initialPosition = {0.0 , 0.0};
         
@@ -308,7 +308,7 @@ public class NewEntityController{
         FileReader reader = null;
         try {
             JSONParser parser = new JSONParser();
-            reader = new FileReader("savefile.json");
+            reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
             JSONObject savefile = (JSONObject) parser.parse(reader);
             JSONArray entities = (JSONArray) savefile.get("entities");
             JSONObject whatever = new JSONObject();

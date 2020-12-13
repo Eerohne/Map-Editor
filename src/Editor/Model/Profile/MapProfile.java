@@ -6,6 +6,7 @@
 package Editor.Model.Profile;
 
 import Editor.Controller.GridController;
+import Editor.Main.MapEditor;
 import Editor.View.Grid.Grid;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -52,18 +53,18 @@ public class MapProfile extends Profile{
         
         this.gc = new GridController(gridView);
         gc.setSelectedWallProfile(defaultWall);
-        
-        
     }
-
-    public MapProfile(String name) {
+    
+    public MapProfile(String name){
         super(name);
+        this.defaultWall = new WallProfile();
+        this.wallMap.put(defaultWall.getID(), defaultWall);
     }
     
     public MapProfile(File mapFile){
-        this(mapFile.getName().substring(0, mapFile.getName().lastIndexOf(".")), 10, 10);
+        this(mapFile.getName().substring(0, mapFile.getName().lastIndexOf(".")));
         
-        //Implement Load Function
+        MapEditor.load(mapFile);
     }
 
     
@@ -100,6 +101,7 @@ public class MapProfile extends Profile{
     }
     
     public WallProfile loadWallProfile(String name, String imgName, int flag, int id){
+        System.out.println("WHYYYYYYYYYYYYYYYYYYYY");
         WallProfile wall = new WallProfile(id, name, imgName, flag);
         this.wallMap.put(id, wall);
         wallCounter++;
@@ -107,9 +109,10 @@ public class MapProfile extends Profile{
         return wall;
     }
     
-    public EntityProfile loadEntityProfile(String name, Color color, double gridX, double gridY){
-        EntityProfile entity = new EntityProfile(name, color);
-        this.entityMap.put(name, entity);
+     public EntityProfile loadEntityProfile(String mapName, String entityName, float[] color, double gridX, double gridY){
+        
+        EntityProfile entity = new EntityProfile(mapName, entityName, Color.rgb((int)(color[0]*255), (int)(color[1]*255), (int)(color[2]*255)));
+        this.entityMap.put(entityName, entity);
         this.gc.setSelectedEntityProfile(entity);
         this.gc.setupDot(entity.getDot());
         
@@ -120,7 +123,7 @@ public class MapProfile extends Profile{
     public static String getTxrURL(MapProfile map, int id){
         for (Map.Entry<Integer, WallProfile> entry : map.wallMap.entrySet()) {
             if(entry.getKey() == id){
-                return WallProfile.resourceFolder + entry.getValue().getImageName();
+                return MapEditor.getProject().getImageFolder() + entry.getValue().getImageName();
             }
         }
         

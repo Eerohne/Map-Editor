@@ -5,6 +5,7 @@
  */
 package Editor.Controller;
 
+import Editor.Main.MapEditor;
 import Editor.Model.Profile.WallProfile;
 import Editor.View.New.NewWallProfile;
 import Editor.View.Help;
@@ -42,7 +43,7 @@ public class ShortcutController{
         });
         
         shortcutBar.getWallShort().setOnAction(e -> {
-            new NewWallProfile(owner, WallProfile.resourceFolder, wallList);
+            new NewWallProfile(owner, MapEditor.getProject().getImageFolder(), wallList);
         });
         
         shortcutBar.getEntityShort().setOnAction(e -> {

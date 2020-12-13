@@ -1,5 +1,3 @@
-Info Panel Update
-Setup Events for All buttons
 New Project System
 Help Menu
 Fix Mouse Drag Leak

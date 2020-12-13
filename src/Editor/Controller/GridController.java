@@ -1,6 +1,8 @@
 package Editor.Controller;
 
+import Editor.Main.MapEditor;
 import Editor.Model.Profile.EntityProfile;
+import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.Profile;
 import Editor.Model.Profile.WallProfile;
 import Editor.View.Grid.Cell;
@@ -293,9 +295,7 @@ public class GridController{
             }
         }
         
-        System.out.println("******************************************");
         this.dot.addScaleMatrix(scale);
-        System.out.println(dot.getScaleObject());
        
         grid.setEntityDotSize(10 * zoom);
         grid.getSelectionCell().addScaleMatrix(scale);
@@ -316,13 +316,19 @@ public class GridController{
     
     public void setImg(Cell cell, int paletteID){
         cell.setID(paletteID);
-        cell.setTexture(new ImagePattern(((WallProfile)selectedProfile).getImage()));
+        cell.setTexture(new ImagePattern(getSelectedWallProfile().getImage()));
     }
     
-    public void loadPalette(int[][] palette){
+    public void setImg(Cell cell, int paletteID, MapProfile map){
+        cell.setID(paletteID);
+        cell.setTexture(new ImagePattern(map.getWallMap().get(paletteID).getImage()));
+    }
+    
+    public void loadPalette(int[][] palette, MapProfile map){
         for (int i = 0; i < grid.getCells().length; i++) {
             for(int j = 0; j < grid.getCells()[i].length; j++){
-                this.setImg(grid.getCells()[i][j], palette[i][j]);
+                this.setImg(grid.getCells()[i][j], palette[i][j], map);
+                
             }
         }
     }
@@ -342,7 +348,7 @@ public class GridController{
         try {
             JSONParser parser = new JSONParser();
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            reader = new FileReader("savefile.json");
+            reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
             JSONObject savefile = (JSONObject) parser.parse(reader);
             JSONArray entities = (JSONArray) savefile.get("entities");
             JSONObject currentEntity = new JSONObject();
@@ -360,7 +366,7 @@ public class GridController{
             
             savefile.put("entities", entities);
             
-            FileWriter writer = new FileWriter("savefile.json");
+            FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath());
             gson.toJson(savefile, writer);
             writer.close();
             

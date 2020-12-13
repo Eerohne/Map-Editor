@@ -71,7 +71,7 @@ public class MenuController{
         
         //File -> Load Map : Loads a Map from a file
         fileItems.get(3).setOnAction((ActionEvent event) -> {
-            load();
+            //MapEditor.load();
         });
         
         //File -> Save Map : Saves the currently viewed map
@@ -108,7 +108,7 @@ public class MenuController{
         
         //Edit -> New Wall : Open New Wall Window
         editItems.get(0).setOnAction(e -> {
-            new NewWallProfile(editorStage, WallProfile.resourceFolder, MapEditor.getWallHierarchy());
+            new NewWallProfile(editorStage, MapEditor.getProject().getImageFolder(), MapEditor.getWallHierarchy());
         });
         
         //Edit -> New Entity : Open New Entity Window
@@ -138,9 +138,9 @@ public class MenuController{
         JSONObject grid = new JSONObject();
         FileReader reader = null;
         try {
-            reader = new FileReader("savefile.json"); 
-            //FileWriter writer2 = new FileWriter("savefile.json");
-            File file = new File("savefile.json");
+            File file = new File(MapEditor.getProject().getSelectedMapPath());
+            reader = new FileReader(file); 
+            //FileWriter writer2 = new FileWriter(MapEditor.getProject().getSelectedMapPath());
             JSONParser parser = new JSONParser();
             JSONObject savefileObj = new JSONObject(); 
             JSONArray palette = new JSONArray();
@@ -179,7 +179,7 @@ public class MenuController{
                 grid.put("palette", palette);
 
                 savefileObj.put("grid", grid);
-                FileWriter writer = new FileWriter("savefile.json");
+                FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath());
                 gson.toJson(savefileObj, writer);
                 writer.close();
             }
@@ -219,7 +219,7 @@ public class MenuController{
 
                     grid.put("palette", palette);
                     savefileObj.put("grid", grid);
-                    FileWriter writer = new FileWriter("savefile.json");
+                    FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath());
                     gson.toJson(savefileObj, writer);
                     writer.close();
                 }
@@ -257,7 +257,7 @@ public class MenuController{
 
                     savefileObj.put("grid", grid);
 
-                    FileWriter writer = new FileWriter("savefile.json");
+                    FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath());
                     gson.toJson(savefileObj, writer);
                     writer.close();
                 }
@@ -278,111 +278,7 @@ public class MenuController{
         
     }
     
-    private void load(){
-        FileReader reader = null;
-        try {
-            JSONParser parser = new JSONParser();
-            reader = new FileReader("savefile.json");
-            JSONObject savefile = (JSONObject) parser.parse(reader);
-            JSONObject mapInfo = (JSONObject) savefile.get("grid");
-            JSONArray entities = (JSONArray) savefile.get("entities");
-            JSONArray gridData = new JSONArray();
-            
-            // getting width and height of the grid
-            String gridWidthStr =  (String) mapInfo.get("width");
-            String gridHeightStr = (String) mapInfo.get("height");
-            int gridWidth = Integer.parseInt(gridWidthStr);
-            int gridHeight = Integer.parseInt(gridHeightStr);
-            
-            
-            // getting the grid array
-            int[][] gridArray = new int[gridHeight][gridWidth];
-            gridData = (JSONArray) mapInfo.get("data");
-            Iterator<JSONArray> rowIterator = gridData.iterator();
-            int rowNumber = 0;
-            
-            while(rowIterator.hasNext()){
-                JSONArray columns = rowIterator.next();
-                Iterator<Long> colIterator = columns.iterator();
-                int colNumber = 0;
-                while(colIterator.hasNext()){
-                    gridArray[rowNumber][colNumber] = colIterator.next().intValue();
-                    colNumber++;
-                }
-                rowNumber++;
-            }
-            
-            
-            //getting grid palette
-            JSONArray paletteArray = (JSONArray) mapInfo.get("palette");
-            Iterator<Object> paletteIterator = paletteArray.iterator();
-            MapProfile mapToLoad = new MapProfile("savefile.json", gridWidth, gridHeight);
-            
-            while(paletteIterator.hasNext()){
-                JSONObject palette = (JSONObject) paletteIterator.next();
-                String idStr = (String) palette.get("id");
-                int id = Integer.parseInt(idStr); 
-                String imagePath = (String) palette.get("texture");
-                String flagStr = (String) palette.get("flag");
-                int flag = Integer.parseInt(flagStr); 
-                String imageName = (String) palette.get("name");
-                System.out.println(id + " , " + imagePath + " , " + flag + " , " + imageName);
-                
-                mapToLoad.loadWallProfile(imagePath, imageName, flag, id);
-                mapToLoad.getGc().loadPalette(gridArray);
-            }
-            
-            for(int i = 0; i < mapToLoad.getGridView().cells.length; i++){
-                for(int j = 0; j < mapToLoad.getGridView().cells[i].length; j++){
-                    System.out.print(mapToLoad.getGridView().cells[i][j].getWallID());
-                }
-                System.out.println();
-            }
-            
-            //getting entities 
-            Iterator<Object> entitiesIterator = entities.iterator();
-            double [] position = new double[2];
-            float [] color = new float[3];
-            String entityName = "";
-            while(entitiesIterator.hasNext()){
-                JSONObject entity = (JSONObject) entitiesIterator.next();
-                if(entity.containsKey("position")){
-                    JSONArray positionArray = (JSONArray) entity.get("position");
-                    Iterator<Double> positionIterator = positionArray.iterator();
-                    int positionCounter = 0;
-                    while(positionIterator.hasNext()){
-                        position[positionCounter] = positionIterator.next().doubleValue();
-                        positionCounter++;
-                    }
-                }
-                if(entity.containsKey("color")){
-                    JSONArray colorArray = (JSONArray) entity.get("color");
-                    Iterator<Double> colorIterator = colorArray.iterator();
-                    int colorCounter = 0;
-                    while(colorIterator.hasNext()){
-                        color[colorCounter] = (float) colorIterator.next().doubleValue();
-                        colorCounter++;
-                    }
-                    
-                }
-                entityName = (String) entity.get("name");
-                
-                mapToLoad.loadEntityProfile(entityName, Color.color(color[0], color[1], color[2]) , position[0], position[1]);
-            }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
-            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                reader.close();
-            } catch (IOException ex) {
-                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    } 
-    
-    
+//    private void load(){
+//        load(MapEditor.getProject().getSelectedMapPath());
+//    } 
 }

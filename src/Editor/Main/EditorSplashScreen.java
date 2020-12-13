@@ -6,7 +6,7 @@
 package Editor.Main;
 
 import Editor.View.New.NewMap;
-import Editor.View.New.NewProject;
+//import Editor.View.New.NewProject;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -73,7 +73,7 @@ public class EditorSplashScreen {
 class SplashScreenController{
 
     public SplashScreenController(Button newP, Button openP, Button close, Stage current, Stage parent) {
-        newP.setOnAction(e -> {new NewProject(parent);});
+        //newP.setOnAction(e -> {new NewProject(parent);});
         
         openP.setOnAction(e -> {});
         

@@ -129,11 +129,11 @@ public class Info extends HBox{
     
     public void reload(GridController gc){
         eventLoop.stop();
+        this.gc = gc;
         this.gridX = gc.getGridX();
         this.gridY = gc.getGridY();
         this.zoom = gc.getZoom();
         this.editingMode = gc.getEditingMode();
-        
         eventLoop.start();
     }
 }

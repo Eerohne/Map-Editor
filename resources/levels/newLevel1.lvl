@@ -1,0 +1,228 @@
+{
+  "entities": [
+    {
+      "runspeed": "2.5",
+      "classname": "player_simple",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": "270",
+      "name": "player",
+      "active": "true",
+      "position": [
+        8.41,
+        4.55
+      ],
+      "walkspeed": "1.5",
+      "height": "0.0"
+    },
+    {
+      "volume": "1.0",
+      "onstart": "true",
+      "classname": "sound_ambient",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "onlyonce": "false",
+      "loop": "true",
+      "name": "outdoorsound",
+      "channel": "game",
+      "active": "true",
+      "position": [
+        2.93,
+        1.29
+      ],
+      "audiopath": "sounds/fx/loose.wav"
+    },
+    {
+      "classname": "object_decor",
+      "size": "1.0",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "texture": "images/sprites/skeleton.gif",
+      "name": "coolSkeleton",
+      "position": [
+        1.1235133815456075,
+        3.6748648978568395
+      ],
+      "radius": "0.0",
+      "height": "0.5"
+    },
+    {
+      "classname": "object_decor",
+      "size": "1.0",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "texture": "images/sprites/skeleton.gif",
+      "name": "coolSkeleton1",
+      "position": [
+        8.204594462626686,
+        6.085675708667649
+      ],
+      "radius": "0.0",
+      "height": "0.5"
+    }
+  ],
+  "grid": {
+    "data": [
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      [
+        1,
+        2,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        2,
+        1
+      ],
+      [
+        1,
+        2,
+        4,
+        2,
+        2,
+        2,
+        2,
+        4,
+        2,
+        1
+      ],
+      [
+        3,
+        2,
+        4,
+        2,
+        4,
+        4,
+        2,
+        4,
+        2,
+        3
+      ],
+      [
+        1,
+        2,
+        4,
+        2,
+        4,
+        4,
+        2,
+        4,
+        2,
+        1
+      ],
+      [
+        1,
+        2,
+        4,
+        2,
+        2,
+        2,
+        2,
+        4,
+        2,
+        1
+      ],
+      [
+        1,
+        2,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        2,
+        1
+      ],
+      [
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    ],
+    "width": "10",
+    "palette": [
+      {
+        "flag": "1",
+        "texture": "images/textures/brick.png",
+        "name": "brick.png",
+        "id": "1"
+      },
+      {
+        "flag": "0",
+        "texture": "images/textures/grey_brick.png",
+        "name": "grey_brick.png",
+        "id": "2"
+      },
+      {
+        "flag": "1",
+        "texture": "images/textures/door.png",
+        "name": "door.png",
+        "id": "3"
+      },
+      {
+        "flag": "0",
+        "texture": "images/textures/dev1.png",
+        "name": "dev1.png",
+        "id": "4"
+      }
+    ],
+    "height": "10"
+  }
+}

@@ -6,6 +6,7 @@
 package Editor.Model.Profile;
 
 import Editor.Controller.MenuController;
+import Editor.Main.MapEditor;
 import Editor.View.Grid.EntityDot;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -33,14 +34,14 @@ public class EntityProfile extends Profile{
         int r = (int)((0.5 + Math.random()*0.5)*255);
         int g = (int)((0.5 + Math.random()*0.5)*255);
         int b = (int)((0.5 - Math.random()*0.5)*255);
-        this.saveColor(name, r, g, b);
+        this.saveColor(MapEditor.getProject().getSelectedMap().getName(), name, r, g, b);
         
         this.dot = new EntityDot(Color.rgb(r, g, b));
     }
     
-    public EntityProfile(String name, Color color) {
-        super(name);
-        this.saveColor(name, color.getRed(), color.getGreen(), color.getBlue());
+    public EntityProfile(String mapName, String entityName, Color color) {
+        super(entityName);
+        this.saveColor(mapName, entityName, color.getRed(), color.getGreen(), color.getBlue());
         
         this.dot = new EntityDot(color);
     }
@@ -53,13 +54,13 @@ public class EntityProfile extends Profile{
         this.dot = dot;
     }
     
-    private void saveColor(String name, double x, double y, double z){
+    private void saveColor(String mapName, String entityName, double x, double y, double z){
         
         FileReader reader = null;
         try {
             JSONParser parser = new JSONParser();
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            reader = new FileReader("savefile.json");
+            reader = new FileReader("resources/levels/" + mapName + ".lvl");
             JSONObject savefile = (JSONObject) parser.parse(reader);
             JSONArray entities = (JSONArray) savefile.get("entities");
             JSONObject currentEntity = new JSONObject();
@@ -70,7 +71,7 @@ public class EntityProfile extends Profile{
             
             for(int i = 0; i < entities.size(); i++){
                 currentEntity = (JSONObject) entities.get(i);
-                if(currentEntity.get("name").equals(name)){
+                if(currentEntity.get("name").equals(entityName)){
                     currentEntity.put("color", color);
                     entities.set(i, currentEntity);
                 }
@@ -78,7 +79,7 @@ public class EntityProfile extends Profile{
             
             savefile.put("entities", entities);
             
-            FileWriter writer = new FileWriter("savefile.json");
+            FileWriter writer = new FileWriter("resources/levels/" + mapName + ".lvl");
             gson.toJson(savefile, writer);
             writer.close();
             
@@ -99,5 +100,10 @@ public class EntityProfile extends Profile{
     
     public void destroy(){
         dot.setRadius(0);
+    }
+
+    @Override
+    public String toString() {
+        return "EntityProfile{ name=" + name + ", " + "dot=" + dot + '}';
     }
 }

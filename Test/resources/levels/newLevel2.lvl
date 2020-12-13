@@ -1,0 +1,313 @@
+{
+  "entities": [
+    {
+      "classname": "awsd",
+      "color": [
+        0.002860438311472535,
+        0.0029065744020044804,
+        0.0029065744020044804
+      ],
+      "name": "asdas",
+      "position": [
+        2.77,
+        3.47
+      ]
+    },
+    {
+      "classname": "awsd",
+      "color": [
+        0.002860438311472535,
+        0.0029065744020044804,
+        0.0029065744020044804
+      ],
+      "name": "asdas1",
+      "position": [
+        8.03,
+        3.47
+      ]
+    },
+    {
+      "classname": "awsd",
+      "color": [
+        0.002860438311472535,
+        0.0029065744020044804,
+        0.0029065744020044804
+      ],
+      "name": "asdas1",
+      "position": [
+        8.03,
+        3.47
+      ]
+    },
+    {
+      "classname": "awsd",
+      "color": [
+        0.002860438311472535,
+        0.0029065744020044804,
+        0.0029065744020044804
+      ],
+      "name": "asdas11"
+    },
+    {
+      "classname": "dsf",
+      "color": [
+        0.0025374856777489185,
+        0.0033525568433105946,
+        0.0033525568433105946
+      ],
+      "werfwe": "ewrew",
+      "name": "sdfwsadf",
+      "position": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "classname": "sfc",
+      "color": [
+        0.00281430222094059,
+        0.0021222608629614115,
+        0.0021222608629614115
+      ],
+      "wer": "wer",
+      "name": "werew",
+      "position": [
+        4.996666666666664,
+        7.7433333333333305
+      ]
+    },
+    {
+      "classname": "wqeqw",
+      "color": [
+        0.002629757858812809,
+        0.0024913495872169733,
+        0.0024913495872169733
+      ],
+      "name": "eqwdqwd",
+      "position": [
+        0.55,
+        0.45
+      ],
+      "proqwe": "wedewd"
+    },
+    {
+      "runspeed": "2.5",
+      "classname": "player_simple",
+      "color": [
+        170.0,
+        184.0,
+        29.0
+      ],
+      "rotation": "270",
+      "name": "player",
+      "active": "true",
+      "position": [
+        8.41,
+        4.55
+      ],
+      "walkspeed": "1.5",
+      "height": "0.0"
+    },
+    {
+      "volume": "1.0",
+      "onstart": "true",
+      "classname": "sound_ambient",
+      "color": [
+        220.0,
+        183.0,
+        24.0
+      ],
+      "onlyonce": "false",
+      "loop": "true",
+      "name": "outdoorsound",
+      "channel": "game",
+      "active": "true",
+      "position": [
+        2.93,
+        1.29
+      ],
+      "audiopath": "sounds/fx/loose.wav"
+    },
+    {
+      "classname": "object_decor",
+      "size": "1.0",
+      "color": [
+        214.0,
+        245.0,
+        26.0
+      ],
+      "texture": "images/sprites/skeleton.gif",
+      "name": "coolSkeleton",
+      "position": [
+        1.53,
+        5.51
+      ],
+      "radius": "0.0",
+      "height": "0.5"
+    },
+    {
+      "classname": "object_decor",
+      "size": "1.0",
+      "texture": "images/sprites/skeleton.gif",
+      "name": "coolSkeleton1",
+      "position": [
+        1.51,
+        3.47
+      ],
+      "radius": "0.0",
+      "height": "0.5"
+    }
+  ],
+  "grid": {
+    "data": [
+      [
+        4,
+        4,
+        2,
+        4,
+        2,
+        3,
+        2,
+        4,
+        4,
+        2
+      ],
+      [
+        4,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        4,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        4
+      ],
+      [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        4
+      ],
+      [
+        3,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        3
+      ],
+      [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        4,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        2,
+        2,
+        4,
+        4,
+        3,
+        2,
+        2,
+        4,
+        2,
+        2
+      ]
+    ],
+    "width": "10",
+    "palette": [
+      {
+        "flag": "0",
+        "texture": "images/textures/floor_tiles.png",
+        "name": "floor_tiles.png",
+        "id": "1"
+      },
+      {
+        "flag": "1",
+        "texture": "images/textures/grey_brick.png",
+        "name": "grey_brick.png",
+        "id": "2"
+      },
+      {
+        "flag": "1",
+        "texture": "images/textures/door.png",
+        "name": "door.png",
+        "id": "3"
+      },
+      {
+        "flag": "1",
+        "texture": "images/textures/grey_brick_vines.png",
+        "name": "grey_brick_vines.png",
+        "id": "4"
+      }
+    ],
+    "height": "10"
+  }
+}
