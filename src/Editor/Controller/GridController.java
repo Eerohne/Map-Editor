@@ -57,7 +57,7 @@ public class GridController{
     String hoverEntity;
     
     Cell hoverCell = new Cell(1);
-    EntityDot dot = new EntityDot(Color.BLACK, 0, 0, 1);
+    EntityDot dot = new EntityDot(Color.CYAN, 0, 0, 1);
     Info info = new Info();
     
     double dotX = 0;
@@ -261,7 +261,7 @@ public class GridController{
                     this.hoverEntity = ep.getName();
                 });
                 ed.setOnMouseExited(e -> {
-                    this.hoverEntity = "NULL";
+                    this.hoverEntity = "null";
                 });
                 
                 savePosition(getSelectedEntityProfile().getName(), getGridX(), getGridY());
@@ -333,13 +333,21 @@ public class GridController{
         }
     }
     
-    public void setupDot(EntityDot newDot){
-        newDot.initialize(0, 0, 1);
-        newDot.setScaleObject(dot.getScaleObject());
-        newDot.setTranslationObject(dot.getTranslationObject());
+    public void setupDot(EntityProfile ep){
+        EntityDot ed = ep.getDot();
+        ed.initialize(0, 0, 1);
+        ed.setScaleObject(dot.getScaleObject());
+        ed.setTranslationObject(dot.getTranslationObject());
 
-        grid.getEntities().add(newDot);
-        grid.getChildren().add(newDot);
+        ed.setOnMouseEntered(e -> {
+            this.hoverEntity = ep.getName();
+        });
+        ed.setOnMouseExited(e -> {
+            this.hoverEntity = "null";
+        });
+        
+        grid.getEntities().add(ed);
+        grid.getChildren().add(ed);
     }
     
     private void savePosition(String name, double x, double y){

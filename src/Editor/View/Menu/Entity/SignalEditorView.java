@@ -51,6 +51,11 @@ public class SignalEditorView extends GridPane{
         btnBox.setPadding(new Insets(10));
         btnBox.setSpacing(10);
         
+        saveSignal.setMaxWidth(Double.MAX_VALUE);
+        clearSignal.setMaxWidth(Double.MAX_VALUE);
+        delete.setMaxWidth(Double.MAX_VALUE);
+        add.setMaxWidth(Double.MAX_VALUE);
+        
         cb.setPromptText("select entity");
         signalSelector.setPromptText("select signal");
         

@@ -45,6 +45,9 @@ public class SignalView extends GridPane{
         btnBox.setPadding(new Insets(10));
         btnBox.setSpacing(10);
         
+        saveSignal.setMaxWidth(Double.MAX_VALUE);
+        clearSignal.setMaxWidth(Double.MAX_VALUE);
+        
         labelBox.getChildren().addAll(nameLabel, targetNameLabel, inputNameLabel, arguementLabel);
         tfBox.getChildren().addAll(nameTf, targetNameTf, inputNameTf, arguementTf);
         btnBox.getChildren().addAll(saveSignal, clearSignal);
