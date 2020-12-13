@@ -8,9 +8,11 @@ package Engine.Entity.GameEntity;
 import Engine.Core.Exceptions.EntityCreationException;
 import Engine.Entity.AbstractEntity.Entity;
 import Engine.RaycastRenderer.Renderer;
+import Engine.Util.Input;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import org.json.simple.JSONArray;
 
@@ -31,6 +33,10 @@ public class Entity_Environment extends Entity{
     //walls
     private float wallHeight;
     
+    //test code for presentation
+    boolean fogKeyPressed = false;
+    boolean ceilingKeyPressed = false;
+    
     public Entity_Environment()
     {
         super("environment", Point2D.ZERO);
@@ -42,6 +48,7 @@ public class Entity_Environment extends Entity{
         skyColor = Color.AQUA;
         wallHeight=1;
     }
+    
     public Entity_Environment(HashMap<String, Object> propertyMap) throws EntityCreationException
     {
         super(propertyMap);
@@ -77,12 +84,51 @@ public class Entity_Environment extends Entity{
     public void start() {
         //start logic here
         Renderer.setEnvironment(this);
-        this.active = false; //this entity never gets updated
+        this.active = true; //this entity never gets updated
     }
 
     @Override
     public void update() {
-        //update logic here
+        //this is test code for the presentation
+        
+        if(Input.keyPressed(KeyCode.M)){
+            if(!fogKeyPressed)
+            {
+                fogKeyPressed = true;
+                this.foggy = !this.foggy;
+                this.refresh();
+            }
+        }
+        else
+        {
+            fogKeyPressed = false;
+        }
+        
+        if(Input.keyPressed(KeyCode.N)){
+            if(!ceilingKeyPressed)
+            {
+                ceilingKeyPressed = true;
+                this.hasSky = !this.hasSky;
+                this.refresh();
+            }
+        }
+        else
+        {
+            ceilingKeyPressed = false;
+        }
+        
+        if(Input.keyPressed(KeyCode.B)){
+            this.wallHeight = 2;
+        }
+        else
+        {
+            this.wallHeight = 1;
+        }
+    }
+    
+    public void refresh()
+    {
+        Renderer.setEnvironment(this);
     }
     
     @Override

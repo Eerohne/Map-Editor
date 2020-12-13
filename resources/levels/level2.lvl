@@ -88,7 +88,7 @@
     "fog_near_distance":"1",
     "fog_far_distance":"3",
     "has_sky":"false",
-    "skycolor":[0.0, 0.5, 0.6],
+    "skycolor":[0.2, 0.5, 0.8],
     "wallheight":"1.0"
     },
     ,
