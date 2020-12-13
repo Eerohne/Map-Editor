@@ -327,29 +327,26 @@ public class MapEditor extends Application {
             JSONArray entities = (JSONArray) savefile.get("entities");
             JSONArray gridData = new JSONArray();
             
-            if(savefile.containsKey("gird")){
-                // getting width and height of the grid
-                String gridWidthStr =  (String) mapInfo.get("width");
-                String gridHeightStr = (String) mapInfo.get("height");
-                int gridWidth = Integer.parseInt(gridWidthStr);
-                int gridHeight = Integer.parseInt(gridHeightStr);
-
-
-                // getting the grid array
-                int[][] gridArray = new int[gridHeight][gridWidth];
-                gridData = (JSONArray) mapInfo.get("data");
-                Iterator<JSONArray> rowIterator = gridData.iterator();
-                int rowNumber = 0;
-
-                while(rowIterator.hasNext()){
-                    JSONArray columns = rowIterator.next();
-                    Iterator<Long> colIterator = columns.iterator();
-                    int colNumber = 0;
-                    while(colIterator.hasNext()){
-                        gridArray[rowNumber][colNumber] = colIterator.next().intValue();
-                        colNumber++;
-                    }
-                    rowNumber++;
+            // getting width and height of the grid
+            String gridWidthStr =  (String) mapInfo.get("width");
+            String gridHeightStr = (String) mapInfo.get("height");
+            int gridWidth = Integer.parseInt(gridWidthStr);
+            int gridHeight = Integer.parseInt(gridHeightStr);
+            
+            
+            // getting the grid array
+            int[][] gridArray = new int[gridWidth][gridHeight]; //width and height inverted
+            gridData = (JSONArray) mapInfo.get("data");
+            Iterator<JSONArray> rowIterator = gridData.iterator();
+            int rowNumber = 0;
+            
+            while(rowIterator.hasNext()){
+                JSONArray columns = rowIterator.next();
+                Iterator<Long> colIterator = columns.iterator();
+                int colNumber = 0;
+                while(colIterator.hasNext()){
+                    gridArray[rowNumber][colNumber] = colIterator.next().intValue();
+                    colNumber++;
                 }
 
 
