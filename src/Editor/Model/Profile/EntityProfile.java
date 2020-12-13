@@ -29,12 +29,8 @@ import org.json.simple.parser.ParseException;
 public class EntityProfile extends Profile{
     private EntityDot dot;
     
-    public EntityProfile(String name) {
+    public EntityProfile(String name, double r, double g, double b) {
         super(name);
-        double r = 0.5 + Math.random()*0.5;
-        double g = 0.5 + Math.random()*0.5;
-        double b = 0.5 - Math.random()*0.5;
-        this.saveColor(MapEditor.getProject().getSelectedMap().getName(), name, r, g, b);
         
         this.dot = new EntityDot(Color.color(r, g, b));
     }
