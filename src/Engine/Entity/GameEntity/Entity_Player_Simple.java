@@ -99,11 +99,10 @@ public class Entity_Player_Simple extends Entity_Player{
         }
         
             dir = Game.getCurrentLevel().checkCollision(position, dir, colisionRadius); //gets the final direction vector after colision detection
-            //dir = dir.normalize();
             dir = dir.multiply(playerSpeed * Time.deltaTime); //move the player in the calculated direction 
             position = position.add(dir);
             distanceTraveled += dir.magnitude();
-            //System.out.println(dir.magnitude());
+            
             //headbob code
             if(dir.magnitude() != 0){
                 this.height = (float)Math.sin(Time.timePassed * newHeadBob) * headBobRange;

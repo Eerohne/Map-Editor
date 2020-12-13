@@ -127,12 +127,6 @@
     "signals": [
                 {
                     "name":"OnValueReached",
-                    "targetname":"messenger1",
-                    "inputname":"printMessage",
-                    "arguments":["all coins collected1"]
-                },
-                {
-                    "name":"OnValueReached",
                     "targetname":"manager",
                     "inputname":"allCoinsCollected",
                     "arguments":[]

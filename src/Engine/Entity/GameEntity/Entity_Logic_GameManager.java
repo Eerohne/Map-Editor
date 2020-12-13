@@ -5,10 +5,13 @@
  */
 package Engine.Entity.GameEntity;
 
+import Engine.Core.Game;
 import Engine.Entity.AbstractEntity.Entity;
+import Engine.Util.Input;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
+import javafx.scene.input.KeyCode;
 
 /**
  *
@@ -37,22 +40,22 @@ public class Entity_Logic_GameManager extends Entity{
 
     @Override
     public void update() {
-        //update logic here
+        //restart the level when the 'Q' key is pressed
+        if(Input.keyPressed(KeyCode.Q)){
+            Game.reloadCurrentLevel();
+        }
     }
     
     private void verifyLogic()
     {
         if(coinsCollected == true && closeToDoor == true && lost == false)
         {
-            System.out.println("you have escaped the dangeon to live another day...");
             this.fireSignal("OnWin");
         }
         else if(coinsCollected == true && closeToDoor == false){
             this.fireSignal("OnAllCoinsCollected");
-            System.out.println("collected all coins");
         }
         else if(coinsCollected == false && closeToDoor == true){
-            System.out.println("Collect all coin and this door will open");
             this.fireSignal("OnDoorClosed");
         }
     }
@@ -74,7 +77,6 @@ public class Entity_Logic_GameManager extends Entity{
                 break;
             case "coinCollected":
                 int count = (int) arguments.get(0);
-                System.out.println("this is the count : "+count);
                 if(count == 0)
                     this.fireSignal("OnCoinCollected", ("coins left : "+count), "-fx-text-fill: rgba(0, 255, 0, 255);");
                 else
@@ -83,7 +85,7 @@ public class Entity_Logic_GameManager extends Entity{
                 break;
             case "secondPassed":
                 int time = Math.round((float)arguments.get(0));
-                String timeText = String.format("%02d:%02d", time/100%60, time/1%60);
+                String timeText = String.valueOf(time);
                 if(time > 0)
                     this.fireSignal("OnSecondPassed", "Time Left : "+timeText, "-fx-text-fill: rgba(255, 255, 255, 255);");
                 else

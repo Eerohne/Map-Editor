@@ -244,6 +244,25 @@ public class WindowManager extends AnchorPane{
                     applyVideo.setDisable(false);
                 }
             });
+            
+            //render quality setting
+            Label qualitySlidderLabel = new Label("render quality : " + Settings.getFloat("r_quality"));
+            Slider qualitySlider = new Slider(2, 10, Settings.getFloat("r_quality"));
+            qualitySlider.setMajorTickUnit(1);
+            qualitySlider.setBlockIncrement(1);
+            qualitySlider.setMinorTickCount(0);
+            qualitySlider.setSnapToTicks(true);
+            qualitySlider.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val) {
+                    String currentValue = String.valueOf(new_val.intValue());
+                    qualitySlidderLabel.setText("render quality : "+ String.valueOf(new_val.intValue()-1));
+                    Settings.save("r_quality", currentValue);
+                    Renderer.setResolution(Settings.getInt("r_quality"));
+            }
+            });
+            HBox renderQualityBox = new HBox();
+            renderQualityBox.getChildren().addAll(qualitySlidderLabel, qualitySlider);
 
             //define what happens when we apply the settings
             applyVideo.setOnAction(new EventHandler<ActionEvent>() {
@@ -307,7 +326,7 @@ public class WindowManager extends AnchorPane{
             buttonBar.setSpacing(30);
             buttonBar.getChildren().addAll(applyVideo, returnButton);
 
-            videoOptionBox.getChildren().addAll(screenSizeBox, fullscreenCheckbox, buttonBar);
+            videoOptionBox.getChildren().addAll(screenSizeBox, fullscreenCheckbox, renderQualityBox, buttonBar);
             videoOptionBox.setVisible(false);
             videoOptionBox.setManaged(false);
 
