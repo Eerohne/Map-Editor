@@ -86,6 +86,9 @@ public class EntityController extends MetadataController{
     
     
     private void duplicate(String name){
+        double r = 0.5 + Math.random()*0.5;
+        double g = 0.5 + Math.random()*0.5;
+        double b = 0.5 - Math.random()*0.5;
         String newName = name + "1";
         FileReader reader = null;
         try {
@@ -101,9 +104,9 @@ public class EntityController extends MetadataController{
                 if(entity.get("name").equals(name)){
                     entityToDuplicate.putAll(entity);
                     entityToDuplicate.put("name", newName);
-                    entityToDuplicate.remove("color");
+                    //entityToDuplicate.remove("color");
                     entityToDuplicate.remove("position");
-                    MapEditor.getProject().getSelectedMap().createEntityProfile(newName);
+                    MapEditor.getProject().getSelectedMap().createEntityProfile(newName, r, g, b);
                 }
             }
             

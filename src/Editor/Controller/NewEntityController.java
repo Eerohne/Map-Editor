@@ -144,7 +144,11 @@ public class NewEntityController{
     }
     
     public void export() throws IOException{
-      
+        double r = 0.5 + Math.random()*0.5;
+        double g = 0.5 + Math.random()*0.5;
+        double b = 0.5 - Math.random()*0.5;
+        
+        
         Gson gson = new GsonBuilder().setPrettyPrinting().create(); 
         JSONArray array = new JSONArray();
         JSONObject allEntities = new JSONObject();
@@ -259,7 +263,7 @@ public class NewEntityController{
                 
         }
         nameList.add(view.nameTf.getText());
-        MapEditor.project.getSelectedMap().createEntityProfile(entityName);
+        MapEditor.project.getSelectedMap().createEntityProfile(entityName, r, g, b);
         MapEditor.getEntityHierarchy().refresh();
     }
     
@@ -311,7 +315,7 @@ public class NewEntityController{
     }
     
     private boolean nameCheck(String name){
-        
+
         boolean result = false;
         FileReader reader = null;
         try {

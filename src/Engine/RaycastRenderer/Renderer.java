@@ -62,7 +62,6 @@ public class Renderer {
     public static void setResolution(int resolution){res = resolution;} //set the resolution
     
     private static boolean doSkip = false; //render the ceiling and floor every other frame
-
     public static void setDoSkip(boolean doSkip) {Renderer.doSkip = doSkip;}
     
     private static boolean other = true;
@@ -75,7 +74,7 @@ public class Renderer {
         if(doSkip){
             if(other){
                 other = false;
-                //gc.clearRect(0, 0, screenWidth, screenHeight);
+                gc.clearRect(0, 0, screenWidth, screenHeight);
                 renderFloorCeiling(hPoints);
             }
             else{other = true;}
@@ -258,7 +257,7 @@ public class Renderer {
                 fdist*=(1-ph);
             }
             
-            if( (env.isFoggy() && fdist<env.getFogFarDistance()) || (!env.isFoggy() && fdist<viewD) )
+            if( (env.isFoggy() && fdist<env.getFogFarDistance()) || (!env.isFoggy() && fdist<=(viewD+0.5)) )
             {
                 //point on grid that is fdist from the player, in the direction of the player
                 Point2D gridPos = player.getPosition().add(fdist*cos, fdist*sin);
@@ -444,17 +443,17 @@ public class Renderer {
     //draws the line representing a slice of a wall
     private static void drawWallLine(int r, HitPoint hPoint){
         
-        double camA = Math.toRadians(player.getRotation());
-        Point2D dir = new Point2D( Math.cos(camA), Math.sin(camA) );
         Point2D toWall = hPoint.subtract(player.getPosition());
-
+        
+        int x = r*res;
+        
         //does the hitPoint represent opaque fog?
         boolean isFog = false;
         
         double distance = toWall.magnitude();
         
         //if is a no-hit or if the hit is in fog
-        if( hPoint.getType()==0 || (env.isFoggy() && (distance-0.001)>=env.getFogFarDistance()) )
+        if( hPoint.getType()==0 || (env.isFoggy() && (distance-0.001)>=env.getFogFarDistance()) || (distance-0.001)>=viewD)
         {
             isFog = true;
             if(env.isFoggy()){
@@ -464,7 +463,13 @@ public class Renderer {
                 distance = viewD;
             }
         }
-        double fixDist = Math.cos(Math.toRadians(dir.angle(toWall)));
+        
+        double fixDist = Math.cos(Math.atan
+            ((
+               2.0*Math.tan( Math.toRadians(fov/2.0) )  
+               *( (x/screenWidth)-0.5 )
+            )));
+        
         distance*=fixDist;
         
         double height = screenHeight/distance;
@@ -472,7 +477,6 @@ public class Renderer {
         double lineTop = 0.5*(screenHeight-height);
         lineTop += height*(player.getHeight());
 
-        int x = r*res;
         
         //if not opaque fog (is a wall)
         if(!isFog)
@@ -507,15 +511,17 @@ public class Renderer {
 
     //draws the transparent fog
     private static void renderFog(ArrayList<HitPoint> hPoints, ArrayList<VisibleSprite> sprites){
-        double camA = Math.toRadians(player.getRotation());
-        Point2D dir = new Point2D( Math.cos(camA), Math.sin(camA) );
         
         for(int x=0; x<hPoints.size(); x++){
             
             HitPoint hPoint = hPoints.get(x);
             Point2D toWall = hPoint.subtract(player.getPosition());
 
-            double fixDist = Math.cos(Math.toRadians(dir.angle(toWall)));
+            double fixDist = Math.cos(Math.atan
+            ((
+               2.0*Math.tan( Math.toRadians(fov/2.0) )  
+               *( (res*x/screenWidth)-0.5 )
+            )));
             
             double distance = toWall.magnitude();
             double tFogDist = env.getFogFarDistance();
