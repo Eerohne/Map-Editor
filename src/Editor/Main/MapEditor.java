@@ -214,6 +214,8 @@ public class MapEditor extends Application {
         
         TabPane dataTab =  new TabPane(data);
         dataTab.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        dataTab.setMinHeight(300);
+        //dataTab.setMaxHeight(250);
         
         return dataTab;
     }
