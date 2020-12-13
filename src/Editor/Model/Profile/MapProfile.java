@@ -92,8 +92,8 @@ public class MapProfile extends Profile{
         return wall;
     }
     
-    public EntityProfile createEntityProfile(String name){
-        EntityProfile entity = new EntityProfile(name);
+    public EntityProfile createEntityProfile(String name, double r, double g, double b){
+        EntityProfile entity = new EntityProfile(name, r, g, b);
         this.entityMap.put(name, entity);
         this.gc.setSelectedEntityProfile(entity);
         this.gc.setupDot(entity);
