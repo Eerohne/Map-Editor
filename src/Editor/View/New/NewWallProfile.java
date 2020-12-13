@@ -18,6 +18,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -67,6 +68,9 @@ public class NewWallProfile extends NewObject{
         
         HBox nameContainer = new HBox(name, nameField);
         HBox flagContainer = new HBox(flag, flagBox);
+        
+        HBox.setHgrow(nameField, Priority.ALWAYS);
+        HBox.setHgrow(flagBox, Priority.ALWAYS);
         
         view.getChildren().addAll(nameContainer, flagContainer);
         

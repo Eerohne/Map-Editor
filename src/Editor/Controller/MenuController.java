@@ -66,17 +66,12 @@ public class MenuController{
         List<MenuItem> fileItems = file.getItems();
         
         //File -> Exit : Closes the Editor Stage
-        fileItems.get(fileItems.size()-1).setOnAction(e -> {
+        fileItems.get(2).setOnAction(e -> {
             editorStage.close();
         });
         
-        //File -> Load Map : Loads a Map from a file
-        fileItems.get(3).setOnAction((ActionEvent event) -> {
-            //MapEditor.load();
-        });
-        
         //File -> Save Map : Saves the currently viewed map
-        fileItems.get(2).setOnAction(e -> {
+        fileItems.get(1).setOnAction(e -> {
             try {
                 save();
             } catch (ParseException ex) {

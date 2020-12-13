@@ -21,7 +21,6 @@ import Editor.View.Inspector.WallContent;
 import Editor.View.Hierarchy.MapHierarchy;
 import Editor.View.Hierarchy.WallHierarchy;
 import Editor.View.Inspector.EntityContent;
-import Editor.View.Inspector.MapContent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -67,7 +66,6 @@ public class MapEditor extends Application {
     
     static InspectorView inspector; //Content Wrapper to display in metadata tab
     WallContent wallContent; //Compatible with DataView and delivers WallProfile information
-    MapContent mapContent;
     EntityContent entityContent;
     
     static Grid grid;
