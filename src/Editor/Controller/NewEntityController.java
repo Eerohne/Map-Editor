@@ -316,27 +316,29 @@ public class NewEntityController{
         try {
             JSONParser parser = new JSONParser();
             File file = new File(MapEditor.getProject().getSelectedMapPath());
-           // if(file.exists()){
+            if(file.exists()){
                 reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
                 JSONObject savefile = (JSONObject) parser.parse(reader);
-                JSONArray entities = (JSONArray) savefile.get("entities");
-                JSONObject whatever = new JSONObject();
+                if(savefile.containsKey("entities")){
+                    JSONArray entities = (JSONArray) savefile.get("entities");
+                    JSONObject whatever = new JSONObject();
 
-                for(int i = 0; i < entities.size(); i++){
-                    JSONObject namecheckObj = (JSONObject) entities.get(i);
-                    System.out.println(namecheckObj);
-                    if(namecheckObj.values().contains(name)){
-                        whatever = namecheckObj;
+                    for(int i = 0; i < entities.size(); i++){
+                        JSONObject namecheckObj = (JSONObject) entities.get(i);
+                        System.out.println(namecheckObj);
+                        if(namecheckObj.values().contains(name)){
+                            whatever = namecheckObj;
+                        }
                     }
-                }
 
-                if(whatever.values().contains(name)){
-                    result = true;
-                }else{
-                    result = false;
+                    if(whatever.values().contains(name)){
+                        result = true;
+                    }else{
+                        result = false;
+                    }
+                    reader.close();
                 }
-                reader.close();
-            //}
+            }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
