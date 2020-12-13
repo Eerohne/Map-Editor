@@ -96,7 +96,7 @@ public class MenuController{
                 Stage engine = new Stage();
                 Game game = new Game();
                 engine.initOwner(editorStage);
-                game.editorModeStart(engine, "levels/level2.lvl");
+                game.editorModeStart(engine, "levels/presentationLevel.lvl");
             } catch (Exception ex) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Engine Error");
