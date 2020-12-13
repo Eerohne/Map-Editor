@@ -9,11 +9,11 @@
         0.0
       ],
       "rotation": "270",
-      "name": "player",
+      "name": "player1",
       "active": "true",
       "position": [
-        2.0099999999999993,
-        3.5499999999999985
+        3.03,
+        2.97
       ],
       "walkspeed": "1.5",
       "height": "0.0"

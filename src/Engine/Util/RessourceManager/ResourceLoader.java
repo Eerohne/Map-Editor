@@ -118,6 +118,7 @@ public class ResourceLoader
     
     public static Level loadLevel(String path) throws LevelCreationException
     {
+        System.out.println("works1");
         Level level = new Level();
         level.path = path;
         JSONParser parser = new JSONParser();
@@ -147,6 +148,7 @@ public class ResourceLoader
             }
             level.setLevelData(gridArray);
 
+            System.out.println("works2");
             //2) level palette
             JSONArray paletteArray = (JSONArray) grid.get("palette");
             Iterator<Object> paletteIterator = paletteArray.iterator();
