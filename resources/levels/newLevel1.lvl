@@ -12,8 +12,8 @@
       "name": "player",
       "active": "true",
       "position": [
-        8.49,
-        1.63
+        8.41,
+        4.55
       ],
       "walkspeed": "1.5",
       "height": "0.0"
@@ -66,8 +66,8 @@
       "texture": "images/sprites/skeleton.gif",
       "name": "coolSkeleton1",
       "position": [
-        1.51,
-        3.47
+        4.85,
+        8.79
       ],
       "radius": "0.0",
       "height": "0.5"
