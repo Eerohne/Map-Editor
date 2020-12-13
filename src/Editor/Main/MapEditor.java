@@ -327,58 +327,53 @@ public class MapEditor extends Application {
             JSONArray entities = (JSONArray) savefile.get("entities");
             JSONArray gridData = new JSONArray();
             
-            // getting width and height of the grid
-            String gridWidthStr =  (String) mapInfo.get("width");
-            String gridHeightStr = (String) mapInfo.get("height");
-            int gridWidth = Integer.parseInt(gridWidthStr);
-            int gridHeight = Integer.parseInt(gridHeightStr);
-            
-            
-            // getting the grid array
-            int[][] gridArray = new int[gridHeight][gridWidth];
-            gridData = (JSONArray) mapInfo.get("data");
-            Iterator<JSONArray> rowIterator = gridData.iterator();
-            int rowNumber = 0;
-            
-            while(rowIterator.hasNext()){
-                JSONArray columns = rowIterator.next();
-                Iterator<Long> colIterator = columns.iterator();
-                int colNumber = 0;
-                while(colIterator.hasNext()){
-                    gridArray[rowNumber][colNumber] = colIterator.next().intValue();
-                    colNumber++;
+            if(savefile.containsKey("gird")){
+                // getting width and height of the grid
+                String gridWidthStr =  (String) mapInfo.get("width");
+                String gridHeightStr = (String) mapInfo.get("height");
+                int gridWidth = Integer.parseInt(gridWidthStr);
+                int gridHeight = Integer.parseInt(gridHeightStr);
+
+
+                // getting the grid array
+                int[][] gridArray = new int[gridHeight][gridWidth];
+                gridData = (JSONArray) mapInfo.get("data");
+                Iterator<JSONArray> rowIterator = gridData.iterator();
+                int rowNumber = 0;
+
+                while(rowIterator.hasNext()){
+                    JSONArray columns = rowIterator.next();
+                    Iterator<Long> colIterator = columns.iterator();
+                    int colNumber = 0;
+                    while(colIterator.hasNext()){
+                        gridArray[rowNumber][colNumber] = colIterator.next().intValue();
+                        colNumber++;
+                    }
+                    rowNumber++;
                 }
-                rowNumber++;
-            }
-            
-            
-            //getting grid palette
-            JSONArray paletteArray = (JSONArray) mapInfo.get("palette");
-            Iterator<Object> paletteIterator = paletteArray.iterator();
-            mapToLoad = new MapProfile(pathFile.getName().replaceAll(".lvl", ""), gridWidth, gridHeight);
-            
-            while(paletteIterator.hasNext()){
-                JSONObject palette = (JSONObject) paletteIterator.next();
-                String idStr = (String) palette.get("id");
-                int id = Integer.parseInt(idStr); 
-                String imagePath = (String) palette.get("texture");
-                String flagStr = (String) palette.get("flag");
-                int flag = Integer.parseInt(flagStr); 
-                String name = (String) palette.get("name");
-                //System.out.println(id + " , " + imagePath + " , " + flag + " , " + name);
-                
-                mapToLoad.loadWallProfile(name, imagePath.replaceAll("images/textures/", ""), flag, id);
-            }
-            
-            mapToLoad.getGc().loadPalette(gridArray, mapToLoad);
-//            for(int i = 0; i < mapToLoad.getGridView().cells.length; i++){
-//                for(int j = 0; j < mapToLoad.getGridView().cells[i].length; j++){
-//                    System.out.print(mapToLoad.getGridView().cells[i][j].getWallID());
-//                }
-//                System.out.println();
-//            }
-            
+
+
+                //getting grid palette
+                JSONArray paletteArray = (JSONArray) mapInfo.get("palette");
+                Iterator<Object> paletteIterator = paletteArray.iterator();
+                mapToLoad = new MapProfile(pathFile.getName().replaceAll(".lvl", ""), gridWidth, gridHeight);
+
+                while(paletteIterator.hasNext()){
+                    JSONObject palette = (JSONObject) paletteIterator.next();
+                    String idStr = (String) palette.get("id");
+                    int id = Integer.parseInt(idStr); 
+                    String imagePath = (String) palette.get("texture");
+                    String flagStr = (String) palette.get("flag");
+                    int flag = Integer.parseInt(flagStr); 
+                    String name = (String) palette.get("name");
+                    //System.out.println(id + " , " + imagePath + " , " + flag + " , " + name);
+
+                    mapToLoad.loadWallProfile(name, imagePath.replaceAll("images/textures/", ""), flag, id);
+                }
+
+                mapToLoad.getGc().loadPalette(gridArray, mapToLoad);
             //getting entities 
+            }
             if(savefile.containsKey("entities")){
                 Iterator<Object> entitiesIterator = entities.iterator();
                 double [] position = new double[2];
