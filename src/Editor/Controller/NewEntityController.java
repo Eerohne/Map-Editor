@@ -25,6 +25,7 @@ import javafx.event.EventHandler;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
@@ -286,7 +287,11 @@ public class NewEntityController{
     private void signalWindow(){
         view.signalBtn.setOnAction((event) -> {
             Stage stage = new Stage();
-            new SignalStage(stage);
+            try {
+                new SignalStage(stage);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
     
@@ -296,6 +301,8 @@ public class NewEntityController{
             try {
                 new SignalViewerStage(stage);
             } catch (ParseException ex) {
+                Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (MalformedURLException ex) {
                 Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });

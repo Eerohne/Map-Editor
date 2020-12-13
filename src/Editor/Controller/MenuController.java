@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -113,7 +114,11 @@ public class MenuController{
         
         //Edit -> New Entity : Open New Entity Window
         editItems.get(1).setOnAction(e -> {
-            new NewEntityStage(editorStage);
+            try {
+                new NewEntityStage(editorStage);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         
         //Edit -> Edit Entities : Open Edit Existing Entity Window
@@ -139,13 +144,16 @@ public class MenuController{
         FileReader reader = null;
         try {
             File file = new File(MapEditor.getProject().getSelectedMapPath());
-            reader = new FileReader(file); 
+            
             //FileWriter writer2 = new FileWriter(MapEditor.getProject().getSelectedMapPath());
             JSONParser parser = new JSONParser();
             JSONObject savefileObj = new JSONObject(); 
             JSONArray palette = new JSONArray();
             
+            
             if(file.length() == 0 || !file.exists()){
+                
+                file.createNewFile();
                 //savefileObj = (JSONObject) parser.parse(reader);
                 grid.put("width", Integer.toString(MapEditor.project.selectedMap.getGridView().getxLength()));
                 grid.put("height", Integer.toString(MapEditor.project.selectedMap.getGridView().getyLength()));
@@ -179,11 +187,12 @@ public class MenuController{
                 grid.put("palette", palette);
 
                 savefileObj.put("grid", grid);
-                FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath());
+                FileWriter writer = new FileWriter(file);
                 gson.toJson(savefileObj, writer);
                 writer.close();
             }
             else{
+                reader = new FileReader(file); 
                 savefileObj = (JSONObject) parser.parse(reader);
                 if(savefileObj.containsKey("grid")){
                     
@@ -221,9 +230,11 @@ public class MenuController{
                     savefileObj.put("grid", grid);
                     FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath());
                     gson.toJson(savefileObj, writer);
+                    reader.close();
                     writer.close();
                 }
                 else{
+                    reader = new FileReader(file); 
                     grid.put("width", Integer.toString(MapEditor.project.selectedMap.getGridView().getxLength()));
                     grid.put("height", Integer.toString(MapEditor.project.selectedMap.getGridView().getyLength()));
                     JSONArray cellsArray = new JSONArray();
@@ -257,8 +268,9 @@ public class MenuController{
 
                     savefileObj.put("grid", grid);
 
-                    FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath());
+                    FileWriter writer = new FileWriter(file);
                     gson.toJson(savefileObj, writer);
+                    reader.close();
                     writer.close();
                 }
             }
@@ -269,11 +281,6 @@ public class MenuController{
         } catch (IOException ex) {
             Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                reader.close();
-            } catch (IOException ex) {
-                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         
     }

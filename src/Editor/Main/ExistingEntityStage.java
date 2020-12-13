@@ -8,6 +8,7 @@ package Editor.Main;
 import Editor.Controller.ExistingEntityController;
 import Editor.Model.EntityModel;
 import Editor.View.Menu.Entity.ExistingEntityModification;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javafx.application.Application;
@@ -33,6 +34,15 @@ public class ExistingEntityStage{
         ExistingEntityController controller = new ExistingEntityController(model, view);
         existingEntity.setTitle("Edit Existing Entities");
         Scene scene = new Scene(view, 500, 500);
+        
+        String pathName = "dev/editor/style/style.css" ;
+        File file = new File(pathName);
+        if (file.exists()) {
+            scene.getStylesheets().add(file.toURI().toURL().toExternalForm());
+        } else {
+           System.out.println("Could not find css file: "+pathName);
+        }
+        
         existingEntity.setScene(scene);
         existingEntity.show();
     }
