@@ -6,21 +6,21 @@
 package Editor.Controller.ProfileController;
 
 import Editor.View.Hierarchy.Hierarchy;
-import Editor.View.Metadata.DataView;
+import Editor.View.Inspector.InspectorView;
 import javafx.scene.control.Button;
 
 /**
  *
  * @author A
  */
-public abstract class MetadataController {
-    protected DataView content;
+public abstract class InspectorController {
+    protected InspectorView content;
     
     protected Button cancel;
     protected Button save;
     protected Button delete;
 
-    public MetadataController(DataView content) {
+    public InspectorController(InspectorView content) {
         this.save = content.getSave();
         this.cancel = content.getCancel();
         this.delete = content.getDelete();

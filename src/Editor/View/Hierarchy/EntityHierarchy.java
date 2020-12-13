@@ -8,7 +8,7 @@ package Editor.View.Hierarchy;
 import Editor.Main.MapEditor;
 import Editor.Model.Profile.EntityProfile;
 import Editor.Model.Profile.MapProfile;
-import Editor.View.Metadata.EntityContent;
+import Editor.View.Inspector.EntityContent;
 import Editor.Controller.ProfileController.EntityController;
 import java.util.Map;
 import javafx.geometry.Insets;

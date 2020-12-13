@@ -6,7 +6,7 @@
 package Editor.View.Hierarchy;
 
 import Editor.Main.MapEditor;
-import Editor.View.Metadata.DataView;
+import Editor.View.Inspector.InspectorView;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Background;
@@ -21,11 +21,11 @@ import javafx.scene.paint.Color;
  * @author A
  */
 public abstract class Hierarchy extends ScrollPane{
-    protected DataView content;
+    protected InspectorView content;
     protected VBox list;
     protected static HBox selected = new HBox();
     
-    public Hierarchy(DataView content) {
+    public Hierarchy(InspectorView content) {
         this.content = content;
         
         list = new VBox(10);

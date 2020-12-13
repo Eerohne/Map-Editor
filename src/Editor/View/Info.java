@@ -24,13 +24,7 @@ import javafx.util.Duration;
 public class Info extends HBox{
     private GridController gc;
     
-    private Label coordinateLabel;
-    private Label zoomLabel;
-    private Label modeLabel;
-    private Label hoverEntityLabel;
-    
-    public Button save;
-    public Button load;
+    private Label infoLabel;
     
     private double gridX;
     private double gridY;
@@ -41,10 +35,7 @@ public class Info extends HBox{
     private AnimationTimer eventLoop;
     
     public Info() {
-        this.coordinateLabel = new Label();
-        this.zoomLabel = new Label();
-        this.modeLabel = new Label();
-        this.hoverEntityLabel = new Label();
+        this.infoLabel = new Label();
     }
     
     public void setupInfoBar(GridController gc){
@@ -52,13 +43,10 @@ public class Info extends HBox{
         
         this.refresh();
         
-        save = new Button("Save");
-        load = new Button("Load");
-        
         Region spacing = new Region();
         HBox.setHgrow(spacing, Priority.ALWAYS);
         
-        this.getChildren().addAll(coordinateLabel, zoomLabel, modeLabel, hoverEntityLabel, spacing, save, load);
+        this.getChildren().addAll(infoLabel);
         this.setSpacing(10);
         
         Insets insets = new Insets(10);
@@ -107,24 +95,35 @@ public class Info extends HBox{
         this.editingMode = gc.getEditingMode();
         this.hoverEntity = gc.getHoverEntity();
         
-        this.coordinateLabel.setText("Coordinates : (" + String.format("%.2f", gridX) + ", " + String.format("%.2f", gridY) + ") ");
-        this.zoomLabel.setText("| Zoom : " + String.format("%.0f", zoom*100) + "% | ");
-        this.hoverEntityLabel.setText("| Hovered Entity : " + hoverEntity + " ");
+        
+        
+//        this.coordinateLabel.setText("Coordinates : (" + String.format("%.2f", gridX) + ", " + String.format("%.2f", gridY) + ") ");
+//        this.zoomLabel.setText("| Zoom : " + String.format("%.0f", zoom*100) + "% | ");
+//        this.hoverEntityLabel.setText("| Hovered Entity : " + hoverEntity + " ");
+        
+        String editingText = "";
         
         switch(editingMode){
             case 0:
-                modeLabel.setText("Editing Mode : Editing Disabled ");
+                editingText = "Editing Mode : Editing Disabled ";
                 break;
             case 1:
-                modeLabel.setText("Editing Mode : Wall Editing ");
+                editingText = "Editing Mode : Wall Editing ";
                 break;
             case 2: 
-                modeLabel.setText("Editing Mode : Entity Editing ");
+                editingText = "Editing Mode : Entity Editing ";
                 break;
             default:
-                modeLabel.setText("Editing Mode : Error ");
+                editingText = "Editing Mode : Error ";
                 break;
         }
+        
+        String infoText = "Coordinates : (" + String.format("%.2f", gridX) + ", " + String.format("%.2f", gridY) + ") "
+                + "| Zoom : " + String.format("%.0f", zoom*100) + "% | "
+                + editingText
+                + "| Hovered Entity : " + hoverEntity + " ";
+        
+        this.infoLabel.setText(infoText);
     }
     
     public void reload(GridController gc){

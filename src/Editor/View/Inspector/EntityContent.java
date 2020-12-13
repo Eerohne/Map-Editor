@@ -4,7 +4,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Editor.View.Metadata;
+package Editor.View.Inspector;
 
 import Editor.Model.Profile.Profile;
 import javafx.geometry.Insets;
@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
  *
  * @author A
  */
-public class EntityContent extends DataView{
+public class EntityContent extends InspectorView{
     private Button openEdit;
     private Button duplicate;
     

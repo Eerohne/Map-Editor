@@ -4,7 +4,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Editor.View.Metadata;
+package Editor.View.Inspector;
 
 import Editor.Controller.ProfileController.WallController;
 import Editor.Model.Profile.Profile;
@@ -30,7 +30,7 @@ import javafx.stage.Stage;
  *
  * @author A
  */
-public class WallContent extends DataView{
+public class WallContent extends InspectorView{
     //Labels Initialization
     private Label nameLbl = new Label("Name : ");
     private Label textureLbl = new Label("Texture : ");

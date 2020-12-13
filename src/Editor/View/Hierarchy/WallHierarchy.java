@@ -7,7 +7,7 @@ package Editor.View.Hierarchy;
 
 import Editor.Controller.ProfileController.WallController;
 import Editor.Main.MapEditor;
-import Editor.View.Metadata.WallContent;
+import Editor.View.Inspector.WallContent;
 import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.WallProfile;
 import java.io.FileInputStream;
