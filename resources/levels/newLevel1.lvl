@@ -4,9 +4,9 @@
       "runspeed": "2.5",
       "classname": "player_simple",
       "color": [
-        0.6666666865348816,
-        0.7215686440467834,
-        0.11372549086809158
+        0.0,
+        0.0,
+        0.0
       ],
       "rotation": "270",
       "name": "player",
@@ -23,9 +23,9 @@
       "onstart": "true",
       "classname": "sound_ambient",
       "color": [
-        0.8627451062202454,
-        0.7176470756530762,
-        0.0941176488995552
+        0.0,
+        0.0,
+        0.0
       ],
       "onlyonce": "false",
       "loop": "true",
@@ -41,9 +41,9 @@
     {
       "classname": "object_decor",
       "color": [
-        0.8392156958580017,
-        0.9607843160629272,
-        0.10196078568696976
+        0.0,
+        0.0,
+        0.0
       ],
       "size": "1.1",
       "texture": "images/sprites/skeleton.gif",
@@ -59,9 +59,9 @@
       "classname": "object_decor",
       "size": "1.0",
       "color": [
-        0.8392156958580017,
-        0.9607843160629272,
-        0.10196078568696976
+        0.0,
+        0.0,
+        0.0
       ],
       "texture": "images/sprites/skeleton.gif",
       "name": "coolSkeleton1",

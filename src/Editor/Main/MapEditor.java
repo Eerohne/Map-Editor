@@ -405,6 +405,8 @@ public class MapEditor extends Application {
                     //mapToLoad.getGc().
                     mapToLoad.loadEntityProfile(mapToLoad.getName(), entityName, color , position[0], position[1]);
                 }
+                
+                System.out.println();
             }
             else{
                 

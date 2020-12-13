@@ -315,25 +315,28 @@ public class NewEntityController{
         FileReader reader = null;
         try {
             JSONParser parser = new JSONParser();
-            reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
-            JSONObject savefile = (JSONObject) parser.parse(reader);
-            JSONArray entities = (JSONArray) savefile.get("entities");
-            JSONObject whatever = new JSONObject();
-            
-            for(int i = 0; i < entities.size(); i++){
-                JSONObject namecheckObj = (JSONObject) entities.get(i);
-                System.out.println(namecheckObj);
-                if(namecheckObj.values().contains(name)){
-                    whatever = namecheckObj;
+            File file = new File(MapEditor.getProject().getSelectedMapPath());
+           // if(file.exists()){
+                reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
+                JSONObject savefile = (JSONObject) parser.parse(reader);
+                JSONArray entities = (JSONArray) savefile.get("entities");
+                JSONObject whatever = new JSONObject();
+
+                for(int i = 0; i < entities.size(); i++){
+                    JSONObject namecheckObj = (JSONObject) entities.get(i);
+                    System.out.println(namecheckObj);
+                    if(namecheckObj.values().contains(name)){
+                        whatever = namecheckObj;
+                    }
                 }
-            }
-            
-            if(whatever.values().contains(name)){
-                result = true;
-            }else{
-                result = false;
-            }
-            
+
+                if(whatever.values().contains(name)){
+                    result = true;
+                }else{
+                    result = false;
+                }
+                reader.close();
+            //}
         } catch (FileNotFoundException ex) {
             Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -341,11 +344,6 @@ public class NewEntityController{
         } catch (ParseException ex) {
             Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                reader.close();
-            } catch (IOException ex) {
-                Logger.getLogger(NewEntityController.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         return result;
     }
