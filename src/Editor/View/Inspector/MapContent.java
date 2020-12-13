@@ -4,7 +4,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Editor.View.Metadata;
+package Editor.View.Inspector;
 
 import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.Profile;
@@ -21,7 +21,7 @@ import javafx.scene.layout.VBox;
  *
  * @author A
  */
-public class MapContent extends DataView{
+public class MapContent extends InspectorView{
     Label nameLabel = new Label("Name : ");
     Label mainMap = new Label("Start Map : ");
     

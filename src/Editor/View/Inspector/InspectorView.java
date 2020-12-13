@@ -4,7 +4,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Editor.View.Metadata;
+package Editor.View.Inspector;
 
 import Editor.Model.Profile.Profile;
 import javafx.geometry.Insets;
@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
  *
  * @author A
  */
-public abstract class DataView extends Pane{
+public abstract class InspectorView extends Pane{
     //Data Interaction Controls
     protected Button save;
     protected Button cancel;
@@ -25,7 +25,7 @@ public abstract class DataView extends Pane{
 
     protected Profile profile;
     
-    public DataView(Profile profile) {
+    public InspectorView(Profile profile) {
         this.profile = profile;
         
         this.cancel = new Button("Cancel");

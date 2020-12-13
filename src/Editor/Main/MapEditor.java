@@ -15,13 +15,13 @@ import Editor.View.Grid.Grid;
 import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Menu.TopMenu;
-import Editor.View.Metadata.DataView;
+import Editor.View.Inspector.InspectorView;
 import Editor.View.Hierarchy.EntityHierarchy;
-import Editor.View.Metadata.WallContent;
+import Editor.View.Inspector.WallContent;
 import Editor.View.Hierarchy.MapHierarchy;
 import Editor.View.Hierarchy.WallHierarchy;
-import Editor.View.Metadata.EntityContent;
-import Editor.View.Metadata.MapContent;
+import Editor.View.Inspector.EntityContent;
+import Editor.View.Inspector.MapContent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -65,7 +65,7 @@ public class MapEditor extends Application {
     static WallHierarchy wallHierarchy; // Hierarchy of Walls
     static MapHierarchy mapHierarchy; //Hierarchy of Maps
     
-    static DataView metadataContent; //Content Wrapper to display in metadata tab
+    static InspectorView inspector; //Content Wrapper to display in metadata tab
     WallContent wallContent; //Compatible with DataView and delivers WallProfile information
     MapContent mapContent;
     EntityContent entityContent;
@@ -96,7 +96,7 @@ public class MapEditor extends Application {
         info = new Info();
         
         
-        BorderPane view = setupView(metadataContent);
+        BorderPane view = setupView(inspector);
 //        project = new ProjectProfile("Test", new MapProfile("map", 10, 10));
         initialize(editorWindow);
    
@@ -142,7 +142,7 @@ public class MapEditor extends Application {
                 grid = project.getSelectedMap().getGridView();
                 gridDisplay.setCenter(grid);
                 setDataView(new WallContent(project.getMainMap().getDefaultWall()));
-                new WallController((WallContent)metadataContent, project.getSelectedMap(), stage);
+                new WallController((WallContent)inspector, project.getSelectedMap(), stage);
                 info.setupInfoBar(project.getSelectedMap().getGc());
                 info.start();
                 //EntityHierarchy
@@ -210,9 +210,9 @@ public class MapEditor extends Application {
      * 
      * @return <code></code>
      */
-    private TabPane setupMetadata(DataView metadata){
+    private TabPane setupInspector(InspectorView metadata){
         dataPane = new ScrollPane(metadata);
-        Tab data = new Tab("Metadata", dataPane);
+        Tab data = new Tab("Inspector", dataPane);
         
         TabPane dataTab =  new TabPane(data);
         dataTab.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -224,8 +224,8 @@ public class MapEditor extends Application {
      * 
      * @return 
      */
-    private VBox setupSideElements(DataView data){
-        return new VBox(setupProperties(), setupMetadata(data));
+    private VBox setupSideElements(InspectorView data){
+        return new VBox(setupProperties(), setupInspector(data));
     }
     
     /**
@@ -243,7 +243,7 @@ public class MapEditor extends Application {
      * 
      * @return 
      */
-    private BorderPane setupView(DataView metadata){
+    private BorderPane setupView(InspectorView metadata){
         BorderPane layout = new BorderPane();
         layout.setCenter(setupCenterElements());
         layout.setTop(setupTopElements());
@@ -290,18 +290,18 @@ public class MapEditor extends Application {
         return project;
     }
     
-    public static DataView getDataView(){
-        return metadataContent;
+    public static InspectorView getDataView(){
+        return inspector;
     }
     
-    public static void setDataView(DataView view){
-        metadataContent = view;
+    public static void setDataView(InspectorView view){
+        inspector = view;
         refreshDataView();
     }
     
     private static void refreshDataView(){
-        dataPane.setContent(metadataContent);
-        metadataContent.reset();
+        dataPane.setContent(inspector);
+        inspector.reset();
     }
     
     public static EntityHierarchy getEntityHierarchy(){
