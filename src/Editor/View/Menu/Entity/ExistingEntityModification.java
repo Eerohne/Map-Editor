@@ -35,7 +35,7 @@ public class ExistingEntityModification extends GridPane{
     public Button addBtn = new Button("add row");
     public Button deleteBtn = new Button("delete selected row");
     public Button removeEntityBtn = new Button("remove entity");
-    public Button editName = new Button("modify name");
+    //public Button editName = new Button("modify name");
     public ComboBox<String> cb = new ComboBox();
     public Button signalBtn = new Button("edit signal");
     
@@ -72,6 +72,13 @@ public class ExistingEntityModification extends GridPane{
         tfBox.setPadding(new Insets(10));
         tfBox.setSpacing(10);
         
+        addBtn.setMaxWidth(Double.MAX_VALUE);
+        deleteBtn.setMaxWidth(Double.MAX_VALUE);
+        removeEntityBtn.setMaxWidth(Double.MAX_VALUE);
+        signalBtn.setMaxWidth(Double.MAX_VALUE);
+        saveEdit.setMaxWidth(Double.MAX_VALUE);
+        cb.setMaxWidth(Double.MAX_VALUE);
+        
         
         vbox.setPadding(new Insets(5));
         vbox.setSpacing(5);
@@ -80,7 +87,7 @@ public class ExistingEntityModification extends GridPane{
         vbox.getChildren().add(propertyText);
         vbox.getChildren().add(valueText);
         vbox.getChildren().add(saveEdit);
-        vbox.getChildren().add(editName);
+        //vbox.getChildren().add(editName);
         vbox.getChildren().add(addBtn);
         vbox.getChildren().add(deleteBtn);
         vbox.getChildren().add(removeEntityBtn);
