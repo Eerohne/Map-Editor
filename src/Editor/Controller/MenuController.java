@@ -88,6 +88,7 @@ public class MenuController{
         List<MenuItem> runItems = run.getItems();
         runItems.get(0).setOnAction(e ->{
             try {
+                save();
                 Stage engine = new Stage();
                 Game game = new Game();
                 engine.initOwner(editorStage);

@@ -40,6 +40,7 @@ public class NewEntityStage{
            System.out.println("Could not find css file: "+pathName);
         }
         
+        newEntity.setResizable(false);
         newEntity.setTitle("Add New Entity");
         newEntity.setScene(scene);
         newEntity.show();

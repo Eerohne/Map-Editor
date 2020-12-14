@@ -45,6 +45,7 @@ public class ExistingEntityStage{
            System.out.println("Could not find css file: "+pathName);
         }
         
+        existingEntity.setResizable(false);
         existingEntity.setScene(scene);
         existingEntity.show();
     }

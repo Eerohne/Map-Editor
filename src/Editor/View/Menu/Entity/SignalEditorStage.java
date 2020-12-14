@@ -41,6 +41,7 @@ public class SignalEditorStage {
            System.out.println("Could not find css file: "+pathName);
         }
         
+        newSignal.setResizable(false);
         newSignal.setTitle("Signal editor");
         newSignal.setScene(s);
         newSignal.show();

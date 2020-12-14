@@ -38,6 +38,7 @@ public class SignalViewerStage {
            System.out.println("Could not find css file: "+pathName);
         }
         
+        newSignal.setResizable(false);
         newSignal.setTitle("Signal Viewer");
         newSignal.setScene(s);
         newSignal.show();

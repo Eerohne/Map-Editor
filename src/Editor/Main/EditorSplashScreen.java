@@ -6,11 +6,17 @@
 package Editor.Main;
 
 import Editor.View.New.NewMap;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 //import Editor.View.New.NewProject;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -33,26 +39,20 @@ public class EditorSplashScreen {
         splashScreenStage.initStyle(StageStyle.UNDECORATED);
         splashScreenStage.initOwner(parent);
         
-        Text optikWelcome = new Text("Welcome To");
-        Text optikName = new Text("Optik Editor");
-        optikWelcome.setFont(Font.font("Fantasy", FontWeight.EXTRA_BOLD, 60));
-        optikName.setFont(Font.font("Fantasy", FontWeight.EXTRA_BOLD, 50));
+        try { 
+           ImageView splash = new ImageView(new Image(new FileInputStream("dev/editor/window/optik_editor_splash.png"), 600, 338, true, false));
+           VBox screen = new VBox(splash);
         
-        Region space = new Region();
-        VBox.setVgrow(space, Priority.ALWAYS);
-        
-        new SplashScreenController(splashScreenStage, parent);
-        
-        VBox splashContent = new VBox(optikWelcome, optikName, space);
-        splashContent.setAlignment(Pos.CENTER);
-        
-        splashContent.setSpacing(10);
-        splashContent.setPadding(new Insets(25, 25, 25, 25));
-        
-        Scene splashScene = new Scene(splashContent, 500, 500);
-        
-        splashScreenStage.setScene(splashScene);
-        splashScreenStage.show();
+            new SplashScreenController(splashScreenStage, parent);
+
+
+            Scene splashScene = new Scene(screen, 600, 338);
+
+            splashScreenStage.setScene(splashScene);
+            splashScreenStage.show();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(EditorSplashScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
 
