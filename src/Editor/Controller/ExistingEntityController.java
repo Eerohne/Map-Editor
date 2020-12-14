@@ -405,7 +405,6 @@ public class ExistingEntityController{
 
             for(int i = 0; i < entities.size(); i++){
                 JSONObject namecheckObj = (JSONObject) entities.get(i);
-                System.out.println(namecheckObj);
                 if(namecheckObj.values().contains(name)){
                     whatever = namecheckObj;
                 }

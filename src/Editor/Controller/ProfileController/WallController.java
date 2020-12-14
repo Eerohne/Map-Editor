@@ -112,7 +112,6 @@ public class WallController extends InspectorController {
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {
                 if(cell.getID() == ((WallContent)content).getWallProfile().getID()){
-                    System.out.println(cell.getID());
                     this.map.getGc().setImg(cell, this.map.getDefaultWall().getDeleteImage());
                     cell.setID(0);
                 }

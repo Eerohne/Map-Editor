@@ -5,6 +5,7 @@
  */
 package Editor.Model.Profile;
 
+import Editor.Controller.MenuController;
 import Editor.Main.MapEditor;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,7 +16,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -40,16 +44,11 @@ public class ProjectProfile extends Profile{
     }
     
     public static boolean openProject(){
-        //File projFile = new File(projectName);
-        
-        ///if(projFile.exists()){
             ProjectProfile p = new ProjectProfile("optik_editor");
             p.loadProject();
             p.setSelectedMap(p.getMaps().get(0));
             MapEditor.setProject(p);
             return true;
-        //} else
-            //return false;
     }
     
     public boolean loadProject(){
@@ -57,8 +56,15 @@ public class ProjectProfile extends Profile{
         File mapDir = new File(levelFolder);
         File[] mapList = mapDir.listFiles();
         
-        for (File file : mapList) {
-            this.loadMap(MapEditor.load(file));
+        if(mapList.length == 0){
+            MapProfile dummy = new MapProfile("Map", 10, 10);
+            this.addMap(dummy, false);
+            this.selectedMap = dummy;
+        }
+        else {
+            for (File file : mapList) {
+                this.loadMap(MapEditor.load(file));
+            }
         }
         
         return true;

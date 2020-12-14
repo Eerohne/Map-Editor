@@ -111,7 +111,6 @@ public class SignalViewerController {
                     
                     for(int i = 0; i < signalsArray.size(); i++){
                         JSONObject signal = (JSONObject) signalsArray.get(i);
-                        System.out.println(signal);
                         
                         if(newValue.equals(signal.get("name"))){
                             viewer.nameTf.setText((String) signal.get("name"));
@@ -125,7 +124,6 @@ public class SignalViewerController {
                                 list.add(tempArr.get(j));
                                 arguments [j] = (String) list.get(j);
                             }
-                            System.out.println(Arrays.toString(arguments));
                             String str = Arrays.toString(arguments);
                             String argumentStr = str.substring(1, str.length() - 1);
                             viewer.arguementTf.setText(argumentStr);
@@ -157,7 +155,6 @@ public class SignalViewerController {
             currentSignal.replace("targetname", viewer.targetNameTf.getText());
             currentSignal.replace("inputname", viewer.inputNameTf.getText());
             currentSignal.replace("arguments", viewer.arguementTf.getText().split(","));
-            System.out.println(currentSignal);
             signalArray.add(index, currentSignal);
             signalArray.remove(index + 1);
             
