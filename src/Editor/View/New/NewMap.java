@@ -92,7 +92,6 @@ class NewMapController{
             MapProfile map = new MapProfile(nm.getMapNameField().getText(), Integer.parseInt(nm.getGridWidth().getText()), Integer.parseInt(nm.getGridLength().getText()));
             MapEditor.getProject().addMap(map, true);
             
-            //File mapFile = new File(MapEditor.getProject().getSelectedMapPath());
             try {
                 MenuController.save();
             } catch (ParseException ex) {
