@@ -8,7 +8,7 @@ package Editor.Controller;
 import Editor.Main.MapEditor;
 import Editor.Model.Profile.WallProfile;
 import Editor.View.New.NewWallProfile;
-import Editor.View.Help.Help;
+import Editor.View.Help.HelpView;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Hierarchy.WallHierarchy;
 import Editor.View.New.NewEntityStage;
@@ -29,7 +29,7 @@ public class ShortcutController{
 
     public ShortcutController(ShortcutBar shortcutBar, Stage owner, WallHierarchy wallList) {
         shortcutBar.getHelp().setOnAction(e -> {
-            new Help(owner);
+            new HelpView(owner);
         });
         
         shortcutBar.getRunShort().setOnAction(e -> {

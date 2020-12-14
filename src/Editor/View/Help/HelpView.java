@@ -17,9 +17,9 @@ import javafx.stage.Stage;
  *
  * @author A
  */
-public class Help{
+public class HelpView{
 
-    public Help(Stage owner) {
+    public HelpView(Stage owner) {
         WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
 

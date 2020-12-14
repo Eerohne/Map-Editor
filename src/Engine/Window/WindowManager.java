@@ -245,7 +245,9 @@ public class WindowManager extends AnchorPane{
                 }
             });
             
+            
             //render quality setting
+            Renderer.setResolution(Settings.getInt("r_quality"));
             Label qualitySlidderLabel = new Label("render quality : " + Settings.getFloat("r_quality"));
             Slider qualitySlider = new Slider(2, 10, Settings.getFloat("r_quality"));
             qualitySlider.setMajorTickUnit(1);
@@ -263,6 +265,26 @@ public class WindowManager extends AnchorPane{
             });
             HBox renderQualityBox = new HBox();
             renderQualityBox.getChildren().addAll(qualitySlidderLabel, qualitySlider);
+            
+            //fov setting
+            Renderer.setFov(Settings.getFloat("r_fov"));
+            Label fovSlidderLabel = new Label("field of view : " + Settings.getFloat("r_fov"));
+            Slider fovSlider = new Slider(60, 120, Settings.getFloat("r_fov"));
+            fovSlider.setMajorTickUnit(1);
+            fovSlider.setBlockIncrement(1);
+            fovSlider.setMinorTickCount(0);
+            fovSlider.setSnapToTicks(true);
+            fovSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val) {
+                    String currentValue = String.valueOf(new_val.intValue());
+                    fovSlidderLabel.setText("field of view : "+ String.valueOf(new_val.intValue()));
+                    Settings.save("r_fov", currentValue);
+                    Renderer.setFov(Settings.getInt("r_fov"));
+            }
+            });
+            HBox fovBox = new HBox();
+            fovBox.getChildren().addAll(fovSlidderLabel, fovSlider);
 
             //define what happens when we apply the settings
             applyVideo.setOnAction(new EventHandler<ActionEvent>() {
@@ -326,7 +348,7 @@ public class WindowManager extends AnchorPane{
             buttonBar.setSpacing(30);
             buttonBar.getChildren().addAll(applyVideo, returnButton);
 
-            videoOptionBox.getChildren().addAll(screenSizeBox, fullscreenCheckbox, renderQualityBox, buttonBar);
+            videoOptionBox.getChildren().addAll(screenSizeBox, fullscreenCheckbox, renderQualityBox, fovBox, buttonBar);
             videoOptionBox.setVisible(false);
             videoOptionBox.setManaged(false);
 
