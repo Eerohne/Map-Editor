@@ -495,12 +495,12 @@
         0.0,
         0.0
       ],
-      "texture": "images/sprites/lamppost.png",
+      "texture": "images/sprites/skeleton_dead.png",
       "name": "skeleton",
       "active": "TRUE",
       "position": [
-        8.5,
-        4.0
+        10.79,
+        1.21
       ],
       "radius": "0.0",
       "height": "0.2"
@@ -629,6 +629,215 @@
         1.2
       ],
       "radius": "0.5"
+    },
+    {
+      "signals": [],
+      "classname": "object_decor",
+      "size": "0.5",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "texture": "images/sprites/skeleton_dead.png",
+      "name": "skeleton1",
+      "active": "TRUE",
+      "position": [
+        9.75,
+        12.71
+      ],
+      "radius": "0.0",
+      "height": "0.2"
+    },
+    {
+      "signals": [],
+      "classname": "object_decor",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": "0.5",
+      "texture": "images/sprites/chain1.png",
+      "name": "chain1_",
+      "active": "TRUE",
+      "position": [
+        5.654444715711806,
+        10.965555487738717
+      ],
+      "radius": "0.0",
+      "height": "0.75"
+    },
+    {
+      "signals": [],
+      "classname": "object_decor",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": "0.5",
+      "texture": "images/sprites/chain1.png",
+      "name": "chain1_1",
+      "active": "TRUE",
+      "position": [
+        8.17,
+        11.69
+      ],
+      "radius": "0.0",
+      "height": "0.75"
+    },
+    {
+      "signals": [],
+      "classname": "object_decor",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": "0.5",
+      "texture": "images/sprites/chain1.png",
+      "name": "chain1_11",
+      "active": "TRUE",
+      "position": [
+        9.69,
+        10.53
+      ],
+      "radius": "0.0",
+      "height": "0.75"
+    },
+    {
+      "signals": [],
+      "classname": "object_decor",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": "0.5",
+      "texture": "images/sprites/chain2.png",
+      "name": "chain2_",
+      "active": "TRUE",
+      "position": [
+        1.79,
+        11.21
+      ],
+      "radius": "0.0",
+      "height": "0.75"
+    },
+    {
+      "signals": [],
+      "classname": "object_decor",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": "0.7",
+      "texture": "images/sprites/cage.png",
+      "name": "cage_",
+      "active": "TRUE",
+      "position": [
+        3.63,
+        12.67
+      ],
+      "radius": "0.0",
+      "height": "0.6"
+    },
+    {
+      "signals": [],
+      "classname": "object_decor",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": "0.5",
+      "texture": "images/sprites/chain2.png",
+      "name": "chain2_1",
+      "active": "TRUE",
+      "position": [
+        6.01,
+        4.05
+      ],
+      "radius": "0.0",
+      "height": "0.75"
+    },
+    {
+      "signals": [],
+      "classname": "object_decor",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": "0.5",
+      "texture": "images/sprites/chain2.png",
+      "name": "chain2_11",
+      "active": "TRUE",
+      "position": [
+        7.01,
+        6.59
+      ],
+      "radius": "0.0",
+      "height": "0.75"
+    },
+    {
+      "signals": [],
+      "classname": "object_decor",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": "0.5",
+      "texture": "images/sprites/chain2.png",
+      "name": "chain2_111",
+      "active": "TRUE",
+      "position": [
+        8.97,
+        3.89
+      ],
+      "radius": "0.0",
+      "height": "0.75"
+    },
+    {
+      "signals": [],
+      "classname": "object_decor",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": "0.5",
+      "texture": "images/sprites/chain1.png",
+      "name": "chain1_111",
+      "active": "TRUE",
+      "position": [
+        9.83,
+        4.75
+      ],
+      "radius": "0.0",
+      "height": "0.75"
+    },
+    {
+      "signals": [],
+      "classname": "object_decor",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": "0.5",
+      "texture": "images/sprites/chain1.png",
+      "name": "chain1_1111",
+      "active": "TRUE",
+      "position": [
+        7.43,
+        1.43
+      ],
+      "radius": "0.0",
+      "height": "0.75"
     }
   ],
   "grid": {
@@ -649,170 +858,170 @@
       ],
       [
         1,
-        6,
-        6,
+        7,
+        7,
         2,
         1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
         1
       ],
       [
         1,
-        6,
-        6,
-        6,
+        7,
+        7,
+        7,
         1,
-        0,
+        8,
         1,
-        0,
+        8,
         1,
-        0,
-        0,
+        8,
+        8,
         1
       ],
       [
         1,
-        6,
-        6,
-        6,
+        7,
+        7,
+        7,
         1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
         1
       ],
       [
         1,
-        6,
+        7,
         2,
-        6,
-        6,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
+        7,
+        7,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
         1
       ],
       [
         1,
-        6,
-        6,
-        6,
+        7,
+        7,
+        7,
         1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
         1
       ],
       [
         1,
-        6,
-        6,
-        6,
+        7,
+        7,
+        7,
         1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
         1
       ],
       [
         1,
-        6,
-        6,
-        6,
+        7,
+        7,
+        7,
         1,
-        0,
+        8,
         1,
-        0,
+        8,
         1,
-        0,
-        0,
+        8,
+        8,
         1
       ],
       [
         1,
-        6,
-        6,
-        3,
+        7,
+        7,
+        7,
         1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
         1
       ],
       [
         1,
-        6,
-        3,
-        3,
+        7,
         1,
         1,
         1,
         1,
-        1,
+        2,
+        2,
+        2,
         1,
         1,
         1
       ],
       [
         1,
-        6,
-        6,
-        3,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
+        7,
+        7,
+        7,
+        1,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
         1
       ],
       [
         1,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
         1
       ],
       [
         1,
-        6,
-        6,
-        3,
-        6,
-        6,
-        3,
-        3,
-        6,
-        6,
-        3,
+        7,
+        7,
+        7,
+        2,
+        7,
+        1,
+        2,
+        7,
+        7,
+        2,
         1
       ],
       [
@@ -867,6 +1076,18 @@
         "texture": "images/textures/dev1.png",
         "name": "dev1.png",
         "id": "6"
+      },
+      {
+        "flag": "0",
+        "texture": "images/textures/floor_tiles.png",
+        "name": "floor_tiles.png",
+        "id": "7"
+      },
+      {
+        "flag": "0",
+        "texture": "images/textures/brick.png",
+        "name": "brick.png",
+        "id": "8"
       }
     ],
     "height": "14"
