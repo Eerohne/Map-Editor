@@ -333,7 +333,7 @@ public class SignalEditorController {
                 
                 FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath());
                 gson.toJson(savefile, writer);
-                writer.close();
+                writer.close();                
                 
                 
                 

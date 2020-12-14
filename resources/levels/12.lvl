@@ -41,6 +41,72 @@
     },
     {
       "22": "2",
+      "signals": [
+        {
+          "targetname": "test",
+          "name": "test",
+          "arguments": [
+            "test"
+          ],
+          "inputname": "test"
+        },
+        {
+          "targetname": "",
+          "name": "",
+          "arguments": [
+            ""
+          ],
+          "inputname": ""
+        },
+        {
+          "targetname": "",
+          "name": "",
+          "arguments": [
+            ""
+          ],
+          "inputname": ""
+        },
+        {
+          "targetname": "",
+          "name": "",
+          "arguments": [
+            ""
+          ],
+          "inputname": ""
+        },
+        {
+          "targetname": "test",
+          "name": "test",
+          "arguments": [
+            "test"
+          ],
+          "inputname": "test"
+        },
+        {
+          "targetname": "test",
+          "name": "test",
+          "arguments": [
+            "test"
+          ],
+          "inputname": "test"
+        },
+        {
+          "targetname": "test",
+          "name": "test",
+          "arguments": [
+            "test"
+          ],
+          "inputname": "test"
+        },
+        {
+          "targetname": "2",
+          "name": "1",
+          "arguments": [
+            "4"
+          ],
+          "inputname": "3"
+        }
+      ],
       "classname": "123",
       "color": [
         0.8513847589492798,
