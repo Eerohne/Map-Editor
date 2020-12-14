@@ -27,7 +27,10 @@ public class NewEntityStage{
         NewEntity view = new NewEntity();
         NewEntityController nec = new NewEntityController(new EntityModel(), view);
         nec.setData();
-        Scene scene = new Scene(view, 650, 600);
+        
+        
+        Scene scene = new Scene(view, 700, 600);
+        view.tableBox.prefWidthProperty().bind(scene.widthProperty().multiply(0.7));
         String pathName = "dev/editor/style/style.css" ;
         File file = new File(pathName);
         

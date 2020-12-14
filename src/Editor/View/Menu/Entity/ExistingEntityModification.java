@@ -31,9 +31,9 @@ public class ExistingEntityModification extends GridPane{
     public TextField propertyText = new TextField();
     public TextField valueText = new TextField();
     //public Button nameEdit = new Button("edit the name");
-    public Button switchBtn = new Button("open entity creation window");
+    public Button switchBtn = new Button("entity creation window");
     public Button addBtn = new Button("add row");
-    public Button deleteBtn = new Button("delete selected row");
+    public Button deleteBtn = new Button("delete row");
     public Button removeEntityBtn = new Button("remove entity");
     //public Button editName = new Button("modify name");
     public ComboBox<String> cb = new ComboBox();
