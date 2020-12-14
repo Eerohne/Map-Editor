@@ -1,5 +1,0 @@
-New Project System
-Help Menu
-Fix Mouse Drag Leak
-Fix Scale Corrector
-Fix item in Hierarchy dynamic selection
