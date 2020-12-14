@@ -285,8 +285,4 @@ public class MenuController{
         }
         
     }
-    
-//    private void load(){
-//        load(MapEditor.getProject().getSelectedMapPath());
-//    } 
 }

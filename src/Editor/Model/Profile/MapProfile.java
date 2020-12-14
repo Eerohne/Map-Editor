@@ -136,16 +136,6 @@ public class MapProfile extends Profile{
         wall.setImg(img);
     }
     
-//    public int getWall(Image img){
-//        for (Map.Entry<Integer, WallProfile> entry : wallMap.entrySet()) {
-//            if (entry.getValue().getImage().equals(img)) {
-//                return entry.getKey();
-//            }
-//        }
-//        return -1;
-//    }
-//    
-//    
     public void save(){
 
     }
@@ -200,14 +190,6 @@ public class MapProfile extends Profile{
     public void setName(String name) {
         this.name = name;
     }
-
-//    public String getMapLocation() {
-//        return mapLocation;
-//    }
-//
-//    public void setMapLocation(String mapLocation) {
-//        this.mapLocation = mapLocation;
-//    }
 
     public Grid getGridView() {
         return gridView;

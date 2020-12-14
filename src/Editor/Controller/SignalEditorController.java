@@ -62,10 +62,6 @@ public class SignalEditorController {
             if(entity.keySet().contains("signal")){
                 signalEntiteis = (JSONArray) entity.get("signal");
                 if(signalEntiteis.size() != 0){
-//                    JSONObject signalEntity = new JSONObject();
-//                    for(int j = 0; j < signalEntiteis.size(); j++){
-//                        signalEntity = (JSONObject) signalEntiteis.get(j);
-//                    }
                      view.cb.getItems().add(entity.get("name").toString());
                 }
             }
@@ -85,14 +81,11 @@ public class SignalEditorController {
                     JSONObject allEntities = (JSONObject) parser.parse(reader);
                     JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
                     String name = (String) view.cb.getValue();
-                    //System.out.println(name);
-                    //String key = name.substring(1, name.length()-1);
                     JSONArray signals = new JSONArray();
                     
                     // getting the entity that has signal 
                     for(int i = 0; i < entitiesArray.size(); i++){
                         JSONObject signalEntity = (JSONObject) entitiesArray.get(i);
-                        //System.out.println(signalEntity);
                         if(signalEntity.values().contains(name)){
                             signals = (JSONArray) signalEntity.get("signal");
                         }
