@@ -5,6 +5,7 @@
  */
 package Editor.Model.Profile;
 
+import Editor.Controller.MenuController;
 import Editor.Main.MapEditor;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,7 +16,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -53,7 +57,9 @@ public class ProjectProfile extends Profile{
         File[] mapList = mapDir.listFiles();
         
         if(mapList.length == 0){
-            this.addMap(new MapProfile("Map", 10, 10), true);
+            MapProfile dummy = new MapProfile("Map", 10, 10);
+            this.addMap(dummy, false);
+            this.selectedMap = dummy;
         }
         else {
             for (File file : mapList) {
