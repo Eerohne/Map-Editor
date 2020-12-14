@@ -95,12 +95,6 @@ public class Info extends HBox{
         this.editingMode = gc.getEditingMode();
         this.hoverEntity = gc.getHoverEntity();
         
-        
-        
-//        this.coordinateLabel.setText("Coordinates : (" + String.format("%.2f", gridX) + ", " + String.format("%.2f", gridY) + ") ");
-//        this.zoomLabel.setText("| Zoom : " + String.format("%.0f", zoom*100) + "% | ");
-//        this.hoverEntityLabel.setText("| Hovered Entity : " + hoverEntity + " ");
-        
         String editingText = "";
         
         switch(editingMode){

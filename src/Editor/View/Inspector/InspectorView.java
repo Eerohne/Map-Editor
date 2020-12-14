@@ -53,16 +53,6 @@ public abstract class InspectorView extends Pane{
         return buttons;
     }
     
-//    protected HBox getButtonForEntities(Insets padding){
-//        save.setText("Duplicate");
-//        save.setDisable(false);
-//        HBox buttons = new HBox(save, delete);
-//        buttons.setPadding(padding);
-//        buttons.setSpacing(5);
-//        
-//        return new HBox();
-//    }
-    
     public Profile getProfile() {
         return profile;
     }

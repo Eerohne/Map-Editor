@@ -72,8 +72,5 @@ public class EntityHierarchy extends Hierarchy{
         this.map = map;
         this.refresh();
     }
-//    public void setEntityProfile(EntityProfile profile) {
-//        this.profile = profile;
-//    }
     
 }

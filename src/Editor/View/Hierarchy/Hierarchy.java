@@ -40,7 +40,5 @@ public abstract class Hierarchy extends ScrollPane{
         selected.setBackground(Background.EMPTY);
         selected = box;
         selected.setBackground(new Background(new BackgroundFill(Color.CADETBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-//        MapEditor.project.getSelectedMap().getGc().setEditingMode(mode);
-        //System.out.println(mode);
     }
 }

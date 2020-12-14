@@ -126,9 +126,6 @@ public class GridController{
             }
         });
         
-//        grid.setOnMouseEntered(e -> {grid.setStyle(cssLayout);});
-//        grid.setOnMouseExited(e -> {grid.setStyle(null);});
-        
         //Wall Placement when Mouse Dragged
         grid.setOnMouseDragged(new GridEvent());
     }
@@ -206,7 +203,6 @@ public class GridController{
     }
     
     public EntityProfile getSelectedEntityProfile() {
-        //this.selectedProfile  = new EntityProfile("Test", 1);//To remove
         return (EntityProfile)selectedProfile;
     }
 
@@ -239,7 +235,6 @@ public class GridController{
     }
     
     private void placeWall(){
-        //Fix Mouse Drag Leak        
         try {
             if(!(mouseX < 0 || mouseY < 0 || mouseX > getPaneBounds().getMaxX() || mouseY > getPaneBounds().getMaxY())){
                 Cell c = this.grid.getCells()[(int)getGridX()][(int)getGridY()];
@@ -285,12 +280,9 @@ public class GridController{
         Scale scale = new Scale(scaleFactor, scaleFactor);
         
         grid.setCellSize(scaleFactor);
-        //Fix Scale Corrector
-        //Translate scaleCorrector = new Translate((getLocalX() - aX*grid.getCellSize()), (getLocalY() - aY*grid.getCellSize()));
 
         for (Cell[] cells : grid.getCells()) {
             for (Cell cell : cells) {
-                //cell.addTranslationVector(scaleCorrector);
                 cell.addScaleMatrix(scale);
             }
         }
