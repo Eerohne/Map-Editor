@@ -284,7 +284,7 @@ public class SignalEditorController {
                 JSONArray signals = new JSONArray(); // signal array of the current entity 
                 JSONObject newSignal = new JSONObject(); // signal to be added
                 String name = (String) view.cb.getValue();
-                
+                //
                 for(int i = 0; i < entities.size(); i++){
                     JSONObject tempObj = (JSONObject) entities.get(i);
                     if(tempObj.values().contains(name) && tempObj.containsKey("signals")){
