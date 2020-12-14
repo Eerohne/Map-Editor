@@ -19,40 +19,6 @@
       "height": "0.0"
     },
     {
-      "signals": [
-        {
-          "targetname": "test",
-          "name": "tes",
-          "arguments": [
-            "test"
-          ],
-          "inputname": "test"
-        },
-        {
-          "targetname": "test",
-          "name": "tes",
-          "arguments": [
-            "test"
-          ],
-          "inputname": "test"
-        },
-        {
-          "targetname": "test",
-          "name": "tes",
-          "arguments": [
-            "test"
-          ],
-          "inputname": "test"
-        },
-        {
-          "targetname": "test",
-          "name": "tes",
-          "arguments": [
-            "test"
-          ],
-          "inputname": "test"
-        }
-      ],
       "classname": "object_decor",
       "color": [
         0.9226025342941284,
@@ -664,64 +630,6 @@
       "height": "0.6"
     },
     {
-      "signals": [
-        {
-          "targetname": "test",
-          "name": "test",
-          "arguments": [
-            "tewsr"
-          ],
-          "inputname": "test"
-        },
-        {
-          "targetname": "test",
-          "name": "test",
-          "arguments": [
-            "tewsr"
-          ],
-          "inputname": "test"
-        },
-        {
-          "targetname": "terst",
-          "name": "test",
-          "arguments": [
-            "test"
-          ],
-          "inputname": "test"
-        },
-        {
-          "targetname": "terst",
-          "name": "test",
-          "arguments": [
-            "test"
-          ],
-          "inputname": "test"
-        },
-        {
-          "targetname": "terst",
-          "name": "test",
-          "arguments": [
-            "test"
-          ],
-          "inputname": "test"
-        },
-        {
-          "targetname": "terst",
-          "name": "test",
-          "arguments": [
-            "test"
-          ],
-          "inputname": "test"
-        },
-        {
-          "targetname": "terst",
-          "name": "test",
-          "arguments": [
-            "test"
-          ],
-          "inputname": "test"
-        }
-      ],
       "classname": "object_decor",
       "color": [
         0.9226025342941284,
@@ -830,38 +738,6 @@
           "name": "OnTriggerEnter",
           "arguments": [],
           "inputname": "load"
-        },
-        {
-          "targetname": "test",
-          "name": "test",
-          "arguments": [
-            "tewsr"
-          ],
-          "inputname": "test"
-        },
-        {
-          "targetname": "test",
-          "name": "test",
-          "arguments": [
-            "tewsr"
-          ],
-          "inputname": "test"
-        },
-        {
-          "targetname": "test",
-          "name": "test",
-          "arguments": [
-            "tewsr"
-          ],
-          "inputname": "test"
-        },
-        {
-          "targetname": "test",
-          "name": "test",
-          "arguments": [
-            "tewsr"
-          ],
-          "inputname": "test"
         }
       ],
       "classname": "object_trigger",
