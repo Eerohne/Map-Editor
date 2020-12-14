@@ -1,0 +1,874 @@
+{
+  "entities": [
+    {
+      "zrange": "0.4",
+      "runspeed": "2.5",
+      "zfrequency": "1",
+      "classname": "player_simple",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": "270",
+      "name": "player1",
+      "active": "TRUE",
+      "rotationspeed": "10",
+      "position": [
+        1.5,
+        2.0
+      ],
+      "walkspeed": "1.5",
+      "height": "0.0"
+    },
+    {
+      "fogcolor": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "foggy": "TRUE",
+      "skycolor": [
+        0.0,
+        0.5,
+        0.6
+      ],
+      "fog_near_distance": "1",
+      "has_sky": "false",
+      "classname": "environment",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "name": "env",
+      "active": "TRUE",
+      "fog_far_distance": "3",
+      "position": [
+        0.0,
+        0.0
+      ],
+      "wallheight": "1.0"
+    },
+    {
+      "onstart": "TRUE",
+      "signals": [
+        {
+          "targetname": "manager",
+          "name": "OnTimerEnded",
+          "arguments": [],
+          "inputname": "gameLost"
+        },
+        {
+          "targetname": "manager",
+          "name": "OnSecondPassed",
+          "arguments": [],
+          "inputname": "secondPassed"
+        }
+      ],
+      "classname": "logic_timer",
+      "canreset": "false",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "name": "timer",
+      "active": "TRUE",
+      "position": [
+        1.0,
+        1.0
+      ],
+      "maxtime": "100"
+    },
+    {
+      "startingvalue": "0",
+      "maxvalue": "3",
+      "signals": [
+        {
+          "targetname": "manager",
+          "name": "OnValueReached",
+          "arguments": [],
+          "inputname": "allCoinsCollected"
+        },
+        {
+          "targetname": "manager",
+          "name": "OnValueChanged",
+          "arguments": [],
+          "inputname": "coinCollected"
+        }
+      ],
+      "classname": "logic_counter",
+      "canreset": "FALSE",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "name": "counter",
+      "active": "TRUE",
+      "position": [
+        3.1,
+        7.0
+      ],
+      "minvalue": "-1"
+    },
+    {
+      "losemessage": "you have surrounded yourself to the darkness",
+      "signals": [
+        {
+          "targetname": "ui",
+          "name": "OnCoinCollected",
+          "arguments": [],
+          "inputname": "setCoinText"
+        },
+        {
+          "targetname": "ui",
+          "name": "OnAllCoinsCollected",
+          "arguments": [
+            "Now reach the door before the time ends",
+            "-fx-text-fill: rgba(255, 255, 255, 255);"
+          ],
+          "inputname": "setmessageText"
+        },
+        {
+          "targetname": "ui",
+          "name": "OnSecondPassed",
+          "arguments": [],
+          "inputname": "setTimeText"
+        },
+        {
+          "targetname": "ui",
+          "name": "OnDoorClosed",
+          "arguments": [
+            "Collect all coins and this door will open",
+            "-fx-text-fill: rgba(255, 255, 255, 255);"
+          ],
+          "inputname": "setmessageText"
+        },
+        {
+          "targetname": "winSequence",
+          "name": "OnWin",
+          "arguments": [],
+          "inputname": "activate"
+        },
+        {
+          "targetname": "loseSequence",
+          "name": "OnLost",
+          "arguments": [],
+          "inputname": "activate"
+        }
+      ],
+      "classname": "logic_gamemanager",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "name": "manager",
+      "active": "TRUE",
+      "winmessage": "you have survived the darkness to live another day",
+      "position": [
+        3.1,
+        7.0
+      ]
+    },
+    {
+      "signals": [],
+      "classname": "ui_text",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "timetext": "Time Left : 01:00",
+      "cointext": "Coins Left : 3",
+      "name": "ui",
+      "active": "TRUE",
+      "position": [
+        0.0,
+        0.0
+      ],
+      "opacity": "1"
+    },
+    {
+      "signals": [],
+      "classname": "logic_messenger",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "name": "messenger1",
+      "active": "TRUE",
+      "position": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "volume": "0.2",
+      "onstart": "true",
+      "signals": [],
+      "classname": "sound_ambient",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "onlyonce": "false",
+      "loop": "true",
+      "name": "ambient",
+      "channel": "game",
+      "active": "TRUE",
+      "position": [
+        1.7,
+        7.0
+      ],
+      "audiopath": "sounds/fx/ambient.wav"
+    },
+    {
+      "volume": "1.0",
+      "onstart": "false",
+      "signals": [],
+      "classname": "sound_ambient",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "onlyonce": "false",
+      "loop": "false",
+      "name": "coinSound",
+      "channel": "game",
+      "active": "TRUE",
+      "position": [
+        1.8,
+        7.5
+      ],
+      "audiopath": "sounds/fx/coin.wav"
+    },
+    {
+      "volume": "1.0",
+      "onstart": "false",
+      "signals": [],
+      "classname": "sound_ambient",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "onlyonce": "false",
+      "loop": "false",
+      "name": "dooropensound",
+      "channel": "game",
+      "active": "TRUE",
+      "position": [
+        1.8,
+        7.5
+      ],
+      "audiopath": "sounds/fx/door_open.wav"
+    },
+    {
+      "volume": "1.0",
+      "onstart": "false",
+      "signals": [],
+      "classname": "sound_ambient",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "onlyonce": "false",
+      "loop": "false",
+      "name": "doorclosesound",
+      "channel": "game",
+      "active": "TRUE",
+      "position": [
+        1.8,
+        7.5
+      ],
+      "audiopath": "sounds/fx/door_close.wav"
+    },
+    {
+      "volume": "1.0",
+      "onstart": "false",
+      "signals": [],
+      "classname": "sound_ambient",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "onlyonce": "false",
+      "loop": "false",
+      "name": "loosesound",
+      "channel": "game",
+      "active": "TRUE",
+      "position": [
+        1.8,
+        7.5
+      ],
+      "audiopath": "sounds/fx/loose.wav"
+    },
+    {
+      "onstart": "true",
+      "signals": [
+        {
+          "targetname": "ui",
+          "name": "event1",
+          "arguments": [
+            "Escape before the time runs out",
+            "-fx-text-fill: rgba(255, 255, 255, 255);",
+            "1.0"
+          ],
+          "inputname": "setmessageText"
+        },
+        {
+          "targetname": "dooropensound",
+          "name": "event2",
+          "arguments": [
+            "0.3"
+          ],
+          "inputname": "play"
+        },
+        {
+          "targetname": "ui",
+          "name": "event3",
+          "arguments": [
+            "1.0"
+          ],
+          "inputname": "fadein"
+        },
+        {
+          "targetname": "ambient",
+          "name": "event4",
+          "arguments": [
+            "0.0"
+          ],
+          "inputname": "fadein"
+        }
+      ],
+      "classname": "logic_sequence",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "name": "startSequence",
+      "active": "TRUE",
+      "position": [
+        1.7,
+        7.0
+      ]
+    },
+    {
+      "onstart": "false",
+      "signals": [
+        {
+          "targetname": "timer",
+          "name": "event1",
+          "arguments": [],
+          "inputname": "stop"
+        },
+        {
+          "targetname": "player1",
+          "name": "event2",
+          "arguments": [
+            "0.0"
+          ],
+          "inputname": "disable"
+        },
+        {
+          "targetname": "ui",
+          "name": "event3",
+          "arguments": [
+            "0.0"
+          ],
+          "inputname": "fadeout"
+        },
+        {
+          "targetname": "ambient",
+          "name": "event4",
+          "arguments": [
+            "0.0"
+          ],
+          "inputname": "fadeout"
+        },
+        {
+          "targetname": "doorclosesound",
+          "name": "event5",
+          "arguments": [
+            "0.5"
+          ],
+          "inputname": "play"
+        },
+        {
+          "targetname": "ui",
+          "name": "event6",
+          "arguments": [
+            "You escaped the daungeon to die another day...\nPress Q to restart",
+            "-fx-text-fill: rgba(0, 255, 0, 255);",
+            "2.0"
+          ],
+          "inputname": "setmessageText"
+        }
+      ],
+      "classname": "logic_sequence",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "name": "winSequence",
+      "active": "TRUE",
+      "position": [
+        1.7,
+        7.0
+      ]
+    },
+    {
+      "onstart": "false",
+      "signals": [
+        {
+          "targetname": "player1",
+          "name": "event2",
+          "arguments": [
+            "0.0"
+          ],
+          "inputname": "disable"
+        },
+        {
+          "targetname": "ui",
+          "name": "event3",
+          "arguments": [
+            "0.0"
+          ],
+          "inputname": "fadeout"
+        },
+        {
+          "targetname": "ambient",
+          "name": "event4",
+          "arguments": [
+            "0.0"
+          ],
+          "inputname": "fadeout"
+        },
+        {
+          "targetname": "loosesound",
+          "name": "event5",
+          "arguments": [
+            "0.5"
+          ],
+          "inputname": "play"
+        },
+        {
+          "targetname": "ui",
+          "name": "event6",
+          "arguments": [
+            "You were consumed by the darkness...\nPress Q to restart",
+            "-fx-text-fill: rgba(255, 0, 0, 255);",
+            "1.5"
+          ],
+          "inputname": "setmessageText"
+        }
+      ],
+      "classname": "logic_sequence",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "name": "loseSequence",
+      "active": "TRUE",
+      "position": [
+        1.7,
+        7.0
+      ]
+    },
+    {
+      "signals": [],
+      "classname": "object_decor",
+      "size": "0.5",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "texture": "images/sprites/lamppost.png",
+      "name": "skeleton",
+      "active": "TRUE",
+      "position": [
+        8.5,
+        4.0
+      ],
+      "radius": "0.0",
+      "height": "0.2"
+    },
+    {
+      "signals": [
+        {
+          "targetname": "coinSound",
+          "name": "OnCollected",
+          "arguments": [],
+          "inputname": "play"
+        },
+        {
+          "targetname": "counter",
+          "name": "OnCollected",
+          "arguments": [],
+          "inputname": "increment"
+        }
+      ],
+      "classname": "object_collectible",
+      "size": "0.2",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "texture": "images/sprites/coin.png",
+      "name": "coin1",
+      "active": "TRUE",
+      "position": [
+        10.0,
+        2.5
+      ],
+      "radius": "0.5",
+      "height": "0.4"
+    },
+    {
+      "signals": [
+        {
+          "targetname": "coinSound",
+          "name": "OnCollected",
+          "arguments": [],
+          "inputname": "play"
+        },
+        {
+          "targetname": "counter",
+          "name": "OnCollected",
+          "arguments": [],
+          "inputname": "increment"
+        }
+      ],
+      "classname": "object_collectible",
+      "size": "0.2",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "texture": "images/sprites/coin.png",
+      "name": "coin2",
+      "active": "TRUE",
+      "position": [
+        7.0,
+        8.5
+      ],
+      "radius": "0.5",
+      "height": "0.4"
+    },
+    {
+      "signals": [
+        {
+          "targetname": "coinSound",
+          "name": "OnCollected",
+          "arguments": [],
+          "inputname": "play"
+        },
+        {
+          "targetname": "counter",
+          "name": "OnCollected",
+          "arguments": [],
+          "inputname": "increment"
+        }
+      ],
+      "classname": "object_collectible",
+      "size": "0.2",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "texture": "images/sprites/coin.png",
+      "name": "coin3",
+      "active": "TRUE",
+      "position": [
+        8.5,
+        12.5
+      ],
+      "radius": "0.5",
+      "height": "0.4"
+    },
+    {
+      "signals": [
+        {
+          "targetname": "manager",
+          "name": "OnTriggerEnter",
+          "arguments": [],
+          "inputname": "openDoor"
+        },
+        {
+          "targetname": "manager",
+          "name": "OnTriggerExit",
+          "arguments": [],
+          "inputname": "closeDoor"
+        }
+      ],
+      "classname": "object_trigger",
+      "color": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "name": "doorTrigger",
+      "active": "TRUE",
+      "position": [
+        1.5,
+        1.2
+      ],
+      "radius": "0.5"
+    }
+  ],
+  "grid": {
+    "data": [
+      [
+        1,
+        5,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        6,
+        6,
+        2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        6,
+        6,
+        6,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        6,
+        6,
+        6,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        6,
+        2,
+        6,
+        6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        6,
+        6,
+        6,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        6,
+        6,
+        6,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        6,
+        6,
+        6,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        6,
+        6,
+        3,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        6,
+        3,
+        3,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        6,
+        6,
+        3,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        1
+      ],
+      [
+        1,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        1
+      ],
+      [
+        1,
+        6,
+        6,
+        3,
+        6,
+        6,
+        3,
+        3,
+        6,
+        6,
+        3,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    ],
+    "width": "12",
+    "palette": [
+      {
+        "flag": "1",
+        "texture": "images/textures/grey_brick.png",
+        "name": "grey_brick.png",
+        "id": "1"
+      },
+      {
+        "flag": "1",
+        "texture": "images/textures/grey_brick_vines.png",
+        "name": "grey_brick_vines.png",
+        "id": "2"
+      },
+      {
+        "flag": "1",
+        "texture": "images/textures/dev1.png",
+        "name": "dev1.png",
+        "id": "3"
+      },
+      {
+        "flag": "1",
+        "texture": "images/textures/images/sprites/error_sprite.png",
+        "name": "images/sprites/error_sprite.png",
+        "id": "4"
+      },
+      {
+        "flag": "1",
+        "texture": "images/textures/door.png",
+        "name": "door.png",
+        "id": "5"
+      },
+      {
+        "flag": "0",
+        "texture": "images/textures/dev1.png",
+        "name": "dev1.png",
+        "id": "6"
+      }
+    ],
+    "height": "14"
+  }
+}

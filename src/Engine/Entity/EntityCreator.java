@@ -20,7 +20,7 @@ public class EntityCreator { //Entity creation is defined in this class
     {
         Entity entity = null;
         
-        if(!verifyProperties(propertyMap, "classname", "name", "active", "position"))
+        if(!verifyProperties(propertyMap, "classname", "name", "position"))
             return null;
         String classname = (String)propertyMap.get("classname");
         

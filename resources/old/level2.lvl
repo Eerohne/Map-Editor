@@ -91,7 +91,6 @@
     "skycolor":[0.0, 0.5, 0.6],
     "wallheight":"1.0"
     },
-    ,
     {
     "classname":"logic_timer",
     "name":"timer",
