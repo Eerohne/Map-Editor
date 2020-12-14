@@ -5,9 +5,15 @@
  */
 package Editor.View.Help;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -27,6 +33,11 @@ public class HelpView{
         
         Scene helpScene = new Scene(webView);
         Stage helpStage = new Stage();
+        try {
+            helpStage.getIcons().add(new Image(new FileInputStream(new File("dev/editor/window/optik_editor_icon.png"))));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(HelpView.class.getName()).log(Level.SEVERE, null, ex);
+        }
         helpStage.setResizable(false);
         helpStage.setTitle("Help");
         helpStage.setScene(helpScene);

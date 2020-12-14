@@ -168,7 +168,7 @@ public class NewEntityController{
         if(newFile.length() == 0 || !newFile.exists()){
             data.put("classname", view.classNameTf.getText());
             data.put("name", view.nameTf.getText());
-            data.put("position", initialPosition);
+            //data.put("position", initialPosition);
             data.put("color", rgbColor);
 
             
@@ -213,7 +213,7 @@ public class NewEntityController{
                 if(savefile.containsKey("entities")){
                      data.put("classname", view.classNameTf.getText());
                      data.put("name", view.nameTf.getText());
-                     data.put("position", initialPosition);
+                     //data.put("position", initialPosition);
                      data.put("color", rgbColor);
                      for(int i = 0; i < list.size(); i++){
                          if(isArray(list.get(i).getValue()) == true){

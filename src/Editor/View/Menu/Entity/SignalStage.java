@@ -38,29 +38,11 @@ public class SignalStage{
            System.out.println("Could not find css file: "+pathName);
         }
         
+        newSignal.setResizable(false);
         newSignal.setTitle("create signal");
         newSignal.setScene(s);
         newSignal.show();
         
     }
-
-//    @Override
-//    public void start(Stage primaryStage) throws Exception {
-//        Stage newSignal = new Stage();
-//        newSignal.initOwner(primaryStage);
-//        newSignal.initModality(Modality.WINDOW_MODAL);
-//        
-//        SignalView sv = new SignalView();
-//        SignalController sc = new SignalController(new SignalModel(), sv);
-//        
-//        Scene s = new Scene(sv, 500, 300);
-//        newSignal.setTitle("create signal");
-//        newSignal.setScene(s);
-//        newSignal.show();
-//    }
-//    
-//    public static void main(String [] args){
-//        launch(args);
-//    }
     
 }

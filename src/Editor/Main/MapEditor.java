@@ -21,7 +21,9 @@ import Editor.View.Inspector.WallContent;
 import Editor.View.Hierarchy.MapHierarchy;
 import Editor.View.Hierarchy.WallHierarchy;
 import Editor.View.Inspector.EntityContent;
+import Engine.Util.RessourceManager.ResourceLoader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -37,6 +39,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -76,7 +79,6 @@ public class MapEditor extends Application {
     static ScrollPane dataPane;
     
     public static ProjectProfile project; //Base project
-//    MapProfile currentMap = new MapProfile("Map", 10, 10); //Test Map -- To Be Removed
     
     /**
      * Core method of the Optik Editor. Starts the whole Editor GUI and events.
@@ -108,6 +110,12 @@ public class MapEditor extends Application {
             scene.getStylesheets().add(file.toURI().toURL().toExternalForm());
         } else {
            System.out.println("Could not find css file: "+pathName);
+        }
+        
+        try {
+            editorWindow.getIcons().add(new Image(new FileInputStream(new File("dev/editor/window/optik_editor_icon.png"))));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MapEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         editorWindow.setTitle("Optik Editor");
@@ -352,12 +360,6 @@ public class MapEditor extends Application {
                 }
 
                 mapToLoad.getGc().loadPalette(gridArray, mapToLoad);
-    //            for(int i = 0; i < mapToLoad.getGridView().cells.length; i++){
-    //                for(int j = 0; j < mapToLoad.getGridView().cells[i].length; j++){
-    //                    System.out.print(mapToLoad.getGridView().cells[i][j].getWallID());
-    //                }
-    //                System.out.println();
-    //            }
             }
             //getting entities 
             if(savefile.containsKey("entities")){
