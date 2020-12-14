@@ -346,7 +346,7 @@ public class MapEditor extends Application {
                     Iterator<Long> colIterator = columns.iterator();
                     int colNumber = 0;
                     while(colIterator.hasNext()){
-                        gridArray[rowNumber][colNumber] = colIterator.next().intValue();
+                        gridArray[colNumber][rowNumber] = colIterator.next().intValue();
                         colNumber++;
                     }
                     rowNumber++;

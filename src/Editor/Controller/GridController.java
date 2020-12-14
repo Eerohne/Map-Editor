@@ -324,9 +324,9 @@ public class GridController{
         cell.setTexture(new ImagePattern(map.getWallMap().get(paletteID).getImage()));
     }
     
-    public void loadPalette(int[][] palette, MapProfile map){
-        for (int i = 0; i < grid.getCells().length; i++) {
-            for(int j = 0; j < grid.getCells()[i].length; j++){
+     public void loadPalette(int[][] palette, MapProfile map){
+        for (int j = 0; j < grid.getxLength(); j++) {
+            for(int i = 0; i < grid.getyLength(); i++){
                 this.setImg(grid.getCells()[i][j], palette[i][j], map);
                 
             }
