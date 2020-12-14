@@ -1,0 +1,10 @@
+[
+  {
+    "targetname": "pointsound_",
+    "name": "OnCollected",
+    "arguments": [
+      "a"
+    ],
+    "inputname": "play"
+  }
+]
