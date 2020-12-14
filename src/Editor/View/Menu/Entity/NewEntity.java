@@ -35,9 +35,9 @@ public class NewEntity extends GridPane{
     public TextField propertyText = new TextField();
     public TextField valueText = new TextField();
     public Button addBtn = new Button("add row");
-    public Button deleteBtn = new Button("delete selected row");
+    public Button deleteBtn = new Button("delete row");
     public Button exportBtn = new Button("create entity");
-    public Button switchBtn = new Button("open entity editting window");
+    public Button switchBtn = new Button("entity editor");
     public Button signalBtn = new Button("create signal");
     public Button viewSignal = new Button("view signals");
     public Button close = new Button("close window");
@@ -53,17 +53,19 @@ public class NewEntity extends GridPane{
     public TextField classNameTf = new TextField();
     public TextField nameTf = new TextField();
     
+    public VBox tableBox = new VBox();
     
     public NewEntity(){
         
         table.setEditable(true);
         this.setHgap(10);
         this.setVgap(10);
+        tableBox.getChildren().add(table);
         
         propertyCol.prefWidthProperty().bind(table.widthProperty().multiply(0.5));
         valueCol.prefWidthProperty().bind(table.widthProperty().multiply(0.5));
         
-        this.add(table, 1, 1);
+        this.add(tableBox, 1, 1);
         this.add(labelBox, 1, 0);
         this.add(tfBox, 2, 0);
         
