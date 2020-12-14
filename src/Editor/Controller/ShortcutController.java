@@ -28,12 +28,15 @@ import org.json.simple.parser.ParseException;
 public class ShortcutController{
 
     public ShortcutController(ShortcutBar shortcutBar, Stage owner, WallHierarchy wallList) {
+        //Set the Help Page Shortcut Event
         shortcutBar.getHelp().setOnAction(e -> {
             new HelpView(owner);
         });
-        
+       
+        //Set the Run Shortcut Event
         shortcutBar.getRunShort().setOnAction(e -> {
             try {
+                MenuController.save();
                 Stage engine = new Stage();
                 Game game = new Game();
                 engine.initOwner(owner);
@@ -46,10 +49,12 @@ public class ShortcutController{
             }
         });
         
+        //Set the New Wall Shortcut Event
         shortcutBar.getWallShort().setOnAction(e -> {
             new NewWallProfile(owner, MapEditor.getProject().getImageFolder(), wallList);
         });
         
+        //Set the New Entity Shortcut Event
         shortcutBar.getEntityShort().setOnAction(e -> {
             try {
                 new NewEntityStage(owner);
@@ -58,10 +63,12 @@ public class ShortcutController{
             }
         });
         
+        //Set the New Map Shortcut Event
         shortcutBar.getMapShort().setOnAction(e -> {
             new NewMap(owner);
         });
         
+        //Set the Save Map Shortcut Event
         shortcutBar.getSaveShort().setOnAction(e -> {
             try {
                 MenuController.save();
