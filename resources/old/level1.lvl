@@ -56,10 +56,11 @@
 
 "entities": [
     {
-    "classname":"player_base",
+    "classname":"player_simple",
     "name":"player1",
     "active":"TRUE",
     "position":[3.1, 7.0],
+    "height":"0.0",
     "rotation":"90",
     "walkspeed":"2.0",
     "runspeed":"3.0",

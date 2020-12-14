@@ -26,10 +26,6 @@ public class Input {
                 if(key.getCode() == KeyCode.ESCAPE){
                         Game.togglePause();
                 }
-                if(key.getCode() == KeyCode.Q){
-                    Game.reloadCurrentLevel();
-                }
-                
                 //skip intro cutscene
                  if(Game.inIntro)
                     Game.skipIntro();

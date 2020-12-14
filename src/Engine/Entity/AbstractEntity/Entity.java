@@ -37,7 +37,10 @@ public abstract class Entity implements IEntity{ //An entity is any object that 
     public Entity(HashMap<String, Object> propertyMap)
     {
         this.name = (String)propertyMap.get("name");
-        this.active = Boolean.parseBoolean((String)propertyMap.get("active"));
+        if(propertyMap.containsKey("active"))
+            this.active = Boolean.parseBoolean((String)propertyMap.get("active"));
+        else
+            this.active = true;
         JSONArray posArray = (JSONArray) propertyMap.get("position");
         this.position = new Point2D((double) posArray.get(0),(double) posArray.get(1));
         

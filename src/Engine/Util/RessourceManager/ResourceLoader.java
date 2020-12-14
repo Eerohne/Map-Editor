@@ -146,7 +146,6 @@ public class ResourceLoader
                 row++;
             }
             level.setLevelData(gridArray);
-
             //2) level palette
             JSONArray paletteArray = (JSONArray) grid.get("palette");
             Iterator<Object> paletteIterator = paletteArray.iterator();

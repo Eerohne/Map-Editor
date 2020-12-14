@@ -110,7 +110,7 @@ public class Game extends Application{
     
     private static void initEngine(Stage stage)
     {
-        errorMessage.set("Engine error");
+        errorMessage.set("Engine error"); //default error message
         //load config.cgf file
         Settings.init(); 
         stage.getIcons().add(ResourceLoader.loadImage(Settings.get("e_iconpath" )));
@@ -143,10 +143,6 @@ public class Game extends Application{
         
         stage.show();
         
-        //temporary very ugly code to set the renderer
-        Renderer.setFov(Settings.getFloat("r_fov"));
-        Renderer.setResolution(5);
-        
         //load .css style
         String pathName = Settings.get("e_stylepath");
         String styleSheet = ResourceLoader.loadStyleFile(pathName);
@@ -162,10 +158,6 @@ public class Game extends Application{
             playIntro();
         else
             loadLevel(levelPath);
-        //now load the initial level
-        //loadLevel(Settings.get("e_initiallevel"));
-        
-        
     }
     
     public static void playIntro()
