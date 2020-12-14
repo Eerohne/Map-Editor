@@ -40,16 +40,11 @@ public class ProjectProfile extends Profile{
     }
     
     public static boolean openProject(){
-        //File projFile = new File(projectName);
-        
-        ///if(projFile.exists()){
             ProjectProfile p = new ProjectProfile("optik_editor");
             p.loadProject();
             p.setSelectedMap(p.getMaps().get(0));
             MapEditor.setProject(p);
             return true;
-        //} else
-            //return false;
     }
     
     public boolean loadProject(){
@@ -57,8 +52,13 @@ public class ProjectProfile extends Profile{
         File mapDir = new File(levelFolder);
         File[] mapList = mapDir.listFiles();
         
-        for (File file : mapList) {
-            this.loadMap(MapEditor.load(file));
+        if(mapList.length == 0){
+            this.addMap(new MapProfile("Map", 10, 10), true);
+        }
+        else {
+            for (File file : mapList) {
+                this.loadMap(MapEditor.load(file));
+            }
         }
         
         return true;
