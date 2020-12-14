@@ -325,11 +325,14 @@ public class GridController{
     }
     
      public void loadPalette(int[][] palette, MapProfile map){
-        for (int j = 0; j < grid.getxLength(); j++) {
-            for(int i = 0; i < grid.getyLength(); i++){
-                this.setImg(grid.getCells()[i][j], palette[i][j], map);
-                
+        try{
+            for (int j = 0; j < grid.getyLength(); j++) {
+                for(int i = 0; i < grid.getxLength(); i++){
+                    this.setImg(grid.getCells()[i][j], palette[i][j], map);
+                }
             }
+        }catch (ArrayIndexOutOfBoundsException ae){
+            System.out.println(map.getName() + ": " + ae);
         }
     }
     
