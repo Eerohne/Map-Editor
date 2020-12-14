@@ -8,7 +8,7 @@ package Editor.View.Hierarchy;
 import Editor.Main.MapEditor;
 import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.ProjectProfile;
-import Editor.View.Metadata.DataView;
+import Editor.View.Inspector.InspectorView;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -20,13 +20,13 @@ import javafx.scene.layout.HBox;
 public class MapHierarchy extends Hierarchy{
     ProjectProfile project;
     HBox selected;
-    DataView display;
+    InspectorView display;
 
     public MapHierarchy() {
         super(null);
     }
     
-    public MapHierarchy(ProjectProfile p, DataView display) {
+    public MapHierarchy(ProjectProfile p, InspectorView display) {
         super(display);
         this.project = p;
         

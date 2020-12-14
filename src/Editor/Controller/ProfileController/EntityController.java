@@ -13,7 +13,7 @@ import Editor.Model.Profile.MapProfile;
 import Editor.View.Grid.Grid;
 import Editor.View.Menu.Entity.ExistingEntityModification;
 import Editor.View.Menu.Entity.ExistingEntityStage;
-import Editor.View.Metadata.EntityContent;
+import Editor.View.Inspector.EntityContent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.FileNotFoundException;
@@ -32,7 +32,7 @@ import org.json.simple.parser.ParseException;
  *
  * @author A
  */
-public class EntityController extends MetadataController{
+public class EntityController extends InspectorController{
     MapProfile map;
     Grid grid;
     Stage stage;

@@ -10,7 +10,7 @@ import Editor.Model.Profile.MapProfile;
 import Editor.Model.Profile.WallProfile;
 import Editor.View.Grid.Cell;
 import Editor.View.Grid.Grid;
-import Editor.View.Metadata.WallContent;
+import Editor.View.Inspector.WallContent;
 import Editor.View.Hierarchy.WallHierarchy;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,7 +32,7 @@ import javafx.stage.Stage;
  * Controller of the WallContent Class
  * @author A
  */
-public class WallController extends MetadataController {
+public class WallController extends InspectorController {
     Grid grid;
     MapProfile map;
     Image newImage;

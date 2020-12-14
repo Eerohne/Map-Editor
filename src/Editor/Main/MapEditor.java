@@ -15,13 +15,12 @@ import Editor.View.Grid.Grid;
 import Editor.View.Info;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Menu.TopMenu;
-import Editor.View.Metadata.DataView;
+import Editor.View.Inspector.InspectorView;
 import Editor.View.Hierarchy.EntityHierarchy;
-import Editor.View.Metadata.WallContent;
+import Editor.View.Inspector.WallContent;
 import Editor.View.Hierarchy.MapHierarchy;
 import Editor.View.Hierarchy.WallHierarchy;
-import Editor.View.Metadata.EntityContent;
-import Editor.View.Metadata.MapContent;
+import Editor.View.Inspector.EntityContent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -65,9 +64,8 @@ public class MapEditor extends Application {
     static WallHierarchy wallHierarchy; // Hierarchy of Walls
     static MapHierarchy mapHierarchy; //Hierarchy of Maps
     
-    static DataView metadataContent; //Content Wrapper to display in metadata tab
+    static InspectorView inspector; //Content Wrapper to display in metadata tab
     WallContent wallContent; //Compatible with DataView and delivers WallProfile information
-    MapContent mapContent;
     EntityContent entityContent;
     
     static Grid grid;
@@ -96,8 +94,7 @@ public class MapEditor extends Application {
         info = new Info();
         
         
-        BorderPane view = setupView(metadataContent);
-//        project = new ProjectProfile("Test", new MapProfile("map", 10, 10));
+        BorderPane view = setupView(inspector);
         initialize(editorWindow);
    
         Scene scene = new Scene(view, 1920, 1080);
@@ -129,27 +126,24 @@ public class MapEditor extends Application {
         launch(args);
     }
     
+    /**
+     * Initializes the Editor
+     * 
+     * @param stage 
+     */
     private void initialize(Stage stage){
-//        try {
-//            Settings.init();
-//            String projectName = Settings.get("ed_proj");//To Remove
-//            System.out.println(projectName);
             
-            if (ProjectProfile.openProject()) {
-                wallHierarchy.setMapProfile(project.getSelectedMap());
-                entityHierarchy.setMapProfile(project.getSelectedMap());
-                mapHierarchy.setProject(project);
-                grid = project.getSelectedMap().getGridView();
-                gridDisplay.setCenter(grid);
-                setDataView(new WallContent(project.getMainMap().getDefaultWall()));
-                new WallController((WallContent)metadataContent, project.getSelectedMap(), stage);
-                info.setupInfoBar(project.getSelectedMap().getGc());
-                info.start();
-                //EntityHierarchy
-            }
-//        } catch (Exception e) {
-//            System.out.println(e);
-//        }
+        if (ProjectProfile.openProject()) {
+            wallHierarchy.setMapProfile(project.getSelectedMap());
+            entityHierarchy.setMapProfile(project.getSelectedMap());
+            mapHierarchy.setProject(project);
+            grid = project.getSelectedMap().getGridView();
+            gridDisplay.setCenter(grid);
+            setDataView(new WallContent(project.getMainMap().getDefaultWall()));
+            new WallController((WallContent)inspector, project.getSelectedMap(), stage);
+            info.setupInfoBar(project.getSelectedMap().getGc());
+            info.start();
+        }
     }
     
     
@@ -167,8 +161,9 @@ public class MapEditor extends Application {
     }
     
     /**
+     * Create Property Tabs.
      * 
-     * @return <code></code>
+     * @return <code>TabPane</code>
      */
     private TabPane setupProperties(){
         //Property Tabs Initialization
@@ -206,31 +201,33 @@ public class MapEditor extends Application {
     }
     
     /**
+     * Setup the Inspector Tab that displays the data of Map Components
      * 
-     * 
-     * @return <code></code>
+     * @return <code>TabPane</code>
      */
-    private TabPane setupMetadata(DataView metadata){
+    private TabPane setupInspector(InspectorView metadata){
         dataPane = new ScrollPane(metadata);
-        Tab data = new Tab("Metadata", dataPane);
+        Tab data = new Tab("Inspector", dataPane);
         
         TabPane dataTab =  new TabPane(data);
         dataTab.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        dataTab.setMinHeight(300);
+        //dataTab.setMaxHeight(250);
         
         return dataTab;
     }
     
     /**
-     * 
-     * @return 
+     * Setup the side elements\, i.e. all the property and inspector tabs.
+     * @return VBox
      */
-    private VBox setupSideElements(DataView data){
-        return new VBox(setupProperties(), setupMetadata(data));
+    private VBox setupSideElements(InspectorView data){
+        return new VBox(setupProperties(), setupInspector(data));
     }
     
     /**
-     * 
-     * @return 
+     * Setup Grid and Info Bar
+     * @return BorderPane
      */
     private BorderPane setupCenterElements(){
         gridDisplay.setCenter(grid);
@@ -240,10 +237,10 @@ public class MapEditor extends Application {
     }
     
     /**
-     * 
-     * @return 
+     * Setup the whole Editor Window
+     * @return BorderPane
      */
-    private BorderPane setupView(DataView metadata){
+    private BorderPane setupView(InspectorView metadata){
         BorderPane layout = new BorderPane();
         layout.setCenter(setupCenterElements());
         layout.setTop(setupTopElements());
@@ -258,50 +255,28 @@ public class MapEditor extends Application {
         info.reload(project.getSelectedMap().getGc());
         wallHierarchy.setMapProfile(project.getSelectedMap());
         entityHierarchy.setMapProfile(project.getSelectedMap());
-//        properties.getSelectionModel().selectedItemProperty().addListener(
-//            new ChangeListener<Tab>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
-//                if(newValue.getText().equals("Walls")){
-//                    project.getSelectedMap().getGc().setEditingMode(1);
-//                    project.getSelectedMap().getGridView().getSelectionCell().setStroke(Color.YELLOW);
-//                }
-//                else if(newValue.getText().equals("Entities")){
-//                    project.getSelectedMap().getGc().setEditingMode(2);
-//                    project.getSelectedMap().getGridView().getSelectionCell().setStroke(null);
-//                }
-//                else{
-//                    project.getSelectedMap().getGc().setEditingMode(0);
-//                    project.getSelectedMap().getGridView().getSelectionCell().setStroke(null);
-//                }
-//                
-//                 System.out.println(project.getSelectedMap().getGc().getEditingMode());
-//            }
-//        });
     }
-    
-    
-    public static void setProject(ProjectProfile proj){
-        project = proj;
-        //Add refresh code
+
+    public static void setProject(ProjectProfile project) {
+        MapEditor.project = project;
     }
     
     public static ProjectProfile getProject(){
         return project;
     }
     
-    public static DataView getDataView(){
-        return metadataContent;
+    public static InspectorView getDataView(){
+        return inspector;
     }
     
-    public static void setDataView(DataView view){
-        metadataContent = view;
+    public static void setDataView(InspectorView view){
+        inspector = view;
         refreshDataView();
     }
     
     private static void refreshDataView(){
-        dataPane.setContent(metadataContent);
-        metadataContent.reset();
+        dataPane.setContent(inspector);
+        inspector.reset();
     }
     
     public static EntityHierarchy getEntityHierarchy(){
@@ -316,6 +291,11 @@ public class MapEditor extends Application {
         return mapHierarchy;
     }
     
+    /**
+     * Loads the Level file provided into a MapProfile object
+     * @param pathFile
+     * @return MapProfile
+     */
     public static MapProfile load(File pathFile){
         FileReader reader = null;
         MapProfile mapToLoad = null;

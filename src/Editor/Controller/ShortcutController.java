@@ -8,7 +8,7 @@ package Editor.Controller;
 import Editor.Main.MapEditor;
 import Editor.Model.Profile.WallProfile;
 import Editor.View.New.NewWallProfile;
-import Editor.View.Help;
+import Editor.View.Help.HelpView;
 import Editor.View.Menu.ShortcutBar;
 import Editor.View.Hierarchy.WallHierarchy;
 import Editor.View.New.NewEntityStage;
@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -28,7 +29,7 @@ public class ShortcutController{
 
     public ShortcutController(ShortcutBar shortcutBar, Stage owner, WallHierarchy wallList) {
         shortcutBar.getHelp().setOnAction(e -> {
-            new Help(owner);
+            new HelpView(owner);
         });
         
         shortcutBar.getRunShort().setOnAction(e -> {
@@ -59,6 +60,14 @@ public class ShortcutController{
         
         shortcutBar.getMapShort().setOnAction(e -> {
             new NewMap(owner);
+        });
+        
+        shortcutBar.getSaveShort().setOnAction(e -> {
+            try {
+                MenuController.save();
+            } catch (ParseException ex) {
+                Logger.getLogger(ShortcutController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
     

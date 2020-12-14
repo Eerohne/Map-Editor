@@ -36,13 +36,6 @@ public class NewMap extends NewObject{
     TextField gridLength;
     TextField mapNameField;
     
-    
-    public NewMap(){
-        gridWidth = new TextField();
-        gridLength = new TextField();
-        mapNameField = new TextField();
-    }
-    
     public NewMap(Stage owner) {
         super(owner, "New Map");
         
@@ -99,7 +92,6 @@ class NewMapController{
             MapProfile map = new MapProfile(nm.getMapNameField().getText(), Integer.parseInt(nm.getGridWidth().getText()), Integer.parseInt(nm.getGridLength().getText()));
             MapEditor.getProject().addMap(map, true);
             
-            //File mapFile = new File(MapEditor.getProject().getSelectedMapPath());
             try {
                 MenuController.save();
             } catch (ParseException ex) {
