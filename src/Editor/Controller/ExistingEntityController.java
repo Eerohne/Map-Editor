@@ -18,9 +18,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
@@ -63,7 +61,8 @@ public class ExistingEntityController{
         removeEntity();
         deleteRow();
         switchWindow();
-        addRow();   
+        addRow(); 
+        //addSignal();
     }
 
     // getting all entities from the json file and display their name in the combobox
@@ -440,6 +439,8 @@ public class ExistingEntityController{
             isArray = false;
         return isArray;
     }
+    
+
 
         
 }
