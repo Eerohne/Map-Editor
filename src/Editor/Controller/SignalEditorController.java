@@ -47,7 +47,7 @@ public class SignalEditorController {
         clearBtn();
         deleteSignal();
         addSignal();
-        
+        //allSignals();
     }
     
      private void allEntities() throws ParseException{
@@ -80,8 +80,8 @@ public class SignalEditorController {
 //        
 //        for(int i = 0; i < entitiesArray.size(); i++){
 //            JSONObject entity = (JSONObject) entitiesArray.get(i);
-//            if(entity.keySet().contains("signal")){
-//                signalEntiteis = (JSONArray) entity.get("signal");
+//            if(entity.keySet().contains("signals")){
+//                signalEntiteis = (JSONArray) entity.get("signals");
 //                if(signalEntiteis.size() != 0){
 //                     view.cb.getItems().add(entity.get("name").toString());
 //                }
@@ -107,8 +107,8 @@ public class SignalEditorController {
                     // getting the entity that has signal 
                     for(int i = 0; i < entitiesArray.size(); i++){
                         JSONObject signalEntity = (JSONObject) entitiesArray.get(i);
-                        if(signalEntity.values().contains(name) && signalEntity.containsKey("signal")){
-                            signals = (JSONArray) signalEntity.get("signal");
+                        if(signalEntity.values().contains(name) && signalEntity.containsKey("signals")){
+                            signals = (JSONArray) signalEntity.get("signals");
                         }
                     }
                     
@@ -161,8 +161,8 @@ public class SignalEditorController {
                         JSONObject signalEntity = (JSONObject) entitiesArray.get(i);
                         
                         // getting the signal json array
-                        if(signalEntity.values().contains(name)){
-                            signals = (JSONArray) signalEntity.get("signal");
+                        if(signalEntity.values().contains(name) && signalEntity.containsKey("signals")){
+                            signals = (JSONArray) signalEntity.get("signals");
                         }
                     }
                     
@@ -227,7 +227,7 @@ public class SignalEditorController {
                     // getting the signal json array
                     if(signalEntity.values().contains(name)){
                         arrayPosition = entitiesArray.indexOf(signalEntity);
-                        signals = (JSONArray) signalEntity.get("signal");
+                        signals = (JSONArray) signalEntity.get("signals");
                     }
                 }
                 
@@ -246,7 +246,7 @@ public class SignalEditorController {
                     JSONObject signalEntity = (JSONObject) entitiesArray.get(j);
                     
                     if(signalEntity.values().contains(name)){
-                        signalEntity.put("signal", signals);
+                        signalEntity.put("signals", signals);
                         entitiesArray.set(arrayPosition, signalEntity);
                         savefile.put("entities", entitiesArray);
                     }
@@ -287,9 +287,9 @@ public class SignalEditorController {
                 
                 for(int i = 0; i < entities.size(); i++){
                     JSONObject tempObj = (JSONObject) entities.get(i);
-                    if(tempObj.values().contains(name) && tempObj.containsKey("signal")){
+                    if(tempObj.values().contains(name) && tempObj.containsKey("signals")){
                         signalEntity = tempObj;
-                        signals = (JSONArray) signalEntity.get("signal");
+                        signals = (JSONArray) signalEntity.get("signals");
                 
                         newSignal.put("name", view.nameTf.getText());
                         newSignal.put("targetname", view.targetNameTf.getText());
@@ -297,7 +297,7 @@ public class SignalEditorController {
                         newSignal.put("arguments", view.arguementTf.getText().split(","));
 
                         signals.add(newSignal);
-                        signalEntity.replace("signal", signals);
+                        signalEntity.replace("signals", signals);
 
                         for(int j = 0; j < entities.size(); j++){
                             JSONObject tempObj1 = (JSONObject) entities.get(j);
@@ -305,11 +305,11 @@ public class SignalEditorController {
                                 entities.set(j, signalEntity);
                             }
                         }
-                    }else if(tempObj.values().contains(name) && !tempObj.containsKey("signal")){
-                        tempObj.put("signal", new JSONArray());
+                    }else if(tempObj.values().contains(name) && !tempObj.containsKey("signals")){
+                        tempObj.put("signals", new JSONArray());
                         signalEntity = tempObj;
                         //System.out.println(signalEntity);
-                        signals = (JSONArray) signalEntity.get("signal");
+                        signals = (JSONArray) signalEntity.get("signals");
                 
                         newSignal.put("name", view.nameTf.getText());
                         newSignal.put("targetname", view.targetNameTf.getText());
@@ -317,7 +317,7 @@ public class SignalEditorController {
                         newSignal.put("arguments", view.arguementTf.getText().split(","));
 
                         signals.add(newSignal);
-                        signalEntity.replace("signal", signals);
+                        signalEntity.replace("signals", signals);
 
                         for(int j = 0; j < entities.size(); j++){
                             JSONObject tempObj1 = (JSONObject) entities.get(j);
@@ -378,7 +378,7 @@ public class SignalEditorController {
                     // getting the signal json array and remove the selected signal from the array 
                     if(signalEntity.values().contains(name)){
                         arrayPostion = entitiesArray.indexOf(signalEntity);
-                        signals = (JSONArray) signalEntity.get("signal");
+                        signals = (JSONArray) signalEntity.get("signals");
                     }
                 }
                 signals.remove(signalIndex);
@@ -389,7 +389,7 @@ public class SignalEditorController {
                     
                     if(signalEntity.values().contains(name)){
                         
-                        signalEntity.replace("signal", signals);
+                        signalEntity.replace("signals", signals);
                         entitiesArray.set(arrayPostion, signalEntity);
                         savefile.put("entities", entitiesArray);
                     }

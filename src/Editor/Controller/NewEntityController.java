@@ -184,7 +184,7 @@ public class NewEntityController{
                 try {
                     FileReader signalReader = new FileReader(signalFile);
                     JSONArray signalObj = (JSONArray) parser.parse(signalReader);
-                    data.put("signal", signalObj);   
+                    data.put("signals", signalObj);   
                     array.add(data);
                     allEntities.put("entities", array);
                     gson.toJson(allEntities, writer);
@@ -228,7 +228,7 @@ public class NewEntityController{
                     if(signalFile.length() != 0){
                         FileReader signalReader = new FileReader(signalFile);
                         JSONArray signalObj = (JSONArray) parser.parse(signalReader);
-                        data.put("signal", signalObj);
+                        data.put("signals", signalObj);
                         existingEntities.add(data);
                         savefile.put("entities", existingEntities);
                         newEntity();
@@ -244,7 +244,7 @@ public class NewEntityController{
                       if(signalFile.length() != 0){
                         FileReader signalReader = new FileReader(signalFile);
                         JSONArray signalObj = (JSONArray) parser.parse(signalReader);
-                        data.put("signal", signalObj);
+                        data.put("signals", signalObj);
                         existingEntities.add(data);
                         savefile.put("entities", existingEntities);
                     }
