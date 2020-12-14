@@ -198,8 +198,6 @@ public class MapEditor extends Application {
                     project.getSelectedMap().getGc().setEditingMode(0);
                     project.getSelectedMap().getGridView().getSelectionCell().setStroke(null);
                 }
-                
-                 System.out.println(project.getSelectedMap().getGc().getEditingMode());
             }
         });
         
@@ -354,7 +352,6 @@ public class MapEditor extends Application {
                     String flagStr = (String) palette.get("flag");
                     int flag = Integer.parseInt(flagStr); 
                     String name = (String) palette.get("name");
-                    //System.out.println(id + " , " + imagePath + " , " + flag + " , " + name);
 
                     mapToLoad.loadWallProfile(name, imagePath.replaceAll("images/textures/", ""), flag, id);
                 }
@@ -394,8 +391,6 @@ public class MapEditor extends Application {
                     //mapToLoad.getGc().
                     mapToLoad.loadEntityProfile(mapToLoad.getName(), entityName, color , position[0], position[1]);
                 }
-                
-                System.out.println();
             }
             else{
                 

@@ -144,7 +144,6 @@ public class SignalEditorController {
                     }
                     
                     // getting the one of the signal from the signal array and display it on the UI 
-                    System.out.println(index);
                     if(index >= 0){
                         JSONObject signal = (JSONObject) signals.get(index);
                         view.nameTf.setText(signal.get("name").toString());
@@ -267,7 +266,6 @@ public class SignalEditorController {
                     JSONObject tempObj = (JSONObject) entities.get(i);
                     if(tempObj.values().contains(name)){
                         signalEntity = tempObj;
-                        //System.out.println(signalEntity);
                         signals = (JSONArray) signalEntity.get("signal");
                     }
                 }

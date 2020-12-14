@@ -101,7 +101,6 @@ public class MapProfile extends Profile{
     }
     
     public WallProfile loadWallProfile(String name, String imgName, int flag, int id){
-        //System.out.println("WHYYYYYYYYYYYYYYYYYYYY");
         WallProfile wall = new WallProfile(id, name, imgName, flag);
         this.wallMap.put(id, wall);
         wallCounter++;
@@ -110,9 +109,6 @@ public class MapProfile extends Profile{
     }
     
      public EntityProfile loadEntityProfile(String mapName, String entityName, float[] color, double gridX, double gridY){
-         for (float f : color) {
-             System.out.println(f);
-         }
         EntityProfile entity = new EntityProfile(mapName, entityName, Color.color(color[0], color[1], color[2]));
         this.entityMap.put(entityName, entity);
         this.gc.setSelectedEntityProfile(entity);
