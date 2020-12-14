@@ -34,6 +34,7 @@ public class SignalEditorView extends GridPane{
     public Button delete = new Button("delete");
     public Button add = new Button("add signal");
     
+    
     public ComboBox cb = new ComboBox();
     public ComboBox signalSelector = new ComboBox();
     

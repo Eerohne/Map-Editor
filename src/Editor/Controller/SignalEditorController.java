@@ -40,33 +40,54 @@ public class SignalEditorController {
         this.model = model;
         this.view = view;
         
-        allSignals();
+        allEntities();
         comboBoxHandler();
         signalSelectorHandler();
         saveChanges();
         clearBtn();
         deleteSignal();
         addSignal();
+        
     }
     
-//show all entites with signals in the second combobox, will then open signal editor window
-    private void allSignals() throws FileNotFoundException, IOException, ParseException{
+     private void allEntities() throws ParseException{
         JSONParser parser = new JSONParser();
-        FileReader reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
-        JSONObject allEntities = (JSONObject) parser.parse(reader);
-        JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
-        JSONArray signalEntiteis = new JSONArray();
         
-        for(int i = 0; i < entitiesArray.size(); i++){
-            JSONObject entity = (JSONObject) entitiesArray.get(i);
-            if(entity.keySet().contains("signal")){
-                signalEntiteis = (JSONArray) entity.get("signal");
-                if(signalEntiteis.size() != 0){
-                     view.cb.getItems().add(entity.get("name").toString());
-                }
+        try(FileReader reader = new FileReader(MapEditor.getProject().getSelectedMapPath())){
+            
+            JSONObject allEntity = (JSONObject) parser.parse(reader);
+            JSONArray entitiesArray = (JSONArray) allEntity.get("entities");
+            for(int i = 0; i < entitiesArray.size(); i++){
+                JSONObject entity = new JSONObject();
+                entity = (JSONObject) entitiesArray.get(i);
+                String str = (String) entity.get("name");
+                view.cb.getItems().add(str);
             }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ExistingEntityController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+////show all entites with signals in the second combobox, will then open signal editor window
+//    private void allSignals() throws FileNotFoundException, IOException, ParseException{
+//        JSONParser parser = new JSONParser();
+//        FileReader reader = new FileReader(MapEditor.getProject().getSelectedMapPath());
+//        JSONObject allEntities = (JSONObject) parser.parse(reader);
+//        JSONArray entitiesArray = (JSONArray) allEntities.get("entities");
+//        JSONArray signalEntiteis = new JSONArray();
+//        
+//        for(int i = 0; i < entitiesArray.size(); i++){
+//            JSONObject entity = (JSONObject) entitiesArray.get(i);
+//            if(entity.keySet().contains("signal")){
+//                signalEntiteis = (JSONArray) entity.get("signal");
+//                if(signalEntiteis.size() != 0){
+//                     view.cb.getItems().add(entity.get("name").toString());
+//                }
+//            }
+//        }
+//    }
     
     // getting the entities that have signals
     private void comboBoxHandler(){
@@ -86,10 +107,12 @@ public class SignalEditorController {
                     // getting the entity that has signal 
                     for(int i = 0; i < entitiesArray.size(); i++){
                         JSONObject signalEntity = (JSONObject) entitiesArray.get(i);
-                        if(signalEntity.values().contains(name)){
+                        if(signalEntity.values().contains(name) && signalEntity.containsKey("signal")){
                             signals = (JSONArray) signalEntity.get("signal");
                         }
                     }
+                    
+                    
                     // adding entries to the signal selector
                     view.signalSelector.getItems().clear();
                     for(int j = 0; j < signals.size(); j++){
@@ -264,24 +287,45 @@ public class SignalEditorController {
                 
                 for(int i = 0; i < entities.size(); i++){
                     JSONObject tempObj = (JSONObject) entities.get(i);
-                    if(tempObj.values().contains(name)){
+                    if(tempObj.values().contains(name) && tempObj.containsKey("signal")){
                         signalEntity = tempObj;
                         signals = (JSONArray) signalEntity.get("signal");
-                    }
-                }
                 
-                newSignal.put("name", view.nameTf.getText());
-                newSignal.put("targetname", view.targetNameTf.getText());
-                newSignal.put("inputname", view.inputNameTf.getText());
-                newSignal.put("arguments", view.arguementTf.getText().split(","));
+                        newSignal.put("name", view.nameTf.getText());
+                        newSignal.put("targetname", view.targetNameTf.getText());
+                        newSignal.put("inputname", view.inputNameTf.getText());
+                        newSignal.put("arguments", view.arguementTf.getText().split(","));
+
+                        signals.add(newSignal);
+                        signalEntity.replace("signal", signals);
+
+                        for(int j = 0; j < entities.size(); j++){
+                            JSONObject tempObj1 = (JSONObject) entities.get(j);
+                            if(tempObj1.values().contains(name)){
+                                entities.set(j, signalEntity);
+                            }
+                        }
+                    }else if(tempObj.values().contains(name) && !tempObj.containsKey("signal")){
+                        tempObj.put("signal", new JSONArray());
+                        signalEntity = tempObj;
+                        //System.out.println(signalEntity);
+                        signals = (JSONArray) signalEntity.get("signal");
                 
-                signals.add(newSignal);
-                signalEntity.replace("signal", signals);
-                
-                for(int i = 0; i < entities.size(); i++){
-                    JSONObject tempObj = (JSONObject) entities.get(i);
-                    if(tempObj.values().contains(name)){
-                        entities.set(i, signalEntity);
+                        newSignal.put("name", view.nameTf.getText());
+                        newSignal.put("targetname", view.targetNameTf.getText());
+                        newSignal.put("inputname", view.inputNameTf.getText());
+                        newSignal.put("arguments", view.arguementTf.getText().split(","));
+
+                        signals.add(newSignal);
+                        signalEntity.replace("signal", signals);
+
+                        for(int j = 0; j < entities.size(); j++){
+                            JSONObject tempObj1 = (JSONObject) entities.get(j);
+                            if(tempObj1.values().contains(name)){
+                                entities.set(j, signalEntity);
+                            }
+                        }
+                        
                     }
                 }
                 
@@ -290,6 +334,8 @@ public class SignalEditorController {
                 FileWriter writer = new FileWriter(MapEditor.getProject().getSelectedMapPath());
                 gson.toJson(savefile, writer);
                 writer.close();
+                
+                
                 
                 
                 

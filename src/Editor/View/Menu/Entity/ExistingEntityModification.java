@@ -45,6 +45,7 @@ public class ExistingEntityModification extends GridPane{
     public Label classNameLabel = new Label("class name:");
     public Label name = new Label("name:"); 
     
+    
     public VBox tfBox = new VBox();
     public TextField classNameTf = new TextField();
     public TextField nameTf = new TextField();
@@ -92,6 +93,7 @@ public class ExistingEntityModification extends GridPane{
         vbox.getChildren().add(deleteBtn);
         vbox.getChildren().add(removeEntityBtn);
         vbox.getChildren().add(signalBtn);
+        
         vbox.getChildren().add(switchBtn);
         
         this.add(vbox, 2, 1);
