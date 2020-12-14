@@ -304,7 +304,6 @@ public class MapEditor extends Application {
             reader = new FileReader(pathFile);
             JSONObject savefile = (JSONObject) parser.parse(reader);
             
-            JSONArray entities = (JSONArray) savefile.get("entities");
             if(savefile.containsKey("grid")){
                 JSONObject mapInfo = (JSONObject) savefile.get("grid");
                 JSONArray gridData = new JSONArray();
@@ -327,7 +326,7 @@ public class MapEditor extends Application {
                     Iterator<Long> colIterator = columns.iterator();
                     int colNumber = 0;
                     while(colIterator.hasNext()){
-                        gridArray[rowNumber][colNumber] = colIterator.next().intValue();
+                        gridArray[colNumber][rowNumber] = colIterator.next().intValue();
                         colNumber++;
                     }
                     rowNumber++;
@@ -362,6 +361,7 @@ public class MapEditor extends Application {
             }
             //getting entities 
             if(savefile.containsKey("entities")){
+                JSONArray entities = (JSONArray) savefile.get("entities");
                 Iterator<Object> entitiesIterator = entities.iterator();
                 double [] position = new double[2];
                 float [] color = new float[3];
