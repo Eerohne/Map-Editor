@@ -10,6 +10,7 @@ import Editor.Main.MapEditor;
 import Editor.View.Grid.EntityDot;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -56,28 +57,33 @@ public class EntityProfile extends Profile{
         try {
             JSONParser parser = new JSONParser();
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            reader = new FileReader("resources/levels/" + mapName + ".lvl");
-            JSONObject savefile = (JSONObject) parser.parse(reader);
-            JSONArray entities = (JSONArray) savefile.get("entities");
-            JSONObject currentEntity = new JSONObject();
-            JSONArray color = new JSONArray();
-            color.add(x);
-            color.add(y);
-            color.add(z);
-            
-            for(int i = 0; i < entities.size(); i++){
-                currentEntity = (JSONObject) entities.get(i);
-                if(currentEntity.get("name").equals(entityName)){
-                    currentEntity.put("color", color);
-                    entities.set(i, currentEntity);
+            File file = new File("resources/levels/" + mapName + ".lvl");
+           
+                reader = new FileReader(file);
+                JSONObject savefile = (JSONObject) parser.parse(reader);
+
+                
+                    JSONArray entities = (JSONArray) savefile.get("entities");
+                    JSONObject currentEntity = new JSONObject();
+                    JSONArray color = new JSONArray();
+                    color.add(x);
+                    color.add(y);
+                    color.add(z);
+
+                    for(int i = 0; i < entities.size(); i++){
+                        currentEntity = (JSONObject) entities.get(i);
+                        if(currentEntity.containsKey("name") && currentEntity.get("name").equals(entityName)){
+                            currentEntity.put("color", color);
+                            entities.set(i, currentEntity);
+                        }
+                    
+
+                    savefile.put("entities", entities);
+
+                    FileWriter writer = new FileWriter("resources/levels/" + mapName + ".lvl");
+                    gson.toJson(savefile, writer);
+                    writer.close();
                 }
-            }
-            
-            savefile.put("entities", entities);
-            
-            FileWriter writer = new FileWriter("resources/levels/" + mapName + ".lvl");
-            gson.toJson(savefile, writer);
-            writer.close();
             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);

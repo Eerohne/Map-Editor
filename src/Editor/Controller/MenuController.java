@@ -152,19 +152,22 @@ public class MenuController{
                 //savefileObj = (JSONObject) parser.parse(reader);
                 grid.put("width", Integer.toString(MapEditor.project.selectedMap.getGridView().getxLength()));
                 grid.put("height", Integer.toString(MapEditor.project.selectedMap.getGridView().getyLength()));
+                
                 JSONArray cellsArray = new JSONArray();
                 int maxValue = 0;
-
-                for(int i = 0; i< MapEditor.project.selectedMap.getGridView().getxLength(); i++){
-                    JSONArray array = new JSONArray();
-                    for(int j = 0; j < MapEditor.project.selectedMap.getGridView().getyLength(); j++){
-                        array.add(MapEditor.project.selectedMap.getGridView().cells[i][j].getWallID());
-                        if(MapEditor.project.selectedMap.getGridView().cells[i][j].getWallID() > maxValue){
-                            maxValue = MapEditor.project.selectedMap.getGridView().cells[i][j].getWallID();
+                int[][] cellsArr = new int[MapEditor.project.selectedMap.getGridView().getxLength()][MapEditor.project.selectedMap.getGridView().getyLength()];
+                
+                for(int j = 0; j < MapEditor.project.selectedMap.getGridView().getyLength(); j++){
+                        JSONArray array = new JSONArray();
+                        for(int i = 0; i< MapEditor.project.selectedMap.getGridView().getxLength(); i++) {
+                            array.add(MapEditor.project.selectedMap.getGridView().cells[i][j].getWallID());
+                            if(MapEditor.project.selectedMap.getGridView().cells[i][j].getWallID() > maxValue){
+                                maxValue = MapEditor.project.selectedMap.getGridView().cells[i][j].getWallID();
+                            }
                         }
+                        cellsArray.add(array);
                     }
-                    cellsArray.add(array);
-                }
+                
                 grid.put("data", cellsArray);
 
                 for(int i = 1; i <= maxValue; i++){
@@ -182,6 +185,7 @@ public class MenuController{
                 grid.put("palette", palette);
 
                 savefileObj.put("grid", grid);
+                savefileObj.put("entities", new JSONArray());
                 FileWriter writer = new FileWriter(file);
                 gson.toJson(savefileObj, writer);
                 writer.close();
@@ -197,9 +201,9 @@ public class MenuController{
                     JSONArray cellsArray = new JSONArray();
                     int maxValue = 0;
 
-                    for(int i = 0; i< MapEditor.project.selectedMap.getGridView().cells.length; i++){
+                    for(int j = 0; j < MapEditor.project.selectedMap.getGridView().getyLength(); j++){
                         JSONArray array = new JSONArray();
-                        for(int j = 0; j < MapEditor.project.selectedMap.getGridView().cells[i].length; j++){
+                        for(int i = 0; i< MapEditor.project.selectedMap.getGridView().getxLength(); i++) {
                             array.add(MapEditor.project.selectedMap.getGridView().cells[i][j].getWallID());
                             if(MapEditor.project.selectedMap.getGridView().cells[i][j].getWallID() > maxValue){
                                 maxValue = MapEditor.project.selectedMap.getGridView().cells[i][j].getWallID();
@@ -235,9 +239,9 @@ public class MenuController{
                     JSONArray cellsArray = new JSONArray();
                     int maxValue = 0;
 
-                    for(int i = 0; i< MapEditor.project.selectedMap.getGridView().cells.length; i++){
+                   for(int j = 0; j < MapEditor.project.selectedMap.getGridView().getyLength(); j++){
                         JSONArray array = new JSONArray();
-                        for(int j = 0; j < MapEditor.project.selectedMap.getGridView().cells[i].length; j++){
+                        for(int i = 0; i< MapEditor.project.selectedMap.getGridView().getxLength(); i++) {
                             array.add(MapEditor.project.selectedMap.getGridView().cells[i][j].getWallID());
                             if(MapEditor.project.selectedMap.getGridView().cells[i][j].getWallID() > maxValue){
                                 maxValue = MapEditor.project.selectedMap.getGridView().cells[i][j].getWallID();
@@ -245,6 +249,7 @@ public class MenuController{
                         }
                         cellsArray.add(array);
                     }
+                   
                     grid.put("data", cellsArray);
 
                     for(int i = 1; i <= maxValue; i++){
@@ -262,7 +267,7 @@ public class MenuController{
                     grid.put("palette", palette);
 
                     savefileObj.put("grid", grid);
-
+                    savefileObj.put("entities", new JSONArray());
                     FileWriter writer = new FileWriter(file);
                     gson.toJson(savefileObj, writer);
                     reader.close();

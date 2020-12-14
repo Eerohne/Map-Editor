@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -49,11 +50,22 @@ public class ShortcutBar extends HBox{
             saveImage = new ImageView(new Image(new FileInputStream("dev/editor/saveicon.png"), 32, 32, true, true));
             
             wallShort = new Button("", addWall);
+            wallShort.setTooltip(new Tooltip("New Wall"));
+            
             mapShort = new Button("", addMap);
+            mapShort.setTooltip(new Tooltip("New Map"));
+            
             entityShort = new Button("", addEntity);
+            entityShort.setTooltip(new Tooltip("New Entity"));
+            
             runShort = new Button("", runImage);
+            runShort.setTooltip(new Tooltip("Run Current Map"));
+            
             help = new Button("", helpImage);
+            help.setTooltip(new Tooltip("Need Help? Click Me!"));
+            
             saveShort = new Button("", saveImage);
+            saveShort.setTooltip(new Tooltip("Save Current Map"));
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
         }

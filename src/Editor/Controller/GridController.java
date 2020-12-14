@@ -324,12 +324,15 @@ public class GridController{
         cell.setTexture(new ImagePattern(map.getWallMap().get(paletteID).getImage()));
     }
     
-    public void loadPalette(int[][] palette, MapProfile map){
-        for (int i = 0; i < grid.getCells().length; i++) {
-            for(int j = 0; j < grid.getCells()[i].length; j++){
-                this.setImg(grid.getCells()[i][j], palette[i][j], map);
-                
+     public void loadPalette(int[][] palette, MapProfile map){
+        try{
+            for (int j = 0; j < grid.getyLength(); j++) {
+                for(int i = 0; i < grid.getxLength(); i++){
+                    this.setImg(grid.getCells()[i][j], palette[i][j], map);
+                }
             }
+        }catch (ArrayIndexOutOfBoundsException ae){
+            System.out.println(map.getName() + ": " + ae);
         }
     }
     

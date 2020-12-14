@@ -34,8 +34,8 @@ public class ExistingEntityStage{
         EntityModel model = new EntityModel();
         ExistingEntityController controller = new ExistingEntityController(model, view);
         existingEntity.setTitle("Edit Existing Entities");
-        Scene scene = new Scene(view, 660, 700);
-        
+        Scene scene = new Scene(view, 700, 700);
+        view.table.prefWidthProperty().bind(scene.widthProperty().multiply(0.7));
         String pathName = "dev/editor/style/style.css" ;
         File file = new File(pathName);
         

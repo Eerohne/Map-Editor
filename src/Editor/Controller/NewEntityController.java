@@ -147,6 +147,7 @@ public class NewEntityController{
         double r = 0.5 + Math.random()*0.5;
         double g = 0.5 + Math.random()*0.5;
         double b = 0.5 - Math.random()*0.5;
+        double [] rgbColor = {r, g, b};
         
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create(); 
@@ -160,13 +161,15 @@ public class NewEntityController{
         double[] initialPosition = {0.0 , 0.0};
         
         
+        
         String entityName = view.nameTf.getText();
         
         // create or write to the entities.json if no entities exist
         if(newFile.length() == 0 || !newFile.exists()){
             data.put("classname", view.classNameTf.getText());
             data.put("name", view.nameTf.getText());
-            data.put("position", initialPosition);
+            //data.put("position", initialPosition);
+            data.put("color", rgbColor);
 
             
             for(int i = 0; i < list.size(); i++){
@@ -210,7 +213,8 @@ public class NewEntityController{
                 if(savefile.containsKey("entities")){
                      data.put("classname", view.classNameTf.getText());
                      data.put("name", view.nameTf.getText());
-                     data.put("position", initialPosition);
+                     //data.put("position", initialPosition);
+                     data.put("color", rgbColor);
                      for(int i = 0; i < list.size(); i++){
                          if(isArray(list.get(i).getValue()) == true){
                              data.put(list.get(i).getProperty(), list.get(i).getValue().split(","));

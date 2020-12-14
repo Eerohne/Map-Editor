@@ -37,18 +37,13 @@ public class EditorSplashScreen {
         Text optikName = new Text("Optik Editor");
         optikWelcome.setFont(Font.font("Fantasy", FontWeight.EXTRA_BOLD, 60));
         optikName.setFont(Font.font("Fantasy", FontWeight.EXTRA_BOLD, 50));
-        //optikTitle.set
-        
-        Button newProject = setupButton("New Project");
-        Button openProject = setupButton("Open Project");
-        Button closeSS = setupButton("Close");
         
         Region space = new Region();
         VBox.setVgrow(space, Priority.ALWAYS);
         
-        new SplashScreenController(newProject, openProject, closeSS, splashScreenStage, parent);
+        new SplashScreenController(splashScreenStage, parent);
         
-        VBox splashContent = new VBox(optikWelcome, optikName, space, newProject, openProject, closeSS);
+        VBox splashContent = new VBox(optikWelcome, optikName, space);
         splashContent.setAlignment(Pos.CENTER);
         
         splashContent.setSpacing(10);
@@ -59,26 +54,11 @@ public class EditorSplashScreen {
         splashScreenStage.setScene(splashScene);
         splashScreenStage.show();
     }
-    
-    private Button setupButton(String text){
-        Button temp = new Button(text);
-        temp.setMaxWidth(Double.MAX_VALUE);
-        temp.setPrefHeight(60);
-        temp.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
-        
-        return temp;
-    }
 }
 
 class SplashScreenController{
 
-    public SplashScreenController(Button newP, Button openP, Button close, Stage current, Stage parent) {
-        //newP.setOnAction(e -> {new NewProject(parent);});
-        
-        openP.setOnAction(e -> {});
-        
-        close.setOnAction(e -> {current.close();});
-        
+    public SplashScreenController(Stage current, Stage parent) {
         current.focusedProperty().addListener(((observable, pastFoc, isFoc) -> {
             if(!isFoc)
                 current.close();
